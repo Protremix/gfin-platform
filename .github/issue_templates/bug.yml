@@ -1,0 +1,98 @@
+name: Bug Report
+description: Report a bug or error in GFIN
+title: "[BUG]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "For security vulnerabilities, use the Security Advisory feature instead of this template."
+  - type: textarea
+    id: bug-summary
+    attributes:
+      label: Bug summary
+      description: A clear and concise summary of the bug.
+      placeholder: Provide a clear summary of the issue...
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      description: Select the affected module (Modules 00-09 accepted).
+      options:
+        - "Module 00 - Governance"
+        - "Module 01 - Repository & Dev Environment"
+        - "Module 02 - Security & Identity"
+        - "Module 03 - Core Data Model"
+        - "Module 04 - Entity Resolution"
+        - "Module 05 - Event Bus"
+        - "Module 06 - Evidence Vault"
+        - "Module 07 - Search Platform"
+        - "Module 08 - Web Discovery Engine"
+        - "Module 09 - Infrastructure Intelligence"
+        - "Other"
+    validations:
+      required: false
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      description: Severity level of the bug.
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: false
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Step 1
+        2. Step 2
+        3. Step 3
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What you expected to happen.
+      placeholder: Describe expected behavior...
+    validations:
+      required: false
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What actually happened.
+      placeholder: Describe actual behavior...
+    validations:
+      required: true
+  - type: textarea
+    id: test-output
+    attributes:
+      label: Test output
+      description: Relevant logs, stack traces, or pytest output.
+      placeholder: Paste error logs or test output here...
+    validations:
+      required: false
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating System, Python version, etc.
+      placeholder: e.g. Ubuntu 22.04 LTS, Python 3.11.4
+    validations:
+      required: false
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact
+      description: Security impact and data impact of this issue.
+      placeholder: Detail security impact, data loss/corruption risk, or system availability impact...
+    validations:
+      required: false

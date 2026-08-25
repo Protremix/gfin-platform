@@ -1,0 +1,38 @@
+title = "Gitleaks Configuration — GFIN"
+
+[extend]
+useDefault = true
+
+# Additional patterns for GFIN-specific secrets
+[[rules]]
+id = "gfin-api-keys"
+description = "GFIN API Key"
+regex = '''gfin[_-]?(?:api[_-]?key|secret|token)["\s:=]+["']?[A-Za-z0-9\-_]{20,}["']?'''
+tags = ["gfin", "api-key"]
+
+[[rules]]
+id = "openai-api-key"
+description = "OpenAI API Key"
+regex = '''sk-[A-Za-z0-9]{20,}'''
+tags = ["openai", "api-key"]
+
+[[rules]]
+id = "police-connector-token"
+description = "Police Connector Authentication Token"
+regex = '''police[_-]?connector[_-]?token["\s:=]+["']?[A-Za-z0-9\-_]{20,}["']?'''
+tags = ["police", "connector"]
+
+[allowlist]
+description = "Allowlisted paths — test fixtures and docs with example values"
+paths = [
+  '''tests/.*fixtures.*''',
+  '''docs/.*example.*''',
+  '''\.env\.example''',
+]
+regexes = [
+  '''example''',
+  '''test''',
+  '''dummy''',
+  '''placeholder''',
+  '''REPLACE''',
+]

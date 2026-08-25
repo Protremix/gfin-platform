@@ -1,0 +1,17 @@
+# GFIN Kubernetes Namespace
+# Layer B: REQUIRES EXTERNAL INFRASTRUCTURE — apply with kubectl when cluster is ready
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gfin
+  labels:
+    name: gfin
+    environment: production
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gfin-staging
+  labels:
+    name: gfin
+    environment: staging

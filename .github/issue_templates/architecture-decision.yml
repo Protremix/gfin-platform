@@ -1,0 +1,112 @@
+name: Architecture Decision
+description: Propose an architecture decision record (ADR) for review
+labels: ["architecture"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to propose material decisions affecting architecture, infrastructure, security, data, AI, federation, or police integration.
+        
+        Once accepted, the decision should be recorded as an ADR in `docs/adr/`.
+  - type: input
+    id: title
+    attributes:
+      label: Decision title
+      description: Short descriptive title (e.g., "Use Kafka for Event Bus durability")
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Affected module
+      options:
+        - Module 00 — Governance
+        - Module 01 — Repository & Dev Environment
+        - Module 02 — Security & Identity
+        - Module 03 — Core Data Model
+        - Module 04 — Entity Resolution
+        - Module 05 — Event Bus
+        - Module 06 — Evidence Vault
+        - Module 07 — Search Platform
+        - Module 08 — Web Discovery
+        - Module 09 — Infrastructure Intelligence
+        - Module 10 — Domain Intelligence
+        - Module 11 — Certificate Intelligence
+        - Module 12 — IP/ASN Intelligence
+        - Module 13 — Citizen Platform
+        - Module 14 — Fraud Reporting
+        - Module 15 — Fraud Detection
+        - Module 16 — Campaign Engine
+        - Module 17 — Continuous Monitoring
+        - Module 18 — Alert Engine
+        - Module 19 — Model Gateway
+        - Module 20 — OpenAI
+        - Module 21 — Local AI
+        - Module 22 — AI Investigation Orchestrator
+        - Module 23 — Police API
+        - Module 24 — Police Connector SDK
+        - Module 25 — Global Matching
+        - Module 26 — Cross-Border Requests
+        - Module 27 — Police Console
+        - Module 28 — Crypto Intelligence
+        - Module 29 — Multilingual
+        - Module 30 — Analytics
+        - Module 31 — Global Early Warning
+        - Module 32 — Federation
+        - Module 33 — Compliance
+        - Module 34 — Observability
+        - Module 35 — Disaster Recovery
+        - Module 36 — Security Testing
+        - Module 37 — AI Evaluation
+        - Module 38 — Load Testing
+        - Module 39 — Pilot
+        - Module 40 — Production
+        - Cross-cutting
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What is the issue we are facing? What forces are at play?
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision
+      description: What is the proposed decision or change?
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why was this decision chosen? What are the driving factors?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: What other options were evaluated? Why were they rejected?
+  - type: textarea
+    id: consequences
+    attributes:
+      label: Consequences
+      description: What are the positive, neutral, and negative consequences of this decision?
+  - type: dropdown
+    id: layer-impact
+    attributes:
+      label: Layer impact
+      options:
+        - Layer A (MVP)
+        - Layer B (Production)
+        - Both layers
+    validations:
+      required: true
+  - type: input
+    id: related-adrs
+    attributes:
+      label: Related ADRs
+      description: Comma-separated list of related ADR numbers (e.g., ADR-001, ADR-003)

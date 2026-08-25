@@ -1,0 +1,84 @@
+# GFIN API Gateway Deployment
+# Layer B: REQUIRES EXTERNAL INFRASTRUCTURE
+# Apply with: kubectl apply -f infrastructure/kubernetes/ -n gfin
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gfin-api-gateway
+  namespace: gfin
+  labels:
+    app: gfin
+    service: api-gateway
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gfin
+      service: api-gateway
+  template:
+    metadata:
+      labels:
+        app: gfin
+        service: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: ghcr.io/gfin/api-gateway:latest
+          ports:
+            - containerPort: 8000
+              name: http
+          env:
+            - name: GFIN_ENV
+              valueFrom:
+                configMapKeyRef:
+                  name: gfin-config
+                  key: environment
+            - name: DATABASE_ADAPTER
+              value: postgresql
+            - name: EVENT_BUS_ADAPTER
+              value: kafka
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: gfin-config
+                  key: kafka-servers
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gfin-secrets
+                  key: openai-api-key
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 250m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gfin-api-gateway
+  namespace: gfin
+spec:
+  selector:
+    app: gfin
+    service: api-gateway
+  ports:
+    - port: 80
+      targetPort: 8000
+      name: http
+  type: ClusterIP

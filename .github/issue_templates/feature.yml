@@ -1,0 +1,122 @@
+name: Feature Request
+description: Propose a new feature, enhancement, or capability
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: feature-summary
+    attributes:
+      label: Feature summary
+      description: Concise summary of the feature request.
+      placeholder: Provide a clear summary of the proposed feature...
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      description: Select the target module (Modules 00-40).
+      options:
+        - "Module 00 - Governance"
+        - "Module 01 - Repository & Dev Environment"
+        - "Module 02 - Security & Identity"
+        - "Module 03 - Core Data Model"
+        - "Module 04 - Entity Resolution"
+        - "Module 05 - Event Bus"
+        - "Module 06 - Evidence Vault"
+        - "Module 07 - Search Platform"
+        - "Module 08 - Web Discovery Engine"
+        - "Module 09 - Infrastructure Intelligence"
+        - "Module 10 - Domain Intelligence"
+        - "Module 11 - Certificate Intelligence"
+        - "Module 12 - IP/ASN Intelligence"
+        - "Module 13 - Citizen Platform"
+        - "Module 14 - Fraud Reporting"
+        - "Module 15 - Fraud Detection"
+        - "Module 16 - Campaign Engine"
+        - "Module 17 - Continuous Monitoring"
+        - "Module 18 - Alert Engine"
+        - "Module 19 - Model Gateway"
+        - "Module 20 - OpenAI"
+        - "Module 21 - Local AI"
+        - "Module 22 - AI Investigation Orchestrator"
+        - "Module 23 - Police API"
+        - "Module 24 - Police Connector SDK"
+        - "Module 25 - Global Matching"
+        - "Module 26 - Cross-Border Requests"
+        - "Module 27 - Police Console"
+        - "Module 28 - Crypto Intelligence"
+        - "Module 29 - Multilingual"
+        - "Module 30 - Analytics"
+        - "Module 31 - Global Early Warning"
+        - "Module 32 - Federation"
+        - "Module 33 - Compliance"
+        - "Module 34 - Observability"
+        - "Module 35 - Disaster Recovery"
+        - "Module 36 - Security Testing"
+        - "Module 37 - AI Evaluation"
+        - "Module 38 - Load Testing"
+        - "Module 39 - Pilot"
+        - "Module 40 - Production"
+        - "Other / Cross-Module"
+    validations:
+      required: false
+  - type: textarea
+    id: problem-statement
+    attributes:
+      label: Problem statement
+      description: Problem or user need this feature addresses.
+      placeholder: Describe the problem being solved...
+    validations:
+      required: false
+  - type: textarea
+    id: proposed-solution
+    attributes:
+      label: Proposed solution
+      description: Proposed technical or functional solution.
+      placeholder: Describe the proposed solution...
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives-considered
+    attributes:
+      label: Alternatives considered
+      description: Other approaches or solutions evaluated.
+      placeholder: Describe alternative options considered...
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Verifiable criteria for completion.
+      placeholder: List testable criteria...
+    validations:
+      required: false
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Layer
+      description: Target architecture layer.
+      options:
+        - Layer A
+        - Layer B
+        - Both
+    validations:
+      required: false
+  - type: textarea
+    id: security-considerations
+    attributes:
+      label: Security considerations
+      description: Security impact, threat model modifications, or access control needs.
+      placeholder: Detail security aspects...
+    validations:
+      required: false
+  - type: textarea
+    id: data-considerations
+    attributes:
+      label: Data considerations
+      description: Data model changes, privacy impact, or schema migrations required.
+      placeholder: Detail data handling and privacy aspects...
+    validations:
+      required: false

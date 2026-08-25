@@ -1,0 +1,107 @@
+# GFIN Security Workflow
+# Performs SAST analysis, secret scanning, container scanning placeholders, and license compliance audits.
+
+name: GFIN Security
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ─── SAST Scan ───
+  sast-scan:
+    name: Static Application Security Testing (SAST)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run Semgrep SAST Scan
+        run: |
+          python -m pip install --upgrade pip
+          pip install semgrep
+          semgrep scan --config auto --error .
+
+  # ─── Secret Scanning ───
+  secret-scan:
+    name: Secret Scanning (Gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks Secret Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+  # ─── Container Scanning ───
+  # REQUIRES EXTERNAL INFRASTRUCTURE — Container images must exist in registry before scanning can run
+  container-scan:
+    name: Container Security Scan (Placeholder)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Container Vulnerability Scan Status
+        run: |
+          echo "=========================================================================="
+          echo "GFIN CONTAINER SCANNING - STATUS: REQUIRES EXTERNAL INFRASTRUCTURE"
+          echo "=========================================================================="
+          echo "Notice: Container vulnerability scanning requires Docker container images"
+          echo "to be built and published to a container registry (GHCR/ECR/DockerHub) first."
+          echo ""
+          echo "Target service images configured in GFIN monorepo:"
+          echo "  - ghcr.io/${{ github.repository }}/api-gateway"
+          echo "  - ghcr.io/${{ github.repository }}/identity"
+          echo "  - ghcr.io/${{ github.repository }}/entity"
+          echo "  - ghcr.io/${{ github.repository }}/evidence"
+          echo "  - ghcr.io/${{ github.repository }}/ai-gateway"
+          echo "  - ghcr.io/${{ github.repository }}/police-api"
+          echo ""
+          echo "Once target images exist, this job will execute Trivy / Grype image scanning:"
+          echo "  trivy image --severity HIGH,CRITICAL ghcr.io/${{ github.repository }}/api-gateway:${{ github.sha }}"
+          echo "=========================================================================="
+
+  # ─── License Compliance Check ───
+  license-compliance:
+    name: License Compliance Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies & license checker
+        run: |
+          python -m pip install --upgrade pip
+          pip install pip-licenses
+          pip install -e "." || true
+
+      - name: Audit Open Source Licenses
+        run: |
+          echo "=== Auditing Python Package Licenses ==="
+          pip-licenses --ignore-packages gfin --format=markdown --summary
+          pip-licenses --ignore-packages gfin --fail-on "GPLv3;AGPLv3;GPLv2;AGPLv1"

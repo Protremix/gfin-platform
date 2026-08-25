@@ -1,0 +1,118 @@
+name: Security Issue
+description: Report a security-related issue or compliance requirement
+title: "[SEC]: "
+labels: ["security"]
+body:
+  - type: markdown
+    attributes:
+      value: "⚠️ Do NOT include sensitive details, credentials, or exploit code in public issues. Use GitHub Security Advisories for responsible disclosure."
+  - type: input
+    id: title
+    attributes:
+      label: Title
+      description: Brief title for the security issue.
+      placeholder: e.g. Audit log integrity validation failure
+    validations:
+      required: true
+  - type: dropdown
+    id: security-impact
+    attributes:
+      label: Security impact
+      description: Severity/impact level.
+      options:
+        - Critical
+        - High
+        - Medium
+        - Low
+    validations:
+      required: false
+  - type: dropdown
+    id: affected-module
+    attributes:
+      label: Affected module
+      description: Select affected module.
+      options:
+        - "Module 00 - Governance"
+        - "Module 01 - Repository & Dev Environment"
+        - "Module 02 - Security & Identity"
+        - "Module 03 - Core Data Model"
+        - "Module 04 - Entity Resolution"
+        - "Module 05 - Event Bus"
+        - "Module 06 - Evidence Vault"
+        - "Module 07 - Search Platform"
+        - "Module 08 - Web Discovery Engine"
+        - "Module 09 - Infrastructure Intelligence"
+        - "Module 10 - Domain Intelligence"
+        - "Module 11 - Certificate Intelligence"
+        - "Module 12 - IP/ASN Intelligence"
+        - "Module 13 - Citizen Platform"
+        - "Module 14 - Fraud Reporting"
+        - "Module 15 - Fraud Detection"
+        - "Module 16 - Campaign Engine"
+        - "Module 17 - Continuous Monitoring"
+        - "Module 18 - Alert Engine"
+        - "Module 19 - Model Gateway"
+        - "Module 20 - OpenAI"
+        - "Module 21 - Local AI"
+        - "Module 22 - AI Investigation Orchestrator"
+        - "Module 23 - Police API"
+        - "Module 24 - Police Connector SDK"
+        - "Module 25 - Global Matching"
+        - "Module 26 - Cross-Border Requests"
+        - "Module 27 - Police Console"
+        - "Module 28 - Crypto Intelligence"
+        - "Module 29 - Multilingual"
+        - "Module 30 - Analytics"
+        - "Module 31 - Global Early Warning"
+        - "Module 32 - Federation"
+        - "Module 33 - Compliance"
+        - "Module 34 - Observability"
+        - "Module 35 - Disaster Recovery"
+        - "Module 36 - Security Testing"
+        - "Module 37 - AI Evaluation"
+        - "Module 38 - Load Testing"
+        - "Module 39 - Pilot"
+        - "Module 40 - Production"
+        - "Other / Cross-Module"
+    validations:
+      required: false
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Detailed non-sensitive description of the security issue.
+      placeholder: Describe the security requirement or vulnerability without exploit details...
+    validations:
+      required: true
+  - type: textarea
+    id: attack-vector
+    attributes:
+      label: Attack vector
+      description: Architectural attack vector or threat model scenario.
+      placeholder: Describe the potential attack scenario...
+    validations:
+      required: false
+  - type: input
+    id: affected-versions
+    attributes:
+      label: Affected versions
+      description: Software versions, branches, or components impacted.
+      placeholder: e.g. v0.1.0, main branch
+    validations:
+      required: false
+  - type: textarea
+    id: mitigation
+    attributes:
+      label: Mitigation
+      description: Recommended fix, countermeasure, or temporary mitigation.
+      placeholder: Detail proposed mitigation...
+    validations:
+      required: false
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Links to internal design docs, Constitution articles, CVEs, or security standards.
+      placeholder: e.g. GFIN Constitution Article II, OWASP Top 10...
+    validations:
+      required: false

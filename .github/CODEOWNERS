@@ -1,0 +1,58 @@
+# GFIN Repository Code Owners
+# https://docs.github.com/en/repositories/managing-repository-files-that-guide-contributors/about-code-owners
+
+# Default owner for everything in the repository
+* @GFIN/app-team
+
+# Application Services & Apps
+/apps/ @GFIN/app-team
+/services/ @GFIN/app-team
+/packages/ @GFIN/app-team
+
+# Security & Identity
+/packages/auth/ @GFIN/security-team
+/packages/services/identity_engine.py @GFIN/security-team
+/services/identity/ @GFIN/security-team
+/infrastructure/security/ @GFIN/security-team
+/docs/security/ @GFIN/security-team
+/tests/security/ @GFIN/security-team
+.gitleaks.toml @GFIN/security-team
+.github/workflows/security.yml @GFIN/security-team
+
+# Infrastructure & CI/CD
+/infrastructure/ @GFIN/infra-team
+/infrastructure/kubernetes/ @GFIN/infra-team
+/infrastructure/terraform/ @GFIN/infra-team
+/infrastructure/monitoring/ @GFIN/infra-team
+.github/workflows/ @GFIN/infra-team
+Makefile @GFIN/infra-team
+Dockerfile @GFIN/infra-team
+**/Dockerfile @GFIN/infra-team
+
+# Schemas, Data Models & Core Packages
+/packages/schemas/ @GFIN/data-team
+/packages/events/ @GFIN/data-team
+/packages/common/database.py @GFIN/data-team
+/packages/common/storage.py @GFIN/data-team
+/packages/common/search.py @GFIN/data-team
+/packages/common/graph.py @GFIN/data-team
+/services/entity/ @GFIN/data-team
+/services/observation/ @GFIN/data-team
+/services/relationship/ @GFIN/data-team
+/services/evidence/ @GFIN/data-team
+/services/search/ @GFIN/data-team
+
+# AI & Model Gateway
+/services/ai-gateway/ @GFIN/ai-team
+/services/ai-orchestrator/ @GFIN/ai-team
+/packages/common/model_gateway.py @GFIN/ai-team
+/packages/common/openai_gateway.py @GFIN/ai-team
+/tests/ai-evaluation/ @GFIN/ai-team
+
+# Police Integration & Federation
+/services/police-api/ @GFIN/integration-team
+/services/federation/ @GFIN/integration-team
+
+# Documentation
+/docs/ @GFIN/docs-team
+*.md @GFIN/docs-team

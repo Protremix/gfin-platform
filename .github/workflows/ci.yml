@@ -1,0 +1,115 @@
+# GFIN CI Pipeline
+# Runs on every push and PR to main/develop branches
+
+name: GFIN CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+  security-events: write
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # ─── Lint & Format ───
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install ruff==0.3.4
+      - name: Ruff lint
+        run: ruff check packages services tests
+      - name: Ruff format check
+        run: ruff format --check packages services tests
+
+  # ─── Type Check ───
+  typecheck:
+    name: Type Check (MyPy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install mypy==1.9.0 pydantic>=2.6.0
+      - name: MyPy
+        run: mypy packages services --strict --ignore-missing-imports
+
+  # ─── Tests ───
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install -e ".[test]"
+      - name: Run tests
+        run: pytest tests/ -v --tb=short --cov=packages --cov=services --cov-report=xml --cov-report=term-missing
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  # ─── Security Scanning ───
+  secret-scan:
+    name: Secret Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+  dependency-scan:
+    name: Dependency Scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - run: pip install pip-audit safety
+      - name: pip-audit
+        run: pip-audit --strict --desc
+      - name: Safety check
+        run: safety check --short-report || true
+
+  # ─── Go Services (placeholder for high-perf services) ───
+  go-test:
+    name: Go Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Go vet
+        run: |
+          if [ -d services ]; then
+            find services -name "go.mod" -execdir go vet ./... \; 2>/dev/null || true
+          fi
+      - name: Go test
+        run: |
+          if [ -d services ]; then
+            find services -name "go.mod" -execdir go test -v ./... \; 2>/dev/null || true
+          fi
