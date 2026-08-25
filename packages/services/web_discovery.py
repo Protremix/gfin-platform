@@ -23,21 +23,21 @@ import re
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any
-from urllib.parse import urlparse, urljoin
+from urllib.parse import urljoin, urlparse
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from schemas.base import BaseObservation, BaseSource, Provenance, utc_now
-from schemas.enums import EntityType
-
+from schemas.base import BaseObservation, Provenance, utc_now
 
 # ═══════════════════════════════════════════════
 # CRAWL JOB MODEL
 # ═══════════════════════════════════════════════
 
+
 class CrawlStatus(str, Enum):
     """Status of a crawl job."""
+
     QUEUED = "queued"
     RUNNING = "running"
     COMPLETED = "completed"
@@ -48,6 +48,7 @@ class CrawlStatus(str, Enum):
 
 class CrawlPriority(int, Enum):
     """Priority levels for crawl jobs."""
+
     LOW = 3
     NORMAL = 2
     HIGH = 1
@@ -60,6 +61,7 @@ class CrawlJob(BaseModel):
     Per Luna: seed URL, parent job, crawl policy, priority, depth,
     source identity, retry count, status.
     """
+
     job_id: str = Field(default_factory=lambda: f"CRL-{uuid4().hex[:8].upper()}")
     seed_url: str
     parent_job_id: str | None = None  # Links to parent that discovered this seed
@@ -93,15 +95,21 @@ class CrawlPolicy(BaseModel):
     Per Luna: robots/terms checks, allowed schemes and domains,
     maximum depth, content-type limits, size limits.
     """
+
     policy_id: str = "default"
     allowed_schemes: list[str] = Field(default_factory=lambda: ["http", "https"])
     allowed_domains: list[str] = Field(default_factory=list)  # Empty = all allowed
     blocked_domains: list[str] = Field(default_factory=list)
     max_depth: int = 3
     max_content_size_bytes: int = 10 * 1024 * 1024  # 10 MB
-    allowed_content_types: list[str] = Field(default_factory=lambda: [
-        "text/html", "application/xhtml+xml", "text/plain", "application/json"
-    ])
+    allowed_content_types: list[str] = Field(
+        default_factory=lambda: [
+            "text/html",
+            "application/xhtml+xml",
+            "text/plain",
+            "application/json",
+        ]
+    )
     respect_robots: bool = True
     follow_redirects: bool = True
     max_redirects: int = 5
@@ -119,8 +127,10 @@ class CrawlPolicy(BaseModel):
 # MOCK FETCHER (Layer A — no real HTTP)
 # ═══════════════════════════════════════════════
 
+
 class FetchResult(BaseModel):
     """Result of fetching a URL."""
+
     url: str
     status_code: int = 200
     headers: dict[str, str] = Field(default_factory=dict)
@@ -195,8 +205,10 @@ class MockFetcher:
 # CONTENT EXTRACTOR
 # ═══════════════════════════════════════════════
 
+
 class ExtractedContent(BaseModel):
     """Content extracted from a fetched page."""
+
     text: str = ""
     links: list[str] = Field(default_factory=list)
     entities: list[dict[str, Any]] = Field(default_factory=list)
@@ -214,24 +226,28 @@ class ContentExtractor:
     """
 
     # Regex patterns for entity extraction
-    EMAIL_PATTERN = re.compile(r'[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}')
-    PHONE_PATTERN = re.compile(r'\+\d{6,15}')
+    EMAIL_PATTERN = re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}")
+    PHONE_PATTERN = re.compile(r"\+\d{6,15}")
     URL_PATTERN = re.compile(r'https?://[^\s<>"\']+')
-    IP_PATTERN = re.compile(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b')
+    IP_PATTERN = re.compile(r"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b")
 
     def extract(self, fetch_result: FetchResult, base_url: str = "") -> ExtractedContent:
         """Extract content from a fetch result."""
         content_str = fetch_result.content.decode("utf-8", errors="ignore")
 
         # Extract title
-        title_match = re.search(r'<title[^>]*>(.*?)</title>', content_str, re.IGNORECASE | re.DOTALL)
+        title_match = re.search(
+            r"<title[^>]*>(.*?)</title>", content_str, re.IGNORECASE | re.DOTALL
+        )
         title = title_match.group(1).strip() if title_match else ""
 
         # Extract text (remove HTML tags)
-        text = re.sub(r'<script[^>]*>.*?</script>', '', content_str, flags=re.IGNORECASE | re.DOTALL)
-        text = re.sub(r'<style[^>]*>.*?</style>', '', text, flags=re.IGNORECASE | re.DOTALL)
-        text = re.sub(r'<[^>]+>', ' ', text)
-        text = re.sub(r'\s+', ' ', text).strip()
+        text = re.sub(
+            r"<script[^>]*>.*?</script>", "", content_str, flags=re.IGNORECASE | re.DOTALL
+        )
+        text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.IGNORECASE | re.DOTALL)
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = re.sub(r"\s+", " ", text).strip()
 
         # Extract links (href attributes)
         link_matches = re.findall(r'href=["\']([^"\']+)["\']', content_str, re.IGNORECASE)
@@ -263,7 +279,11 @@ class ContentExtractor:
 
         # Extract metadata
         metadata = {}
-        meta_matches = re.findall(r'<meta\s+(?:name|property)=["\']([^"\']+)["\']\s+content=["\']([^"\']*)["\']', content_str, re.IGNORECASE)
+        meta_matches = re.findall(
+            r'<meta\s+(?:name|property)=["\']([^"\']+)["\']\s+content=["\']([^"\']*)["\']',
+            content_str,
+            re.IGNORECASE,
+        )
         for name, value in meta_matches:
             metadata[name] = value
 
@@ -280,8 +300,10 @@ class ContentExtractor:
 # CRAWL POLICY CHECKER
 # ═══════════════════════════════════════════════
 
+
 class PolicyCheckResult(BaseModel):
     """Result of a crawl policy check."""
+
     allowed: bool
     reason: str
 
@@ -332,7 +354,9 @@ class CrawlPolicyChecker:
 
         # 3. Depth check
         if depth > policy.max_depth:
-            return PolicyCheckResult(allowed=False, reason=f"Depth {depth} exceeds max {policy.max_depth}")
+            return PolicyCheckResult(
+                allowed=False, reason=f"Depth {depth} exceeds max {policy.max_depth}"
+            )
 
         # 4. Robots check
         if policy.respect_robots and domain in self._robots_cache:
@@ -345,19 +369,28 @@ class CrawlPolicyChecker:
 
         # 6. Terms of Service compliance
         if policy.respect_terms_of_service and domain in policy.blocked_by_tos:
-            return PolicyCheckResult(allowed=False, reason=f"Terms of Service disallow crawling: {domain}")
+            return PolicyCheckResult(
+                allowed=False, reason=f"Terms of Service disallow crawling: {domain}"
+            )
 
         return PolicyCheckResult(allowed=True, reason="Policy check passed")
 
-    def check_content(self, content_type: str, content_size: int, policy_id: str = "default") -> PolicyCheckResult:
+    def check_content(
+        self, content_type: str, content_size: int, policy_id: str = "default"
+    ) -> PolicyCheckResult:
         """Check if fetched content meets policy limits."""
         policy = self._policies.get(policy_id, CrawlPolicy())
 
         if content_size > policy.max_content_size_bytes:
-            return PolicyCheckResult(allowed=False, reason=f"Content size {content_size} exceeds limit {policy.max_content_size_bytes}")
+            return PolicyCheckResult(
+                allowed=False,
+                reason=f"Content size {content_size} exceeds limit {policy.max_content_size_bytes}",
+            )
 
         if policy.allowed_content_types and content_type not in policy.allowed_content_types:
-            return PolicyCheckResult(allowed=False, reason=f"Content type not allowed: {content_type}")
+            return PolicyCheckResult(
+                allowed=False, reason=f"Content type not allowed: {content_type}"
+            )
 
         return PolicyCheckResult(allowed=True, reason="Content policy passed")
 
@@ -365,6 +398,7 @@ class CrawlPolicyChecker:
 # ═══════════════════════════════════════════════
 # RATE LIMITER (per-source)
 # ═══════════════════════════════════════════════
+
 
 class RateLimiter:
     """Per-source rate limiter.
@@ -397,6 +431,7 @@ class RateLimiter:
 # ═══════════════════════════════════════════════
 # WEB DISCOVERY ENGINE
 # ═══════════════════════════════════════════════
+
 
 class WebDiscoveryEngine:
     """Web discovery engine — distributed crawling system (Layer A: in-memory).
@@ -505,11 +540,13 @@ class WebDiscoveryEngine:
         """Add a job to the priority queue."""
         self._queue.append(job)
         # Sort by priority (lower = higher priority), then next_attempt_at, then queued_at
-        self._queue.sort(key=lambda j: (
-            j.priority if isinstance(j.priority, int) else int(j.priority),
-            j.next_attempt_at,
-            j.queued_at,
-        ))
+        self._queue.sort(
+            key=lambda j: (
+                j.priority if isinstance(j.priority, int) else int(j.priority),
+                j.next_attempt_at,
+                j.queued_at,
+            )
+        )
 
     async def process_one(self) -> CrawlJob | None:
         """Process the next job in the queue.
@@ -571,9 +608,7 @@ class WebDiscoveryEngine:
         self._rate_limiter.record(job.source_id, delay)
 
         # 1. Policy check
-        policy_result = self._policy_checker.check(
-            job.seed_url, job.depth, job.crawl_policy_id
-        )
+        policy_result = self._policy_checker.check(job.seed_url, job.depth, job.crawl_policy_id)
         if not policy_result.allowed:
             job.status = CrawlStatus.FAILED
             job.error_message = f"Policy blocked: {policy_result.reason}"
@@ -652,6 +687,7 @@ class WebDiscoveryEngine:
         if self._evidence_vault:
             from schemas.base import BaseEvidence, Classification
             from schemas.enums import DataClassification
+
             evidence = BaseEvidence(
                 source_id=job.source_id,
                 source_reference=job.seed_url,
@@ -661,7 +697,9 @@ class WebDiscoveryEngine:
                 classification=Classification(classification=DataClassification.PUBLIC),
             )
             try:
-                stored = self._evidence_vault.create(evidence, fetch_result.content, actor="web_discovery")
+                stored = self._evidence_vault.create(
+                    evidence, fetch_result.content, actor="web_discovery"
+                )
                 job.evidence_id = stored.evidence.id
             except Exception:
                 pass  # Evidence vault not critical for Layer A crawl
@@ -671,9 +709,7 @@ class WebDiscoveryEngine:
             norm_link = self.normalize_url(link)
             if norm_link not in self._processed_urls:
                 # Check policy for discovered URL
-                link_check = self._policy_checker.check(
-                    link, job.depth + 1, job.crawl_policy_id
-                )
+                link_check = self._policy_checker.check(link, job.depth + 1, job.crawl_policy_id)
                 if link_check.allowed and job.depth + 1 <= job.max_depth:
                     new_job = CrawlJob(
                         seed_url=link,
@@ -700,7 +736,7 @@ class WebDiscoveryEngine:
         if job.retry_count < max_retries:
             job.retry_count += 1
             # Exponential backoff: 2^retry_count seconds
-            backoff = timedelta(seconds=2 ** job.retry_count)
+            backoff = timedelta(seconds=2**job.retry_count)
             job.next_attempt_at = utc_now() + backoff
             job.status = CrawlStatus.QUEUED
             self._enqueue(job)

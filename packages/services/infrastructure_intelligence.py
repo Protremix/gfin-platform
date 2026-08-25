@@ -24,12 +24,12 @@ from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from schemas.base import utc_now, Provenance
-
+from schemas.base import Provenance, utc_now
 
 # ═══════════════════════════════════════════════
 # DNS RECORD OBSERVATION
 # ═══════════════════════════════════════════════
+
 
 class DNSRecordType(str, Enum):
     A = "A"
@@ -50,6 +50,7 @@ class DNSObservation(BaseModel):
     OBSERVATION ≠ ENTITY. This records what was observed at a point in time.
     Per Luna: TTL, first-seen/last-seen, resolver context, record status.
     """
+
     observation_id: str = Field(default_factory=lambda: f"DNS-{uuid4().hex[:8].upper()}")
     domain: str
     record_type: DNSRecordType
@@ -70,12 +71,14 @@ class DNSObservation(BaseModel):
 # IP / ASN / NETWORK
 # ═══════════════════════════════════════════════
 
+
 class IPInfo(BaseModel):
     """Information about an IP address.
 
     Per Luna: Mock ASN, network, provider fields independently from ownership claims.
     IP != owner (interpretation rule).
     """
+
     ip_address: str
     ip_version: str = "IPv4"  # IPv4 or IPv6
     asn: str = ""  # AS number (e.g., "AS12345")
@@ -98,6 +101,7 @@ class ASNInfo(BaseModel):
 
     Per Luna: ASN != criminal (interpretation rule).
     """
+
     asn: str  # e.g., "AS12345"
     organization: str = ""
     country: str = ""
@@ -112,11 +116,13 @@ class ASNInfo(BaseModel):
 # CERTIFICATE INTELLIGENCE
 # ═══════════════════════════════════════════════
 
+
 class CertificateObservation(BaseModel):
     """TLS certificate observation.
 
     Per spec: TLS certificates, Certificate Transparency observations.
     """
+
     observation_id: str = Field(default_factory=lambda: f"CRT-{uuid4().hex[:8].upper()}")
     domain: str
     fingerprint: str = ""  # SHA-256 fingerprint
@@ -141,8 +147,10 @@ class CertificateObservation(BaseModel):
 # REDIRECT CHAIN
 # ═══════════════════════════════════════════════
 
+
 class RedirectHop(BaseModel):
     """A single hop in a redirect chain."""
+
     url: str
     status_code: int = 301
     location: str = ""  # Where it redirects to
@@ -156,6 +164,7 @@ class RedirectChainObservation(BaseModel):
 
     Per spec: redirect chains.
     """
+
     observation_id: str = Field(default_factory=lambda: f"RDR-{uuid4().hex[:8].upper()}")
     start_url: str
     final_url: str
@@ -172,11 +181,13 @@ class RedirectChainObservation(BaseModel):
 # TECHNOLOGY FINGERPRINT
 # ═══════════════════════════════════════════════
 
+
 class TechnologyFingerprint(BaseModel):
     """A technology fingerprint observation.
 
     Per spec: technology fingerprints.
     """
+
     observation_id: str = Field(default_factory=lambda: f"TECH-{uuid4().hex[:8].upper()}")
     domain: str
     technologies: list[dict[str, str]] = Field(default_factory=list)  # [{name, version, category}]
@@ -193,12 +204,14 @@ class TechnologyFingerprint(BaseModel):
 # INFRASTRUCTURE RELATIONSHIP (with interpretation rules)
 # ═══════════════════════════════════════════════
 
+
 class InfraRelationType(str, Enum):
     """Typed infrastructure relationships.
 
     Per Luna: Model IP, ASN, CDN, origin, hosting, ownership as DISTINCT typed relationships.
     Prohibit automatic OWNS, OPERATES, CRIMINAL_ASSOCIATION from technical observations alone.
     """
+
     RESOLVES_TO = "resolves_to"  # Domain → IP (DNS resolution)
     ANNOUNCED_BY = "announced_by"  # IP → ASN (BGP announcement)
     HOSTED_ON = "hosted_on"  # Domain → IP (hosting)
@@ -209,7 +222,9 @@ class InfraRelationType(str, Enum):
     # Attribution edges — require evidence + analyst justification
     OWNS = "owns"  # Entity → Entity (requires evidence)
     OPERATES = "operates"  # Entity → Entity (requires evidence)
-    CRIMINAL_ASSOCIATION = "criminal_association"  # Entity → Entity (requires evidence + corroboration)
+    CRIMINAL_ASSOCIATION = (
+        "criminal_association"  # Entity → Entity (requires evidence + corroboration)
+    )
 
 
 class InfraRelationship(BaseModel):
@@ -218,6 +233,7 @@ class InfraRelationship(BaseModel):
     Per Luna: require evidence IDs, provenance, confidence, and analyst
     justification for attribution edges.
     """
+
     relationship_id: str = Field(default_factory=lambda: f"IR-{uuid4().hex[:8].upper()}")
     from_entity: str  # Entity ID or domain/IP
     to_entity: str
@@ -244,8 +260,10 @@ ATTRIBUTION_EDGES = {
 # INTERPRETATION RULE ENFORCEMENT
 # ═══════════════════════════════════════════════
 
+
 class InterpretationRuleResult(BaseModel):
     """Result of an interpretation rule check."""
+
     rule_name: str
     passed: bool
     message: str
@@ -276,72 +294,88 @@ def check_interpretation_rules(
 
     # Rule 1: IP != owner
     if relationship_type == InfraRelationType.RESOLVES_TO.value:
-        results.append(InterpretationRuleResult(
-            rule_name="IP != owner",
-            passed=True,
-            message="DNS resolution does not imply ownership",
-            qualifying_language="resolves to",
-        ))
+        results.append(
+            InterpretationRuleResult(
+                rule_name="IP != owner",
+                passed=True,
+                message="DNS resolution does not imply ownership",
+                qualifying_language="resolves to",
+            )
+        )
 
     # Rule 2: ASN != criminal
     if relationship_type == InfraRelationType.ANNOUNCED_BY.value:
-        results.append(InterpretationRuleResult(
-            rule_name="ASN != criminal",
-            passed=True,
-            message="ASN announcement does not imply criminal association",
-            qualifying_language="announced by",
-        ))
+        results.append(
+            InterpretationRuleResult(
+                rule_name="ASN != criminal",
+                passed=True,
+                message="ASN announcement does not imply criminal association",
+                qualifying_language="announced by",
+            )
+        )
 
     # Rule 3: CDN != origin
     if relationship_type == InfraRelationType.USES_CDN.value:
-        results.append(InterpretationRuleResult(
-            rule_name="CDN != origin server",
-            passed=True,
-            message="CDN usage does not identify the origin server",
-            qualifying_language="uses CDN",
-        ))
+        results.append(
+            InterpretationRuleResult(
+                rule_name="CDN != origin server",
+                passed=True,
+                message="CDN usage does not identify the origin server",
+                qualifying_language="uses CDN",
+            )
+        )
 
     # Rule 4: Shared hosting != common ownership
     if relationship_type == InfraRelationType.HOSTED_ON.value:
-        results.append(InterpretationRuleResult(
-            rule_name="Shared hosting != common ownership",
-            passed=True,
-            message="Co-hosting does not imply common ownership",
-            qualifying_language="hosted on",
-        ))
+        results.append(
+            InterpretationRuleResult(
+                rule_name="Shared hosting != common ownership",
+                passed=True,
+                message="Co-hosting does not imply common ownership",
+                qualifying_language="hosted on",
+            )
+        )
 
     # Attribution edge checks
     if relationship_type in ATTRIBUTION_EDGES:
         # Rule 5: No criminal ownership from single correlation
         if relationship_type == InfraRelationType.CRIMINAL_ASSOCIATION.value:
             if not has_multiple_correlations:
-                results.append(InterpretationRuleResult(
-                    rule_name="No criminal ownership from single correlation",
-                    passed=False,
-                    message="INSUFFICIENT_DATA: Criminal association requires multiple corroborating correlations",
-                ))
+                results.append(
+                    InterpretationRuleResult(
+                        rule_name="No criminal ownership from single correlation",
+                        passed=False,
+                        message="INSUFFICIENT_DATA: Criminal association requires multiple corroborating correlations",
+                    )
+                )
             else:
-                results.append(InterpretationRuleResult(
-                    rule_name="No criminal ownership from single correlation",
-                    passed=True,
-                    message="Multiple correlations present — criminal association may be considered with analyst review",
-                ))
+                results.append(
+                    InterpretationRuleResult(
+                        rule_name="No criminal ownership from single correlation",
+                        passed=True,
+                        message="Multiple correlations present — criminal association may be considered with analyst review",
+                    )
+                )
 
         # Evidence required for attribution
         if not evidence_id:
-            results.append(InterpretationRuleResult(
-                rule_name="Attribution requires evidence",
-                passed=False,
-                message="INSUFFICIENT_DATA: Attribution edge requires evidence reference",
-            ))
+            results.append(
+                InterpretationRuleResult(
+                    rule_name="Attribution requires evidence",
+                    passed=False,
+                    message="INSUFFICIENT_DATA: Attribution edge requires evidence reference",
+                )
+            )
 
         # Analyst justification required for attribution
         if not analyst_justification:
-            results.append(InterpretationRuleResult(
-                rule_name="Attribution requires justification",
-                passed=False,
-                message="INSUFFICIENT_DATA: Attribution edge requires analyst justification",
-            ))
+            results.append(
+                InterpretationRuleResult(
+                    rule_name="Attribution requires justification",
+                    passed=False,
+                    message="INSUFFICIENT_DATA: Attribution edge requires analyst justification",
+                )
+            )
 
     return results
 
@@ -373,6 +407,7 @@ def validate_attribution(
 # ═══════════════════════════════════════════════
 # INFRASTRUCTURE INTELLIGENCE SERVICE
 # ═══════════════════════════════════════════════
+
 
 class InfrastructureIntelligenceService:
     """Infrastructure intelligence service — Layer A (in-memory).
@@ -407,8 +442,12 @@ class InfrastructureIntelligenceService:
         self._ip_history: dict[str, list[str]] = {}
 
     def register_dns_record(
-        self, domain: str, record_type: DNSRecordType, value: str,
-        ttl: int = 3600, resolver: str = "mock-resolver",
+        self,
+        domain: str,
+        record_type: DNSRecordType,
+        value: str,
+        ttl: int = 3600,
+        resolver: str = "mock-resolver",
     ) -> DNSObservation:
         """Register a DNS observation (mock fixture)."""
         obs = DNSObservation(
@@ -457,7 +496,9 @@ class InfrastructureIntelligenceService:
         self._cert_observations[domain.lower()].append(cert)
         return cert
 
-    def register_redirect_chain(self, start_url: str, hops: list[dict], final_url: str = "") -> RedirectChainObservation:
+    def register_redirect_chain(
+        self, start_url: str, hops: list[dict], final_url: str = ""
+    ) -> RedirectChainObservation:
         """Register a redirect chain observation."""
         hop_objects = [RedirectHop(**h) for h in hops]
         if not final_url and hop_objects:
@@ -479,7 +520,9 @@ class InfrastructureIntelligenceService:
         return fp
 
     def add_relationship(
-        self, from_entity: str, to_entity: str,
+        self,
+        from_entity: str,
+        to_entity: str,
         relationship_type: InfraRelationType,
         evidence_id: str | None = None,
         analyst_justification: str = "",
@@ -492,7 +535,11 @@ class InfrastructureIntelligenceService:
         Attribution edges require evidence + justification.
         Returns (relationship, reason) — relationship is None if validation fails.
         """
-        rel_type = relationship_type.value if hasattr(relationship_type, 'value') else str(relationship_type)
+        rel_type = (
+            relationship_type.value
+            if hasattr(relationship_type, "value")
+            else str(relationship_type)
+        )
 
         # Validate attribution
         is_valid, reason = validate_attribution(
@@ -518,7 +565,12 @@ class InfrastructureIntelligenceService:
         """Get DNS observations for a domain."""
         records = self._dns_observations.get(domain.lower(), [])
         if record_type:
-            return [r for r in records if r.record_type == record_type or (hasattr(r.record_type, 'value') and r.record_type.value == record_type)]
+            return [
+                r
+                for r in records
+                if r.record_type == record_type
+                or (hasattr(r.record_type, "value") and r.record_type.value == record_type)
+            ]
         return list(records)
 
     def get_dns_history(self, domain: str) -> list[DNSObservation]:
@@ -548,7 +600,15 @@ class InfrastructureIntelligenceService:
         if entity:
             results = [r for r in results if r.from_entity == entity or r.to_entity == entity]
         if relationship_type:
-            results = [r for r in results if r.relationship_type == relationship_type or (hasattr(r.relationship_type, 'value') and r.relationship_type.value == relationship_type)]
+            results = [
+                r
+                for r in results
+                if r.relationship_type == relationship_type
+                or (
+                    hasattr(r.relationship_type, "value")
+                    and r.relationship_type.value == relationship_type
+                )
+            ]
         return list(results)
 
     def get_domain_profile(self, domain: str) -> dict[str, Any]:
@@ -558,7 +618,7 @@ class InfrastructureIntelligenceService:
         relationships, history.
         """
         domain = domain.lower()
-        profile = {
+        profile: dict[str, Any] = {
             "domain": domain,
             "dns_records": {},
             "ip_addresses": [],
@@ -588,7 +648,9 @@ class InfrastructureIntelligenceService:
                 ip_info = self._ip_info.get(obs.value)
                 if ip_info:
                     profile["ip_info"].append(ip_info)
-                    if ip_info.asn and ip_info.asn not in [a.get("asn") for a in profile["asn_info"]]:
+                    if ip_info.asn and ip_info.asn not in [
+                        a.get("asn") for a in profile["asn_info"]
+                    ]:
                         asn = self._asn_info.get(ip_info.asn)
                         if asn:
                             profile["asn_info"].append(asn)
@@ -622,7 +684,17 @@ class InfrastructureIntelligenceService:
             "total_redirect_chains": len(self._redirect_chains),
             "total_tech_fingerprints": len(self._tech_fingerprints),
             "total_relationships": len(self._relationships),
-            "attribution_edges": len([r for r in self._relationships if r.relationship_type in ATTRIBUTION_EDGES or (hasattr(r.relationship_type, 'value') and r.relationship_type.value in ATTRIBUTION_EDGES)]),
+            "attribution_edges": len(
+                [
+                    r
+                    for r in self._relationships
+                    if r.relationship_type in ATTRIBUTION_EDGES
+                    or (
+                        hasattr(r.relationship_type, "value")
+                        and r.relationship_type.value in ATTRIBUTION_EDGES
+                    )
+                ]
+            ),
         }
 
 

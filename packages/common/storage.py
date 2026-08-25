@@ -34,7 +34,9 @@ class ObjectStorage(ABC):
     """
 
     @abstractmethod
-    async def store(self, key: str, data: bytes, content_type: str = "application/octet-stream") -> StorageObject:
+    async def store(
+        self, key: str, data: bytes, content_type: str = "application/octet-stream"
+    ) -> StorageObject:
         """Store an object. Returns storage metadata including content hash."""
         ...
 
@@ -73,7 +75,9 @@ class LocalObjectStorage(ObjectStorage):
         self._base = Path(base_path)
         self._base.mkdir(parents=True, exist_ok=True)
 
-    async def store(self, key: str, data: bytes, content_type: str = "application/octet-stream") -> StorageObject:
+    async def store(
+        self, key: str, data: bytes, content_type: str = "application/octet-stream"
+    ) -> StorageObject:
         import hashlib
 
         file_path = self._base / key

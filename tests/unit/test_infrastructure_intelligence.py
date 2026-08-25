@@ -9,24 +9,17 @@ shared hosting != common ownership, no criminal ownership from single correlatio
 """
 
 import pytest
-from datetime import datetime
 
 from services.infrastructure_intelligence import (
+    DNSRecordType,
+    InfraRelationType,
     InfrastructureIntelligenceService,
-    DNSRecordType, DNSObservation,
-    IPInfo, ASNInfo,
-    CertificateObservation,
-    RedirectChainObservation, RedirectHop,
-    TechnologyFingerprint,
-    InfraRelationship, InfraRelationType,
-    InterpretationRuleResult,
-    check_interpretation_rules, validate_attribution,
-    ATTRIBUTION_EDGES,
+    check_interpretation_rules,
+    validate_attribution,
 )
-from schemas.base import utc_now
-
 
 # ─── Fixtures ───
+
 
 @pytest.fixture
 def svc():
@@ -43,15 +36,23 @@ def populated_svc(svc):
     svc.register_dns_record("evil.com", DNSRecordType.TXT, "v=spf1 -all")
     svc.register_ip_info("192.168.1.1", asn="AS12345", provider="EvilHost", is_cdn=False)
     svc.register_asn_info("AS12345", organization="EvilCorp", country="XX")
-    svc.register_certificate("evil.com", issuer="Let's Encrypt", subject="evil.com", san_domains=["www.evil.com"])
-    svc.register_redirect_chain("https://evil.com", [{"url": "https://evil.com", "status_code": 301, "location": "https://evil.com/login"}])
-    svc.register_tech_fingerprint("evil.com", technologies=[{"name": "Nginx", "version": "1.18", "category": "web-server"}])
+    svc.register_certificate(
+        "evil.com", issuer="Let's Encrypt", subject="evil.com", san_domains=["www.evil.com"]
+    )
+    svc.register_redirect_chain(
+        "https://evil.com",
+        [{"url": "https://evil.com", "status_code": 301, "location": "https://evil.com/login"}],
+    )
+    svc.register_tech_fingerprint(
+        "evil.com", technologies=[{"name": "Nginx", "version": "1.18", "category": "web-server"}]
+    )
     return svc
 
 
 # ═══════════════════════════════════════════════
 # DNS OBSERVATIONS
 # ═══════════════════════════════════════════════
+
 
 class TestDNSObservations:
     def test_register_dns_record(self, svc):
@@ -93,6 +94,7 @@ class TestDNSObservations:
 # IP / ASN INFO
 # ═══════════════════════════════════════════════
 
+
 class TestIPASN:
     def test_register_ip_info(self, svc):
         info = svc.register_ip_info("1.2.3.4", asn="AS999", provider="TestHost")
@@ -129,6 +131,7 @@ class TestIPASN:
 # CERTIFICATE OBSERVATIONS
 # ═══════════════════════════════════════════════
 
+
 class TestCertificates:
     def test_register_certificate(self, svc):
         cert = svc.register_certificate("evil.com", issuer="CA", subject="evil.com")
@@ -153,12 +156,16 @@ class TestCertificates:
 # REDIRECT CHAINS
 # ═══════════════════════════════════════════════
 
+
 class TestRedirectChains:
     def test_register_redirect_chain(self, svc):
-        chain = svc.register_redirect_chain("https://a.com", [
-            {"url": "https://a.com", "status_code": 301, "location": "https://b.com"},
-            {"url": "https://b.com", "status_code": 302, "location": "https://c.com"},
-        ])
+        chain = svc.register_redirect_chain(
+            "https://a.com",
+            [
+                {"url": "https://a.com", "status_code": 301, "location": "https://b.com"},
+                {"url": "https://b.com", "status_code": 302, "location": "https://c.com"},
+            ],
+        )
         assert chain.start_url == "https://a.com"
         assert chain.total_hops == 2
         assert chain.final_url == "https://c.com"
@@ -176,9 +183,13 @@ class TestRedirectChains:
 # TECHNOLOGY FINGERPRINTS
 # ═══════════════════════════════════════════════
 
+
 class TestTechFingerprints:
     def test_register_tech_fingerprint(self, svc):
-        fp = svc.register_tech_fingerprint("evil.com", technologies=[{"name": "Apache", "version": "2.4", "category": "web-server"}])
+        fp = svc.register_tech_fingerprint(
+            "evil.com",
+            technologies=[{"name": "Apache", "version": "2.4", "category": "web-server"}],
+        )
         assert fp.domain == "evil.com"
         assert len(fp.technologies) == 1
 
@@ -195,6 +206,7 @@ class TestTechFingerprints:
 # RELATIONSHIPS
 # ═══════════════════════════════════════════════
 
+
 class TestRelationships:
     def test_add_non_attribution_relationship(self, svc):
         rel, reason = svc.add_relationship("evil.com", "192.168.1.1", InfraRelationType.RESOLVES_TO)
@@ -207,17 +219,36 @@ class TestRelationships:
         assert "INSUFFICIENT_DATA" in reason
 
     def test_add_attribution_with_evidence_works(self, svc):
-        rel, reason = svc.add_relationship("john", "evil.com", InfraRelationType.OWNS, evidence_id="EVD-001", analyst_justification="WHOIS match")
+        rel, reason = svc.add_relationship(
+            "john",
+            "evil.com",
+            InfraRelationType.OWNS,
+            evidence_id="EVD-001",
+            analyst_justification="WHOIS match",
+        )
         assert rel is not None
         assert "created" in reason.lower()
 
     def test_criminal_association_without_correlation_fails(self, svc):
-        rel, reason = svc.add_relationship("john", "evil.com", InfraRelationType.CRIMINAL_ASSOCIATION, evidence_id="EVD-001", analyst_justification="Suspect")
+        rel, reason = svc.add_relationship(
+            "john",
+            "evil.com",
+            InfraRelationType.CRIMINAL_ASSOCIATION,
+            evidence_id="EVD-001",
+            analyst_justification="Suspect",
+        )
         assert rel is None
         assert "multiple corroborating" in reason
 
     def test_criminal_association_with_correlation_works(self, svc):
-        rel, reason = svc.add_relationship("john", "evil.com", InfraRelationType.CRIMINAL_ASSOCIATION, evidence_id="EVD-001", analyst_justification="Corroborated", has_multiple_correlations=True)
+        rel, reason = svc.add_relationship(
+            "john",
+            "evil.com",
+            InfraRelationType.CRIMINAL_ASSOCIATION,
+            evidence_id="EVD-001",
+            analyst_justification="Corroborated",
+            has_multiple_correlations=True,
+        )
         assert rel is not None
 
     def test_get_relationships_by_entity(self, svc):
@@ -236,6 +267,7 @@ class TestRelationships:
 # ═══════════════════════════════════════════════
 # INTERPRETATION RULES
 # ═══════════════════════════════════════════════
+
 
 class TestInterpretationRules:
     def test_ip_not_owner(self):
@@ -257,10 +289,20 @@ class TestInterpretationRules:
 
     def test_criminal_single_correlation_fails(self):
         rules = check_interpretation_rules("criminal_association", has_multiple_correlations=False)
-        assert any(not r.passed and "single correlation" in r.message.lower() or "multiple" in r.message.lower() for r in rules)
+        assert any(
+            not r.passed
+            and "single correlation" in r.message.lower()
+            or "multiple" in r.message.lower()
+            for r in rules
+        )
 
     def test_criminal_multi_correlation_passes(self):
-        rules = check_interpretation_rules("criminal_association", has_multiple_correlations=True, evidence_id="EVD-001", analyst_justification="ok")
+        rules = check_interpretation_rules(
+            "criminal_association",
+            has_multiple_correlations=True,
+            evidence_id="EVD-001",
+            analyst_justification="ok",
+        )
         # The criminal association check should pass
         criminal_rules = [r for r in rules if "correlation" in r.rule_name.lower()]
         assert any(r.passed for r in criminal_rules)
@@ -283,6 +325,7 @@ class TestInterpretationRules:
 # VALIDATE ATTRIBUTION
 # ═══════════════════════════════════════════════
 
+
 class TestValidateAttribution:
     def test_non_attribution_valid(self):
         valid, reason = validate_attribution("resolves_to")
@@ -294,21 +337,31 @@ class TestValidateAttribution:
         assert "INSUFFICIENT_DATA" in reason
 
     def test_attribution_with_evidence_valid(self):
-        valid, reason = validate_attribution("owns", evidence_id="EVD-001", analyst_justification="WHOIS")
+        valid, reason = validate_attribution(
+            "owns", evidence_id="EVD-001", analyst_justification="WHOIS"
+        )
         assert valid
 
     def test_criminal_without_correlation_invalid(self):
-        valid, reason = validate_attribution("criminal_association", evidence_id="EVD-001", analyst_justification="ok")
+        valid, reason = validate_attribution(
+            "criminal_association", evidence_id="EVD-001", analyst_justification="ok"
+        )
         assert not valid
 
     def test_criminal_with_correlation_valid(self):
-        valid, reason = validate_attribution("criminal_association", evidence_id="EVD-001", analyst_justification="ok", has_multiple_correlations=True)
+        valid, reason = validate_attribution(
+            "criminal_association",
+            evidence_id="EVD-001",
+            analyst_justification="ok",
+            has_multiple_correlations=True,
+        )
         assert valid
 
 
 # ═══════════════════════════════════════════════
 # DOMAIN PROFILE
 # ═══════════════════════════════════════════════
+
 
 class TestDomainProfile:
     def test_domain_profile_aggregates_all(self, populated_svc):
@@ -336,6 +389,7 @@ class TestDomainProfile:
 # METRICS
 # ═══════════════════════════════════════════════
 
+
 class TestMetrics:
     def test_empty_metrics(self, svc):
         metrics = svc.get_metrics()
@@ -355,6 +409,7 @@ class TestMetrics:
 # ═══════════════════════════════════════════════
 # SYNTHETIC DATA SAFETY
 # ═══════════════════════════════════════════════
+
 
 class TestSyntheticSafety:
     def test_dns_observations_marked_synthetic(self, svc):
@@ -387,6 +442,7 @@ class TestSyntheticSafety:
 # INTEGRATION
 # ═══════════════════════════════════════════════
 
+
 class TestIntegration:
     def test_full_infrastructure_profile(self, populated_svc):
         """Full workflow: register data, add relationships, get profile."""
@@ -396,12 +452,17 @@ class TestIntegration:
         populated_svc.add_relationship("evil.com", "192.168.1.1", InfraRelationType.HOSTED_ON)
 
         profile = populated_svc.get_domain_profile("evil.com")
-        assert len(profile["relationships"]) == 2  # resolves_to + hosted_on (announced_by is IP→ASN, not domain)
+        assert (
+            len(profile["relationships"]) == 2
+        )  # resolves_to + hosted_on (announced_by is IP→ASN, not domain)
         assert profile["dns_history_count"] == 5
 
         # Verify interpretation rules applied
         for rel in profile["relationships"]:
-            if rel.relationship_type == "resolves_to" or (hasattr(rel.relationship_type, 'value') and rel.relationship_type.value == "resolves_to"):
+            if rel.relationship_type == "resolves_to" or (
+                hasattr(rel.relationship_type, "value")
+                and rel.relationship_type.value == "resolves_to"
+            ):
                 rules = check_interpretation_rules("resolves_to")
                 assert all(r.passed for r in rules)
 
@@ -412,13 +473,18 @@ class TestIntegration:
         svc.add_relationship("1.2.3.4", "AS999", InfraRelationType.ANNOUNCED_BY)
 
         # Attempt criminal attribution without evidence
-        rel, reason = svc.add_relationship("john", "evil.com", InfraRelationType.CRIMINAL_ASSOCIATION)
+        rel, reason = svc.add_relationship(
+            "john", "evil.com", InfraRelationType.CRIMINAL_ASSOCIATION
+        )
         assert rel is None
 
         # With evidence + justification + correlations
         rel, reason = svc.add_relationship(
-            "john", "evil.com", InfraRelationType.CRIMINAL_ASSOCIATION,
-            evidence_id="EVD-001", analyst_justification="Corroborated by 3 independent reports",
+            "john",
+            "evil.com",
+            InfraRelationType.CRIMINAL_ASSOCIATION,
+            evidence_id="EVD-001",
+            analyst_justification="Corroborated by 3 independent reports",
             has_multiple_correlations=True,
         )
         assert rel is not None

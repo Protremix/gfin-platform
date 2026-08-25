@@ -12,46 +12,36 @@ Per Master Spec §8 and Module 04 acceptance criteria:
 """
 
 import pytest
-import asyncio
-from datetime import datetime, timezone
 
-from schemas.base import BaseEntity, Confidence
-from schemas.enums import EntityType
-from schemas.entities import create_entity
 from common.database import InMemoryEntityRepository
+from schemas.base import Confidence
+from schemas.entities import create_entity
 from services.entity_resolution import (
+    # Deduplication
+    EntityResolutionService,
+    MatchType,
+    # Merge/Split
+    find_duplicates,
+    match_entities,
+    merge_entities,
+    normalize_crypto_address,
+    normalize_domain,
+    normalize_email,
+    normalize_ip,
+    normalize_organization_name,
+    normalize_person_name,
     # Normalization
     normalize_phone,
-    normalize_email,
-    normalize_domain,
-    normalize_url,
-    normalize_ip,
-    normalize_crypto_address,
-    normalize_telegram,
     normalize_social_account,
-    normalize_person_name,
-    normalize_organization_name,
-    normalize_value,
-    # Matching
-    MatchType,
-    MatchResult,
-    match_entities,
-    # Deduplication
-    DeduplicationCandidate,
-    find_duplicates,
-    # Merge/Split
-    MergeRecord,
-    SplitRecord,
-    merge_entities,
+    normalize_telegram,
+    normalize_url,
     split_entity,
-    # Service
-    EntityResolutionService,
 )
-
 
 # ═══════════════════════════════════════════════
 # PHONE NORMALIZATION
 # ═══════════════════════════════════════════════
+
 
 class TestPhoneNormalization:
     """Test phone number normalization — the canonical example from the spec."""
@@ -105,6 +95,7 @@ class TestPhoneNormalization:
 # EMAIL NORMALIZATION
 # ═══════════════════════════════════════════════
 
+
 class TestEmailNormalization:
     """Test email normalization."""
 
@@ -133,6 +124,7 @@ class TestEmailNormalization:
 # ═══════════════════════════════════════════════
 # DOMAIN NORMALIZATION
 # ═══════════════════════════════════════════════
+
 
 class TestDomainNormalization:
     """Test domain normalization."""
@@ -165,6 +157,7 @@ class TestDomainNormalization:
 # ═══════════════════════════════════════════════
 # URL NORMALIZATION
 # ═══════════════════════════════════════════════
+
 
 class TestURLNormalization:
     """Test URL normalization."""
@@ -207,6 +200,7 @@ class TestURLNormalization:
 # IP NORMALIZATION
 # ═══════════════════════════════════════════════
 
+
 class TestIPNormalization:
     """Test IP address normalization."""
 
@@ -234,6 +228,7 @@ class TestIPNormalization:
 # ═══════════════════════════════════════════════
 # CRYPTO ADDRESS NORMALIZATION
 # ═══════════════════════════════════════════════
+
 
 class TestCryptoNormalization:
     """Test crypto wallet address normalization."""
@@ -271,6 +266,7 @@ class TestCryptoNormalization:
 # TELEGRAM NORMALIZATION
 # ═══════════════════════════════════════════════
 
+
 class TestTelegramNormalization:
     """Test Telegram identifier normalization."""
 
@@ -300,6 +296,7 @@ class TestTelegramNormalization:
 # SOCIAL ACCOUNT NORMALIZATION
 # ═══════════════════════════════════════════════
 
+
 class TestSocialAccountNormalization:
     """Test social account normalization."""
 
@@ -321,6 +318,7 @@ class TestSocialAccountNormalization:
 # ═══════════════════════════════════════════════
 # PERSON & ORGANIZATION NORMALIZATION
 # ═══════════════════════════════════════════════
+
 
 class TestPersonOrgNormalization:
     """Test person and organization name normalization."""
@@ -350,6 +348,7 @@ class TestPersonOrgNormalization:
 # ═══════════════════════════════════════════════
 # MATCHING
 # ═══════════════════════════════════════════════
+
 
 class TestMatching:
     """Test entity matching — exact, normalized, similar, none."""
@@ -411,6 +410,7 @@ class TestMatching:
 # ═══════════════════════════════════════════════
 # DEDUPLICATION
 # ═══════════════════════════════════════════════
+
 
 class TestDeduplication:
     """Test deduplication candidate finding."""
@@ -474,6 +474,7 @@ class TestDeduplication:
 # ═══════════════════════════════════════════════
 # MERGE / SPLIT WORKFLOWS
 # ═══════════════════════════════════════════════
+
 
 class TestMergeSplit:
     """Test entity merge and split (reverse) workflows."""
@@ -547,7 +548,9 @@ class TestMergeSplit:
         """Merge record should have audit metadata."""
         repo, p1, p2 = repo_with_pair
 
-        merge_record = await merge_entities(repo, p1.id, p2.id, merged_by="USR-1", confidence=Confidence.HIGH)
+        merge_record = await merge_entities(
+            repo, p1.id, p2.id, merged_by="USR-1", confidence=Confidence.HIGH
+        )
         assert merge_record.merge_id.startswith("MRG-")
         assert merge_record.merged_by == "USR-1"
         assert merge_record.confidence == Confidence.HIGH
@@ -564,7 +567,9 @@ class TestMergeSplit:
         assert merged.audit.is_deleted is True
 
         # Split
-        split_record = await split_entity(repo, merge_record, split_by="USR-2", reason="False merge")
+        split_record = await split_entity(
+            repo, merge_record, split_by="USR-2", reason="False merge"
+        )
         assert split_record.split_id.startswith("SPL-")
         assert split_record.merge_id == merge_record.merge_id
         assert split_record.split_by == "USR-2"
@@ -594,6 +599,7 @@ class TestMergeSplit:
 # RESOLUTION SERVICE (END-TO-END)
 # ═══════════════════════════════════════════════
 
+
 class TestResolutionService:
     """Test the top-level EntityResolutionService."""
 
@@ -604,7 +610,9 @@ class TestResolutionService:
 
     async def test_resolve_or_create_new_entity(self, service):
         """First call creates a new entity."""
-        entity, was_created = await service.resolve_or_create("PHONE", "+34 612 345 678", e164="+34612345678")
+        entity, was_created = await service.resolve_or_create(
+            "PHONE", "+34 612 345 678", e164="+34612345678"
+        )
         assert was_created is True
         assert entity.normalized_value == "+34612345678"
         assert "+34 612 345 678" in entity.raw_values
@@ -612,11 +620,15 @@ class TestResolutionService:
     async def test_resolve_or_create_existing(self, service):
         """Second call with different raw form finds existing entity."""
         # First create
-        entity1, created1 = await service.resolve_or_create("PHONE", "+34 612 345 678", e164="+34612345678")
+        entity1, created1 = await service.resolve_or_create(
+            "PHONE", "+34 612 345 678", e164="+34612345678"
+        )
         assert created1 is True
 
         # Now resolve with different raw format
-        entity2, created2 = await service.resolve_or_create("PHONE", "0034 612 345 678", e164="+34612345678")
+        entity2, created2 = await service.resolve_or_create(
+            "PHONE", "0034 612 345 678", e164="+34612345678"
+        )
         assert created2 is False
         assert entity2.id == entity1.id  # Same entity
         # Both raw values should be stored
@@ -624,17 +636,23 @@ class TestResolutionService:
         assert "0034 612 345 678" in entity2.raw_values
 
     async def test_resolve_email(self, service):
-        entity, created = await service.resolve_or_create("EMAIL", "User@Example.COM", email="user@example.com")
+        entity, created = await service.resolve_or_create(
+            "EMAIL", "User@Example.COM", email="user@example.com"
+        )
         assert created is True
         assert entity.normalized_value == "user@example.com"
 
     async def test_resolve_domain(self, service):
-        entity, created = await service.resolve_or_create("DOMAIN", "Example.COM", domain="example.com")
+        entity, created = await service.resolve_or_create(
+            "DOMAIN", "Example.COM", domain="example.com"
+        )
         assert created is True
         assert entity.normalized_value == "example.com"
 
     async def test_resolve_url(self, service):
-        entity, created = await service.resolve_or_create("URL", "https://example.com/path", url="https://example.com/path")
+        entity, created = await service.resolve_or_create(
+            "URL", "https://example.com/path", url="https://example.com/path"
+        )
         assert created is True
 
     async def test_resolve_ip(self, service):
@@ -643,7 +661,9 @@ class TestResolutionService:
         assert entity.normalized_value == "192.168.1.1"
 
     async def test_resolve_telegram(self, service):
-        entity, created = await service.resolve_or_create("TELEGRAM_IDENTIFIER", "@someuser", username="someuser")
+        entity, created = await service.resolve_or_create(
+            "TELEGRAM_IDENTIFIER", "@someuser", username="someuser"
+        )
         assert created is True
         assert entity.normalized_value == "someuser"
 
@@ -687,7 +707,9 @@ class TestResolutionService:
         await service.repository.create(p2)
 
         # Merge
-        merge_record = await service.merge(p1.id, p2.id, merged_by="USR-1", confidence=Confidence.HIGH)
+        merge_record = await service.merge(
+            p1.id, p2.id, merged_by="USR-1", confidence=Confidence.HIGH
+        )
         assert merge_record.primary_entity_id == p1.id
 
         # Verify
@@ -707,6 +729,7 @@ class TestResolutionService:
 # ═══════════════════════════════════════════════
 # NEGATIVE TESTS (FAIL-SAFE)
 # ═══════════════════════════════════════════════
+
 
 class TestNegativeFailSafe:
     """Test that entity resolution fails safely — no unsafe false merges."""

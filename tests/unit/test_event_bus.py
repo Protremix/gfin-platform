@@ -20,42 +20,35 @@ Test categories:
 """
 
 import pytest
-import asyncio
-from datetime import datetime, timezone
 
 from common.event_bus import (
     # Topic definitions
     KAFKA_TOPICS,
-    TopicDefinition,
-    get_topic_definition,
-    list_topics,
-    # Event envelope
-    Event,
-    ClassificationLevel,
     # Schema validation
     SCHEMA_REGISTRY,
-    EventSchema,
-    register_schema,
-    validate_event,
+    ClassificationLevel,
     # DLQ
-    DLQEntry,
-    # Retry
-    RetryPolicy,
+    Event,
     # Bus
-    EventBus,
-    InMemoryEventBus,
+    EventConsumer,
     # Adapters
     EventProducer,
-    EventConsumer,
+    InMemoryEventBus,
+    # Retry
+    RetryPolicy,
+    TopicDefinition,
     # Factory
     create_event_bus,
+    get_topic_definition,
+    list_topics,
+    register_schema,
+    validate_event,
 )
-from schemas.base import utc_now
-
 
 # ═══════════════════════════════════════════════
 # KAFKA TOPIC DEFINITIONS
 # ═══════════════════════════════════════════════
+
 
 class TestTopicDefinitions:
     """Test Kafka topic definitions — 14 topics per Master Spec §9."""
@@ -67,11 +60,20 @@ class TestTopicDefinitions:
     def test_all_specified_topics_present(self):
         """All 14 topics from the spec must be present."""
         expected = [
-            "entity.created", "entity.updated", "observation.created",
-            "relationship.created", "evidence.created", "report.created",
-            "campaign.created", "campaign.updated", "infrastructure.changed",
-            "risk.changed", "alert.created", "police.match",
-            "police.request", "audit.event",
+            "entity.created",
+            "entity.updated",
+            "observation.created",
+            "relationship.created",
+            "evidence.created",
+            "report.created",
+            "campaign.created",
+            "campaign.updated",
+            "infrastructure.changed",
+            "risk.changed",
+            "alert.created",
+            "police.match",
+            "police.request",
+            "audit.event",
         ]
         for topic in expected:
             assert topic in KAFKA_TOPICS, f"Missing topic: {topic}"
@@ -122,6 +124,7 @@ class TestTopicDefinitions:
 # ═══════════════════════════════════════════════
 # EVENT ENVELOPE
 # ═══════════════════════════════════════════════
+
 
 class TestEventEnvelope:
     """Test the canonical event envelope per Master Spec §9."""
@@ -184,6 +187,7 @@ class TestEventEnvelope:
 # SCHEMA VALIDATION
 # ═══════════════════════════════════════════════
 
+
 class TestSchemaValidation:
     """Test event schema validation."""
 
@@ -192,7 +196,11 @@ class TestSchemaValidation:
         event = Event(
             event_type="entity.created",
             source="test",
-            payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"},
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
         )
         is_valid, error = validate_event(event)
         assert is_valid
@@ -233,6 +241,7 @@ class TestSchemaValidation:
 # PUB/SUB
 # ═══════════════════════════════════════════════
 
+
 class TestPubSub:
     """Test publish/subscribe functionality."""
 
@@ -247,8 +256,16 @@ class TestPubSub:
         async def handler(event):
             received.append(event)
 
-        sub_id = await bus.subscribe("entity.created", handler)
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        await bus.subscribe("entity.created", handler)
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         assert len(received) == 1
@@ -262,7 +279,15 @@ class TestPubSub:
             received.append(event)
 
         await bus.subscribe("entity.created", handler)
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         assert len(received) == 1
@@ -281,7 +306,15 @@ class TestPubSub:
         await bus.subscribe("entity.created", handler_a)
         await bus.subscribe("entity.created", handler_b)
 
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         assert len(received_a) == 1
@@ -297,14 +330,30 @@ class TestPubSub:
         sub_id = await bus.subscribe("entity.created", handler)
         await bus.unsubscribe(sub_id)
 
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         assert len(received) == 0
 
     async def test_no_subscribers_no_error(self, bus):
         """Publishing to a topic with no subscribers should not error."""
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)  # Should not raise
 
     async def test_invalid_event_rejected(self, bus):
@@ -327,6 +376,7 @@ class TestPubSub:
 # ═══════════════════════════════════════════════
 # RETRY LOGIC
 # ═══════════════════════════════════════════════
+
 
 class TestRetryLogic:
     """Test retry with max attempts and exponential backoff."""
@@ -365,7 +415,15 @@ class TestRetryLogic:
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=3, initial_delay_ms=1))
         await bus.subscribe("entity.created", failing_handler)
 
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         assert call_count == 3  # Retried 3 times
@@ -383,7 +441,15 @@ class TestRetryLogic:
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=3, initial_delay_ms=1))
         await bus.subscribe("entity.created", flaky_handler)
 
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         assert call_count == 2  # Succeeded on second attempt
@@ -395,18 +461,28 @@ class TestRetryLogic:
 # DEAD-LETTER QUEUE
 # ═══════════════════════════════════════════════
 
+
 class TestDeadLetterQueue:
     """Test dead-letter queue functionality."""
 
     async def test_failed_event_goes_to_dlq(self):
         """Events that fail all retry attempts should go to DLQ."""
+
         async def always_fails(event):
             raise RuntimeError("Always fails")
 
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=2, initial_delay_ms=1))
         await bus.subscribe("entity.created", always_fails)
 
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         dlq = await bus.get_dlq_entries()
@@ -417,6 +493,7 @@ class TestDeadLetterQueue:
 
     async def test_dlq_filtered_by_topic(self):
         """DLQ entries should be filterable by topic."""
+
         async def fails(event):
             raise RuntimeError("fail")
 
@@ -424,8 +501,24 @@ class TestDeadLetterQueue:
         await bus.subscribe("entity.created", fails)
         await bus.subscribe("entity.updated", fails)
 
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
-        await bus.publish(Event(event_type="entity.updated", source="test", payload={"entity_id": "ENT-001", "change_type": "merge"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
+        await bus.publish(
+            Event(
+                event_type="entity.updated",
+                source="test",
+                payload={"entity_id": "ENT-001", "change_type": "merge"},
+            )
+        )
 
         all_dlq = await bus.get_dlq_entries()
         assert len(all_dlq) == 2
@@ -436,13 +529,24 @@ class TestDeadLetterQueue:
 
     async def test_dlq_entry_has_timestamps(self):
         """DLQ entries should have first and last attempt timestamps."""
+
         async def fails(event):
             raise RuntimeError("fail")
 
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=2, initial_delay_ms=1))
         await bus.subscribe("entity.created", fails)
 
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         dlq = await bus.get_dlq_entries()
         assert dlq[0].first_attempt_at is not None
@@ -451,13 +555,24 @@ class TestDeadLetterQueue:
 
     async def test_dlq_entry_has_traceback(self):
         """DLQ entries should capture the traceback."""
+
         async def fails(event):
             raise RuntimeError("specific error")
 
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=1, initial_delay_ms=1))
         await bus.subscribe("entity.created", fails)
 
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         dlq = await bus.get_dlq_entries()
         assert dlq[0].traceback is not None
@@ -465,17 +580,27 @@ class TestDeadLetterQueue:
 
     async def test_replay_dlq_entry_success(self):
         """Replaying a DLQ entry with a working handler should succeed."""
+
         async def fails(event):
             raise RuntimeError("fail")
 
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=1, initial_delay_ms=1))
         await bus.subscribe("entity.created", fails)
 
-        event = Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"})
+        event = Event(
+            event_type="entity.created",
+            source="test",
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
+        )
         await bus.publish(event)
 
         # Replace handler with one that succeeds
         received = []
+
         async def succeeds(event):
             received.append(event)
 
@@ -501,13 +626,24 @@ class TestDeadLetterQueue:
 
     async def test_dlq_entry_id_format(self):
         """DLQ entry IDs should follow DLQ-XXX format."""
+
         async def fails(event):
             raise RuntimeError("fail")
 
         bus = InMemoryEventBus(retry_policy=RetryPolicy(max_attempts=1, initial_delay_ms=1))
         await bus.subscribe("entity.created", fails)
 
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         dlq = await bus.get_dlq_entries()
         assert dlq[0].dlq_id.startswith("DLQ-")
@@ -516,6 +652,7 @@ class TestDeadLetterQueue:
 # ═══════════════════════════════════════════════
 # PRODUCER / CONSUMER ADAPTERS
 # ═══════════════════════════════════════════════
+
 
 class TestProducerConsumer:
     """Test producer and consumer adapters."""
@@ -526,6 +663,7 @@ class TestProducerConsumer:
         producer = EventProducer(bus, source="entity-resolution")
 
         received = []
+
         async def handler(event):
             received.append(event)
 
@@ -533,7 +671,11 @@ class TestProducerConsumer:
 
         event = await producer.publish(
             "entity.created",
-            payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"},
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
             entity_refs=["ENT-001"],
         )
 
@@ -548,6 +690,7 @@ class TestProducerConsumer:
         producer = EventProducer(bus, source="evidence-engine")
 
         received = []
+
         async def handler(event):
             received.append(event)
 
@@ -555,7 +698,12 @@ class TestProducerConsumer:
 
         event = await producer.publish(
             "evidence.created",
-            payload={"evidence_id": "EV-001", "entity_id": "ENT-001", "evidence_type": "screenshot", "source": "crawler"},
+            payload={
+                "evidence_id": "EV-001",
+                "entity_id": "ENT-001",
+                "evidence_type": "screenshot",
+                "source": "crawler",
+            },
             classification=ClassificationLevel.CONFIDENTIAL,
         )
 
@@ -567,15 +715,36 @@ class TestProducerConsumer:
         consumer = EventConsumer(bus)
 
         received = []
+
         async def handler(event):
             received.append(event)
 
         await consumer.subscribe("entity.created", handler)
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
         assert len(received) == 1
 
         await consumer.unsubscribe("entity.created")
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-002", "entity_type": "EMAIL", "normalized_value": "test@example.com"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-002",
+                    "entity_type": "EMAIL",
+                    "normalized_value": "test@example.com",
+                },
+            )
+        )
         assert len(received) == 1  # No new events received
 
     async def test_consumer_unsubscribe_all(self):
@@ -584,6 +753,7 @@ class TestProducerConsumer:
         consumer = EventConsumer(bus)
 
         received = []
+
         async def handler(event):
             received.append(event)
 
@@ -591,8 +761,24 @@ class TestProducerConsumer:
         await consumer.subscribe("entity.updated", handler)
         await consumer.unsubscribe_all()
 
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
-        await bus.publish(Event(event_type="entity.updated", source="test", payload={"entity_id": "ENT-001", "change_type": "merge"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
+        await bus.publish(
+            Event(
+                event_type="entity.updated",
+                source="test",
+                payload={"entity_id": "ENT-001", "change_type": "merge"},
+            )
+        )
 
         assert len(received) == 0
 
@@ -601,14 +787,31 @@ class TestProducerConsumer:
 # METRICS
 # ═══════════════════════════════════════════════
 
+
 class TestMetrics:
     """Test event bus metrics collection."""
 
     async def test_metrics_published(self):
         """Metrics should track published events."""
         bus = InMemoryEventBus()
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
-        await bus.publish(Event(event_type="entity.updated", source="test", payload={"entity_id": "ENT-001", "change_type": "merge"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
+        await bus.publish(
+            Event(
+                event_type="entity.updated",
+                source="test",
+                payload={"entity_id": "ENT-001", "change_type": "merge"},
+            )
+        )
 
         metrics = await bus.get_metrics()
         assert metrics["published"] == 2
@@ -621,7 +824,17 @@ class TestMetrics:
             pass
 
         await bus.subscribe("entity.created", handler)
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         metrics = await bus.get_metrics()
         assert metrics["consumed"] == 1
@@ -634,7 +847,17 @@ class TestMetrics:
             raise RuntimeError("fail")
 
         await bus.subscribe("entity.created", fails)
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         metrics = await bus.get_metrics()
         assert metrics["failed"] == 1
@@ -648,7 +871,17 @@ class TestMetrics:
             raise RuntimeError("fail")
 
         await bus.subscribe("entity.created", fails)
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         # Fix handler and replay
         async def succeeds(event):
@@ -668,14 +901,31 @@ class TestMetrics:
 # EVENT HISTORY
 # ═══════════════════════════════════════════════
 
+
 class TestEventHistory:
     """Test event history for testing/debugging."""
 
     async def test_event_history_records_all(self):
         """All published events should be recorded in history."""
         bus = InMemoryEventBus()
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
-        await bus.publish(Event(event_type="entity.updated", source="test", payload={"entity_id": "ENT-001", "change_type": "merge"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
+        await bus.publish(
+            Event(
+                event_type="entity.updated",
+                source="test",
+                payload={"entity_id": "ENT-001", "change_type": "merge"},
+            )
+        )
 
         history = bus.get_event_history()
         assert len(history) == 2
@@ -689,6 +939,7 @@ class TestEventHistory:
 # ═══════════════════════════════════════════════
 # FACTORY
 # ═══════════════════════════════════════════════
+
 
 class TestFactory:
     """Test event bus factory."""
@@ -713,6 +964,7 @@ class TestFactory:
 # INTEGRATION (end-to-end)
 # ═══════════════════════════════════════════════
 
+
 class TestIntegration:
     """End-to-end integration tests."""
 
@@ -722,6 +974,7 @@ class TestIntegration:
         producer = EventProducer(bus, source="entity-resolution")
 
         events_received = []
+
         async def handler(event):
             events_received.append(event)
 
@@ -732,7 +985,11 @@ class TestIntegration:
         # Create entity
         await producer.publish(
             "entity.created",
-            payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"},
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
             entity_refs=["ENT-001"],
         )
 
@@ -763,10 +1020,11 @@ class TestIntegration:
         # Service 2: Evidence Engine
         evidence_producer = EventProducer(bus, source="evidence-engine")
         # Service 3: Risk Engine
-        risk_producer = EventProducer(bus, source="risk-engine")
+        EventProducer(bus, source="risk-engine")
 
         # Risk engine listens for evidence
         risk_received = []
+
         async def risk_handler(event):
             risk_received.append(event)
 
@@ -775,13 +1033,22 @@ class TestIntegration:
         # Entity resolution creates entity
         await resolution_producer.publish(
             "entity.created",
-            payload={"entity_id": "ENT-001", "entity_type": "DOMAIN", "normalized_value": "evil.com"},
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "DOMAIN",
+                "normalized_value": "evil.com",
+            },
         )
 
         # Evidence engine records evidence
         await evidence_producer.publish(
             "evidence.created",
-            payload={"evidence_id": "EV-001", "entity_id": "ENT-001", "evidence_type": "screenshot", "source": "crawler"},
+            payload={
+                "evidence_id": "EV-001",
+                "entity_id": "ENT-001",
+                "evidence_type": "screenshot",
+                "source": "crawler",
+            },
             classification=ClassificationLevel.CONFIDENTIAL,
         )
 
@@ -803,7 +1070,11 @@ class TestIntegration:
         event = Event(
             event_type="observation.created",
             source="crawler",
-            payload={"observation_id": "OBS-001", "entity_id": "ENT-001", "observation_type": "dns_lookup"},
+            payload={
+                "observation_id": "OBS-001",
+                "entity_id": "ENT-001",
+                "observation_type": "dns_lookup",
+            },
         )
         await bus.publish(event)
 
@@ -815,6 +1086,7 @@ class TestIntegration:
         # Replace handler with one that works
         await bus.unsubscribe(sub_id)
         received = []
+
         async def working_handler(event):
             received.append(event)
 
@@ -839,6 +1111,7 @@ class TestIntegration:
 # ═══════════════════════════════════════════════
 # NEGATIVE / FAIL-SAFE TESTS
 # ═══════════════════════════════════════════════
+
 
 class TestNegativeFailSafe:
     """Test fail-safe behavior."""
@@ -875,16 +1148,37 @@ class TestNegativeFailSafe:
         await bus.subscribe("entity.created", crash_handler)
 
         # This should not raise
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
 
         # Bus should still be functional
         received = []
+
         async def good_handler(event):
             received.append(event)
 
         await bus.unsubscribe(next(iter(bus._subscribers.get("entity.created", {}))))
         await bus.subscribe("entity.created", good_handler)
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-002", "entity_type": "EMAIL", "normalized_value": "test@example.com"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-002",
+                    "entity_type": "EMAIL",
+                    "normalized_value": "test@example.com",
+                },
+            )
+        )
         assert len(received) == 1
 
     async def test_empty_topic_name_rejected(self):

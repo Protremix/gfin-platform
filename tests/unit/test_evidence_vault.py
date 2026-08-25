@@ -20,22 +20,19 @@ Test categories:
 10. Negative/fail-safe tests
 """
 
+from datetime import timedelta
+
 import pytest
-from datetime import datetime, timedelta
 
-from services.evidence_vault import (
-    EvidenceVault,
-    StoredEvidence,
-    CustodyAction,
-    CustodyEvent,
-    ProcessingEntry,
-    VerificationResult,
-)
 from schemas.base import BaseEvidence, Classification, Provenance, utc_now
-from schemas.enums import DataClassification, Confidence
-
+from schemas.enums import Confidence, DataClassification
+from services.evidence_vault import (
+    CustodyAction,
+    EvidenceVault,
+)
 
 # ─── Fixtures ───
+
 
 @pytest.fixture
 def vault():
@@ -76,6 +73,7 @@ def sample_content():
 # EVIDENCE CREATION
 # ═══════════════════════════════════════════════
 
+
 class TestEvidenceCreation:
     """Test evidence creation and ingestion."""
 
@@ -108,6 +106,7 @@ class TestEvidenceCreation:
     def test_create_with_preset_hash(self, vault, sample_content):
         """Creating evidence with a preset hash should verify it matches."""
         import hashlib
+
         expected_hash = hashlib.sha256(sample_content).hexdigest()
         evidence = BaseEvidence(
             source_id="SRC-001",
@@ -149,6 +148,7 @@ class TestEvidenceCreation:
 # ═══════════════════════════════════════════════
 # CONTENT HASH VERIFICATION
 # ═══════════════════════════════════════════════
+
 
 class TestHashVerification:
     """Test content hash verification for integrity."""
@@ -204,6 +204,7 @@ class TestHashVerification:
 # CHAIN OF CUSTODY
 # ═══════════════════════════════════════════════
 
+
 class TestChainOfCustody:
     """Test chain of custody tracking."""
 
@@ -240,7 +241,9 @@ class TestChainOfCustody:
     def test_transfer_custody(self, vault, sample_evidence, sample_content):
         """Transferring evidence should record a TRANSFERRED event."""
         stored = vault.create(sample_evidence, sample_content)
-        event = vault.transfer(stored.evidence.id, "new_custodian", by_actor="admin", reason="Reassignment")
+        event = vault.transfer(
+            stored.evidence.id, "new_custodian", by_actor="admin", reason="Reassignment"
+        )
 
         assert event.action == CustodyAction.TRANSFERRED
         assert "new_custodian" in event.reason
@@ -287,6 +290,7 @@ class TestChainOfCustody:
 # ═══════════════════════════════════════════════
 # PROCESSING HISTORY
 # ═══════════════════════════════════════════════
+
 
 class TestProcessingHistory:
     """Test append-only processing history."""
@@ -341,6 +345,7 @@ class TestProcessingHistory:
 # ACCESS CONTROL
 # ═══════════════════════════════════════════════
 
+
 class TestAccessControl:
     """Test access control based on classification levels."""
 
@@ -354,7 +359,9 @@ class TestAccessControl:
         )
         stored = vault.create(evidence, b"content")
 
-        can_access, reason = vault.check_access(stored.evidence.id, "user1", DataClassification.PUBLIC)
+        can_access, reason = vault.check_access(
+            stored.evidence.id, "user1", DataClassification.PUBLIC
+        )
         assert can_access
 
     def test_restricted_requires_higher_level(self, vault):
@@ -367,7 +374,9 @@ class TestAccessControl:
         )
         stored = vault.create(evidence, b"content")
 
-        can_access, reason = vault.check_access(stored.evidence.id, "user1", DataClassification.PUBLIC)
+        can_access, reason = vault.check_access(
+            stored.evidence.id, "user1", DataClassification.PUBLIC
+        )
         assert not can_access
         assert "Insufficient classification" in reason
 
@@ -381,7 +390,9 @@ class TestAccessControl:
         )
         stored = vault.create(evidence, b"content")
 
-        can_access, reason = vault.check_access(stored.evidence.id, "user1", DataClassification.RESTRICTED)
+        can_access, reason = vault.check_access(
+            stored.evidence.id, "user1", DataClassification.RESTRICTED
+        )
         assert can_access
 
     def test_law_enforcement_requires_le(self, vault):
@@ -394,10 +405,14 @@ class TestAccessControl:
         )
         stored = vault.create(evidence, b"content")
 
-        can_access, _ = vault.check_access(stored.evidence.id, "user1", DataClassification.RESTRICTED)
+        can_access, _ = vault.check_access(
+            stored.evidence.id, "user1", DataClassification.RESTRICTED
+        )
         assert not can_access
 
-        can_access, _ = vault.check_access(stored.evidence.id, "user1", DataClassification.LAW_ENFORCEMENT)
+        can_access, _ = vault.check_access(
+            stored.evidence.id, "user1", DataClassification.LAW_ENFORCEMENT
+        )
         assert can_access
 
     def test_access_policy_restricted(self, vault):
@@ -413,7 +428,9 @@ class TestAccessControl:
 
         # COMMUNITY user with RESTRICTED classification — should still pass classification
         # but access_policy=RESTRICTED should block if level < 2
-        can_access, _ = vault.check_access(stored.evidence.id, "user1", DataClassification.COMMUNITY)
+        can_access, _ = vault.check_access(
+            stored.evidence.id, "user1", DataClassification.COMMUNITY
+        )
         assert not can_access
 
     def test_access_nonexistent_evidence(self, vault):
@@ -426,6 +443,7 @@ class TestAccessControl:
 # ═══════════════════════════════════════════════
 # RETENTION POLICY
 # ═══════════════════════════════════════════════
+
 
 class TestRetentionPolicy:
     """Test retention policy checking."""
@@ -509,21 +527,30 @@ class TestRetentionPolicy:
 # LISTING AND FILTERING
 # ═══════════════════════════════════════════════
 
+
 class TestListing:
     """Test evidence listing and filtering."""
 
     def test_list_all(self, vault):
         """Should list all evidence."""
-        vault.create(BaseEvidence(source_id="SRC-001", content_type="image", content_hash=""), b"img1")
-        vault.create(BaseEvidence(source_id="SRC-002", content_type="document", content_hash=""), b"doc1")
+        vault.create(
+            BaseEvidence(source_id="SRC-001", content_type="image", content_hash=""), b"img1"
+        )
+        vault.create(
+            BaseEvidence(source_id="SRC-002", content_type="document", content_hash=""), b"doc1"
+        )
 
         results = vault.list()
         assert len(results) == 2
 
     def test_filter_by_source(self, vault):
         """Should filter by source_id."""
-        vault.create(BaseEvidence(source_id="SRC-001", content_type="image", content_hash=""), b"img1")
-        vault.create(BaseEvidence(source_id="SRC-002", content_type="image", content_hash=""), b"img2")
+        vault.create(
+            BaseEvidence(source_id="SRC-001", content_type="image", content_hash=""), b"img1"
+        )
+        vault.create(
+            BaseEvidence(source_id="SRC-002", content_type="image", content_hash=""), b"img2"
+        )
 
         results = vault.list(source_id="SRC-001")
         assert len(results) == 1
@@ -531,8 +558,12 @@ class TestListing:
 
     def test_filter_by_content_type(self, vault):
         """Should filter by content type."""
-        vault.create(BaseEvidence(source_id="SRC-001", content_type="image", content_hash=""), b"img1")
-        vault.create(BaseEvidence(source_id="SRC-001", content_type="document", content_hash=""), b"doc1")
+        vault.create(
+            BaseEvidence(source_id="SRC-001", content_type="image", content_hash=""), b"img1"
+        )
+        vault.create(
+            BaseEvidence(source_id="SRC-001", content_type="document", content_hash=""), b"doc1"
+        )
 
         results = vault.list(content_type="image")
         assert len(results) == 1
@@ -542,14 +573,18 @@ class TestListing:
         """Should filter by classification."""
         vault.create(
             BaseEvidence(
-                source_id="SRC-001", content_type="image", content_hash="",
+                source_id="SRC-001",
+                content_type="image",
+                content_hash="",
                 classification=Classification(classification=DataClassification.PUBLIC),
             ),
             b"img1",
         )
         vault.create(
             BaseEvidence(
-                source_id="SRC-001", content_type="image", content_hash="",
+                source_id="SRC-001",
+                content_type="image",
+                content_hash="",
                 classification=Classification(classification=DataClassification.RESTRICTED),
             ),
             b"img2",
@@ -566,6 +601,7 @@ class TestListing:
 # ═══════════════════════════════════════════════
 # METRICS
 # ═══════════════════════════════════════════════
+
 
 class TestMetrics:
     """Test vault metrics."""
@@ -590,7 +626,9 @@ class TestMetrics:
         """Metrics should count by content type."""
         vault.create(BaseEvidence(source_id="S1", content_type="image", content_hash=""), b"img1")
         vault.create(BaseEvidence(source_id="S1", content_type="image", content_hash=""), b"img2")
-        vault.create(BaseEvidence(source_id="S1", content_type="document", content_hash=""), b"doc1")
+        vault.create(
+            BaseEvidence(source_id="S1", content_type="document", content_hash=""), b"doc1"
+        )
 
         metrics = vault.get_metrics()
         assert metrics["by_content_type"]["image"] == 2
@@ -600,6 +638,7 @@ class TestMetrics:
 # ═══════════════════════════════════════════════
 # INTEGRATION
 # ═══════════════════════════════════════════════
+
 
 class TestIntegration:
     """Integration tests for end-to-end workflows."""
@@ -615,7 +654,9 @@ class TestIntegration:
         assert result.is_valid
 
         # Add processing
-        vault.add_processing_entry(eid, operation="ocr_extracted", actor="ocr_engine", details="Text extracted")
+        vault.add_processing_entry(
+            eid, operation="ocr_extracted", actor="ocr_engine", details="Text extracted"
+        )
 
         # Transfer custody
         vault.transfer(eid, "detective_2", by_actor="supervisor", reason="Case reassignment")
@@ -665,7 +706,9 @@ class TestIntegration:
                 content_type="screenshot",
                 content_hash="",
                 classification=Classification(
-                    classification=DataClassification.PUBLIC if i % 2 == 0 else DataClassification.RESTRICTED
+                    classification=DataClassification.PUBLIC
+                    if i % 2 == 0
+                    else DataClassification.RESTRICTED
                 ),
             )
             vault.create(evidence, f"content-{i}".encode())
@@ -681,6 +724,7 @@ class TestIntegration:
 # ═══════════════════════════════════════════════
 # NEGATIVE / FAIL-SAFE TESTS
 # ═══════════════════════════════════════════════
+
 
 class TestNegativeFailSafe:
     """Test fail-safe behavior."""

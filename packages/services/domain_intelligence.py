@@ -18,23 +18,22 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any
-from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
-from schemas.base import utc_now, Provenance
+from schemas.base import utc_now
 from services.infrastructure_intelligence import (
-    InfrastructureIntelligenceService,
-    DNSRecordType, DNSObservation,
-    IPInfo, ASNInfo,
+    ASNInfo,
     CertificateObservation,
-    InfraRelationship, InfraRelationType,
+    InfraRelationship,
+    InfrastructureIntelligenceService,
+    IPInfo,
 )
-
 
 # ═══════════════════════════════════════════════
 # DOMAIN PROFILE (§14)
 # ═══════════════════════════════════════════════
+
 
 class RDAPInfo(BaseModel):
     """RDAP/WHOIS registration information.
@@ -44,6 +43,7 @@ class RDAPInfo(BaseModel):
 
     Layer A: Mock data marked synthetic. Layer B: Live RDAP/WHOIS (REQUIRES EXTERNAL INFRASTRUCTURE).
     """
+
     domain: str
     registrar: str = ""
     creation_date: datetime | None = None
@@ -67,6 +67,7 @@ class DomainProfile(BaseModel):
     DNS, historical observations, certificates, related domains, infrastructure
     clusters, fraud reports, campaigns, first/last seen.
     """
+
     domain: str
     rdap_info: RDAPInfo | None = None
     dns_records: dict[str, list[str]] = Field(default_factory=dict)  # type → values
@@ -105,9 +106,14 @@ class DomainIntelligenceService:
         self._campaign_links: dict[str, list[str]] = {}  # domain → [campaign_ids]
 
     def register_rdap_info(
-        self, domain: str, registrar: str = "", creation_date: datetime | None = None,
-        nameservers: list[str] | None = None, status: list[str] | None = None,
-        is_public_data: bool = True, legal_basis: str = "",
+        self,
+        domain: str,
+        registrar: str = "",
+        creation_date: datetime | None = None,
+        nameservers: list[str] | None = None,
+        status: list[str] | None = None,
+        is_public_data: bool = True,
+        legal_basis: str = "",
     ) -> RDAPInfo:
         """Register RDAP/WHOIS info (mock fixture).
 
@@ -131,7 +137,9 @@ class DomainIntelligenceService:
         # Track first/last seen
         now = utc_now()
         d = domain.lower()
-        if d not in self._domain_first_seen or (creation_date and creation_date < self._domain_first_seen[d]):
+        if d not in self._domain_first_seen or (
+            creation_date and creation_date < self._domain_first_seen[d]
+        ):
             self._domain_first_seen[d] = creation_date or now
         self._domain_last_seen[d] = now
 
@@ -214,6 +222,7 @@ class DomainIntelligenceService:
 # CERTIFICATE INTELLIGENCE (§15)
 # ═══════════════════════════════════════════════
 
+
 class CertificateIntelligenceService:
     """Certificate intelligence service — Layer A.
 
@@ -223,12 +232,17 @@ class CertificateIntelligenceService:
 
     def __init__(self, infra_service: InfrastructureIntelligenceService | None = None) -> None:
         self._infra = infra_service or InfrastructureIntelligenceService()
-        self._cert_timeline: dict[str, list[CertificateObservation]] = {}  # domain → chronological certs
+        self._cert_timeline: dict[
+            str, list[CertificateObservation]
+        ] = {}  # domain → chronological certs
         self._newly_observed_domains: list[dict[str, Any]] = []
         self._san_index: dict[str, list[str]] = {}  # SAN domain → [certificate domains]
 
     def register_certificate(
-        self, domain: str, issuer: str = "", subject: str = "",
+        self,
+        domain: str,
+        issuer: str = "",
+        subject: str = "",
         san_domains: list[str] | None = None,
         fingerprint: str = "",
         not_before: datetime | None = None,
@@ -255,10 +269,10 @@ class CertificateIntelligenceService:
         # Index SANs
         for san in san_domains or []:
             san_lower = san.lower()
-            
+
             # Check if newly observed BEFORE adding to index
             is_new = san_lower != d and not self._is_known_domain(san_lower)
-            
+
             if san_lower not in self._san_index:
                 self._san_index[san_lower] = []
             if d not in self._san_index[san_lower]:
@@ -266,20 +280,21 @@ class CertificateIntelligenceService:
 
             # Track newly observed domains
             if is_new:
-                self._newly_observed_domains.append({
-                    "domain": san_lower,
-                    "discovered_via": "certificate_san",
-                    "certificate_domain": d,
-                    "fingerprint": fingerprint,
-                    "timestamp": utc_now(),
-                })
+                self._newly_observed_domains.append(
+                    {
+                        "domain": san_lower,
+                        "discovered_via": "certificate_san",
+                        "certificate_domain": d,
+                        "fingerprint": fingerprint,
+                        "timestamp": utc_now(),
+                    }
+                )
 
         return cert
 
     def _is_known_domain(self, domain: str) -> bool:
         """Check if a domain is already known."""
-        return (domain in self._cert_timeline or
-                domain in self._san_index)
+        return domain in self._cert_timeline or domain in self._san_index
 
     def get_certificate_timeline(self, domain: str) -> list[CertificateObservation]:
         """Get chronological certificate timeline for a domain."""
@@ -308,12 +323,14 @@ class CertificateIntelligenceService:
             if d in cert_domains:
                 for other in cert_domains:
                     if other != d:
-                        relationships.append({
-                            "domain": d,
-                            "related_domain": other,
-                            "shared_san": san,
-                            "relationship_type": "shared_certificate_san",
-                        })
+                        relationships.append(
+                            {
+                                "domain": d,
+                                "related_domain": other,
+                                "shared_san": san,
+                                "relationship_type": "shared_certificate_san",
+                            }
+                        )
 
         return relationships
 
@@ -329,6 +346,7 @@ class CertificateIntelligenceService:
 # ═══════════════════════════════════════════════
 # IP / ASN INTELLIGENCE (§16)
 # ═══════════════════════════════════════════════
+
 
 class IPASNIntelligenceService:
     """IP/ASN intelligence service — Layer A.
@@ -346,17 +364,26 @@ class IPASNIntelligenceService:
         self._related_domains_by_ip: dict[str, list[str]] = {}  # IP → [domains]
 
     def register_ip_info(
-        self, ip_address: str, asn: str = "", provider: str = "",
-        country: str = "", network_name: str = "", network_cidr: str = "",
-        is_cdn: bool = False, is_hosting_provider: bool = False,
-        source_licensed: bool = True, source_type: str = "public",
+        self,
+        ip_address: str,
+        asn: str = "",
+        provider: str = "",
+        country: str = "",
+        network_name: str = "",
+        network_cidr: str = "",
+        is_cdn: bool = False,
+        is_hosting_provider: bool = False,
+        source_licensed: bool = True,
+        source_type: str = "public",
     ) -> IPInfo:
         """Register IP info.
 
         Per spec: Use public, licensed, or otherwise permitted data sources only.
         """
         if not source_licensed:
-            raise ValueError("IP/ASN data requires source_licensed=True (public/licensed/permitted only)")
+            raise ValueError(
+                "IP/ASN data requires source_licensed=True (public/licensed/permitted only)"
+            )
 
         info = self._infra.register_ip_info(
             ip_address,
@@ -377,7 +404,10 @@ class IPASNIntelligenceService:
         return info
 
     def register_asn_info(
-        self, asn: str, organization: str = "", country: str = "",
+        self,
+        asn: str,
+        organization: str = "",
+        country: str = "",
         network_prefixes: list[str] | None = None,
         abuse_contact: str = "",
     ) -> ASNInfo:

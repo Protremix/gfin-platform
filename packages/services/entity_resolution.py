@@ -17,41 +17,28 @@ from __future__ import annotations
 
 import ipaddress
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum
 from typing import Any
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
 
+from common.database import EntityRepository
 from schemas.base import (
-    BaseEntity,
-    BaseObservation,
     AuditMetadata,
+    BaseEntity,
     Confidence,
-    Provenance,
     utc_now,
 )
-from schemas.enums import EntityType
 from schemas.entities import (
-    PhoneEntity,
-    EmailEntity,
-    DomainEntity,
-    URLEntity,
-    IPEntity,
-    CryptoWalletEntity,
-    TelegramIdentifierEntity,
-    SocialAccountEntity,
-    PersonEntity,
-    OrganizationEntity,
     create_entity,
 )
-from common.database import EntityRepository
-
 
 # ═══════════════════════════════════════════════
 # NORMALIZATION
 # ═══════════════════════════════════════════════
+
 
 def normalize_phone(raw: str) -> str:
     """Normalize phone number to E.164 format.
@@ -67,18 +54,18 @@ def normalize_phone(raw: str) -> str:
     if not raw:
         raise ValueError("Phone number cannot be empty")
 
-    cleaned = re.sub(r'[\s\-\(\)\.]', '', raw.strip())
+    cleaned = re.sub(r"[\s\-\(\)\.]", "", raw.strip())
 
     # 00 prefix → + (international prefix)
-    if cleaned.startswith('00'):
-        cleaned = '+' + cleaned[2:]
+    if cleaned.startswith("00"):
+        cleaned = "+" + cleaned[2:]
     # If no + and starts with country code length (11-15 digits), assume needs +
-    elif not cleaned.startswith('+') and len(cleaned) > 10:
+    elif not cleaned.startswith("+") and len(cleaned) > 10:
         # Heuristic: if first 1-3 digits look like a country code
         # This is conservative — only adds + if clearly international
         pass  # Keep as-is without + to avoid false normalization
 
-    if not re.match(r'^\+?\d{4,15}$', cleaned):
+    if not re.match(r"^\+?\d{4,15}$", cleaned):
         raise ValueError(f"Invalid phone number: {raw}")
 
     return cleaned
@@ -92,7 +79,7 @@ def normalize_email(raw: str) -> str:
     email = raw.strip().lower()
 
     # Basic email format check
-    if not re.match(r'^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$', email):
+    if not re.match(r"^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$", email):
         raise ValueError(f"Invalid email: {raw}")
 
     return email
@@ -103,15 +90,15 @@ def normalize_domain(raw: str) -> str:
     if not raw:
         raise ValueError("Domain cannot be empty")
 
-    domain = raw.strip().lower().rstrip('.')
+    domain = raw.strip().lower().rstrip(".")
 
     # Remove protocol prefix if present
-    domain = re.sub(r'^https?://', '', domain)
+    domain = re.sub(r"^https?://", "", domain)
     # Remove path if present
-    domain = domain.split('/')[0]
+    domain = domain.split("/")[0]
 
     # Basic domain format check
-    if not re.match(r'^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$', domain):
+    if not re.match(r"^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$", domain):
         raise ValueError(f"Invalid domain: {raw}")
 
     return domain
@@ -132,31 +119,31 @@ def normalize_url(raw: str) -> str:
 
     # Add default scheme if missing (case-insensitive)
     url_lower = url.lower()
-    if not url_lower.startswith(('http://', 'https://')):
-        url = 'https://' + url
+    if not url_lower.startswith(("http://", "https://")):
+        url = "https://" + url
 
     # Split into components (case-insensitive match)
-    match = re.match(r'^(https?)://([^/]+)(/.*)?$', url, re.IGNORECASE)
+    match = re.match(r"^(https?)://([^/]+)(/.*)?$", url, re.IGNORECASE)
     if not match:
         raise ValueError(f"Invalid URL: {raw}")
 
     scheme = match.group(1).lower()
     host = match.group(2).lower()
-    path = match.group(3) or ''
+    path = match.group(3) or ""
 
     # Remove default ports
-    if host.endswith(':80'):
+    if host.endswith(":80"):
         host = host[:-3]
-    elif host.endswith(':443'):
+    elif host.endswith(":443"):
         host = host[:-4]
 
     # Validate host has at least one dot (is a real domain)
-    if '.' not in host:
+    if "." not in host:
         raise ValueError(f"Invalid URL: {raw}")
 
     # Remove trailing slash on root
-    if path == '/':
-        path = ''
+    if path == "/":
+        path = ""
 
     return f"{scheme}://{host}{path}"
 
@@ -191,18 +178,18 @@ def normalize_crypto_address(raw: str, blockchain: str) -> str:
     address = raw.strip()
     blockchain_lower = blockchain.lower().strip()
 
-    if blockchain_lower == 'ethereum':
-        if not re.match(r'^0x[a-fA-F0-9]{40}$', address):
+    if blockchain_lower == "ethereum":
+        if not re.match(r"^0x[a-fA-F0-9]{40}$", address):
             raise ValueError(f"Invalid Ethereum address: {raw}")
         return address.lower()  # Normalize to lowercase (EIP-55 checksum is optional)
 
-    elif blockchain_lower == 'bitcoin':
-        if not re.match(r'^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$|^bc1[a-z0-9]{6,87}$', address):
+    elif blockchain_lower == "bitcoin":
+        if not re.match(r"^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$|^bc1[a-z0-9]{6,87}$", address):
             raise ValueError(f"Invalid Bitcoin address: {raw}")
         return address  # Bitcoin addresses are case-sensitive
 
-    elif blockchain_lower == 'tron':
-        if not re.match(r'^T[A-Za-z0-9]{33,34}$', address):
+    elif blockchain_lower == "tron":
+        if not re.match(r"^T[A-Za-z0-9]{33,34}$", address):
             raise ValueError(f"Invalid Tron address: {raw}")
         return address
 
@@ -220,9 +207,9 @@ def normalize_telegram(raw: str) -> str:
     if not raw:
         raise ValueError("Telegram identifier cannot be empty")
 
-    handle = raw.strip().lstrip('@').lower()
+    handle = raw.strip().lstrip("@").lower()
 
-    if not re.match(r'^[a-z][a-z0-9_]{4,31}$', handle):
+    if not re.match(r"^[a-z][a-z0-9_]{4,31}$", handle):
         raise ValueError(f"Invalid Telegram identifier: {raw}")
 
     return handle
@@ -233,16 +220,15 @@ def normalize_social_account(raw: str, platform: str) -> str:
     if not raw:
         raise ValueError("Social account identifier cannot be empty")
 
-    handle = raw.strip().lstrip('@').lower()
+    handle = raw.strip().lstrip("@").lower()
     platform_lower = platform.lower().strip()
 
     # Platform-specific normalization
-    if platform_lower in ('twitter', 'x'):
-        if not re.match(r'^[a-z0-9_]{1,15}$', handle):
+    if platform_lower in ("twitter", "x"):
+        if not re.match(r"^[a-z0-9_]{1,15}$", handle):
             raise ValueError(f"Invalid Twitter/X handle: {raw}")
-    elif platform_lower == 'instagram':
-        if not re.match(r'^[a-z0-9._]{1,30}$', handle):
-            raise ValueError(f"Invalid Instagram handle: {raw}")
+    elif platform_lower == "instagram" and not re.match(r"^[a-z0-9._]{1,30}$", handle):
+        raise ValueError(f"Invalid Instagram handle: {raw}")
 
     return handle
 
@@ -253,7 +239,7 @@ def normalize_person_name(raw: str) -> str:
         raise ValueError("Person name cannot be empty")
 
     # Collapse whitespace, strip
-    name = re.sub(r'\s+', ' ', raw.strip())
+    name = re.sub(r"\s+", " ", raw.strip())
 
     return name.lower()  # Normalized for matching; raw stored separately
 
@@ -265,9 +251,11 @@ def normalize_organization_name(raw: str) -> str:
 
     name = raw.strip().lower()
     # Collapse whitespace
-    name = re.sub(r'\s+', ' ', name)
+    name = re.sub(r"\s+", " ", name)
     # Remove common legal suffixes for matching
-    name = re.sub(r'\s+(inc|llc|ltd|gmbh|sa|sl|s\.?l\.?|s\.?a\.?|corp|corporation|limited)$', '', name)
+    name = re.sub(
+        r"\s+(inc|llc|ltd|gmbh|sa|sl|s\.?l\.?|s\.?a\.?|corp|corporation|limited)$", "", name
+    )
 
     return name
 
@@ -297,16 +285,19 @@ def normalize_value(entity_type: str, raw_value: str, **kwargs) -> str:
 # MATCHING
 # ═══════════════════════════════════════════════
 
+
 class MatchType(str, Enum):
     """How two entities were matched."""
-    EXACT = "exact"               # Normalized values are identical
-    NORMALIZED = "normalized"     # Different raw forms, same normalized form
-    SIMILAR = "similar"           # Fuzzy match (e.g., similar names)
+
+    EXACT = "exact"  # Normalized values are identical
+    NORMALIZED = "normalized"  # Different raw forms, same normalized form
+    SIMILAR = "similar"  # Fuzzy match (e.g., similar names)
     NONE = "none"
 
 
 class MatchResult(BaseModel):
     """Result of comparing two entities for a potential match."""
+
     match_type: MatchType
     confidence: Confidence
     normalized_value_match: bool
@@ -333,8 +324,7 @@ def match_entities(entity_a: BaseEntity, entity_b: BaseEntity) -> MatchResult:
 
     # Check normalized value match
     norm_match = (
-        entity_a.normalized_value == entity_b.normalized_value
-        and entity_a.normalized_value != ""
+        entity_a.normalized_value == entity_b.normalized_value and entity_a.normalized_value != ""
     )
 
     # Check raw value overlap
@@ -380,8 +370,10 @@ def match_entities(entity_a: BaseEntity, entity_b: BaseEntity) -> MatchResult:
 # DEDUPLICATION
 # ═══════════════════════════════════════════════
 
+
 class DeduplicationCandidate(BaseModel):
     """A candidate pair for deduplication."""
+
     entity_a_id: str
     entity_b_id: str
     entity_type: str
@@ -412,7 +404,7 @@ async def find_duplicates(
     # O(n²) comparison — acceptable for Layer A (in-memory, limited data)
     # Production: use indexed lookups on normalized_value
     for i, a in enumerate(entities):
-        for b in entities[i + 1:]:
+        for b in entities[i + 1 :]:
             if a.entity_type != b.entity_type:
                 continue
 
@@ -431,15 +423,17 @@ async def find_duplicates(
                 continue
             seen_pairs.add(pair)
 
-            candidates.append(DeduplicationCandidate(
-                entity_a_id=a.id,
-                entity_b_id=b.id,
-                entity_type=a.entity_type,
-                match_type=result.match_type,
-                confidence=result.confidence,
-                normalized_value=a.normalized_value,
-                details=result.details,
-            ))
+            candidates.append(
+                DeduplicationCandidate(
+                    entity_a_id=a.id,
+                    entity_b_id=b.id,
+                    entity_type=a.entity_type,
+                    match_type=result.match_type,
+                    confidence=result.confidence,
+                    normalized_value=a.normalized_value,
+                    details=result.details,
+                )
+            )
 
     # Sort by confidence (highest first)
     candidates.sort(key=lambda c: conf_order.index(c.confidence))
@@ -450,11 +444,13 @@ async def find_duplicates(
 # MERGE / SPLIT WORKFLOWS
 # ═══════════════════════════════════════════════
 
+
 class MergeRecord(BaseModel):
     """Audit record for an entity merge operation."""
+
     merge_id: str = Field(default_factory=lambda: f"MRG-{uuid4().hex[:8].upper()}")
-    primary_entity_id: str     # The surviving entity
-    merged_entity_id: str      # The entity absorbed (soft-deleted)
+    primary_entity_id: str  # The surviving entity
+    merged_entity_id: str  # The entity absorbed (soft-deleted)
     entity_type: str
     confidence: Confidence
     merged_at: datetime = Field(default_factory=utc_now)
@@ -467,8 +463,9 @@ class MergeRecord(BaseModel):
 
 class SplitRecord(BaseModel):
     """Audit record for an entity split operation (reverse merge)."""
+
     split_id: str = Field(default_factory=lambda: f"SPL-{uuid4().hex[:8].upper()}")
-    merge_id: str               # The merge being reversed
+    merge_id: str  # The merge being reversed
     split_at: datetime = Field(default_factory=utc_now)
     split_by: str | None = None
     reason: str = ""
@@ -525,25 +522,34 @@ async def merge_entities(
     merged_metadata = {**primary.metadata, **merged.metadata}
     # Merge confidence — take the higher of the two
     conf_order = [Confidence.UNKNOWN, Confidence.LOW, Confidence.MEDIUM, Confidence.HIGH]
-    merged_conf = (primary.confidence if conf_order.index(primary.confidence) >= conf_order.index(merged.confidence)
-                   else merged.confidence)
+    merged_conf = (
+        primary.confidence
+        if conf_order.index(primary.confidence) >= conf_order.index(merged.confidence)
+        else merged.confidence
+    )
 
     # Update last_seen to the more recent timestamp
     new_last_seen = max(primary.last_seen, merged.last_seen)
 
-    await repository.update(primary_id, {
-        "raw_values": list(existing_raw),
-        "metadata": merged_metadata,
-        "confidence": merged_conf,
-        "last_seen": new_last_seen,
-    })
+    await repository.update(
+        primary_id,
+        {
+            "raw_values": list(existing_raw),
+            "metadata": merged_metadata,
+            "confidence": merged_conf,
+            "last_seen": new_last_seen,
+        },
+    )
 
     # Soft-delete the merged entity
     merged.soft_delete(deleted_by=merged_by)
     # Re-validate to ensure audit stays as AuditMetadata object
-    await repository.update(merged_id, {
-        "audit": merged.audit,
-    })
+    await repository.update(
+        merged_id,
+        {
+            "audit": merged.audit,
+        },
+    )
 
     return MergeRecord(
         primary_entity_id=primary_id,
@@ -577,20 +583,24 @@ async def split_entity(
         raise ValueError(f"Merged entity not found: {merge_record.merged_entity_id}")
 
     # Un-delete: create fresh AuditMetadata with restored state
-    from schemas.base import AuditMetadata, utc_now
+    from schemas.base import utc_now
+
     restored_audit = AuditMetadata(
-        created_by=merged.audit.created_by if hasattr(merged.audit, 'created_by') else None,
-        created_at=merged.audit.created_at if hasattr(merged.audit, 'created_at') else utc_now(),
+        created_by=merged.audit.created_by if hasattr(merged.audit, "created_by") else None,
+        created_at=merged.audit.created_at if hasattr(merged.audit, "created_at") else utc_now(),
         updated_by=split_by,
         updated_at=utc_now(),
-        version=(merged.audit.version if hasattr(merged.audit, 'version') else 1) + 1,
+        version=(merged.audit.version if hasattr(merged.audit, "version") else 1) + 1,
         is_deleted=False,
         deleted_at=None,
         deleted_by=None,
     )
-    await repository.update(merge_record.merged_entity_id, {
-        "audit": restored_audit,
-    })
+    await repository.update(
+        merge_record.merged_entity_id,
+        {
+            "audit": restored_audit,
+        },
+    )
 
     # Remove transferred raw values from primary
     primary = await repository.get(merge_record.primary_entity_id)
@@ -598,9 +608,12 @@ async def split_entity(
         primary_raw = set(primary.raw_values)
         for rv in merge_record.raw_values_transferred:
             primary_raw.discard(rv)
-        await repository.update(merge_record.primary_entity_id, {
-            "raw_values": list(primary_raw),
-        })
+        await repository.update(
+            merge_record.primary_entity_id,
+            {
+                "raw_values": list(primary_raw),
+            },
+        )
 
     return SplitRecord(
         merge_id=merge_record.merge_id,
@@ -612,6 +625,7 @@ async def split_entity(
 # ═══════════════════════════════════════════════
 # RESOLUTION SERVICE (top-level API)
 # ═══════════════════════════════════════════════
+
 
 class EntityResolutionService:
     """Top-level entity resolution service.
@@ -657,10 +671,13 @@ class EntityResolutionService:
             # Add raw value if not already present
             if raw_value not in existing.raw_values:
                 existing.raw_values.append(raw_value)
-                await self.repository.update(existing.id, {
-                    "raw_values": existing.raw_values,
-                    "last_seen": utc_now(),
-                })
+                await self.repository.update(
+                    existing.id,
+                    {
+                        "raw_values": existing.raw_values,
+                        "last_seen": utc_now(),
+                    },
+                )
             return existing, False
 
         # Create new entity
@@ -712,9 +729,7 @@ class EntityResolutionService:
         confidence: Confidence = Confidence.MEDIUM,
     ) -> MergeRecord:
         """Merge two entities."""
-        return await merge_entities(
-            self.repository, primary_id, merged_id, merged_by, confidence
-        )
+        return await merge_entities(self.repository, primary_id, merged_id, merged_by, confidence)
 
     async def split(
         self,
@@ -723,9 +738,7 @@ class EntityResolutionService:
         reason: str = "",
     ) -> SplitRecord:
         """Reverse a merge operation."""
-        return await split_entity(
-            self.repository, merge_record, split_by, reason
-        )
+        return await split_entity(self.repository, merge_record, split_by, reason)
 
 
 # ═══════════════════════════════════════════════

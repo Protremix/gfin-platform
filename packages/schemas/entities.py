@@ -12,16 +12,15 @@ from __future__ import annotations
 import ipaddress
 import re
 from datetime import datetime
-from typing import Any
 from urllib.parse import urlparse
 
 from pydantic import field_validator, model_validator
 
-from schemas.base import BaseEntity, BaseObservation, utc_now
+from schemas.base import BaseEntity
 from schemas.enums import EntityType
 
-
 # ─── Person ───
+
 
 class PersonEntity(BaseEntity):
     """A person entity — name and aliases.
@@ -46,11 +45,11 @@ class PersonEntity(BaseEntity):
     @field_validator("nationality")
     @classmethod
     def validate_nationality(cls, v: str | None) -> str | None:
-        if v is not None and not re.match(r'^[A-Z]{2}$', v):
+        if v is not None and not re.match(r"^[A-Z]{2}$", v):
             raise ValueError("Nationality must be ISO 3166-1 alpha-2 code")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.full_name.lower().strip()
@@ -63,6 +62,7 @@ class PersonEntity(BaseEntity):
 
 
 # ─── Organization ───
+
 
 class OrganizationEntity(BaseEntity):
     """An organization entity."""
@@ -83,11 +83,11 @@ class OrganizationEntity(BaseEntity):
     @field_validator("registration_country")
     @classmethod
     def validate_country(cls, v: str | None) -> str | None:
-        if v is not None and not re.match(r'^[A-Z]{2}$', v):
+        if v is not None and not re.match(r"^[A-Z]{2}$", v):
             raise ValueError("Registration country must be ISO 3166-1 alpha-2")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.name.lower().strip()
@@ -97,6 +97,7 @@ class OrganizationEntity(BaseEntity):
 
 
 # ─── Phone ───
+
 
 class PhoneEntity(BaseEntity):
     """A phone number entity — E.164 normalized."""
@@ -114,14 +115,14 @@ class PhoneEntity(BaseEntity):
         if not v:
             raise ValueError("Phone e164 is required")
         # Normalize: remove all non-digit except leading +
-        normalized = re.sub(r'[^\d+]', '', v)
-        if not normalized.startswith('+'):
-            normalized = '+' + normalized
-        if not re.match(r'^\+\d{6,15}$', normalized):
+        normalized = re.sub(r"[^\d+]", "", v)
+        if not normalized.startswith("+"):
+            normalized = "+" + normalized
+        if not re.match(r"^\+\d{6,15}$", normalized):
             raise ValueError(f"Phone must be valid E.164 format (got {normalized})")
         return normalized
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.e164
@@ -134,6 +135,7 @@ class PhoneEntity(BaseEntity):
 
 
 # ─── Email ───
+
 
 class EmailEntity(BaseEntity):
     """An email address entity."""
@@ -149,16 +151,16 @@ class EmailEntity(BaseEntity):
         if not v:
             raise ValueError("Email is required")
         v = v.lower().strip()
-        if not re.match(r'^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$', v):
+        if not re.match(r"^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$", v):
             raise ValueError(f"Invalid email format: {v}")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.email
         if self.email:
-            parts = self.email.split('@', 1)
+            parts = self.email.split("@", 1)
             self.local_part = parts[0]
             self.domain_part = parts[1] if len(parts) > 1 else ""
             if self.email not in self.raw_values:
@@ -167,6 +169,7 @@ class EmailEntity(BaseEntity):
 
 
 # ─── Domain ───
+
 
 class DomainEntity(BaseEntity):
     """A domain name entity."""
@@ -186,16 +189,16 @@ class DomainEntity(BaseEntity):
         v = v.lower().strip()
         if len(v) > 253:
             raise ValueError("Domain exceeds 253 chars")
-        if not re.match(r'^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$', v):
+        if not re.match(r"^[a-z0-9]([a-z0-9\-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9\-]*[a-z0-9])?)+$", v):
             raise ValueError(f"Invalid domain format: {v}")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.domain
         if self.domain:
-            parts = self.domain.rsplit('.', 1)
+            parts = self.domain.rsplit(".", 1)
             self.tld = parts[1] if len(parts) > 1 else ""
             if self.domain not in self.raw_values:
                 self.raw_values.append(self.domain)
@@ -203,6 +206,7 @@ class DomainEntity(BaseEntity):
 
 
 # ─── URL ───
+
 
 class URLEntity(BaseEntity):
     """A URL entity."""
@@ -218,13 +222,13 @@ class URLEntity(BaseEntity):
     def validate_url(cls, v: str) -> str:
         if not v:
             raise ValueError("URL is required")
-        if not re.match(r'^https?://', v, re.IGNORECASE):
+        if not re.match(r"^https?://", v, re.IGNORECASE):
             raise ValueError("URL must start with http:// or https://")
         if len(v) > 2048:
             raise ValueError("URL exceeds 2048 chars")
         return v.strip()
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.url
@@ -239,6 +243,7 @@ class URLEntity(BaseEntity):
 
 
 # ─── IP Address ───
+
 
 class IPEntity(BaseEntity):
     """An IP address entity — IPv4 or IPv6."""
@@ -263,18 +268,19 @@ class IPEntity(BaseEntity):
         except ValueError:
             raise ValueError(f"Invalid IP address: {v}")
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.ip
         if self.ip:
-            self.ip_version = 6 if ':' in self.ip else 4
+            self.ip_version = 6 if ":" in self.ip else 4
             if self.ip not in self.raw_values:
                 self.raw_values.append(self.ip)
         return self
 
 
 # ─── ASN ───
+
 
 class ASNEntity(BaseEntity):
     """An Autonomous System Number entity."""
@@ -292,7 +298,7 @@ class ASNEntity(BaseEntity):
             raise ValueError(f"ASN must be 1-4294967295 (got {v})")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = f"AS{self.asn_number}"
@@ -302,6 +308,7 @@ class ASNEntity(BaseEntity):
 
 
 # ─── Network ───
+
 
 class NetworkEntity(BaseEntity):
     """A network/CIDR entity."""
@@ -322,7 +329,7 @@ class NetworkEntity(BaseEntity):
         except ValueError:
             raise ValueError(f"Invalid CIDR: {v}")
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.cidr
@@ -332,6 +339,7 @@ class NetworkEntity(BaseEntity):
 
 
 # ─── DNS Record ───
+
 
 class DNSRecordEntity(BaseEntity):
     """A DNS record entity."""
@@ -358,7 +366,7 @@ class DNSRecordEntity(BaseEntity):
             raise ValueError("DNS record domain is required")
         return v.lower().strip()
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = f"{self.domain}|{self.record_type}|{self.record_value}"
@@ -366,6 +374,7 @@ class DNSRecordEntity(BaseEntity):
 
 
 # ─── Certificate ───
+
 
 class CertificateEntity(BaseEntity):
     """An SSL/TLS certificate entity."""
@@ -381,11 +390,11 @@ class CertificateEntity(BaseEntity):
     @field_validator("fingerprint_sha256")
     @classmethod
     def validate_fingerprint(cls, v: str) -> str:
-        if v and not re.match(r'^[a-fA-F0-9:]{64,69}$', v):
+        if v and not re.match(r"^[a-fA-F0-9:]{64,69}$", v):
             raise ValueError("Certificate fingerprint must be SHA-256 hex")
         return v.lower() if v else v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.fingerprint_sha256 or self.serial_number
@@ -393,6 +402,7 @@ class CertificateEntity(BaseEntity):
 
 
 # ─── Website ───
+
 
 class WebsiteEntity(BaseEntity):
     """A website entity — content snapshot of a URL."""
@@ -404,7 +414,7 @@ class WebsiteEntity(BaseEntity):
     status_code: int | None = None
     redirect_chain: list[str] = []
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.content_hash or self.id
@@ -412,6 +422,7 @@ class WebsiteEntity(BaseEntity):
 
 
 # ─── Telegram ───
+
 
 class TelegramIdentifierEntity(BaseEntity):
     """A Telegram identifier entity — username, phone, or user ID."""
@@ -426,12 +437,12 @@ class TelegramIdentifierEntity(BaseEntity):
     @classmethod
     def validate_username(cls, v: str | None) -> str | None:
         if v is not None:
-            v = v.strip().lstrip('@')
-            if not re.match(r'^[a-zA-Z][a-zA-Z0-9_]{4,31}$', v):
+            v = v.strip().lstrip("@")
+            if not re.match(r"^[a-zA-Z][a-zA-Z0-9_]{4,31}$", v):
                 raise ValueError("Telegram username must be 5-32 chars, alphanumeric + underscore")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             if self.username:
@@ -446,6 +457,7 @@ class TelegramIdentifierEntity(BaseEntity):
 
 
 # ─── Social Account ───
+
 
 class SocialAccountEntity(BaseEntity):
     """A social media account entity."""
@@ -463,7 +475,7 @@ class SocialAccountEntity(BaseEntity):
             raise ValueError("Social platform is required")
         return v.lower().strip()
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = f"{self.platform}:{self.username.lower()}"
@@ -471,6 +483,7 @@ class SocialAccountEntity(BaseEntity):
 
 
 # ─── Crypto Wallet ───
+
 
 class CryptoWalletEntity(BaseEntity):
     """A cryptocurrency wallet address entity."""
@@ -498,7 +511,7 @@ class CryptoWalletEntity(BaseEntity):
             raise ValueError("Wallet address is required")
         return v.strip()
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = f"{self.blockchain}:{self.address}"
@@ -506,6 +519,7 @@ class CryptoWalletEntity(BaseEntity):
 
 
 # ─── Transaction ───
+
 
 class TransactionEntity(BaseEntity):
     """A blockchain transaction entity."""
@@ -520,7 +534,7 @@ class TransactionEntity(BaseEntity):
     timestamp: datetime | None = None
     block_number: int | None = None
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = f"{self.blockchain}:{self.tx_hash}"
@@ -528,6 +542,7 @@ class TransactionEntity(BaseEntity):
 
 
 # ─── Payment Identifier ───
+
 
 class PaymentIdentifierEntity(BaseEntity):
     """A payment identifier entity — IBAN, PayPal, etc."""
@@ -544,7 +559,7 @@ class PaymentIdentifierEntity(BaseEntity):
             raise ValueError("Payment type is required")
         return v.lower().strip()
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = f"{self.payment_type}:{self.identifier.lower()}"
@@ -552,6 +567,7 @@ class PaymentIdentifierEntity(BaseEntity):
 
 
 # ─── Document ───
+
 
 class DocumentEntity(BaseEntity):
     """A document entity."""
@@ -563,7 +579,7 @@ class DocumentEntity(BaseEntity):
     file_size: int | None = None
     language: str | None = None
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.content_hash or self.id
@@ -571,6 +587,7 @@ class DocumentEntity(BaseEntity):
 
 
 # ─── Image ───
+
 
 class ImageEntity(BaseEntity):
     """An image entity."""
@@ -582,7 +599,7 @@ class ImageEntity(BaseEntity):
     format: str | None = None  # png, jpg, webp
     file_size: int | None = None
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.content_hash or self.id
@@ -590,6 +607,7 @@ class ImageEntity(BaseEntity):
 
 
 # ─── Report ───
+
 
 class ReportEntity(BaseEntity):
     """A fraud report entity — citizen submission."""
@@ -608,12 +626,13 @@ class ReportEntity(BaseEntity):
     @classmethod
     def validate_status(cls, v: str) -> str:
         from schemas.enums import ReportStatus
+
         valid = {s.value for s in ReportStatus}
         if v not in valid:
             raise ValueError(f"Report status must be one of {valid}")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.id
@@ -621,6 +640,7 @@ class ReportEntity(BaseEntity):
 
 
 # ─── Case ───
+
 
 class CaseEntity(BaseEntity):
     """An investigation case entity."""
@@ -642,7 +662,7 @@ class CaseEntity(BaseEntity):
             raise ValueError(f"Case status must be one of {valid}")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.case_number or self.id
@@ -650,6 +670,7 @@ class CaseEntity(BaseEntity):
 
 
 # ─── Campaign ───
+
 
 class CampaignEntity(BaseEntity):
     """A fraud campaign entity — grouped fraudulent activity."""
@@ -672,7 +693,7 @@ class CampaignEntity(BaseEntity):
             raise ValueError(f"Campaign status must be one of {valid}")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.name.lower().strip() or self.id
@@ -680,6 +701,7 @@ class CampaignEntity(BaseEntity):
 
 
 # ─── Infrastructure Cluster ───
+
 
 class InfrastructureClusterEntity(BaseEntity):
     """A cluster of related infrastructure entities."""
@@ -690,7 +712,7 @@ class InfrastructureClusterEntity(BaseEntity):
     member_entity_ids: list[str] = []
     shared_indicators: list[str] = []
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.cluster_name.lower().strip() or self.id
@@ -698,6 +720,7 @@ class InfrastructureClusterEntity(BaseEntity):
 
 
 # ─── Fraud Pattern ───
+
 
 class FraudPatternEntity(BaseEntity):
     """A fraud pattern entity — recurring indicators and tactics."""
@@ -708,7 +731,7 @@ class FraudPatternEntity(BaseEntity):
     indicators: list[str] = []
     ttp_refs: list[str] = []  # MITRE ATT&CK style references
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.pattern_type.lower().strip() or self.id
@@ -716,6 +739,7 @@ class FraudPatternEntity(BaseEntity):
 
 
 # ─── Alert ───
+
 
 class AlertEntity(BaseEntity):
     """An alert entity — triggered by monitoring or detection."""
@@ -736,7 +760,7 @@ class AlertEntity(BaseEntity):
             raise ValueError(f"Alert status must be one of {valid}")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.id
@@ -744,6 +768,7 @@ class AlertEntity(BaseEntity):
 
 
 # ─── Country ───
+
 
 class CountryEntity(BaseEntity):
     """A country entity — for geographic tracking."""
@@ -760,11 +785,11 @@ class CountryEntity(BaseEntity):
         if not v:
             raise ValueError("Country ISO code is required")
         v = v.upper().strip()
-        if not re.match(r'^[A-Z]{2}$', v):
+        if not re.match(r"^[A-Z]{2}$", v):
             raise ValueError("Country ISO code must be 2 letters")
         return v
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def set_defaults(self):
         if not self.normalized_value:
             self.normalized_value = self.iso_code

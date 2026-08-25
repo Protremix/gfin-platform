@@ -11,12 +11,12 @@ from auth.middleware import (
 )
 from auth.rate_limit import RateLimiter
 from auth.rbac import (
+    ROLE_PERMISSIONS,
     AccessDecision,
     AccessRequest,
     AuthorizationEngine,
     Decision,
     Permission,
-    ROLE_PERMISSIONS,
 )
 from auth.validation import (
     ValidationError,

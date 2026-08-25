@@ -13,7 +13,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
@@ -21,8 +21,10 @@ import structlog
 
 logger = structlog.get_logger("gfin.audit")
 
+
 class AuditEventType(str, Enum):
     """Types of auditable security events."""
+
     AUTH_LOGIN = "auth.login"
     AUTH_LOGOUT = "auth.logout"
     AUTH_TOKEN_CREATED = "auth.token_created"
@@ -48,6 +50,7 @@ class AuditEventType(str, Enum):
 @dataclass
 class AuditEvent:
     """A single auditable event."""
+
     event_id: str
     event_type: AuditEventType
     user_id: str
@@ -66,18 +69,21 @@ class AuditEvent:
     def compute_hash(self, prev_hash: str = "") -> str:
         """Compute SHA-256 hash of this event, chained to previous event."""
         self.prev_hash = prev_hash
-        content = json.dumps({
-            "event_id": self.event_id,
-            "event_type": self.event_type.value,
-            "user_id": self.user_id,
-            "action": self.action,
-            "resource_type": self.resource_type,
-            "resource_id": self.resource_id,
-            "decision": self.decision,
-            "reason": self.reason,
-            "timestamp": self.timestamp.isoformat(),
-            "prev_hash": self.prev_hash,
-        }, sort_keys=True)
+        content = json.dumps(
+            {
+                "event_id": self.event_id,
+                "event_type": self.event_type.value,
+                "user_id": self.user_id,
+                "action": self.action,
+                "resource_type": self.resource_type,
+                "resource_id": self.resource_id,
+                "decision": self.decision,
+                "reason": self.reason,
+                "timestamp": self.timestamp.isoformat(),
+                "prev_hash": self.prev_hash,
+            },
+            sort_keys=True,
+        )
         return hashlib.sha256(content.encode()).hexdigest()
 
 
@@ -120,7 +126,7 @@ class AuditLog:
             reason=reason,
             ip_address=ip_address,
             user_agent=user_agent,
-            timestamp=datetime.now(timezone.utc),
+            timestamp=datetime.now(UTC),
             metadata=metadata or {},
         )
         event.hash = event.compute_hash(self._chain_hash)
@@ -179,19 +185,25 @@ class AuditLog:
     def _persist(self, event: AuditEvent) -> None:
         """Append event to file (development mode)."""
         try:
+            assert self._persist_path is not None
             with open(self._persist_path, "a") as f:
-                f.write(json.dumps({
-                    "event_id": event.event_id,
-                    "event_type": event.event_type.value,
-                    "user_id": event.user_id,
-                    "action": event.action,
-                    "resource_type": event.resource_type,
-                    "resource_id": event.resource_id,
-                    "decision": event.decision,
-                    "reason": event.reason,
-                    "timestamp": event.timestamp.isoformat(),
-                    "hash": event.hash,
-                    "prev_hash": event.prev_hash,
-                }) + "\n")
+                f.write(
+                    json.dumps(
+                        {
+                            "event_id": event.event_id,
+                            "event_type": event.event_type.value,
+                            "user_id": event.user_id,
+                            "action": event.action,
+                            "resource_type": event.resource_type,
+                            "resource_id": event.resource_id,
+                            "decision": event.decision,
+                            "reason": event.reason,
+                            "timestamp": event.timestamp.isoformat(),
+                            "hash": event.hash,
+                            "prev_hash": event.prev_hash,
+                        }
+                    )
+                    + "\n"
+                )
         except Exception as e:
             logger.error("audit_persist_failed", error=str(e)[:100])

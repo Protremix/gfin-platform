@@ -16,12 +16,11 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 
 from pydantic import BaseModel, Field
-from tenacity import retry, stop_after_attempt, wait_exponential
 
 
 class ModelProvider(str, Enum):
@@ -75,7 +74,8 @@ class ModelResponse(BaseModel):
     evidence_refs: list[str] = Field(default_factory=list)
     unverified: bool = False
     error: str | None = None
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    correlation_id: str | None = None
 
 
 class ModelGateway(ABC):

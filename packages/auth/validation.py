@@ -10,8 +10,8 @@
 
 from __future__ import annotations
 
-import re
 import html
+import re
 from typing import Any
 
 import structlog
@@ -54,6 +54,7 @@ COMPILED_PROMPT_PATTERNS = [re.compile(p, re.IGNORECASE) for p in PROMPT_INJECTI
 
 class ValidationError(Exception):
     """Input validation error."""
+
     def __init__(self, field: str, reason: str, value: str = ""):
         self.field = field
         self.reason = reason
@@ -63,13 +64,18 @@ class ValidationError(Exception):
 
 class ValidationResult:
     """Result of input validation."""
-    def __init__(self, is_valid: bool, sanitized_value: Any = None, warnings: list[str] | None = None):
+
+    def __init__(
+        self, is_valid: bool, sanitized_value: Any = None, warnings: list[str] | None = None
+    ):
         self.is_valid = is_valid
         self.sanitized_value = sanitized_value
         self.warnings = warnings or []
 
 
-def validate_string(value: str, max_length: int = MAX_STRING_LENGTH, field_name: str = "input") -> ValidationResult:
+def validate_string(
+    value: str, max_length: int = MAX_STRING_LENGTH, field_name: str = "input"
+) -> ValidationResult:
     """Validate and sanitize a string input."""
     if not isinstance(value, str):
         raise ValidationError(field_name, "Expected string", str(type(value)))
@@ -104,11 +110,11 @@ def validate_phone(phone: str, field_name: str = "phone") -> ValidationResult:
         raise ValidationError(field_name, f"Phone exceeds {MAX_PHONE_LENGTH} chars")
 
     # Allow +, digits, spaces, dashes, parens
-    if not re.match(r'^[\+]?[\d\s\-\(\)]+$', phone):
+    if not re.match(r"^[\+]?[\d\s\-\(\)]+$", phone):
         raise ValidationError(field_name, "Invalid phone format")
 
     # Normalize: extract digits and leading +
-    normalized = re.sub(r'[\s\-\(\)]', '', phone)
+    normalized = re.sub(r"[\s\-\(\)]", "", phone)
     return ValidationResult(is_valid=True, sanitized_value=normalized)
 
 
@@ -121,7 +127,7 @@ def validate_email(email: str, field_name: str = "email") -> ValidationResult:
         raise ValidationError(field_name, f"Email exceeds {MAX_EMAIL_LENGTH} chars")
 
     # Basic email pattern
-    if not re.match(r'^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$', email):
+    if not re.match(r"^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$", email):
         raise ValidationError(field_name, "Invalid email format")
 
     # Check for SQL injection
@@ -141,7 +147,7 @@ def validate_url(url: str, field_name: str = "url") -> ValidationResult:
         raise ValidationError(field_name, f"URL exceeds {MAX_URL_LENGTH} chars")
 
     # Must start with http(s)://
-    if not re.match(r'^https?://', url, re.IGNORECASE):
+    if not re.match(r"^https?://", url, re.IGNORECASE):
         raise ValidationError(field_name, "URL must start with http:// or https://")
 
     # Check for path traversal
@@ -166,7 +172,10 @@ def validate_domain(domain: str, field_name: str = "domain") -> ValidationResult
         raise ValidationError(field_name, f"Domain exceeds {MAX_DOMAIN_LENGTH} chars")
 
     # Valid domain pattern
-    if not re.match(r'^[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?)+$', domain):
+    if not re.match(
+        r"^[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9\-]*[a-zA-Z0-9])?)+$",
+        domain,
+    ):
         raise ValidationError(field_name, "Invalid domain format")
 
     return ValidationResult(is_valid=True, sanitized_value=domain.lower().strip())
@@ -174,7 +183,7 @@ def validate_domain(domain: str, field_name: str = "domain") -> ValidationResult
 
 def detect_prompt_injection(text: str) -> list[str]:
     """Detect potential prompt injection patterns in text.
-    
+
     Returns list of detected patterns (empty = clean).
     Used when passing external content to AI models.
     """
@@ -192,7 +201,7 @@ def detect_prompt_injection(text: str) -> list[str]:
 
 def sanitize_for_ai(text: str) -> str:
     """Sanitize text before passing to AI model.
-    
+
     Escapes HTML and wraps content to clearly mark it as data.
     """
     escaped = html.escape(text, quote=True)

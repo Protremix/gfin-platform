@@ -4,17 +4,22 @@ import pytest
 
 from common.cache import MemoryCache
 from common.database import InMemoryEntityRepository
-from common.event_bus import EventBus, Event, InMemoryEventBus
+from common.event_bus import Event, InMemoryEventBus
 from common.graph import AdjacencyListGraph, GraphEdge, GraphNode
-from common.identity import AuthContext, Base44IdentityProvider
-from common.model_gateway import BaseModelGateway, ModelProvider, ModelRequest, ModelResponse, TaskType
-from common.search import EntitySearchService, SearchQuery
+from common.identity import Base44IdentityProvider
+from common.model_gateway import (
+    BaseModelGateway,
+    ModelProvider,
+    ModelRequest,
+    ModelResponse,
+    TaskType,
+)
 from common.storage import LocalObjectStorage
 from schemas.base import BaseEntity
 from schemas.enums import DataClassification, EntityType, UserRole
 
-
 # ─── Database (EntityRepository) ───
+
 
 class TestInMemoryEntityRepository:
     """Test the development adapter for entity persistence."""
@@ -109,6 +114,7 @@ class TestInMemoryEntityRepository:
 
 # ─── Event Bus ───
 
+
 class TestInMemoryEventBus:
     """Test the development adapter for event publishing/subscribing."""
 
@@ -118,12 +124,16 @@ class TestInMemoryEventBus:
 
     async def test_publish_and_subscribe(self, bus):
         received: list[Event] = []
-        sub_id = await bus.subscribe("entity.created", lambda e: received.append(e))
+        await bus.subscribe("entity.created", lambda e: received.append(e))
 
         event = Event(
             event_type="entity.created",
             source="test",
-            payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"},
+            payload={
+                "entity_id": "ENT-001",
+                "entity_type": "PHONE",
+                "normalized_value": "+34612345678",
+            },
         )
         await bus.publish(event)
 
@@ -135,7 +145,17 @@ class TestInMemoryEventBus:
         sub_id = await bus.subscribe("entity.created", lambda e: received.append(e))
         await bus.unsubscribe(sub_id)
 
-        await bus.publish(Event(event_type="entity.created", source="test", payload={"entity_id": "ENT-001", "entity_type": "PHONE", "normalized_value": "+34612345678"}))
+        await bus.publish(
+            Event(
+                event_type="entity.created",
+                source="test",
+                payload={
+                    "entity_id": "ENT-001",
+                    "entity_type": "PHONE",
+                    "normalized_value": "+34612345678",
+                },
+            )
+        )
         assert len(received) == 0
 
     async def test_multiple_subscribers(self, bus):
@@ -145,7 +165,17 @@ class TestInMemoryEventBus:
         await bus.subscribe("observation.created", lambda e: received_a.append(e))
         await bus.subscribe("observation.created", lambda e: received_b.append(e))
 
-        await bus.publish(Event(event_type="observation.created", source="test", payload={"observation_id": "OBS-001", "entity_id": "ENT-001", "observation_type": "dns_lookup"}))
+        await bus.publish(
+            Event(
+                event_type="observation.created",
+                source="test",
+                payload={
+                    "observation_id": "OBS-001",
+                    "entity_id": "ENT-001",
+                    "observation_type": "dns_lookup",
+                },
+            )
+        )
 
         assert len(received_a) == 1
         assert len(received_b) == 1
@@ -168,6 +198,7 @@ class TestInMemoryEventBus:
 
 
 # ─── Graph Store ───
+
 
 class TestAdjacencyListGraph:
     """Test the development adapter for graph operations."""
@@ -250,6 +281,7 @@ class TestAdjacencyListGraph:
 
 # ─── Cache ───
 
+
 class TestMemoryCache:
     """Test the development adapter for caching."""
 
@@ -295,6 +327,7 @@ class TestMemoryCache:
 
 # ─── Storage ───
 
+
 class TestLocalObjectStorage:
     """Test the development adapter for object storage."""
 
@@ -335,6 +368,7 @@ class TestLocalObjectStorage:
 
 # ─── Identity ───
 
+
 class TestBase44IdentityProvider:
     """Test the development adapter for authentication."""
 
@@ -363,31 +397,26 @@ class TestBase44IdentityProvider:
         token = await provider.create_token("user-001", UserRole.CITIZEN)
         context = await provider.authenticate(token)
         assert context is not None
-        result = await provider.authorize(
-            context, "read", "entity", DataClassification.RESTRICTED
-        )
+        result = await provider.authorize(context, "read", "entity", DataClassification.RESTRICTED)
         assert result is False
 
     async def test_authorize_investigator_can_access_restricted(self, provider):
         token = await provider.create_token("user-001", UserRole.INVESTIGATOR)
         context = await provider.authenticate(token)
         assert context is not None
-        result = await provider.authorize(
-            context, "read", "entity", DataClassification.RESTRICTED
-        )
+        result = await provider.authorize(context, "read", "entity", DataClassification.RESTRICTED)
         assert result is True
 
     async def test_authorize_citizen_can_access_public(self, provider):
         token = await provider.create_token("user-001", UserRole.CITIZEN)
         context = await provider.authenticate(token)
         assert context is not None
-        result = await provider.authorize(
-            context, "read", "entity", DataClassification.PUBLIC
-        )
+        result = await provider.authorize(context, "read", "entity", DataClassification.PUBLIC)
         assert result is True
 
 
 # ─── Model Gateway ───
+
 
 class TestBaseModelGateway:
     """Test the model gateway routing logic."""

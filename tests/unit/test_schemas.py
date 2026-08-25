@@ -1,8 +1,6 @@
 """Tests for GFIN core schemas (enums, base types)."""
 
-import pytest
-
-from schemas.base import BaseEntity, BaseObservation, BaseRelationship, BaseSource
+from schemas.base import BaseEntity, BaseObservation, BaseRelationship
 from schemas.enums import (
     Confidence,
     DataClassification,

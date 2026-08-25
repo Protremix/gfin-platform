@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 
-from datetime import datetime
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
@@ -13,14 +12,10 @@ from pydantic import BaseModel, Field, field_validator
 from schemas.base import (
     AuditMetadata,
     Classification,
-    Provenance,
     Timestamp,
-    utc_now,
 )
 from schemas.enums import (
-    AlertPriority,
     DataClassification,
-    RiskLevel,
     UserRole,
 )
 
@@ -40,9 +35,9 @@ class BaseCase(BaseModel):
     priority: str = "MEDIUM"  # LOW, MEDIUM, HIGH, CRITICAL
     related_entity_ids: list[str] = Field(default_factory=list)
     related_report_ids: list[str] = Field(default_factory=list)
-    classification: Classification = Field(default_factory=lambda: Classification(
-        classification=DataClassification.RESTRICTED
-    ))
+    classification: Classification = Field(
+        default_factory=lambda: Classification(classification=DataClassification.RESTRICTED)
+    )
 
     # Multi-tenant
     organization_id: str | None = None

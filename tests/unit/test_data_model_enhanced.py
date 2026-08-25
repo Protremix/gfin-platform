@@ -12,20 +12,35 @@ Per user requirements:
 - authorization integration (security-sensitive data model must fail closed)
 """
 
-import json
-import pytest
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
+import pytest
+
+from auth.audit import AuditEventType, AuditLog
+from auth.rbac import (
+    AccessRequest,
+    AuthorizationEngine,
+    Decision,
+    Permission,
+)
 from schemas.base import (
     AuditMetadata,
-    BaseEntity,
     BaseEvidence,
     BaseObservation,
-    BaseRelationship,
     BaseReport,
     BaseSource,
     Classification,
     Provenance,
+)
+from schemas.entities import (
+    PersonEntity,
+    PhoneEntity,
+    create_entity,
+)
+from schemas.enums import (
+    Confidence,
+    DataClassification,
+    UserRole,
 )
 from schemas.extended import (
     BaseAccessPolicy,
@@ -36,44 +51,15 @@ from schemas.extended import (
     BaseOrganization,
     BaseUser,
 )
-from schemas.enums import (
-    Confidence,
-    DataClassification,
-    EntityType,
-    RelationshipType,
-    ReportStatus,
-    UserRole,
-)
-from schemas.entities import (
-    PersonEntity,
-    PhoneEntity,
-    EmailEntity,
-    DomainEntity,
-    IPEntity,
-    CryptoWalletEntity,
-    ReportEntity,
-    CountryEntity,
-    create_entity,
-    ENTITY_TYPE_TO_CLASS,
-)
 from schemas.relationships import (
     Relationship,
     create_relationship,
-    RELATIONSHIP_TYPE_TO_CLASS,
 )
-from auth.rbac import (
-    AccessRequest,
-    AuthorizationEngine,
-    Decision,
-    Permission,
-)
-from auth.audit import AuditEventType, AuditLog
-from auth.validation import validate_phone, validate_email, validate_domain
-
 
 # ═══════════════════════════════════════════════
 # ENTITY CREATION & VALIDATION
 # ═══════════════════════════════════════════════
+
 
 class TestEntityCreation:
     """Test entity creation for all required types."""
@@ -103,8 +89,11 @@ class TestEntityCreation:
         assert ip.ip == "192.168.1.1"
 
     def test_create_crypto_wallet(self):
-        w = create_entity("CRYPTO_WALLET", blockchain="bitcoin",
-                          address="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
+        w = create_entity(
+            "CRYPTO_WALLET",
+            blockchain="bitcoin",
+            address="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        )
         assert "bitcoin:" in w.normalized_value
 
     def test_entity_has_organization_id_field(self):
@@ -135,6 +124,7 @@ class TestEntityCreation:
 # STABLE IDs
 # ═══════════════════════════════════════════════
 
+
 class TestStableIDs:
     """Test that all records use stable, immutable IDs — never user-facing values."""
 
@@ -164,22 +154,21 @@ class TestStableIDs:
 
     def test_observation_id_prefix(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="citizen", raw_value="test"
+            entity_id="ENT-1", source_id="SRC-1", source_type="citizen", raw_value="test"
         )
         assert obs.id.startswith("OBS-")
 
     def test_relationship_id_prefix(self):
         rel = Relationship(
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            relationship_type="OWNS", source_id="SRC-1"
+            from_entity_id="ENT-1",
+            to_entity_id="ENT-2",
+            relationship_type="OWNS",
+            source_id="SRC-1",
         )
         assert rel.id.startswith("REL-")
 
     def test_evidence_id_prefix(self):
-        evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc123", content_type="image/png"
-        )
+        evd = BaseEvidence(source_id="SRC-1", content_hash="abc123", content_type="image/png")
         assert evd.id.startswith("EVD-")
 
     def test_source_id_prefix(self):
@@ -190,6 +179,7 @@ class TestStableIDs:
 # ═══════════════════════════════════════════════
 # OBSERVATION CREATION
 # ═══════════════════════════════════════════════
+
 
 class TestObservation:
     """Test observation creation and linking to entities."""
@@ -208,35 +198,39 @@ class TestObservation:
 
     def test_observation_has_classification(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="citizen", raw_value="test"
+            entity_id="ENT-1", source_id="SRC-1", source_type="citizen", raw_value="test"
         )
         assert isinstance(obs.classification, Classification)
 
     def test_observation_has_provenance(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="police_feed", raw_value="test",
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="police_feed",
+            raw_value="test",
             provenance=Provenance(
-                source_id="SRC-1", source_type="police_feed",
-                acquisition_method="api", reliability="HIGH"
-            )
+                source_id="SRC-1",
+                source_type="police_feed",
+                acquisition_method="api",
+                reliability="HIGH",
+            ),
         )
         assert obs.provenance is not None
         assert obs.provenance.reliability == "HIGH"
 
     def test_observation_has_organization_id(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="internal", raw_value="test",
-            organization_id="ORG-1"
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="internal",
+            raw_value="test",
+            organization_id="ORG-1",
         )
         assert obs.organization_id == "ORG-1"
 
     def test_observation_has_audit_metadata(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="citizen", raw_value="test"
+            entity_id="ENT-1", source_id="SRC-1", source_type="citizen", raw_value="test"
         )
         assert hasattr(obs, "audit")
         assert obs.audit.version == 1
@@ -246,8 +240,10 @@ class TestObservation:
         """OBSERVATION ≠ ENTITY — different classes, different purposes."""
         entity = create_entity("PHONE", e164="+34612345678")
         obs = BaseObservation(
-            entity_id=entity.id, source_id="SRC-1",
-            source_type="citizen", raw_value="+34 612 345 678"
+            entity_id=entity.id,
+            source_id="SRC-1",
+            source_type="citizen",
+            raw_value="+34 612 345 678",
         )
         assert type(entity) != type(obs)
         assert entity.id == obs.entity_id  # Observation references entity
@@ -259,13 +255,13 @@ class TestObservation:
 # EVIDENCE LINKAGE
 # ═══════════════════════════════════════════════
 
+
 class TestEvidenceLinkage:
     """Test evidence creation and linkage to observations."""
 
     def test_create_evidence(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="sha256:abc123",
-            content_type="image/png"
+            source_id="SRC-1", content_hash="sha256:abc123", content_type="image/png"
         )
         assert evd.id.startswith("EVD-")
         assert evd.content_hash == "sha256:abc123"
@@ -273,66 +269,64 @@ class TestEvidenceLinkage:
 
     def test_evidence_links_to_observation(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="sha256:abc123",
+            source_id="SRC-1",
+            content_hash="sha256:abc123",
             content_type="image/png",
-            observation_ids=["OBS-1", "OBS-2"]
+            observation_ids=["OBS-1", "OBS-2"],
         )
         assert len(evd.observation_ids) == 2
         assert "OBS-1" in evd.observation_ids
 
     def test_evidence_has_classification(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc",
+            source_id="SRC-1",
+            content_hash="abc",
             content_type="application/pdf",
             classification=Classification(
-                classification=DataClassification.RESTRICTED,
-                jurisdiction="ES"
-            )
+                classification=DataClassification.RESTRICTED, jurisdiction="ES"
+            ),
         )
         assert evd.classification.classification == DataClassification.RESTRICTED
         assert evd.classification.jurisdiction == "ES"
 
     def test_evidence_has_provenance(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png",
+            source_id="SRC-1",
+            content_hash="abc",
+            content_type="image/png",
             provenance=Provenance(
-                source_id="SRC-1", source_type="web_crawl",
-                acquisition_method="screenshot", reliability="MEDIUM"
-            )
+                source_id="SRC-1",
+                source_type="web_crawl",
+                acquisition_method="screenshot",
+                reliability="MEDIUM",
+            ),
         )
         assert evd.provenance is not None
         assert evd.provenance.acquisition_method == "screenshot"
 
     def test_evidence_has_retention_policy(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png",
-            retention_policy="90d"
+            source_id="SRC-1", content_hash="abc", content_type="image/png", retention_policy="90d"
         )
         assert evd.retention_policy == "90d"
 
     def test_evidence_has_organization_id(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png",
-            organization_id="ORG-1"
+            source_id="SRC-1", content_hash="abc", content_type="image/png", organization_id="ORG-1"
         )
         assert evd.organization_id == "ORG-1"
 
     def test_evidence_has_audit_metadata(self):
-        evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png"
-        )
+        evd = BaseEvidence(source_id="SRC-1", content_hash="abc", content_type="image/png")
         assert hasattr(evd, "audit")
         assert evd.audit.version == 1
 
     def test_evidence_distinct_from_observation(self):
         """EVIDENCE ≠ OBSERVATION — different classes."""
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="citizen", raw_value="test"
+            entity_id="ENT-1", source_id="SRC-1", source_type="citizen", raw_value="test"
         )
-        evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png"
-        )
+        evd = BaseEvidence(source_id="SRC-1", content_hash="abc", content_type="image/png")
         assert type(obs) != type(evd)
         # Evidence has content_hash, observations have raw_value
         assert hasattr(evd, "content_hash")
@@ -344,14 +338,13 @@ class TestEvidenceLinkage:
 # RELATIONSHIP CREATION
 # ═══════════════════════════════════════════════
 
+
 class TestRelationshipCreation:
     """Test relationship creation and provenance."""
 
     def test_create_relationship(self):
         rel = create_relationship(
-            "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            source_id="SRC-1"
+            "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1"
         )
         assert rel.relationship_type == "OWNS"
         assert rel.from_entity_id == "ENT-1"
@@ -360,35 +353,33 @@ class TestRelationshipCreation:
     def test_relationship_has_provenance(self):
         rel = create_relationship(
             "RESOLVES_TO",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
+            from_entity_id="ENT-1",
+            to_entity_id="ENT-2",
             source_id="SRC-1",
-            confidence=Confidence.HIGH
+            confidence=Confidence.HIGH,
         )
         assert rel.source_id == "SRC-1"
         assert rel.confidence == Confidence.HIGH
 
     def test_relationship_has_classification(self):
         rel = create_relationship(
-            "RELATED_TO",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            source_id="SRC-1"
+            "RELATED_TO", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1"
         )
         assert isinstance(rel.classification, Classification)
 
     def test_relationship_has_organization_id(self):
         rel = create_relationship(
             "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
+            from_entity_id="ENT-1",
+            to_entity_id="ENT-2",
             source_id="SRC-1",
-            organization_id="ORG-1"
+            organization_id="ORG-1",
         )
         assert rel.organization_id == "ORG-1"
 
     def test_relationship_has_audit_metadata(self):
         rel = create_relationship(
-            "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            source_id="SRC-1"
+            "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1"
         )
         assert hasattr(rel, "audit")
         assert rel.audit.version == 1
@@ -396,17 +387,17 @@ class TestRelationshipCreation:
     def test_self_relationship_blocked(self):
         with pytest.raises(Exception, match="Self-relationship"):
             Relationship(
-                from_entity_id="ENT-1", to_entity_id="ENT-1",
-                relationship_type="RELATED_TO", source_id="SRC-1"
+                from_entity_id="ENT-1",
+                to_entity_id="ENT-1",
+                relationship_type="RELATED_TO",
+                source_id="SRC-1",
             )
 
     def test_relationship_distinct_from_entity(self):
         """RELATIONSHIP ≠ ENTITY — different classes."""
         entity = create_entity("DOMAIN", domain="test.com")
         rel = create_relationship(
-            "RESOLVES_TO",
-            from_entity_id=entity.id, to_entity_id="ENT-2",
-            source_id="SRC-1"
+            "RESOLVES_TO", from_entity_id=entity.id, to_entity_id="ENT-2", source_id="SRC-1"
         )
         assert type(entity) != type(rel)
         assert hasattr(rel, "from_entity_id")
@@ -418,92 +409,89 @@ class TestRelationshipCreation:
 # PROVENANCE
 # ═══════════════════════════════════════════════
 
+
 class TestProvenance:
     """Test provenance preservation on all record types."""
 
     def test_provenance_has_source_id(self):
-        prov = Provenance(
-            source_id="SRC-1", source_type="web_crawl",
-            acquisition_method="api"
-        )
+        prov = Provenance(source_id="SRC-1", source_type="web_crawl", acquisition_method="api")
         assert prov.source_id == "SRC-1"
 
     def test_provenance_has_timestamp(self):
-        prov = Provenance(
-            source_id="SRC-1", source_type="test",
-            acquisition_method="test"
-        )
+        prov = Provenance(source_id="SRC-1", source_type="test", acquisition_method="test")
         assert prov.timestamp is not None
         assert isinstance(prov.timestamp, datetime)
 
     def test_provenance_has_observation_timestamp(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="test",
+            source_id="SRC-1",
+            source_type="test",
             acquisition_method="test",
-            observation_timestamp=datetime(2026, 1, 1, tzinfo=timezone.utc)
+            observation_timestamp=datetime(2026, 1, 1, tzinfo=UTC),
         )
         assert prov.observation_timestamp is not None
 
     def test_provenance_has_retrieval_timestamp(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="test",
+            source_id="SRC-1",
+            source_type="test",
             acquisition_method="test",
-            retrieval_timestamp=datetime(2026, 1, 2, tzinfo=timezone.utc)
+            retrieval_timestamp=datetime(2026, 1, 2, tzinfo=UTC),
         )
         assert prov.retrieval_timestamp is not None
 
     def test_provenance_has_reliability(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="test",
-            acquisition_method="test", reliability="HIGH"
+            source_id="SRC-1", source_type="test", acquisition_method="test", reliability="HIGH"
         )
         assert prov.reliability == "HIGH"
 
     def test_provenance_has_confidence(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="test",
-            acquisition_method="test", confidence=Confidence.HIGH
+            source_id="SRC-1",
+            source_type="test",
+            acquisition_method="test",
+            confidence=Confidence.HIGH,
         )
         assert prov.confidence == Confidence.HIGH
 
     def test_provenance_default_confidence_unknown(self):
-        prov = Provenance(
-            source_id="SRC-1", source_type="test",
-            acquisition_method="test"
-        )
+        prov = Provenance(source_id="SRC-1", source_type="test", acquisition_method="test")
         assert prov.confidence == Confidence.UNKNOWN
 
     def test_provenance_confidence_on_all_record_types(self):
         """Provenance with confidence must be preservable on all record types."""
         prov = Provenance(
-            source_id="SRC-1", source_type="test",
-            acquisition_method="test", confidence=Confidence.HIGH
+            source_id="SRC-1",
+            source_type="test",
+            acquisition_method="test",
+            confidence=Confidence.HIGH,
         )
         # Entity
         p = create_entity("PERSON", full_name="Test", provenance=prov)
         assert p.provenance.confidence == Confidence.HIGH
         # Observation
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="test", raw_value="x", provenance=prov
+            entity_id="ENT-1", source_id="SRC-1", source_type="test", raw_value="x", provenance=prov
         )
         assert obs.provenance.confidence == Confidence.HIGH
         # Relationship
-        rel = create_relationship("OWNS", from_entity_id="ENT-1",
-                                  to_entity_id="ENT-2", source_id="SRC-1",
-                                  provenance=prov)
+        rel = create_relationship(
+            "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1", provenance=prov
+        )
         assert rel.provenance.confidence == Confidence.HIGH
         # Evidence
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc",
-            content_type="image/png", provenance=prov
+            source_id="SRC-1", content_hash="abc", content_type="image/png", provenance=prov
         )
         assert evd.provenance.confidence == Confidence.HIGH
 
     def test_entity_preserves_provenance(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="police_feed",
-            acquisition_method="api", reliability="HIGH"
+            source_id="SRC-1",
+            source_type="police_feed",
+            acquisition_method="api",
+            reliability="HIGH",
         )
         p = create_entity("PERSON", full_name="Test", provenance=prov)
         assert p.provenance is not None
@@ -512,38 +500,43 @@ class TestProvenance:
 
     def test_observation_preserves_provenance(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="citizen",
-            acquisition_method="web_form", reliability="LOW"
+            source_id="SRC-1",
+            source_type="citizen",
+            acquisition_method="web_form",
+            reliability="LOW",
         )
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="citizen", raw_value="test",
-            provenance=prov
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="citizen",
+            raw_value="test",
+            provenance=prov,
         )
         assert obs.provenance is not None
         assert obs.provenance.reliability == "LOW"
 
     def test_relationship_preserves_provenance(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="investigation",
-            acquisition_method="manual", reliability="MEDIUM"
+            source_id="SRC-1",
+            source_type="investigation",
+            acquisition_method="manual",
+            reliability="MEDIUM",
         )
         rel = create_relationship(
-            "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            source_id="SRC-1", provenance=prov
+            "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1", provenance=prov
         )
         assert rel.provenance is not None
         assert rel.provenance.reliability == "MEDIUM"
 
     def test_evidence_preserves_provenance(self):
         prov = Provenance(
-            source_id="SRC-1", source_type="web_crawl",
-            acquisition_method="screenshot", reliability="HIGH"
+            source_id="SRC-1",
+            source_type="web_crawl",
+            acquisition_method="screenshot",
+            reliability="HIGH",
         )
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc",
-            content_type="image/png", provenance=prov
+            source_id="SRC-1", content_hash="abc", content_type="image/png", provenance=prov
         )
         assert evd.provenance is not None
         assert evd.provenance.acquisition_method == "screenshot"
@@ -553,6 +546,7 @@ class TestProvenance:
 # CLASSIFICATION & JURISDICTION
 # ═══════════════════════════════════════════════
 
+
 class TestClassificationJurisdiction:
     """Test classification and jurisdiction on all record types."""
 
@@ -561,11 +555,13 @@ class TestClassificationJurisdiction:
         assert p.classification.classification == DataClassification.PUBLIC
 
     def test_entity_classification_restricted(self):
-        p = create_entity("PERSON", full_name="Test",
-                          classification=Classification(
-                              classification=DataClassification.RESTRICTED,
-                              jurisdiction="ES"
-                          ))
+        p = create_entity(
+            "PERSON",
+            full_name="Test",
+            classification=Classification(
+                classification=DataClassification.RESTRICTED, jurisdiction="ES"
+            ),
+        )
         assert p.classification.classification == DataClassification.RESTRICTED
         assert p.classification.jurisdiction == "ES"
 
@@ -575,12 +571,13 @@ class TestClassificationJurisdiction:
 
     def test_observation_classification(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="police", raw_value="restricted data",
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="police",
+            raw_value="restricted data",
             classification=Classification(
-                classification=DataClassification.LAW_ENFORCEMENT,
-                jurisdiction="DE"
-            )
+                classification=DataClassification.LAW_ENFORCEMENT, jurisdiction="DE"
+            ),
         )
         assert obs.classification.classification == DataClassification.LAW_ENFORCEMENT
         assert obs.classification.jurisdiction == "DE"
@@ -588,34 +585,36 @@ class TestClassificationJurisdiction:
     def test_relationship_classification(self):
         rel = create_relationship(
             "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
+            from_entity_id="ENT-1",
+            to_entity_id="ENT-2",
             source_id="SRC-1",
-            classification=Classification(
-                classification=DataClassification.RESTRICTED
-            )
+            classification=Classification(classification=DataClassification.RESTRICTED),
         )
         assert rel.classification.classification == DataClassification.RESTRICTED
 
     def test_evidence_classification(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png",
+            source_id="SRC-1",
+            content_hash="abc",
+            content_type="image/png",
             classification=Classification(
-                classification=DataClassification.HIGHLY_RESTRICTED,
-                jurisdiction="ES"
-            )
+                classification=DataClassification.HIGHLY_RESTRICTED, jurisdiction="ES"
+            ),
         )
         assert evd.classification.classification == DataClassification.HIGHLY_RESTRICTED
 
     def test_all_classification_levels(self):
         for level in DataClassification:
-            p = create_entity("PERSON", full_name="Test",
-                              classification=Classification(classification=level))
+            p = create_entity(
+                "PERSON", full_name="Test", classification=Classification(classification=level)
+            )
             assert p.classification.classification == level
 
 
 # ═══════════════════════════════════════════════
 # ORGANIZATION OWNERSHIP & MULTI-TENANT
 # ═══════════════════════════════════════════════
+
 
 class TestOrganizationOwnership:
     """Test organization ownership and multi-tenant isolation."""
@@ -630,38 +629,37 @@ class TestOrganizationOwnership:
 
     def test_observation_organization_id(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="internal", raw_value="test",
-            organization_id="ORG-1"
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="internal",
+            raw_value="test",
+            organization_id="ORG-1",
         )
         assert obs.organization_id == "ORG-1"
 
     def test_relationship_organization_id(self):
         rel = create_relationship(
             "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            source_id="SRC-1", organization_id="ORG-1"
+            from_entity_id="ENT-1",
+            to_entity_id="ENT-2",
+            source_id="SRC-1",
+            organization_id="ORG-1",
         )
         assert rel.organization_id == "ORG-1"
 
     def test_evidence_organization_id(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="abc", content_type="image/png",
-            organization_id="ORG-1"
+            source_id="SRC-1", content_hash="abc", content_type="image/png", organization_id="ORG-1"
         )
         assert evd.organization_id == "ORG-1"
 
     def test_report_organization_id(self):
-        rpt = BaseReport(
-            description="Test report",
-            organization_id="ORG-1"
-        )
+        rpt = BaseReport(description="Test report", organization_id="ORG-1")
         assert rpt.organization_id == "ORG-1"
 
     def test_source_organization_id(self):
         src = BaseSource(
-            source_identity="police-es", acquisition_method="api",
-            organization_id="ORG-1"
+            source_identity="police-es", acquisition_method="api", organization_id="ORG-1"
         )
         assert src.organization_id == "ORG-1"
 
@@ -682,6 +680,7 @@ class TestOrganizationOwnership:
 # ACCESS POLICY
 # ═══════════════════════════════════════════════
 
+
 class TestAccessPolicy:
     """Test access policy model and integration."""
 
@@ -691,7 +690,7 @@ class TestAccessPolicy:
             description="Law enforcement only access",
             required_roles=["INVESTIGATOR", "ADMINISTRATOR"],
             required_classifications=["RESTRICTED", "LAW_ENFORCEMENT"],
-            deny_by_default=True
+            deny_by_default=True,
         )
         assert policy.id.startswith("POL-")
         assert "INVESTIGATOR" in policy.required_roles
@@ -700,17 +699,12 @@ class TestAccessPolicy:
 
     def test_access_policy_with_jurisdiction(self):
         policy = BaseAccessPolicy(
-            name="ES-only",
-            required_jurisdictions=["ES"],
-            required_roles=["INVESTIGATOR"]
+            name="ES-only", required_jurisdictions=["ES"], required_roles=["INVESTIGATOR"]
         )
         assert "ES" in policy.required_jurisdictions
 
     def test_access_policy_with_organization(self):
-        policy = BaseAccessPolicy(
-            name="Org-A-only",
-            required_organizations=["ORG-A"]
-        )
+        policy = BaseAccessPolicy(name="Org-A-only", required_organizations=["ORG-A"])
         assert "ORG-A" in policy.required_organizations
 
     def test_access_policy_has_audit(self):
@@ -722,6 +716,7 @@ class TestAccessPolicy:
 # ═══════════════════════════════════════════════
 # SOFT DELETION & VERSIONING (LIFECYCLE)
 # ═══════════════════════════════════════════════
+
 
 class TestLifecycle:
     """Test soft deletion, versioning, and audit metadata."""
@@ -761,12 +756,11 @@ class TestLifecycle:
 
     def test_all_records_have_audit_metadata(self):
         p = create_entity("PERSON", full_name="Test")
-        obs = BaseObservation(entity_id=p.id, source_id="SRC-1",
-                              source_type="test", raw_value="x")
-        rel = create_relationship("OWNS", from_entity_id="ENT-1",
-                                  to_entity_id="ENT-2", source_id="SRC-1")
-        evd = BaseEvidence(source_id="SRC-1", content_hash="abc",
-                           content_type="image/png")
+        obs = BaseObservation(entity_id=p.id, source_id="SRC-1", source_type="test", raw_value="x")
+        rel = create_relationship(
+            "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1"
+        )
+        evd = BaseEvidence(source_id="SRC-1", content_hash="abc", content_type="image/png")
         src = BaseSource(source_identity="test", acquisition_method="test")
         rpt = BaseReport(description="test")
 
@@ -780,6 +774,7 @@ class TestLifecycle:
 # ═══════════════════════════════════════════════
 # DUPLICATE HANDLING
 # ═══════════════════════════════════════════════
+
 
 class TestDuplicateHandling:
     """Test that the data model supports distinguishing duplicates by ID,
@@ -809,12 +804,14 @@ class TestDuplicateHandling:
 # SERIALIZATION / DESERIALIZATION
 # ═══════════════════════════════════════════════
 
+
 class TestSerialization:
     """Test JSON serialization and deserialization round-trips."""
 
     def test_entity_serialize_deserialize(self):
-        p = create_entity("PERSON", full_name="Jane Doe", organization_id="ORG-1",
-                          jurisdiction="US")
+        p = create_entity(
+            "PERSON", full_name="Jane Doe", organization_id="ORG-1", jurisdiction="US"
+        )
         data = p.model_dump()
         p2 = PersonEntity(**data)
         assert p2.full_name == "Jane Doe"
@@ -831,9 +828,11 @@ class TestSerialization:
 
     def test_observation_serialize_deserialize(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="citizen", raw_value="test data",
-            organization_id="ORG-1"
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="citizen",
+            raw_value="test data",
+            organization_id="ORG-1",
         )
         data = obs.model_dump()
         obs2 = BaseObservation(**data)
@@ -844,9 +843,11 @@ class TestSerialization:
     def test_relationship_serialize_deserialize(self):
         rel = create_relationship(
             "OWNS",
-            from_entity_id="ENT-1", to_entity_id="ENT-2",
-            source_id="SRC-1", organization_id="ORG-1",
-            confidence=Confidence.HIGH
+            from_entity_id="ENT-1",
+            to_entity_id="ENT-2",
+            source_id="SRC-1",
+            organization_id="ORG-1",
+            confidence=Confidence.HIGH,
         )
         json_str = rel.model_dump_json()
         rel2 = Relationship.model_validate_json(json_str)
@@ -856,9 +857,11 @@ class TestSerialization:
 
     def test_evidence_serialize_deserialize(self):
         evd = BaseEvidence(
-            source_id="SRC-1", content_hash="sha256:abc",
-            content_type="image/png", organization_id="ORG-1",
-            observation_ids=["OBS-1", "OBS-2"]
+            source_id="SRC-1",
+            content_hash="sha256:abc",
+            content_type="image/png",
+            organization_id="ORG-1",
+            observation_ids=["OBS-1", "OBS-2"],
         )
         data = evd.model_dump()
         evd2 = BaseEvidence(**data)
@@ -868,8 +871,10 @@ class TestSerialization:
 
     def test_report_serialize_deserialize(self):
         rpt = BaseReport(
-            description="Phishing report", category="phishing",
-            organization_id="ORG-1", risk_level="HIGH"
+            description="Phishing report",
+            category="phishing",
+            organization_id="ORG-1",
+            risk_level="HIGH",
         )
         json_str = rpt.model_dump_json()
         rpt2 = BaseReport.model_validate_json(json_str)
@@ -878,23 +883,26 @@ class TestSerialization:
         assert rpt2.organization_id == "ORG-1"
 
     def test_classification_serialization(self):
-        p = create_entity("PERSON", full_name="Test",
-                          classification=Classification(
-                              classification=DataClassification.RESTRICTED,
-                              jurisdiction="ES"
-                          ))
+        p = create_entity(
+            "PERSON",
+            full_name="Test",
+            classification=Classification(
+                classification=DataClassification.RESTRICTED, jurisdiction="ES"
+            ),
+        )
         data = p.model_dump()
         assert data["classification"]["classification"] == "RESTRICTED"
         assert data["classification"]["jurisdiction"] == "ES"
 
     def test_provenance_serialization(self):
         obs = BaseObservation(
-            entity_id="ENT-1", source_id="SRC-1",
-            source_type="test", raw_value="x",
+            entity_id="ENT-1",
+            source_id="SRC-1",
+            source_type="test",
+            raw_value="x",
             provenance=Provenance(
-                source_id="SRC-1", source_type="test",
-                acquisition_method="api", reliability="HIGH"
-            )
+                source_id="SRC-1", source_type="test", acquisition_method="api", reliability="HIGH"
+            ),
         )
         data = obs.model_dump()
         assert data["provenance"]["source_id"] == "SRC-1"
@@ -911,6 +919,7 @@ class TestSerialization:
 # ═══════════════════════════════════════════════
 # EXTENDED MODELS (Case, Campaign, Alert, Org, Country, User)
 # ═══════════════════════════════════════════════
+
 
 class TestExtendedModels:
     """Test Case, Campaign, Alert, Organization, Country, User models."""
@@ -960,8 +969,9 @@ class TestExtendedModels:
             BaseCountry(iso_code="ESP")
 
     def test_user_creation(self):
-        user = BaseUser(email="admin@gfin.org", full_name="Admin",
-                        role="ADMINISTRATOR", organization_id="ORG-1")
+        user = BaseUser(
+            email="admin@gfin.org", full_name="Admin", role="ADMINISTRATOR", organization_id="ORG-1"
+        )
         assert user.email == "admin@gfin.org"
         assert user.role == "ADMINISTRATOR"
         assert user.organization_id == "ORG-1"
@@ -986,6 +996,7 @@ class TestExtendedModels:
 # ═══════════════════════════════════════════════
 # AUTHORIZATION INTEGRATION (FAIL-CLOSED)
 # ═══════════════════════════════════════════════
+
 
 class TestAuthorizationIntegration:
     """Test that the data model integrates with RBAC+ABAC and fails closed."""
@@ -1065,10 +1076,11 @@ class TestAuthorizationIntegration:
         engine = AuthorizationEngine()
 
         # Create a restricted entity
-        entity = create_entity("PERSON", full_name="Restricted",
-                               classification=Classification(
-                                   classification=DataClassification.RESTRICTED
-                               ))
+        create_entity(
+            "PERSON",
+            full_name="Restricted",
+            classification=Classification(classification=DataClassification.RESTRICTED),
+        )
 
         # Citizen token
         token = await provider.create_token("citizen-1", UserRole.CITIZEN)
@@ -1127,6 +1139,7 @@ class TestAuthorizationIntegration:
 # NEGATIVE TESTS (FAIL-CLOSED)
 # ═══════════════════════════════════════════════
 
+
 class TestNegativeFailClosed:
     """Test that security-sensitive operations fail closed."""
 
@@ -1136,8 +1149,7 @@ class TestNegativeFailClosed:
 
     def test_invalid_relationship_type_rejected(self):
         with pytest.raises(ValueError, match="Unknown relationship type"):
-            create_relationship("INVALID_REL", from_entity_id="A",
-                                to_entity_id="B", source_id="S")
+            create_relationship("INVALID_REL", from_entity_id="A", to_entity_id="B", source_id="S")
 
     def test_invalid_phone_rejected(self):
         with pytest.raises(Exception):
@@ -1170,9 +1182,7 @@ class TestNegativeFailClosed:
     def test_self_relationship_rejected(self):
         with pytest.raises(Exception, match="Self-relationship"):
             create_relationship(
-                "OWNS",
-                from_entity_id="ENT-1", to_entity_id="ENT-1",
-                source_id="SRC-1"
+                "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-1", source_id="SRC-1"
             )
 
     def test_person_without_name_rejected(self):

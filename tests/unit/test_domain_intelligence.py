@@ -9,18 +9,19 @@ Per §16 (IP/ASN Intelligence): current/historical IP, prefix, ASN, network, pro
 country, routing metadata, abuse contact, related domains.
 """
 
-import pytest
 from datetime import datetime
 
+import pytest
+
 from services.domain_intelligence import (
-    DomainIntelligenceService, RDAPInfo, DomainProfile,
     CertificateIntelligenceService,
+    DomainIntelligenceService,
     IPASNIntelligenceService,
 )
 from services.infrastructure_intelligence import (
-    InfrastructureIntelligenceService, DNSRecordType, InfraRelationType,
+    DNSRecordType,
+    InfrastructureIntelligenceService,
 )
-from schemas.base import utc_now
 
 
 @pytest.fixture
@@ -32,10 +33,13 @@ def infra():
 # DOMAIN INTELLIGENCE (§14)
 # ═══════════════════════════════════════════════
 
+
 class TestDomainIntelligence:
     def test_register_rdap_info(self, infra):
         svc = DomainIntelligenceService(infra)
-        rdap = svc.register_rdap_info("evil.com", registrar="EvilRegistrar", creation_date=datetime(2024, 1, 1))
+        rdap = svc.register_rdap_info(
+            "evil.com", registrar="EvilRegistrar", creation_date=datetime(2024, 1, 1)
+        )
         assert rdap.registrar == "EvilRegistrar"
         assert rdap.is_synthetic is True
 
@@ -46,7 +50,9 @@ class TestDomainIntelligence:
 
     def test_rdap_non_public_with_legal_basis(self, infra):
         svc = DomainIntelligenceService(infra)
-        rdap = svc.register_rdap_info("secret.com", is_public_data=False, legal_basis="Court order #123")
+        rdap = svc.register_rdap_info(
+            "secret.com", is_public_data=False, legal_basis="Court order #123"
+        )
         assert rdap.is_public_data is False
         assert rdap.legal_basis == "Court order #123"
 
@@ -97,6 +103,7 @@ class TestDomainIntelligence:
 # CERTIFICATE INTELLIGENCE (§15)
 # ═══════════════════════════════════════════════
 
+
 class TestCertificateIntelligence:
     def test_register_certificate(self, infra):
         svc = CertificateIntelligenceService(infra)
@@ -145,6 +152,7 @@ class TestCertificateIntelligence:
 # ═══════════════════════════════════════════════
 # IP / ASN INTELLIGENCE (§16)
 # ═══════════════════════════════════════════════
+
 
 class TestIPASNIntelligence:
     def test_register_ip_info(self, infra):
@@ -209,6 +217,7 @@ class TestIPASNIntelligence:
 # INTEGRATION
 # ═══════════════════════════════════════════════
 
+
 class TestIntegration:
     def test_full_domain_workflow(self, infra):
         """Full domain intelligence workflow across all three services."""
@@ -218,19 +227,25 @@ class TestIntegration:
 
         # Domain intelligence
         dom_svc = DomainIntelligenceService(infra)
-        dom_svc.register_rdap_info("evil.com", registrar="EvilReg", creation_date=datetime(2024, 1, 1))
+        dom_svc.register_rdap_info(
+            "evil.com", registrar="EvilReg", creation_date=datetime(2024, 1, 1)
+        )
         dom_svc.add_related_domain("evil.com", "phishing.com")
         dom_svc.link_fraud_report("evil.com", "RPT-001")
         dom_svc.link_campaign("evil.com", "CMP-001")
 
         # Certificate intelligence
         cert_svc = CertificateIntelligenceService(infra)
-        cert_svc.register_certificate("evil.com", issuer="CA", san_domains=["www.evil.com", "mail.evil.com"])
+        cert_svc.register_certificate(
+            "evil.com", issuer="CA", san_domains=["www.evil.com", "mail.evil.com"]
+        )
 
         # IP/ASN intelligence
         ip_svc = IPASNIntelligenceService(infra)
         ip_svc.register_ip_info("192.168.1.1", asn="AS12345", provider="EvilHost", country="XX")
-        ip_svc.register_asn_info("AS12345", organization="EvilCorp", abuse_contact="abuse@evilcorp.com")
+        ip_svc.register_asn_info(
+            "AS12345", organization="EvilCorp", abuse_contact="abuse@evilcorp.com"
+        )
         ip_svc.link_domain_ip("evil.com", "192.168.1.1")
 
         # Verify domain profile

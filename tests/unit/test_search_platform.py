@@ -24,29 +24,25 @@ Test categories:
 """
 
 import pytest
-from datetime import datetime
 
+from schemas.base import BaseEntity, BaseReport, Classification
+from schemas.enums import DataClassification, EntityType
+from schemas.extended import BaseCampaign
 from services.search_platform import (
+    AuthorizationContext,
+    DataSharingPolicy,
     EnhancedSearchService,
     SearchQueryV2,
     SearchType,
-    SearchResultV2,
-    SearchResponseV2,
-    AuthorizationContext,
-    DataSharingPolicy,
-    PolicyDecision,
+    can_access,
     check_sharing_policy,
     levenshtein,
     normalize_query,
     tokenize,
-    can_access,
 )
-from schemas.base import BaseEntity, Classification, BaseReport, utc_now
-from schemas.extended import BaseCampaign
-from schemas.enums import DataClassification, EntityType, Confidence
-
 
 # ─── Fixtures ───
+
 
 @pytest.fixture
 def search_svc():
@@ -84,7 +80,13 @@ def auth_admin():
     )
 
 
-def make_entity(entity_type, normalized_value, raw_values=None, classification_level=DataClassification.PUBLIC, org_id=None):
+def make_entity(
+    entity_type,
+    normalized_value,
+    raw_values=None,
+    classification_level=DataClassification.PUBLIC,
+    org_id=None,
+):
     """Helper to create a test entity."""
     e = BaseEntity(
         entity_type=entity_type,
@@ -120,6 +122,7 @@ def make_report(report_id, description, category="PHISHING", status="UNVERIFIED"
 # ═══════════════════════════════════════════════
 # LEVENSHTEIN DISTANCE
 # ═══════════════════════════════════════════════
+
 
 class TestLevenshtein:
     """Test Levenshtein distance computation."""
@@ -158,6 +161,7 @@ class TestLevenshtein:
 # NORMALIZATION
 # ═══════════════════════════════════════════════
 
+
 class TestNormalization:
     """Test query normalization and tokenization."""
 
@@ -183,6 +187,7 @@ class TestNormalization:
 # EXACT SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestExactSearch:
     """Test exact match search."""
 
@@ -190,7 +195,9 @@ class TestExactSearch:
         e = make_entity(EntityType.PERSON, "john doe", ["John Doe"])
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total == 1
@@ -201,7 +208,9 @@ class TestExactSearch:
         e = make_entity(EntityType.PERSON, "john doe", ["John Doe", "JD"])
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="John Doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="John Doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -210,7 +219,9 @@ class TestExactSearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="jane doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="jane doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total == 0
@@ -220,7 +231,9 @@ class TestExactSearch:
         e = make_entity(EntityType.PERSON, "john doe", ["John Doe"])
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="John Doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="John Doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
         assert result.total >= 1
 
@@ -228,6 +241,7 @@ class TestExactSearch:
 # ═══════════════════════════════════════════════
 # NORMALIZED SEARCH
 # ═══════════════════════════════════════════════
+
 
 class TestNormalizedSearch:
     """Test normalized search."""
@@ -237,7 +251,9 @@ class TestNormalizedSearch:
         search_svc.index_entity(e)
 
         # Query with different case/whitespace should still match
-        q = SearchQueryV2(query="  EVIL.COM  ", search_type=SearchType.NORMALIZED, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="  EVIL.COM  ", search_type=SearchType.NORMALIZED, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -247,7 +263,9 @@ class TestNormalizedSearch:
         e = make_entity(EntityType.DOMAIN, "evil.com")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="evil", search_type=SearchType.NORMALIZED, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="evil", search_type=SearchType.NORMALIZED, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -257,7 +275,9 @@ class TestNormalizedSearch:
         e = make_entity(EntityType.DOMAIN, "evil.com")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="good.com", search_type=SearchType.NORMALIZED, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="good.com", search_type=SearchType.NORMALIZED, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total == 0
@@ -267,6 +287,7 @@ class TestNormalizedSearch:
 # FUZZY SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestFuzzySearch:
     """Test fuzzy search with Levenshtein distance."""
 
@@ -274,7 +295,12 @@ class TestFuzzySearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=2)
+        q = SearchQueryV2(
+            query="john doe",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=2,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -284,7 +310,12 @@ class TestFuzzySearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="jon doe", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=2)
+        q = SearchQueryV2(
+            query="jon doe",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=2,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -295,7 +326,12 @@ class TestFuzzySearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="jn doe", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=3)
+        q = SearchQueryV2(
+            query="jn doe",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=3,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -304,7 +340,12 @@ class TestFuzzySearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="xyzabc", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=1)
+        q = SearchQueryV2(
+            query="xyzabc",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=1,
+        )
         result = search_svc.search(q)
 
         assert result.total == 0
@@ -313,7 +354,12 @@ class TestFuzzySearch:
         e = make_entity(EntityType.DOMAIN, "evil.com", ["evil.com", "phishing-site.com"])
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="phishing", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=2)
+        q = SearchQueryV2(
+            query="phishing",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=2,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -322,7 +368,13 @@ class TestFuzzySearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="jon doe", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=2, explain=True)
+        q = SearchQueryV2(
+            query="jon doe",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=2,
+            explain=True,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -333,6 +385,7 @@ class TestFuzzySearch:
 # ENTITY SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestEntitySearch:
     """Test typed entity search."""
 
@@ -342,7 +395,12 @@ class TestEntitySearch:
         search_svc.index_entity(e1)
         search_svc.index_entity(e2)
 
-        q = SearchQueryV2(query="john", search_type=SearchType.ENTITY, entity_type="PERSON", authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john",
+            search_type=SearchType.ENTITY,
+            entity_type="PERSON",
+            authorization=auth_restricted,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -352,7 +410,12 @@ class TestEntitySearch:
         e1 = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e1)
 
-        q = SearchQueryV2(query="john", search_type=SearchType.ENTITY, entity_type="PHONE", authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john",
+            search_type=SearchType.ENTITY,
+            entity_type="PHONE",
+            authorization=auth_restricted,
+        )
         result = search_svc.search(q)
 
         assert result.total == 0
@@ -361,7 +424,12 @@ class TestEntitySearch:
         e = make_entity(EntityType.EMAIL, "scammer@evil.com")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="scammer", search_type=SearchType.ENTITY, entity_type="EMAIL", authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="scammer",
+            search_type=SearchType.ENTITY,
+            entity_type="EMAIL",
+            authorization=auth_restricted,
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -371,6 +439,7 @@ class TestEntitySearch:
 # GRAPH-ASSISTED SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestGraphAssistedSearch:
     """Test graph-assisted search."""
 
@@ -379,14 +448,16 @@ class TestGraphAssistedSearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.GRAPH_ASSISTED, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.GRAPH_ASSISTED, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
 
     def test_graph_search_finds_related(self, search_svc, auth_restricted):
         """Graph-assisted search should expand results via graph."""
-        from common.graph import AdjacencyListGraph, GraphNode, GraphEdge
+        from common.graph import AdjacencyListGraph, GraphEdge, GraphNode
 
         graph = AdjacencyListGraph()
         e1 = make_entity(EntityType.PERSON, "john doe")
@@ -397,18 +468,32 @@ class TestGraphAssistedSearch:
 
         # Add graph nodes and edge
         import asyncio
+
         loop = asyncio.new_event_loop()
-        loop.run_until_complete(graph.add_node(GraphNode(entity_id=e1.id, entity_type="PERSON", label="john doe")))
-        loop.run_until_complete(graph.add_node(GraphNode(entity_id=e2.id, entity_type="PHONE", label="+34612345678")))
-        loop.run_until_complete(graph.add_edge(GraphEdge(
-            relationship_id="REL-001",
-            from_entity_id=e1.id,
-            to_entity_id=e2.id,
-            relationship_type="OWNS",
-        )))
+        loop.run_until_complete(
+            graph.add_node(GraphNode(entity_id=e1.id, entity_type="PERSON", label="john doe"))
+        )
+        loop.run_until_complete(
+            graph.add_node(GraphNode(entity_id=e2.id, entity_type="PHONE", label="+34612345678"))
+        )
+        loop.run_until_complete(
+            graph.add_edge(
+                GraphEdge(
+                    relationship_id="REL-001",
+                    from_entity_id=e1.id,
+                    to_entity_id=e2.id,
+                    relationship_type="OWNS",
+                )
+            )
+        )
         loop.close()
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.GRAPH_ASSISTED, authorization=auth_restricted, graph_depth=2)
+        q = SearchQueryV2(
+            query="john doe",
+            search_type=SearchType.GRAPH_ASSISTED,
+            authorization=auth_restricted,
+            graph_depth=2,
+        )
         result = search_svc.search(q)
 
         # Should find john doe + related phone
@@ -419,6 +504,7 @@ class TestGraphAssistedSearch:
 # CAMPAIGN SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestCampaignSearch:
     """Test campaign search."""
 
@@ -426,7 +512,9 @@ class TestCampaignSearch:
         c = make_campaign("CMP-001", "Phishing Campaign 2026", description="Mass phishing")
         search_svc.index_campaign(c)
 
-        q = SearchQueryV2(query="phishing", search_type=SearchType.CAMPAIGN, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="phishing", search_type=SearchType.CAMPAIGN, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -436,7 +524,9 @@ class TestCampaignSearch:
         c = make_campaign("CMP-002", "Campaign X", description="Targeted phishing against banks")
         search_svc.index_campaign(c)
 
-        q = SearchQueryV2(query="banks", search_type=SearchType.CAMPAIGN, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="banks", search_type=SearchType.CAMPAIGN, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -445,7 +535,9 @@ class TestCampaignSearch:
         c = make_campaign("CMP-003", "Phishing")
         search_svc.index_campaign(c)
 
-        q = SearchQueryV2(query="ransomware", search_type=SearchType.CAMPAIGN, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="ransomware", search_type=SearchType.CAMPAIGN, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total == 0
@@ -455,6 +547,7 @@ class TestCampaignSearch:
 # INFRASTRUCTURE SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestInfrastructureSearch:
     """Test infrastructure search."""
 
@@ -462,7 +555,9 @@ class TestInfrastructureSearch:
         e = make_entity(EntityType.DOMAIN, "evil.com")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="evil", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="evil", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -472,7 +567,9 @@ class TestInfrastructureSearch:
         e = make_entity(EntityType.IP, "192.168.1.1")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="192.168", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="192.168", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -483,7 +580,9 @@ class TestInfrastructureSearch:
         search_svc.index_entity(e1)
         search_svc.index_entity(e2)
 
-        q = SearchQueryV2(query="evil", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="evil", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         # Should only find the domain, not the person
@@ -494,6 +593,7 @@ class TestInfrastructureSearch:
 # REPORT SEARCH
 # ═══════════════════════════════════════════════
 
+
 class TestReportSearch:
     """Test report search."""
 
@@ -501,7 +601,9 @@ class TestReportSearch:
         r = make_report("RPT-001", "Fake investment scam", category="INVESTMENT_FRAUD")
         search_svc.index_report(r)
 
-        q = SearchQueryV2(query="investment", search_type=SearchType.REPORT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="investment", search_type=SearchType.REPORT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -511,7 +613,9 @@ class TestReportSearch:
         r = make_report("RPT-002", "Nigerian prince email scam", category="PHISHING")
         search_svc.index_report(r)
 
-        q = SearchQueryV2(query="prince", search_type=SearchType.REPORT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="prince", search_type=SearchType.REPORT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total >= 1
@@ -520,7 +624,9 @@ class TestReportSearch:
         r = make_report("RPT-003", "Phishing", category="PHISHING")
         search_svc.index_report(r)
 
-        q = SearchQueryV2(query="ransomware", search_type=SearchType.REPORT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="ransomware", search_type=SearchType.REPORT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.total == 0
@@ -529,6 +635,7 @@ class TestReportSearch:
 # ═══════════════════════════════════════════════
 # AUTHORIZATION ENFORCEMENT
 # ═══════════════════════════════════════════════
+
 
 class TestAuthorization:
     """Test authorization and data-sharing policy enforcement."""
@@ -547,7 +654,9 @@ class TestAuthorization:
 
     def test_public_user_blocked_from_restricted(self, search_svc, auth_public):
         """PUBLIC user should not see RESTRICTED entities."""
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
         q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_public)
@@ -558,10 +667,14 @@ class TestAuthorization:
 
     def test_restricted_user_sees_restricted(self, search_svc, auth_restricted):
         """RESTRICTED user should see RESTRICTED entities."""
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.authorized_results == 1
@@ -569,29 +682,49 @@ class TestAuthorization:
 
     def test_law_enforcement_requires_le(self, search_svc):
         """LAW_ENFORCEMENT classified entities require LE clearance."""
-        e = make_entity(EntityType.PERSON, "suspect", classification_level=DataClassification.LAW_ENFORCEMENT)
+        e = make_entity(
+            EntityType.PERSON, "suspect", classification_level=DataClassification.LAW_ENFORCEMENT
+        )
         search_svc.index_entity(e)
 
         # RESTRICTED user blocked
-        auth = AuthorizationContext(user_id="u1", user_classification_level=DataClassification.RESTRICTED, user_role="investigator", purpose="fraud_investigation")
-        q = SearchQueryV2(query="suspect", search_type=SearchType.FUZZY, authorization=auth, fuzzy_distance=3)
+        auth = AuthorizationContext(
+            user_id="u1",
+            user_classification_level=DataClassification.RESTRICTED,
+            user_role="investigator",
+            purpose="fraud_investigation",
+        )
+        q = SearchQueryV2(
+            query="suspect", search_type=SearchType.FUZZY, authorization=auth, fuzzy_distance=3
+        )
         result = search_svc.search(q)
         assert result.blocked_results >= 1
 
         # LE user allowed
-        auth_le = AuthorizationContext(user_id="u2", user_classification_level=DataClassification.LAW_ENFORCEMENT, user_role="investigator", purpose="law_enforcement")
-        q2 = SearchQueryV2(query="suspect", search_type=SearchType.FUZZY, authorization=auth_le, fuzzy_distance=3)
+        auth_le = AuthorizationContext(
+            user_id="u2",
+            user_classification_level=DataClassification.LAW_ENFORCEMENT,
+            user_role="investigator",
+            purpose="law_enforcement",
+        )
+        q2 = SearchQueryV2(
+            query="suspect", search_type=SearchType.FUZZY, authorization=auth_le, fuzzy_distance=3
+        )
         result2 = search_svc.search(q2)
         assert result2.authorized_results >= 1
 
     def test_admin_sees_all(self, search_svc, auth_admin):
         """Admin with HIGHLY_RESTRICTED should see everything."""
         e1 = make_entity(EntityType.PERSON, "john", classification_level=DataClassification.PUBLIC)
-        e2 = make_entity(EntityType.PERSON, "jane", classification_level=DataClassification.HIGHLY_RESTRICTED)
+        e2 = make_entity(
+            EntityType.PERSON, "jane", classification_level=DataClassification.HIGHLY_RESTRICTED
+        )
         search_svc.index_entity(e1)
         search_svc.index_entity(e2)
 
-        q = SearchQueryV2(query="ja", search_type=SearchType.FUZZY, authorization=auth_admin, fuzzy_distance=2)
+        q = SearchQueryV2(
+            query="ja", search_type=SearchType.FUZZY, authorization=auth_admin, fuzzy_distance=2
+        )
         # auth_admin already has purpose="internal_review" from fixture
         result = search_svc.search(q)
         assert result.blocked_results == 0
@@ -633,10 +766,17 @@ class TestAuthorization:
 
     def test_blocked_results_do_not_leak(self, search_svc, auth_public):
         """Blocked results should not appear in results at all."""
-        e = make_entity(EntityType.PERSON, "secret", classification_level=DataClassification.HIGHLY_RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "secret", classification_level=DataClassification.HIGHLY_RESTRICTED
+        )
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="secret", search_type=SearchType.FUZZY, authorization=auth_public, fuzzy_distance=5)
+        q = SearchQueryV2(
+            query="secret",
+            search_type=SearchType.FUZZY,
+            authorization=auth_public,
+            fuzzy_distance=5,
+        )
         result = search_svc.search(q)
 
         # The entity should not be in results
@@ -649,6 +789,7 @@ class TestAuthorization:
 # PAGINATION
 # ═══════════════════════════════════════════════
 
+
 class TestPagination:
     """Test search result pagination."""
 
@@ -657,7 +798,14 @@ class TestPagination:
             e = make_entity(EntityType.PERSON, f"person_{i}")
             search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="person", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=3, limit=5, offset=0)
+        q = SearchQueryV2(
+            query="person",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=3,
+            limit=5,
+            offset=0,
+        )
         result = search_svc.search(q)
 
         assert len(result.results) == 5
@@ -669,7 +817,14 @@ class TestPagination:
             e = make_entity(EntityType.PERSON, f"person_{i}")
             search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="person", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=3, limit=5, offset=5)
+        q = SearchQueryV2(
+            query="person",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=3,
+            limit=5,
+            offset=5,
+        )
         result = search_svc.search(q)
 
         assert len(result.results) <= 5
@@ -679,7 +834,13 @@ class TestPagination:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted, limit=10, offset=0)
+        q = SearchQueryV2(
+            query="john doe",
+            search_type=SearchType.EXACT,
+            authorization=auth_restricted,
+            limit=10,
+            offset=0,
+        )
         result = search_svc.search(q)
 
         assert not result.has_more
@@ -689,6 +850,7 @@ class TestPagination:
 # INDEXING
 # ═══════════════════════════════════════════════
 
+
 class TestIndexing:
     """Test entity indexing and deletion."""
 
@@ -696,7 +858,9 @@ class TestIndexing:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
         assert result.total == 1
 
@@ -705,7 +869,9 @@ class TestIndexing:
         search_svc.index_entity(e)
         assert search_svc.delete_index(e.id)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
         assert result.total == 0
 
@@ -718,7 +884,9 @@ class TestIndexing:
         # Re-index same entity (update)
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
         assert result.total == 1  # Should not duplicate
 
@@ -726,6 +894,7 @@ class TestIndexing:
 # ═══════════════════════════════════════════════
 # METRICS
 # ═══════════════════════════════════════════════
+
 
 class TestMetrics:
     """Test search service metrics."""
@@ -751,22 +920,29 @@ class TestMetrics:
 # CAN_ACCESS FUNCTION
 # ═══════════════════════════════════════════════
 
+
 class TestCanAccess:
     """Test the can_access authorization function."""
 
     def test_public_entity_public_user(self):
-        auth = AuthorizationContext(user_id="u1", user_classification_level=DataClassification.PUBLIC)
+        auth = AuthorizationContext(
+            user_id="u1", user_classification_level=DataClassification.PUBLIC
+        )
         can, reason = can_access(DataClassification.PUBLIC.value, None, None, auth)
         assert can
 
     def test_restricted_entity_public_user(self):
-        auth = AuthorizationContext(user_id="u1", user_classification_level=DataClassification.PUBLIC)
+        auth = AuthorizationContext(
+            user_id="u1", user_classification_level=DataClassification.PUBLIC
+        )
         can, reason = can_access(DataClassification.RESTRICTED.value, None, None, auth)
         assert not can
         assert "Insufficient" in reason
 
     def test_missing_classification_fail_closed(self):
-        auth = AuthorizationContext(user_id="u1", user_classification_level=DataClassification.PUBLIC)
+        auth = AuthorizationContext(
+            user_id="u1", user_classification_level=DataClassification.PUBLIC
+        )
         can, reason = can_access(None, None, None, auth)
         assert not can
         assert "Missing" in reason or "closed" in reason.lower()
@@ -800,16 +976,21 @@ class TestCanAccess:
 # DATA-SHARING POLICY ENFORCEMENT
 # ═══════════════════════════════════════════════
 
+
 class TestDataSharingPolicy:
     """Test data-sharing policy enforcement per Luna's guidance."""
 
     def test_no_purpose_denied(self, search_svc, auth_restricted):
         """Without purpose, data-sharing should be denied even for authorized users."""
         auth_restricted.purpose = None
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.authorized_results == 0
@@ -817,10 +998,14 @@ class TestDataSharingPolicy:
 
     def test_approved_purpose_allowed(self, search_svc, auth_restricted):
         """With approved purpose, data-sharing should be allowed."""
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.authorized_results == 1
@@ -829,10 +1014,14 @@ class TestDataSharingPolicy:
     def test_unapproved_purpose_denied(self, search_svc, auth_restricted):
         """With unapproved purpose, data-sharing should be denied."""
         auth_restricted.purpose = "marketing"
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.authorized_results == 0
@@ -840,10 +1029,14 @@ class TestDataSharingPolicy:
 
     def test_policy_audit_trail(self, search_svc, auth_restricted):
         """Policy decisions should be recorded in audit trail."""
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         search_svc.search(q)
 
         audit = search_svc.get_policy_audit()
@@ -861,11 +1054,15 @@ class TestDataSharingPolicy:
         )
         search_svc.set_sharing_policy(policy)
 
-        e = make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+        )
         e.jurisdiction = "US"  # Outside allowed jurisdictions
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
 
         assert result.blocked_results >= 1
@@ -878,11 +1075,18 @@ class TestDataSharingPolicy:
         )
         search_svc.set_sharing_policy(policy)
 
-        e = make_entity(EntityType.PERSON, "secret", classification_level=DataClassification.HIGHLY_RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "secret", classification_level=DataClassification.HIGHLY_RESTRICTED
+        )
         search_svc.index_entity(e)
 
         # auth_restricted has ORG-001, not ORG-PARTNER
-        q = SearchQueryV2(query="secret", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=2)
+        q = SearchQueryV2(
+            query="secret",
+            search_type=SearchType.FUZZY,
+            authorization=auth_restricted,
+            fuzzy_distance=2,
+        )
         result = search_svc.search(q)
 
         assert result.blocked_results >= 1
@@ -892,7 +1096,9 @@ class TestDataSharingPolicy:
         policy = DataSharingPolicy(allow_public_access=False)
         search_svc.set_sharing_policy(policy)
 
-        e = make_entity(EntityType.PERSON, "john", classification_level=DataClassification.RESTRICTED)
+        e = make_entity(
+            EntityType.PERSON, "john", classification_level=DataClassification.RESTRICTED
+        )
         search_svc.index_entity(e)
 
         auth = AuthorizationContext(
@@ -901,7 +1107,9 @@ class TestDataSharingPolicy:
             user_role="public",
             purpose="fraud_investigation",
         )
-        q = SearchQueryV2(query="john", search_type=SearchType.FUZZY, authorization=auth, fuzzy_distance=2)
+        q = SearchQueryV2(
+            query="john", search_type=SearchType.FUZZY, authorization=auth, fuzzy_distance=2
+        )
         result = search_svc.search(q)
 
         assert result.blocked_results >= 1
@@ -948,7 +1156,11 @@ class TestSemanticSearch:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="a person named john", search_type=SearchType.SEMANTIC, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="a person named john",
+            search_type=SearchType.SEMANTIC,
+            authorization=auth_restricted,
+        )
         result = search_svc.search(q)
 
         assert result.total == 0  # Semantic search is Layer B
@@ -957,6 +1169,7 @@ class TestSemanticSearch:
 # ═══════════════════════════════════════════════
 # NEGATIVE / FAIL-SAFE
 # ═══════════════════════════════════════════════
+
 
 class TestNegativeFailSafe:
     """Test fail-safe behavior."""
@@ -967,7 +1180,9 @@ class TestNegativeFailSafe:
         assert result.total == 0
 
     def test_search_empty_index(self, search_svc, auth_restricted):
-        q = SearchQueryV2(query="anything", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="anything", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         result = search_svc.search(q)
         assert result.total == 0
 
@@ -976,7 +1191,9 @@ class TestNegativeFailSafe:
         e = make_entity(EntityType.PERSON, "john doe")
         search_svc.index_entity(e)
 
-        q = SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted)
+        q = SearchQueryV2(
+            query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+        )
         q.search_type = "unknown_type"
         result = search_svc.search(q)
         assert result.total >= 1  # Falls back to exact
@@ -986,13 +1203,18 @@ class TestNegativeFailSafe:
 # INTEGRATION
 # ═══════════════════════════════════════════════
 
+
 class TestIntegration:
     """End-to-end integration tests."""
 
     def test_multi_type_search_workflow(self, search_svc, auth_restricted):
         """Index entities, campaigns, reports — search across all types."""
         # Index entities
-        search_svc.index_entity(make_entity(EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED))
+        search_svc.index_entity(
+            make_entity(
+                EntityType.PERSON, "john doe", classification_level=DataClassification.RESTRICTED
+            )
+        )
         search_svc.index_entity(make_entity(EntityType.DOMAIN, "phishing-site.com"))
         search_svc.index_entity(make_entity(EntityType.IP, "192.168.1.1"))
 
@@ -1000,48 +1222,125 @@ class TestIntegration:
         search_svc.index_campaign(make_campaign("CMP-001", "Phishing Operation"))
 
         # Index reports
-        search_svc.index_report(make_report("RPT-001", "User reported phishing email", category="PHISHING"))
+        search_svc.index_report(
+            make_report("RPT-001", "User reported phishing email", category="PHISHING")
+        )
 
         # Exact search
-        r1 = search_svc.search(SearchQueryV2(query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted))
+        r1 = search_svc.search(
+            SearchQueryV2(
+                query="john doe", search_type=SearchType.EXACT, authorization=auth_restricted
+            )
+        )
         assert r1.total == 1
 
         # Fuzzy search
-        r2 = search_svc.search(SearchQueryV2(query="jon doe", search_type=SearchType.FUZZY, authorization=auth_restricted, fuzzy_distance=2))
+        r2 = search_svc.search(
+            SearchQueryV2(
+                query="jon doe",
+                search_type=SearchType.FUZZY,
+                authorization=auth_restricted,
+                fuzzy_distance=2,
+            )
+        )
         assert r2.total >= 1
 
         # Infrastructure search
-        r3 = search_svc.search(SearchQueryV2(query="phishing", search_type=SearchType.INFRASTRUCTURE, authorization=auth_restricted))
+        r3 = search_svc.search(
+            SearchQueryV2(
+                query="phishing",
+                search_type=SearchType.INFRASTRUCTURE,
+                authorization=auth_restricted,
+            )
+        )
         assert r3.total >= 1
 
         # Campaign search
-        r4 = search_svc.search(SearchQueryV2(query="phishing", search_type=SearchType.CAMPAIGN, authorization=auth_restricted))
+        r4 = search_svc.search(
+            SearchQueryV2(
+                query="phishing", search_type=SearchType.CAMPAIGN, authorization=auth_restricted
+            )
+        )
         assert r4.total >= 1
 
         # Report search
-        r5 = search_svc.search(SearchQueryV2(query="phishing", search_type=SearchType.REPORT, authorization=auth_restricted))
+        r5 = search_svc.search(
+            SearchQueryV2(
+                query="phishing", search_type=SearchType.REPORT, authorization=auth_restricted
+            )
+        )
         assert r5.total >= 1
 
     def test_authorization_workflow(self, search_svc):
         """Full authorization workflow across classification levels."""
-        search_svc.index_entity(make_entity(EntityType.PERSON, "pub_person", classification_level=DataClassification.PUBLIC))
-        search_svc.index_entity(make_entity(EntityType.PERSON, "res_person", classification_level=DataClassification.RESTRICTED))
-        search_svc.index_entity(make_entity(EntityType.PERSON, "le_person", classification_level=DataClassification.LAW_ENFORCEMENT))
+        search_svc.index_entity(
+            make_entity(
+                EntityType.PERSON, "pub_person", classification_level=DataClassification.PUBLIC
+            )
+        )
+        search_svc.index_entity(
+            make_entity(
+                EntityType.PERSON, "res_person", classification_level=DataClassification.RESTRICTED
+            )
+        )
+        search_svc.index_entity(
+            make_entity(
+                EntityType.PERSON,
+                "le_person",
+                classification_level=DataClassification.LAW_ENFORCEMENT,
+            )
+        )
 
         # Public user
-        auth_pub = AuthorizationContext(user_id="u1", user_classification_level=DataClassification.PUBLIC, user_role="citizen", purpose="research")
-        r1 = search_svc.search(SearchQueryV2(query="person", search_type=SearchType.FUZZY, authorization=auth_pub, fuzzy_distance=5))
+        auth_pub = AuthorizationContext(
+            user_id="u1",
+            user_classification_level=DataClassification.PUBLIC,
+            user_role="citizen",
+            purpose="research",
+        )
+        r1 = search_svc.search(
+            SearchQueryV2(
+                query="person",
+                search_type=SearchType.FUZZY,
+                authorization=auth_pub,
+                fuzzy_distance=5,
+            )
+        )
         assert r1.authorized_results == 1  # Only PUBLIC
         assert r1.blocked_results == 2
 
         # Restricted user
-        auth_res = AuthorizationContext(user_id="u2", user_classification_level=DataClassification.RESTRICTED, user_role="investigator", purpose="fraud_investigation")
-        r2 = search_svc.search(SearchQueryV2(query="person", search_type=SearchType.FUZZY, authorization=auth_res, fuzzy_distance=5))
+        auth_res = AuthorizationContext(
+            user_id="u2",
+            user_classification_level=DataClassification.RESTRICTED,
+            user_role="investigator",
+            purpose="fraud_investigation",
+        )
+        r2 = search_svc.search(
+            SearchQueryV2(
+                query="person",
+                search_type=SearchType.FUZZY,
+                authorization=auth_res,
+                fuzzy_distance=5,
+            )
+        )
         assert r2.authorized_results == 2  # PUBLIC + RESTRICTED
         assert r2.blocked_results == 1
 
         # LE user
-        auth_le = AuthorizationContext(user_id="u3", user_classification_level=DataClassification.LAW_ENFORCEMENT, user_role="investigator", purpose="law_enforcement")
-        r3 = search_svc.search(SearchQueryV2(query="person", search_type=SearchType.FUZZY, authorization=auth_le, fuzzy_distance=5))
+        auth_le = AuthorizationContext(
+            user_id="u3",
+            user_classification_level=DataClassification.LAW_ENFORCEMENT,
+            user_role="investigator",
+            purpose="law_enforcement",
+        )
+        r3 = search_svc.search(
+            SearchQueryV2(
+                query="person",
+                search_type=SearchType.FUZZY,
+                authorization=auth_le,
+                fuzzy_distance=5,
+            )
+        )
         assert r3.authorized_results == 3  # All
         assert r3.blocked_results == 0

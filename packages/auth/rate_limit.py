@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Callable
 
 import structlog
 
@@ -27,6 +26,7 @@ DEFAULT_RATE_LIMITS = {
 @dataclass
 class RateLimitBucket:
     """Token bucket for rate limiting."""
+
     user_id: str
     requests: list[float] = field(default_factory=list)
     max_requests: int = 60
@@ -52,7 +52,7 @@ class RateLimitBucket:
 
 class RateLimiter:
     """In-memory rate limiter (development).
-    
+
     Production: Redis-backed distributed rate limiter
     (REQUIRES EXTERNAL INFRASTRUCTURE).
     """
@@ -102,7 +102,9 @@ class RateLimiter:
         if not bucket:
             limit_config = self._limits.get(role)
             if limit_config is None:
-                limit_config = next(iter(self._limits.values()), {"requests": 60, "window_seconds": 60})
+                limit_config = next(
+                    iter(self._limits.values()), {"requests": 60, "window_seconds": 60}
+                )
             return limit_config["requests"]
         return bucket.remaining()
 

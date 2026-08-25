@@ -148,9 +148,7 @@ class AdjacencyListGraph(GraphStore):
                             continue
                         edges.append(edge)
                         neighbor_id = (
-                            edge.to_entity_id
-                            if edge.from_entity_id == eid
-                            else edge.from_entity_id
+                            edge.to_entity_id if edge.from_entity_id == eid else edge.from_entity_id
                         )
                         if neighbor_id not in visited:
                             neighbor = self._nodes.get(neighbor_id)
@@ -190,22 +188,18 @@ class AdjacencyListGraph(GraphStore):
                     if edge is None:
                         continue
                     neighbor = (
-                        edge.to_entity_id
-                        if edge.from_entity_id == current
-                        else edge.from_entity_id
+                        edge.to_entity_id if edge.from_entity_id == current else edge.from_entity_id
                     )
                     if neighbor == to_entity_id:
                         # Found path
-                        all_node_ids = path_nodes + [neighbor]
-                        all_edge_ids = path_edges + [edge_id]
+                        all_node_ids = [*path_nodes, neighbor]
+                        all_edge_ids = [*path_edges, edge_id]
                         nodes = [self._nodes[nid] for nid in all_node_ids if nid in self._nodes]
                         edges = [self._edges[eid] for eid in all_edge_ids if eid in self._edges]
                         return GraphPath(nodes=nodes, edges=edges, length=len(edges))
                     if neighbor not in visited:
                         visited.add(neighbor)
-                        queue.append(
-                            (neighbor, path_nodes + [neighbor], path_edges + [edge_id])
-                        )
+                        queue.append((neighbor, [*path_nodes, neighbor], [*path_edges, edge_id]))
 
         return None
 
@@ -215,7 +209,8 @@ class AdjacencyListGraph(GraphStore):
         del self._nodes[entity_id]
         # Remove all edges connected to this node
         edges_to_remove = [
-            eid for eid, e in self._edges.items()
+            eid
+            for eid, e in self._edges.items()
             if e.from_entity_id == entity_id or e.to_entity_id == entity_id
         ]
         for eid in edges_to_remove:

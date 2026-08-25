@@ -16,27 +16,18 @@
 from __future__ import annotations
 
 import asyncio
-import hashlib
-import json
 import os
 import time
 from typing import Any
 
 import structlog
 from openai import AsyncOpenAI
-from tenacity import (
-    retry,
-    retry_if_exception_type,
-    stop_after_attempt,
-    wait_exponential,
-)
 
 from common.model_gateway import (
     BaseModelGateway,
     ModelProvider,
     ModelRequest,
     ModelResponse,
-    TaskType,
 )
 
 logger = structlog.get_logger("gfin.openai_gateway")
@@ -118,9 +109,7 @@ class OpenAIGateway(BaseModelGateway):
             return await self._call_openai(request, operation)
         elif provider == ModelProvider.LOCAL:
             if self._fallback_gateway:
-                return await self._fallback_gateway._call_provider(
-                    provider, request, operation
-                )
+                return await self._fallback_gateway._call_provider(provider, request, operation)
             return await self._call_local_fallback(request, operation)
         else:
             return await self._call_local_fallback(request, operation)
@@ -175,7 +164,7 @@ class OpenAIGateway(BaseModelGateway):
             return ModelResponse(
                 content=content,
                 provider="openai",
-                model=response.model or self._model,
+                model=str(response.model or self._model),
                 task_type=request.task_type.value,
                 tokens_used=tokens,
                 latency_ms=latency_ms,
@@ -211,13 +200,13 @@ class OpenAIGateway(BaseModelGateway):
                         attempt=attempt + 1,
                         tokens=response.usage.total_tokens if response.usage else 0,
                     )
-                    await asyncio.sleep(2 ** attempt)
+                    await asyncio.sleep(2**attempt)
                     continue
                 return response
             except Exception as e:
                 last_error = e
                 if attempt < self._max_retries - 1:
-                    wait_time = 2 ** attempt
+                    wait_time = 2**attempt
                     logger.warning(
                         "openai_retry",
                         attempt=attempt + 1,
@@ -292,8 +281,8 @@ class OpenAIGateway(BaseModelGateway):
     async def health_check(self) -> dict[str, bool]:
         """Check if OpenAI is available."""
         try:
-            response = await self._client.chat.completions.create(
-                model=self._model,
+            await self._client.chat.completions.create(
+                model=self._model or "gpt-4o-mini",
                 messages=[{"role": "user", "content": "ping"}],
                 max_completion_tokens=5,
             )

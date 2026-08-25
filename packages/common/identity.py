@@ -9,7 +9,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -64,13 +64,19 @@ class IdentityProvider(ABC):
 
     @abstractmethod
     async def authorize(
-        self, context: AuthContext, action: str, resource_type: str, resource_classification: DataClassification
+        self,
+        context: AuthContext,
+        action: str,
+        resource_type: str,
+        resource_classification: DataClassification,
     ) -> bool:
         """Check if user is authorized to perform an action on a resource."""
         ...
 
     @abstractmethod
-    async def create_token(self, user_id: str, role: UserRole, organization_id: str | None = None) -> str:
+    async def create_token(
+        self, user_id: str, role: UserRole, organization_id: str | None = None
+    ) -> str:
         """Create a new authentication token."""
         ...
 
@@ -100,7 +106,7 @@ class Base44IdentityProvider(IdentityProvider):
         context = self._tokens.get(token)
         if context is None:
             return None
-        if context.expires_at and datetime.now(timezone.utc) > context.expires_at:
+        if context.expires_at and datetime.now(UTC) > context.expires_at:
             del self._tokens[token]
             return None
         return context
@@ -119,7 +125,9 @@ class Base44IdentityProvider(IdentityProvider):
                 return False
         return True
 
-    async def create_token(self, user_id: str, role: UserRole, organization_id: str | None = None) -> str:
+    async def create_token(
+        self, user_id: str, role: UserRole, organization_id: str | None = None
+    ) -> str:
         from uuid import uuid4
 
         token = f"tkn-{uuid4().hex}"

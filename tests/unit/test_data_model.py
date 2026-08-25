@@ -8,25 +8,49 @@ Tests cover:
 - Entity-relationship integration
 """
 
-import pytest
 from datetime import datetime
 
-from schemas.enums import EntityType, RelationshipType, DataClassification, Confidence
-from schemas.entities import (
-    PersonEntity, OrganizationEntity, PhoneEntity, EmailEntity, DomainEntity,
-    URLEntity, IPEntity, ASNEntity, NetworkEntity, DNSRecordEntity,
-    CertificateEntity, WebsiteEntity, TelegramIdentifierEntity, SocialAccountEntity,
-    CryptoWalletEntity, TransactionEntity, PaymentIdentifierEntity,
-    DocumentEntity, ImageEntity, ReportEntity, CaseEntity, CampaignEntity,
-    InfrastructureClusterEntity, FraudPatternEntity, AlertEntity, CountryEntity,
-    ENTITY_TYPE_TO_CLASS, create_entity,
-)
-from schemas.relationships import (
-    Relationship, create_relationship, RELATIONSHIP_TYPE_TO_CLASS,
-)
+import pytest
 
+from schemas.entities import (
+    ENTITY_TYPE_TO_CLASS,
+    AlertEntity,
+    ASNEntity,
+    CampaignEntity,
+    CaseEntity,
+    CertificateEntity,
+    CountryEntity,
+    CryptoWalletEntity,
+    DNSRecordEntity,
+    DocumentEntity,
+    DomainEntity,
+    EmailEntity,
+    FraudPatternEntity,
+    ImageEntity,
+    InfrastructureClusterEntity,
+    IPEntity,
+    NetworkEntity,
+    OrganizationEntity,
+    PaymentIdentifierEntity,
+    PersonEntity,
+    PhoneEntity,
+    ReportEntity,
+    SocialAccountEntity,
+    TelegramIdentifierEntity,
+    TransactionEntity,
+    URLEntity,
+    WebsiteEntity,
+    create_entity,
+)
+from schemas.enums import Confidence, DataClassification, EntityType, RelationshipType
+from schemas.relationships import (
+    RELATIONSHIP_TYPE_TO_CLASS,
+    Relationship,
+    create_relationship,
+)
 
 # ─── Entity Model Tests ───
+
 
 class TestPersonEntity:
     def test_valid_person(self):
@@ -255,7 +279,9 @@ class TestSocialAccountEntity:
 
 class TestCryptoWalletEntity:
     def test_valid_wallet(self):
-        w = CryptoWalletEntity(blockchain="bitcoin", address="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh")
+        w = CryptoWalletEntity(
+            blockchain="bitcoin", address="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"
+        )
         assert w.entity_type == EntityType.CRYPTO_WALLET
         assert "bitcoin:" in w.normalized_value
 
@@ -267,8 +293,11 @@ class TestCryptoWalletEntity:
 class TestTransactionEntity:
     def test_valid_transaction(self):
         t = TransactionEntity(
-            blockchain="ethereum", tx_hash="0xabc123",
-            from_address="0xfrom", to_address="0xto", amount=1.5
+            blockchain="ethereum",
+            tx_hash="0xabc123",
+            from_address="0xfrom",
+            to_address="0xto",
+            amount=1.5,
         )
         assert t.entity_type == EntityType.TRANSACTION
         assert "ethereum:0xabc123" in t.normalized_value
@@ -378,6 +407,7 @@ class TestCountryEntity:
 
 # ─── Entity Factory Tests ───
 
+
 class TestEntityFactory:
     def test_create_person(self):
         p = create_entity("PERSON", full_name="Test Person")
@@ -407,6 +437,7 @@ class TestEntityFactory:
 
 
 # ─── Relationship Model Tests ───
+
 
 class TestRelationship:
     def test_valid_relationship(self):
@@ -449,13 +480,18 @@ class TestRelationship:
 
 # ─── Relationship Factory Tests ───
 
+
 class TestRelationshipFactory:
     def test_create_owns(self):
-        rel = create_relationship("OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1")
+        rel = create_relationship(
+            "OWNS", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1"
+        )
         assert rel.relationship_type == "OWNS"
 
     def test_create_resolves_to(self):
-        rel = create_relationship("RESOLVES_TO", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1")
+        rel = create_relationship(
+            "RESOLVES_TO", from_entity_id="ENT-1", to_entity_id="ENT-2", source_id="SRC-1"
+        )
         assert rel.relationship_type == "RESOLVES_TO"
 
     def test_create_unknown_type(self):
@@ -469,6 +505,7 @@ class TestRelationshipFactory:
 
 
 # ─── Integration Tests ───
+
 
 class TestEntityRelationshipIntegration:
     def test_domain_resolves_to_ip(self):
@@ -509,13 +546,13 @@ class TestEntityRelationshipIntegration:
 
     def test_entity_has_classification(self):
         person = create_entity("PERSON", full_name="Restricted Person")
-        assert hasattr(person, 'classification')
+        assert hasattr(person, "classification")
         assert person.classification.classification == DataClassification.PUBLIC
 
     def test_entity_has_provenance_field(self):
         domain = create_entity("DOMAIN", domain="test.com")
         assert domain.provenance is None  # Not set by default, but field exists
-        assert hasattr(domain, 'provenance')
+        assert hasattr(domain, "provenance")
 
     def test_entity_has_confidence(self):
         ip = create_entity("IP", ip="8.8.8.8")

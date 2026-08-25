@@ -16,10 +16,10 @@ from pydantic import BaseModel, Field
 from schemas.base import utc_now
 from schemas.enums import DataClassification
 
-
 # ═══════════════════════════════════════════════
 # SEARCH QUERY TYPES
 # ═══════════════════════════════════════════════
+
 
 class SearchType(str, Enum):
     EXACT = "exact"
@@ -48,9 +48,15 @@ class AuthorizationContext(BaseModel):
 class DataSharingPolicy(BaseModel):
     policy_id: str = "DSP-DEFAULT"
     policy_version: str = "1.0"
-    approved_purposes: list[str] = Field(default_factory=lambda: [
-        "fraud_investigation", "law_enforcement", "research", "compliance", "internal_review"
-    ])
+    approved_purposes: list[str] = Field(
+        default_factory=lambda: [
+            "fraud_investigation",
+            "law_enforcement",
+            "research",
+            "compliance",
+            "internal_review",
+        ]
+    )
     allowed_jurisdictions: list[str] = Field(default_factory=list)
     no_share_fields: list[str] = Field(default_factory=list)
     named_partners: list[str] = Field(default_factory=list)
@@ -119,6 +125,7 @@ class SearchResponseV2(BaseModel):
 # LEVENSHTEIN DISTANCE
 # ═══════════════════════════════════════════════
 
+
 def levenshtein(s1: str, s2: str, max_dist: int | None = None) -> int:
     if s1 == s2:
         return 0
@@ -141,9 +148,10 @@ def levenshtein(s1: str, s2: str, max_dist: int | None = None) -> int:
 
 def normalize_query(text: str) -> str:
     import re
+
     text = text.lower().strip()
-    text = re.sub(r'[^\w\s@.+\-]', '', text)
-    text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"[^\w\s@.+\-]", "", text)
+    text = re.sub(r"\s+", " ", text)
     return text
 
 
@@ -177,10 +185,13 @@ def can_access(entity_classification, entity_org_id, entity_jurisdiction, auth):
     if entity_org_id and auth.organization_id:
         if entity_org_id != auth.organization_id and auth.user_role != "admin":
             return False, "Organization isolation — different organization"
-    if (entity_classification == DataClassification.LAW_ENFORCEMENT.value
-            and auth.user_role not in ("admin", "investigator")
-            and entity_jurisdiction and auth.jurisdiction
-            and entity_jurisdiction != auth.jurisdiction):
+    if (
+        entity_classification == DataClassification.LAW_ENFORCEMENT.value
+        and auth.user_role not in ("admin", "investigator")
+        and entity_jurisdiction
+        and auth.jurisdiction
+        and entity_jurisdiction != auth.jurisdiction
+    ):
         return False, "Jurisdiction restriction"
     return True, "Access granted"
 
@@ -189,53 +200,120 @@ def check_sharing_policy(entity, auth, policy):
     entity_id = getattr(entity, "id", "unknown")
     ts = utc_now()
     if auth.purpose is None:
-        return False, "No purpose provided — sharing denied", PolicyDecision(
-            policy_id=policy.policy_id, policy_version=policy.policy_version,
-            entity_id=entity_id, decision="DENIED",
-            reason="No purpose provided — data-sharing requires explicit purpose",
-            requester=auth.user_id, purpose=None, timestamp=ts)
+        return (
+            False,
+            "No purpose provided — sharing denied",
+            PolicyDecision(
+                policy_id=policy.policy_id,
+                policy_version=policy.policy_version,
+                entity_id=entity_id,
+                decision="DENIED",
+                reason="No purpose provided — data-sharing requires explicit purpose",
+                requester=auth.user_id,
+                purpose=None,
+                timestamp=ts,
+            ),
+        )
     if auth.purpose not in policy.approved_purposes:
-        return False, f"Purpose not approved: {auth.purpose}", PolicyDecision(
-            policy_id=policy.policy_id, policy_version=policy.policy_version,
-            entity_id=entity_id, decision="DENIED",
-            reason=f"Purpose '{auth.purpose}' not approved",
-            requester=auth.user_id, purpose=auth.purpose, timestamp=ts)
+        return (
+            False,
+            f"Purpose not approved: {auth.purpose}",
+            PolicyDecision(
+                policy_id=policy.policy_id,
+                policy_version=policy.policy_version,
+                entity_id=entity_id,
+                decision="DENIED",
+                reason=f"Purpose '{auth.purpose}' not approved",
+                requester=auth.user_id,
+                purpose=auth.purpose,
+                timestamp=ts,
+            ),
+        )
     entity_class = getattr(getattr(entity, "classification", None), "classification", None)
     if hasattr(entity_class, "value"):
-        entity_class = entity_class.value
-    if (auth.user_role == "public" or auth.user_classification_level == DataClassification.PUBLIC):
-        if entity_class and entity_class in (DataClassification.RESTRICTED.value, DataClassification.LAW_ENFORCEMENT.value, DataClassification.HIGHLY_RESTRICTED.value):
+        entity_class = entity_class.value  # type: ignore[union-attr]
+    if auth.user_role == "public" or auth.user_classification_level == DataClassification.PUBLIC:
+        if entity_class and entity_class in (
+            DataClassification.RESTRICTED.value,
+            DataClassification.LAW_ENFORCEMENT.value,
+            DataClassification.HIGHLY_RESTRICTED.value,
+        ):
             if not policy.allow_public_access:
-                return False, "Public access denied for restricted data", PolicyDecision(
-                    policy_id=policy.policy_id, policy_version=policy.policy_version,
-                    entity_id=entity_id, decision="DENIED",
-                    reason=f"Public access not allowed for {entity_class} data",
-                    requester=auth.user_id, purpose=auth.purpose, timestamp=ts)
+                return (
+                    False,
+                    "Public access denied for restricted data",
+                    PolicyDecision(
+                        policy_id=policy.policy_id,
+                        policy_version=policy.policy_version,
+                        entity_id=entity_id,
+                        decision="DENIED",
+                        reason=f"Public access not allowed for {entity_class} data",
+                        requester=auth.user_id,
+                        purpose=auth.purpose,
+                        timestamp=ts,
+                    ),
+                )
     if policy.allowed_jurisdictions:
         entity_juris = getattr(entity, "jurisdiction", None)
-        if entity_juris and entity_juris not in policy.allowed_jurisdictions and auth.jurisdiction not in policy.allowed_jurisdictions:
-            return False, f"Cross-border transfer denied: {entity_juris}", PolicyDecision(
-                policy_id=policy.policy_id, policy_version=policy.policy_version,
-                entity_id=entity_id, decision="DENIED",
-                reason=f"Jurisdiction {entity_juris} not in allowed jurisdictions",
-                requester=auth.user_id, purpose=auth.purpose, timestamp=ts)
+        if (
+            entity_juris
+            and entity_juris not in policy.allowed_jurisdictions
+            and auth.jurisdiction not in policy.allowed_jurisdictions
+        ):
+            return (
+                False,
+                f"Cross-border transfer denied: {entity_juris}",
+                PolicyDecision(
+                    policy_id=policy.policy_id,
+                    policy_version=policy.policy_version,
+                    entity_id=entity_id,
+                    decision="DENIED",
+                    reason=f"Jurisdiction {entity_juris} not in allowed jurisdictions",
+                    requester=auth.user_id,
+                    purpose=auth.purpose,
+                    timestamp=ts,
+                ),
+            )
     if entity_class == DataClassification.HIGHLY_RESTRICTED.value and policy.named_partners:
-        if auth.organization_id and auth.organization_id not in policy.named_partners and auth.user_role != "admin":
-            return False, "Not a named partner for highly restricted data", PolicyDecision(
-                policy_id=policy.policy_id, policy_version=policy.policy_version,
-                entity_id=entity_id, decision="DENIED",
-                reason=f"Highly restricted data requires named partner",
-                requester=auth.user_id, purpose=auth.purpose, timestamp=ts)
-    return True, "Sharing allowed", PolicyDecision(
-        policy_id=policy.policy_id, policy_version=policy.policy_version,
-        entity_id=entity_id, decision="ALLOWED",
-        reason="Data-sharing policy checks passed",
-        requester=auth.user_id, purpose=auth.purpose, timestamp=ts)
+        if (
+            auth.organization_id
+            and auth.organization_id not in policy.named_partners
+            and auth.user_role != "admin"
+        ):
+            return (
+                False,
+                "Not a named partner for highly restricted data",
+                PolicyDecision(
+                    policy_id=policy.policy_id,
+                    policy_version=policy.policy_version,
+                    entity_id=entity_id,
+                    decision="DENIED",
+                    reason="Highly restricted data requires named partner",
+                    requester=auth.user_id,
+                    purpose=auth.purpose,
+                    timestamp=ts,
+                ),
+            )
+    return (
+        True,
+        "Sharing allowed",
+        PolicyDecision(
+            policy_id=policy.policy_id,
+            policy_version=policy.policy_version,
+            entity_id=entity_id,
+            decision="ALLOWED",
+            reason="Data-sharing policy checks passed",
+            requester=auth.user_id,
+            purpose=auth.purpose,
+            timestamp=ts,
+        ),
+    )
 
 
 # ═══════════════════════════════════════════════
 # ENHANCED SEARCH SERVICE
 # ═══════════════════════════════════════════════
+
 
 class EnhancedSearchService:
     def __init__(self, repository=None, graph_store=None, campaign_store=None, report_store=None):
@@ -273,7 +351,7 @@ class EnhancedSearchService:
             if eid not in self._normalized_index[nval]:
                 self._normalized_index[nval].append(eid)
         raw_values = getattr(entity, "raw_values", [])
-        all_text = " ".join([nval] + list(raw_values))
+        all_text = " ".join([nval, *list(raw_values)])
         for token in tokenize(all_text):
             if token not in self._token_index:
                 self._token_index[token] = []
@@ -306,7 +384,7 @@ class EnhancedSearchService:
                 if not self._normalized_index[nval]:
                     del self._normalized_index[nval]
         raw_values = getattr(entity, "raw_values", [])
-        all_text = " ".join([nval] + list(raw_values))
+        all_text = " ".join([nval, *list(raw_values)])
         for token in tokenize(all_text):
             if token in self._token_index and entity_id in self._token_index[token]:
                 self._token_index[token].remove(entity_id)
@@ -317,10 +395,19 @@ class EnhancedSearchService:
     def search(self, query):
         start_time = datetime.now()
         if query.authorization is None:
-            return SearchResponseV2(results=[], total=0, search_type=query.search_type.value if hasattr(query.search_type, 'value') else str(query.search_type), query_time_ms=0.0, authorized_results=0, blocked_results=0)
-        
+            return SearchResponseV2(
+                results=[],
+                total=0,
+                search_type=query.search_type.value
+                if hasattr(query.search_type, "value")
+                else str(query.search_type),
+                query_time_ms=0.0,
+                authorized_results=0,
+                blocked_results=0,
+            )
+
         search_type = query.search_type
-        if hasattr(search_type, 'value'):
+        if hasattr(search_type, "value"):
             search_type = search_type.value
 
         if search_type == SearchType.EXACT.value:
@@ -346,7 +433,10 @@ class EnhancedSearchService:
 
         authorized_results = []
         blocked_count = 0
-        is_campaign_or_report_search = search_type in (SearchType.CAMPAIGN.value, SearchType.REPORT.value)
+        is_campaign_or_report_search = search_type in (
+            SearchType.CAMPAIGN.value,
+            SearchType.REPORT.value,
+        )
 
         for entity_id, score, explanation in raw_results:
             if is_campaign_or_report_search:
@@ -354,20 +444,28 @@ class EnhancedSearchService:
                     if search_type == SearchType.REPORT.value:
                         entity = self._report_index.get(entity_id, {})
                         result = SearchResultV2(
-                            entity_id=entity_id, entity_type="report",
-                            normalized_value=getattr(entity, "description", "") or getattr(entity, "name", "") or "",
-                            raw_value="", score=score,
+                            entity_id=entity_id,
+                            entity_type="report",
+                            normalized_value=getattr(entity, "description", "")
+                            or getattr(entity, "name", "")
+                            or "",
+                            raw_value="",
+                            score=score,
                             explanation=explanation if query.explain else {},
-                            metadata={"access_reason": "Authenticated campaign/report search"})
+                            metadata={"access_reason": "Authenticated campaign/report search"},
+                        )
                         authorized_results.append(result)
                     else:
                         entity = self._campaign_index.get(entity_id, {})
                         result = SearchResultV2(
-                            entity_id=entity_id, entity_type="campaign",
+                            entity_id=entity_id,
+                            entity_type="campaign",
                             normalized_value=getattr(entity, "name", "") or "",
-                            raw_value="", score=score,
+                            raw_value="",
+                            score=score,
                             explanation=explanation if query.explain else {},
-                            metadata={"access_reason": "Authenticated campaign/report search"})
+                            metadata={"access_reason": "Authenticated campaign/report search"},
+                        )
                         authorized_results.append(result)
                 continue
 
@@ -378,13 +476,15 @@ class EnhancedSearchService:
             classification = getattr(entity, "classification", None)
             if classification:
                 entity_class = getattr(classification, "classification", None)
-                if hasattr(entity_class, 'value'):
-                    entity_class = entity_class.value
+                if hasattr(entity_class, "value"):
+                    entity_class = entity_class.value  # type: ignore[union-attr]
             entity_org = getattr(entity, "organization_id", None)
             entity_juris = getattr(entity, "jurisdiction", None)
             can, reason = can_access(entity_class, entity_org, entity_juris, query.authorization)
             if can:
-                can_share, share_reason, policy_decision = check_sharing_policy(entity, query.authorization, self._sharing_policy)
+                can_share, share_reason, policy_decision = check_sharing_policy(
+                    entity, query.authorization, self._sharing_policy
+                )
                 if policy_decision:
                     self._policy_audit.append(policy_decision)
                 if not can_share:
@@ -398,11 +498,14 @@ class EnhancedSearchService:
                     entity_id=entity_id,
                     entity_type=getattr(entity, "entity_type", "unknown"),
                     normalized_value=getattr(entity, "normalized_value", ""),
-                    raw_value=getattr(entity, "raw_values", [""])[0] if getattr(entity, "raw_values", []) else "",
+                    raw_value=getattr(entity, "raw_values", [""])[0]
+                    if getattr(entity, "raw_values", [])
+                    else "",
                     score=score,
                     explanation=explanation if query.explain else explanation,
                     related_entities=explanation.get("related_entities", []),
-                    metadata={"access_reason": reason})
+                    metadata={"access_reason": reason},
+                )
                 authorized_results.append(result)
             else:
                 blocked_count += 1
@@ -410,11 +513,19 @@ class EnhancedSearchService:
         total = len(authorized_results)
         offset = query.offset
         limit = query.limit
-        paginated = authorized_results[offset:offset + limit]
+        paginated = authorized_results[offset : offset + limit]
         elapsed = (datetime.now() - start_time).total_seconds() * 1000
-        return SearchResponseV2(results=paginated, total=total, limit=limit, offset=offset,
-            has_more=(offset + limit) < total, search_type=search_type, query_time_ms=round(elapsed, 2),
-            authorized_results=len(authorized_results), blocked_results=blocked_count)
+        return SearchResponseV2(
+            results=paginated,
+            total=total,
+            limit=limit,
+            offset=offset,
+            has_more=(offset + limit) < total,
+            search_type=search_type,
+            query_time_ms=round(elapsed, 2),
+            authorized_results=len(authorized_results),
+            blocked_results=blocked_count,
+        )
 
     def _search_exact(self, query):
         results = []
@@ -424,9 +535,8 @@ class EnhancedSearchService:
                 results.append((eid, 1.0, {"match_type": "exact", "field": "normalized_value"}))
         for eid, entity in self._entities.items():
             raw_values = getattr(entity, "raw_values", [])
-            if q in raw_values:
-                if eid not in [r[0] for r in results]:
-                    results.append((eid, 1.0, {"match_type": "exact", "field": "raw_values"}))
+            if q in raw_values and eid not in [r[0] for r in results]:
+                results.append((eid, 1.0, {"match_type": "exact", "field": "raw_values"}))
         return results
 
     def _search_normalized(self, query):
@@ -448,32 +558,52 @@ class EnhancedSearchService:
         norm_q = normalize_query(query.query)
         max_dist = query.fuzzy_distance
         q_tokens = tokenize(norm_q)
-        candidates_checked = 0
-        MAX_CANDIDATES = 10000
-        for nval, eids in self._normalized_index.items():
-            candidates_checked += 1
-            if candidates_checked > MAX_CANDIDATES:
+        max_candidates = 10000
+        for candidates_checked, (nval, eids) in enumerate(self._normalized_index.items(), start=1):
+            if candidates_checked > max_candidates:
                 break
             dist = levenshtein(norm_q, nval, max_dist=max_dist)
             if dist <= max_dist:
                 score = 1.0 - (dist / max(len(norm_q), len(nval), 1))
                 for eid in eids:
-                    results.append((eid, score, {"match_type": "fuzzy", "distance": dist, "max_distance": max_dist}))
+                    results.append(
+                        (
+                            eid,
+                            score,
+                            {"match_type": "fuzzy", "distance": dist, "max_distance": max_dist},
+                        )
+                    )
         if q_tokens:
             for token, eids in self._token_index.items():
                 for qt in q_tokens:
                     if token == qt:
                         for eid in eids:
                             if eid not in [r[0] for r in results]:
-                                results.append((eid, 1.0, {"match_type": "fuzzy_token_exact", "matched_token": qt}))
+                                results.append(
+                                    (
+                                        eid,
+                                        1.0,
+                                        {"match_type": "fuzzy_token_exact", "matched_token": qt},
+                                    )
+                                )
                     else:
                         dist = levenshtein(qt, token, max_dist=max_dist)
                         if dist <= max_dist:
                             score = 1.0 - (dist / max(len(qt), len(token), 1))
                             for eid in eids:
                                 if eid not in [r[0] for r in results]:
-                                    results.append((eid, score * 0.8, {"match_type": "fuzzy_token", "matched_token": token, "distance": dist}))
-        seen = {}
+                                    results.append(
+                                        (
+                                            eid,
+                                            score * 0.8,
+                                            {
+                                                "match_type": "fuzzy_token",
+                                                "matched_token": token,
+                                                "distance": dist,
+                                            },
+                                        )
+                                    )
+        seen: dict = {}
         for eid, score, explanation in results:
             if eid not in seen or score > seen[eid][1]:
                 seen[eid] = (eid, score, explanation)
@@ -495,7 +625,9 @@ class EnhancedSearchService:
                 elif any(query.query.lower() in rv.lower() for rv in raw_values):
                     score = 0.7
                 if score > 0:
-                    results.append((eid, score, {"match_type": "entity", "entity_type": entity_type}))
+                    results.append(
+                        (eid, score, {"match_type": "entity", "entity_type": entity_type})
+                    )
         return results
 
     def _search_graph_assisted(self, query):
@@ -508,15 +640,27 @@ class EnhancedSearchService:
             for eid, score, _ in initial:
                 try:
                     import asyncio
+
                     loop = asyncio.new_event_loop()
-                    neighbors, edges = loop.run_until_complete(self._graph.get_neighbors(eid, max_depth=query.graph_depth))
+                    neighbors, edges = loop.run_until_complete(
+                        self._graph.get_neighbors(eid, max_depth=query.graph_depth)
+                    )
                     loop.close()
                     for neighbor in neighbors:
                         if neighbor.entity_id not in seen_ids:
                             related_score = score * 0.5
-                            results.append((neighbor.entity_id, related_score, {
-                                "match_type": "graph_assisted", "source_entity": eid,
-                                "graph_depth": query.graph_depth, "related_entities": [eid]}))
+                            results.append(
+                                (
+                                    neighbor.entity_id,
+                                    related_score,
+                                    {
+                                        "match_type": "graph_assisted",
+                                        "source_entity": eid,
+                                        "graph_depth": query.graph_depth,
+                                        "related_entities": [eid],
+                                    },
+                                )
+                            )
                             seen_ids.add(neighbor.entity_id)
                 except Exception:
                     pass
@@ -527,8 +671,12 @@ class EnhancedSearchService:
         norm_q = normalize_query(query.query).lower()
         for cid, campaign in self._campaign_index.items():
             campaign_name = getattr(campaign, "name", "")
-            campaign_desc = getattr(campaign, "fraud_type", "") or getattr(campaign, "description", "")
-            campaign_status = getattr(campaign, "campaign_status", "") or getattr(campaign, "status", "")
+            campaign_desc = getattr(campaign, "fraud_type", "") or getattr(
+                campaign, "description", ""
+            )
+            campaign_status = getattr(campaign, "campaign_status", "") or getattr(
+                campaign, "status", ""
+            )
             searchable = f"{campaign_name} {campaign_desc} {campaign_status}".lower()
             score = 0.0
             if norm_q and norm_q in searchable:
@@ -538,7 +686,16 @@ class EnhancedSearchService:
                     score = 0.8
                 else:
                     score = 0.6
-                results.append((cid, score, {"match_type": "campaign", "campaign_field": "name" if score == 1.0 else "other"}))
+                results.append(
+                    (
+                        cid,
+                        score,
+                        {
+                            "match_type": "campaign",
+                            "campaign_field": "name" if score == 1.0 else "other",
+                        },
+                    )
+                )
         return results
 
     def _search_infrastructure(self, query):
@@ -558,7 +715,9 @@ class EnhancedSearchService:
                     elif any(query.query.lower() in rv.lower() for rv in raw_values):
                         score = 0.7
                     if score > 0:
-                        results.append((eid, score, {"match_type": "infrastructure", "entity_type": etype}))
+                        results.append(
+                            (eid, score, {"match_type": "infrastructure", "entity_type": etype})
+                        )
         return results
 
     def _search_report(self, query):
@@ -577,7 +736,16 @@ class EnhancedSearchService:
                     score = 0.8
                 else:
                     score = 0.6
-                results.append((rid, score, {"match_type": "report", "report_field": "category" if score == 1.0 else "other"}))
+                results.append(
+                    (
+                        rid,
+                        score,
+                        {
+                            "match_type": "report",
+                            "report_field": "category" if score == 1.0 else "other",
+                        },
+                    )
+                )
         return results
 
     def get_metrics(self):

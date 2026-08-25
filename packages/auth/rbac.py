@@ -12,17 +12,16 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
-
-from pydantic import BaseModel, Field
 
 from schemas.enums import DataClassification, UserRole
 
 
 class Permission(str, Enum):
     """GFIN permissions — fine-grained actions that can be authorized."""
+
     # Entity operations
     ENTITY_READ = "entity:read"
     ENTITY_CREATE = "entity:create"
@@ -56,6 +55,7 @@ class Permission(str, Enum):
 
 class Decision(str, Enum):
     """Authorization decision."""
+
     ALLOW = "ALLOW"
     DENY = "DENY"
 
@@ -63,6 +63,7 @@ class Decision(str, Enum):
 @dataclass
 class AccessRequest:
     """ABAC access request — attributes used for policy evaluation."""
+
     user_id: str
     role: UserRole
     action: str
@@ -80,10 +81,11 @@ class AccessRequest:
 @dataclass
 class AccessDecision:
     """Authorization decision with reason."""
+
     decision: Decision
     reason: str
     request: AccessRequest
-    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    timestamp: datetime = field(default_factory=lambda: datetime.now(UTC))
 
 
 # Role → Permissions mapping (RBAC base layer)

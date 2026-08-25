@@ -35,7 +35,7 @@ def setup_logging(level: str = "INFO", json_logs: bool = False) -> None:
         processors.append(structlog.dev.ConsoleRenderer(colors=True))
 
     structlog.configure(
-        processors=processors,
+        processors=processors,  # type: ignore[arg-type]
         wrapper_class=structlog.make_filtering_bound_logger(
             getattr(logging, level.upper(), logging.INFO)
         ),

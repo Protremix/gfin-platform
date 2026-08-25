@@ -9,20 +9,25 @@ retries, dead-letter queues, deduplication, content hashing, crawl policies,
 robots/terms compliance, no bypass of auth/access controls.
 """
 
-import pytest
 import asyncio
-from datetime import datetime, timedelta
 
-from services.web_discovery import (
-    WebDiscoveryEngine, MockFetcher, FetchResult, ContentExtractor,
-    CrawlPolicyChecker, CrawlPolicy, RateLimiter,
-    CrawlJob, CrawlStatus, CrawlPriority,
-    ExtractedContent, PolicyCheckResult,
-)
+import pytest
+
 from schemas.base import utc_now
-
+from services.web_discovery import (
+    ContentExtractor,
+    CrawlPolicy,
+    CrawlPolicyChecker,
+    CrawlPriority,
+    CrawlStatus,
+    FetchResult,
+    MockFetcher,
+    RateLimiter,
+    WebDiscoveryEngine,
+)
 
 # ─── Fixtures ───
+
 
 @pytest.fixture
 def fetcher():
@@ -31,10 +36,16 @@ def fetcher():
         "https://evil.com",
         '<html><head><title>Phishing Site</title><meta name="description" content="Scam page"></head>'
         '<body><a href="/login">Login</a><a href="https://good.com">Good</a>'
-        '<p>Contact: scam@evil.com</p><p>Call: +34612345678</p></body></html>',
+        "<p>Contact: scam@evil.com</p><p>Call: +34612345678</p></body></html>",
     )
-    f.register_page("https://evil.com/login", "<html><head><title>Login</title></head><body>Login form</body></html>")
-    f.register_page("https://good.com", "<html><head><title>Good Site</title></head><body>Legitimate</body></html>")
+    f.register_page(
+        "https://evil.com/login",
+        "<html><head><title>Login</title></head><body>Login form</body></html>",
+    )
+    f.register_page(
+        "https://good.com",
+        "<html><head><title>Good Site</title></head><body>Legitimate</body></html>",
+    )
     return f
 
 
@@ -48,6 +59,7 @@ def engine(fetcher):
 # ═══════════════════════════════════════════════
 # SEED SUBMISSION AND JOB QUEUE
 # ═══════════════════════════════════════════════
+
 
 class TestSeedSubmission:
     def test_submit_seed(self, engine):
@@ -80,6 +92,7 @@ class TestSeedSubmission:
 # ═══════════════════════════════════════════════
 # CRAWL POLICY ENFORCEMENT
 # ═══════════════════════════════════════════════
+
 
 class TestCrawlPolicy:
     def test_scheme_allowed(self):
@@ -146,7 +159,9 @@ class TestCrawlPolicy:
     def test_tos_blocked_domain(self):
         """Terms of Service compliance should block crawling."""
         checker = CrawlPolicyChecker()
-        checker.register_policy(CrawlPolicy(respect_terms_of_service=True, blocked_by_tos=["evil.com"]))
+        checker.register_policy(
+            CrawlPolicy(respect_terms_of_service=True, blocked_by_tos=["evil.com"])
+        )
         result = checker.check("https://evil.com", depth=0)
         assert not result.allowed
         assert "Terms of Service" in result.reason
@@ -154,7 +169,9 @@ class TestCrawlPolicy:
     def test_tos_allowed_domain(self):
         """Domains not in ToS block list should be allowed."""
         checker = CrawlPolicyChecker()
-        checker.register_policy(CrawlPolicy(respect_terms_of_service=True, blocked_by_tos=["blocked.com"]))
+        checker.register_policy(
+            CrawlPolicy(respect_terms_of_service=True, blocked_by_tos=["blocked.com"])
+        )
         result = checker.check("https://evil.com", depth=0)
         assert result.allowed
 
@@ -165,7 +182,6 @@ class TestCrawlPolicy:
         checker.set_tos_blocked("evil.com")
         result = checker.check("https://evil.com", depth=0)
         assert not result.allowed
-
 
     def test_content_size_limit(self):
         checker = CrawlPolicyChecker()
@@ -183,6 +199,7 @@ class TestCrawlPolicy:
 # ═══════════════════════════════════════════════
 # MOCK FETCHER
 # ═══════════════════════════════════════════════
+
 
 class TestMockFetcher:
     def test_registered_fixture(self, fetcher):
@@ -205,29 +222,40 @@ class TestMockFetcher:
 # CONTENT EXTRACTION
 # ═══════════════════════════════════════════════
 
+
 class TestContentExtractor:
     def test_extract_title(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b"<html><title>Test Title</title><body>Content</body></html>")
+        result = FetchResult(
+            url="https://example.com",
+            content=b"<html><title>Test Title</title><body>Content</body></html>",
+        )
         extracted = extractor.extract(result, base_url="https://example.com")
         assert extracted.title == "Test Title"
 
     def test_extract_text(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b"<html><body><p>Hello World</p></body></html>")
+        result = FetchResult(
+            url="https://example.com", content=b"<html><body><p>Hello World</p></body></html>"
+        )
         extracted = extractor.extract(result)
         assert "Hello World" in extracted.text
 
     def test_extract_links(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b'<html><body><a href="/page1">Link1</a><a href="https://other.com">Link2</a></body></html>')
+        result = FetchResult(
+            url="https://example.com",
+            content=b'<html><body><a href="/page1">Link1</a><a href="https://other.com">Link2</a></body></html>',
+        )
         extracted = extractor.extract(result, base_url="https://example.com")
         assert "https://example.com/page1" in extracted.links
         assert "https://other.com" in extracted.links
 
     def test_extract_email(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b"<html><body>scam@evil.com</body></html>")
+        result = FetchResult(
+            url="https://example.com", content=b"<html><body>scam@evil.com</body></html>"
+        )
         extracted = extractor.extract(result)
         emails = [e for e in extracted.entities if e["type"] == "EMAIL"]
         assert len(emails) == 1
@@ -235,14 +263,18 @@ class TestContentExtractor:
 
     def test_extract_phone(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b"<html><body>+34612345678</body></html>")
+        result = FetchResult(
+            url="https://example.com", content=b"<html><body>+34612345678</body></html>"
+        )
         extracted = extractor.extract(result)
         phones = [e for e in extracted.entities if e["type"] == "PHONE"]
         assert len(phones) == 1
 
     def test_extract_ip(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b"<html><body>192.168.1.1</body></html>")
+        result = FetchResult(
+            url="https://example.com", content=b"<html><body>192.168.1.1</body></html>"
+        )
         extracted = extractor.extract(result)
         ips = [e for e in extracted.entities if e["type"] == "IP"]
         assert len(ips) == 1
@@ -250,13 +282,18 @@ class TestContentExtractor:
 
     def test_extract_metadata(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b'<html><head><meta name="description" content="Test page"></head></html>')
+        result = FetchResult(
+            url="https://example.com",
+            content=b'<html><head><meta name="description" content="Test page"></head></html>',
+        )
         extracted = extractor.extract(result)
         assert extracted.metadata.get("description") == "Test page"
 
     def test_extract_url_entities(self):
         extractor = ContentExtractor()
-        result = FetchResult(url="https://example.com", content=b'<html><body>https://link.com/page</body></html>')
+        result = FetchResult(
+            url="https://example.com", content=b"<html><body>https://link.com/page</body></html>"
+        )
         extracted = extractor.extract(result)
         urls = [e for e in extracted.entities if e["type"] == "URL"]
         assert len(urls) >= 1
@@ -272,6 +309,7 @@ class TestContentExtractor:
 # ═══════════════════════════════════════════════
 # DEDUPLICATION
 # ═══════════════════════════════════════════════
+
 
 class TestDeduplication:
     def test_url_normalization(self, engine):
@@ -301,6 +339,7 @@ class TestDeduplication:
 # ═══════════════════════════════════════════════
 # RETRIES AND DEAD-LETTER QUEUE
 # ═══════════════════════════════════════════════
+
 
 class TestRetriesAndDLQ:
     def test_retry_on_failure(self, fetcher):
@@ -341,6 +380,7 @@ class TestRetriesAndDLQ:
 # RATE LIMITING
 # ═══════════════════════════════════════════════
 
+
 class TestRateLimiting:
     def test_rate_limiter_allows_first(self):
         limiter = RateLimiter()
@@ -365,6 +405,7 @@ class TestRateLimiting:
 # OBSERVATION CREATION
 # ═══════════════════════════════════════════════
 
+
 class TestObservationCreation:
     def test_observation_created(self, engine):
         engine.submit_seed("https://evil.com")
@@ -385,6 +426,7 @@ class TestObservationCreation:
 # ═══════════════════════════════════════════════
 # SEED DISCOVERY
 # ═══════════════════════════════════════════════
+
 
 class TestSeedDiscovery:
     def test_discover_links(self, engine):
@@ -412,6 +454,7 @@ class TestSeedDiscovery:
 # METRICS
 # ═══════════════════════════════════════════════
 
+
 class TestMetrics:
     def test_empty_metrics(self, engine):
         metrics = engine.get_metrics()
@@ -430,6 +473,7 @@ class TestMetrics:
 # ═══════════════════════════════════════════════
 # NEGATIVE / FAIL-SAFE
 # ═══════════════════════════════════════════════
+
 
 class TestNegativeFailSafe:
     def test_no_fixture_returns_404(self, fetcher):
@@ -451,7 +495,9 @@ class TestNegativeFailSafe:
 
     def test_policy_blocked_url(self, fetcher):
         engine = WebDiscoveryEngine(fetcher=fetcher)
-        engine._policy_checker.register_policy(CrawlPolicy(request_delay_ms=0, blocked_domains=["evil.com"]))
+        engine._policy_checker.register_policy(
+            CrawlPolicy(request_delay_ms=0, blocked_domains=["evil.com"])
+        )
         engine.submit_seed("https://evil.com")
         asyncio.run(engine.process_all())
         metrics = engine.get_metrics()
@@ -461,6 +507,7 @@ class TestNegativeFailSafe:
 # ═══════════════════════════════════════════════
 # INTEGRATION
 # ═══════════════════════════════════════════════
+
 
 class TestIntegration:
     def test_full_crawl_workflow(self, fetcher):
@@ -477,6 +524,7 @@ class TestIntegration:
 
     def test_evidence_integration(self, fetcher):
         from services.evidence_vault import EvidenceVault
+
         vault = EvidenceVault()
         engine = WebDiscoveryEngine(fetcher=fetcher, evidence_vault=vault)
         engine._policy_checker.register_policy(CrawlPolicy(request_delay_ms=0))

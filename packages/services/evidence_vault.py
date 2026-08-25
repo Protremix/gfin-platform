@@ -1,3 +1,6 @@
+from __future__ import annotations
+from typing import List
+
 # GFIN Evidence Vault — Module 06
 #
 # Per Master Spec §10 (Evidence Vault):
@@ -14,7 +17,6 @@
 # Layer A: In-memory evidence vault with content storage, hash verification, custody chain
 # Layer B: WORM/immutable object storage, KMS, tamper-evident audit (REQUIRES EXTERNAL INFRASTRUCTURE)
 
-from __future__ import annotations
 
 import hashlib
 from datetime import datetime, timedelta
@@ -27,13 +29,14 @@ from pydantic import BaseModel, Field
 from schemas.base import BaseEvidence, EvidenceId, utc_now
 from schemas.enums import DataClassification
 
-
 # ═══════════════════════════════════════════════
 # CHAIN OF CUSTODY
 # ═══════════════════════════════════════════════
 
+
 class CustodyAction(str, Enum):
     """Actions in the chain of custody."""
+
     CREATED = "CREATED"
     RECEIVED = "RECEIVED"
     ACCESSED = "ACCESSED"
@@ -49,6 +52,7 @@ class CustodyEvent(BaseModel):
     Chain of custody tracks every action taken on an evidence item,
     maintaining integrity and traceability.
     """
+
     event_id: str = Field(default_factory=lambda: f"CSY-{uuid4().hex[:8].upper()}")
     evidence_id: EvidenceId
     action: CustodyAction
@@ -65,11 +69,13 @@ class CustodyEvent(BaseModel):
 # PROCESSING HISTORY ENTRY
 # ═══════════════════════════════════════════════
 
+
 class ProcessingEntry(BaseModel):
     """An entry in the processing history of an evidence item.
 
     Append-only record of transformations applied to evidence.
     """
+
     entry_id: str = Field(default_factory=lambda: f"PHI-{uuid4().hex[:8].upper()}")
     operation: str  # e.g., "hash_computed", "ocr_extracted", "virus_scanned"
     actor: str  # component or user that performed the operation
@@ -86,12 +92,14 @@ class ProcessingEntry(BaseModel):
 # STORED EVIDENCE (metadata + content)
 # ═══════════════════════════════════════════════
 
+
 class StoredEvidence(BaseModel):
     """Evidence item with content stored alongside metadata.
 
     Layer A: content stored in memory.
     Layer B: content stored in S3-compatible / WORM storage.
     """
+
     evidence: BaseEvidence
     content: bytes
     custody_chain: list[CustodyEvent] = Field(default_factory=list)
@@ -104,8 +112,10 @@ class StoredEvidence(BaseModel):
 # VERIFICATION RESULT
 # ═══════════════════════════════════════════════
 
+
 class VerificationResult(BaseModel):
     """Result of verifying an evidence item's integrity."""
+
     evidence_id: EvidenceId
     is_valid: bool
     expected_hash: str
@@ -119,6 +129,7 @@ class VerificationResult(BaseModel):
 # ═══════════════════════════════════════════════
 # EVIDENCE VAULT INTERFACE
 # ═══════════════════════════════════════════════
+
 
 class EvidenceVault:
     """Evidence vault — secure storage with hash verification, chain of custody.
@@ -165,8 +176,7 @@ class EvidenceVault:
             evidence.content_hash = actual_hash
         elif evidence.content_hash != actual_hash:
             raise ValueError(
-                f"Content hash mismatch: expected {evidence.content_hash}, "
-                f"got {actual_hash}"
+                f"Content hash mismatch: expected {evidence.content_hash}, " f"got {actual_hash}"
             )
 
         # Create stored evidence
@@ -257,8 +267,7 @@ class EvidenceVault:
             results = [s for s in results if s.evidence.content_type == content_type]
         if classification:
             results = [
-                s for s in results
-                if s.evidence.classification.classification == classification
+                s for s in results if s.evidence.classification.classification == classification
             ]
 
         return results
@@ -314,7 +323,7 @@ class EvidenceVault:
 
         return True
 
-    def get_custody_chain(self, evidence_id: EvidenceId) -> list[CustodyEvent]:
+    def get_custody_chain(self, evidence_id: EvidenceId) -> List[CustodyEvent]:
         """Get the full chain of custody for an evidence item."""
         return list(self._custody_chains.get(evidence_id, []))
 
@@ -437,7 +446,7 @@ class EvidenceVault:
 
         return entry
 
-    def get_processing_history(self, evidence_id: EvidenceId) -> list[ProcessingEntry]:
+    def get_processing_history(self, evidence_id: EvidenceId) -> List[ProcessingEntry]:
         """Get the processing history for an evidence item."""
         stored = self._storage.get(evidence_id)
         if stored is None:
@@ -524,9 +533,7 @@ class EvidenceVault:
         """Get vault metrics."""
         total = len(self._storage)
         custody_events = sum(len(chain) for chain in self._custody_chains.values())
-        processing_entries = sum(
-            len(s.processing_history) for s in self._storage.values()
-        )
+        processing_entries = sum(len(s.processing_history) for s in self._storage.values())
 
         by_type: dict[str, int] = {}
         for stored in self._storage.values():

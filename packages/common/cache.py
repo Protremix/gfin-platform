@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 
@@ -60,7 +60,7 @@ class MemoryCache(CacheService):
         if entry is None:
             return None
         value, expires_at = entry
-        if expires_at is not None and datetime.now(timezone.utc) > expires_at:
+        if expires_at is not None and datetime.now(UTC) > expires_at:
             del self._store[key]
             return None
         return value
@@ -68,7 +68,7 @@ class MemoryCache(CacheService):
     async def set(self, key: str, value: Any, ttl_seconds: int | None = None) -> None:
         expires_at = None
         if ttl_seconds is not None:
-            expires_at = datetime.now(timezone.utc) + timedelta(seconds=ttl_seconds)
+            expires_at = datetime.now(UTC) + timedelta(seconds=ttl_seconds)
         self._store[key] = (value, expires_at)
 
     async def delete(self, key: str) -> bool:
@@ -82,7 +82,7 @@ class MemoryCache(CacheService):
         if entry is None:
             return False
         _, expires_at = entry
-        if expires_at is not None and datetime.now(timezone.utc) > expires_at:
+        if expires_at is not None and datetime.now(UTC) > expires_at:
             del self._store[key]
             return False
         return True

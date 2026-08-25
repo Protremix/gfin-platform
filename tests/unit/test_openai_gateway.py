@@ -9,13 +9,14 @@ import os
 
 import pytest
 
-from common.model_gateway import ModelRequest, ModelResponse, TaskType
+from common.model_gateway import ModelRequest, TaskType
 from common.openai_gateway import OpenAIGateway
 
 has_openai_key = os.environ.get("OPENAI_PROJECT_KEY") is not None
 
 
 # ─── Unit Tests (no API calls) ───
+
 
 class TestOpenAIGatewayUnit:
     """Unit tests that don't make real API calls."""
@@ -110,6 +111,7 @@ class TestOpenAIGatewayUnit:
 
 # ─── Integration Tests (require OPENAI_PROJECT_KEY) ───
 
+
 @pytest.mark.skipif(not has_openai_key, reason="OPENAI_PROJECT_KEY not set")
 class TestOpenAIGatewayIntegration:
     """Integration tests that make real API calls to GPT-5.6-LUNA."""
@@ -154,7 +156,6 @@ class TestOpenAIGatewayIntegration:
             prompt="Contact us at +34 612 345 678 or email support@best-deals-2024.xyz. Send crypto to bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
             classification_filter="PUBLIC",
             max_tokens=500,
-
         )
         response = await gateway.extract(request)
         assert response.provider == "openai"

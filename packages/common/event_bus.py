@@ -22,29 +22,30 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import traceback
 from abc import ABC, abstractmethod
 from collections import defaultdict
-from datetime import datetime, timezone
+from collections.abc import Awaitable, Callable
+from datetime import datetime
 from enum import Enum
-from typing import Any, Awaitable, Callable, Union
+from typing import Any
 from uuid import uuid4
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, Field
 
 from schemas.base import utc_now
-
 
 # ═══════════════════════════════════════════════
 # KAFKA TOPIC DEFINITIONS (14 topics from Master Spec §9)
 # ═══════════════════════════════════════════════
+
 
 class TopicDefinition(BaseModel):
     """Version-controlled Kafka topic definition.
 
     These are interface contracts — defined now, provisioned in Layer B.
     """
+
     name: str
     description: str
     partition_key: str  # Field used for partitioning
@@ -201,8 +202,10 @@ def list_topics() -> list[str]:
 # EVENT ENVELOPE (canonical, per Master Spec §9)
 # ═══════════════════════════════════════════════
 
+
 class ClassificationLevel(str, Enum):
     """Classification level for event data."""
+
     PUBLIC = "PUBLIC"
     INTERNAL = "INTERNAL"
     CONFIDENTIAL = "CONFIDENTIAL"
@@ -223,6 +226,7 @@ class Event(BaseModel):
     - correlation_id: for tracing event chains
     - payload: event-specific data
     """
+
     event_id: str = Field(default_factory=lambda: f"EVT-{uuid4().hex[:12].upper()}")
     event_type: str
     schema_version: str = "1.0"
@@ -254,8 +258,10 @@ class Event(BaseModel):
 # EVENT SCHEMA VALIDATION
 # ═══════════════════════════════════════════════
 
+
 class EventSchema(BaseModel):
     """Versioned schema definition for an event type."""
+
     event_type: str
     schema_version: str = "1.0"
     required_fields: list[str]
@@ -265,7 +271,10 @@ class EventSchema(BaseModel):
 # Schema registry — defines what fields are expected per event type
 SCHEMA_REGISTRY: dict[str, EventSchema] = {}
 
-def register_schema(event_type: str, required_fields: list[str], optional_fields: list[str] | None = None) -> None:
+
+def register_schema(
+    event_type: str, required_fields: list[str], optional_fields: list[str] | None = None
+) -> None:
     """Register an event schema for validation."""
     SCHEMA_REGISTRY[event_type] = EventSchema(
         event_type=event_type,
@@ -278,7 +287,10 @@ def register_schema(event_type: str, required_fields: list[str], optional_fields
 register_schema("entity.created", ["entity_id", "entity_type", "normalized_value"])
 register_schema("entity.updated", ["entity_id", "change_type"], ["old_value", "new_value"])
 register_schema("observation.created", ["observation_id", "entity_id", "observation_type"])
-register_schema("relationship.created", ["relationship_id", "source_entity_id", "target_entity_id", "relationship_type"])
+register_schema(
+    "relationship.created",
+    ["relationship_id", "source_entity_id", "target_entity_id", "relationship_type"],
+)
 register_schema("evidence.created", ["evidence_id", "entity_id", "evidence_type", "source"])
 register_schema("report.created", ["report_id", "reporter_id", "report_type"])
 register_schema("campaign.created", ["campaign_id", "campaign_name"])
@@ -312,8 +324,10 @@ def validate_event(event: Event) -> tuple[bool, str]:
 # DEAD-LETTER QUEUE ENTRY
 # ═══════════════════════════════════════════════
 
+
 class DLQEntry(BaseModel):
     """Dead-letter queue entry for failed events."""
+
     dlq_id: str = Field(default_factory=lambda: f"DLQ-{uuid4().hex[:12].upper()}")
     original_event: Event
     failure_reason: str
@@ -331,8 +345,10 @@ class DLQEntry(BaseModel):
 # RETRY POLICY
 # ═══════════════════════════════════════════════
 
+
 class RetryPolicy(BaseModel):
     """Retry policy for event processing."""
+
     max_attempts: int = 3
     initial_delay_ms: int = 100
     max_delay_ms: int = 5000
@@ -349,7 +365,7 @@ class RetryPolicy(BaseModel):
 # ═══════════════════════════════════════════════
 
 # Handler can be sync or async
-EventHandler = Callable[[Event], Union[None, Awaitable[None]]]
+EventHandler = Callable[[Event], None | Awaitable[None]]
 
 
 class EventBus(ABC):
@@ -394,6 +410,7 @@ class EventBus(ABC):
 # IN-MEMORY EVENT BUS (Layer A)
 # ═══════════════════════════════════════════════
 
+
 class InMemoryEventBus(EventBus):
     """Layer A: In-memory event bus with full pub/sub, retry, and DLQ.
 
@@ -409,7 +426,9 @@ class InMemoryEventBus(EventBus):
     - Event history (for testing/replay within process)
     """
 
-    def __init__(self, retry_policy: RetryPolicy | None = None, validate_on_publish: bool = True) -> None:
+    def __init__(
+        self, retry_policy: RetryPolicy | None = None, validate_on_publish: bool = True
+    ) -> None:
         self._subscribers: dict[str, dict[str, EventHandler]] = defaultdict(dict)
         self._dlq: list[DLQEntry] = []
         self._retry_policy = retry_policy or RetryPolicy()
@@ -566,6 +585,7 @@ class InMemoryEventBus(EventBus):
 # PRODUCER ADAPTER
 # ═══════════════════════════════════════════════
 
+
 class EventProducer:
     """Producer adapter — decouples application code from the event bus.
 
@@ -577,7 +597,14 @@ class EventProducer:
         self._bus = bus
         self._source = source
 
-    async def publish(self, event_type: str, payload: dict[str, Any], entity_refs: list[str] | None = None, classification: ClassificationLevel = ClassificationLevel.PUBLIC, correlation_id: str | None = None) -> Event:
+    async def publish(
+        self,
+        event_type: str,
+        payload: dict[str, Any],
+        entity_refs: list[str] | None = None,
+        classification: ClassificationLevel = ClassificationLevel.PUBLIC,
+        correlation_id: str | None = None,
+    ) -> Event:
         """Publish an event to the bus.
 
         Creates the event envelope and publishes it.
@@ -598,6 +625,7 @@ class EventProducer:
 # ═══════════════════════════════════════════════
 # CONSUMER ADAPTER
 # ═══════════════════════════════════════════════
+
 
 class EventConsumer:
     """Consumer adapter — decouples application code from the event bus.
@@ -632,6 +660,7 @@ class EventConsumer:
 # ═══════════════════════════════════════════════
 # EVENT BUS FACTORY
 # ═══════════════════════════════════════════════
+
 
 def create_event_bus(backend: str = "memory", **kwargs) -> EventBus:
     """Factory for creating an event bus by backend type.

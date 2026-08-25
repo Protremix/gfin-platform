@@ -107,9 +107,7 @@ class InMemoryEntityRepository(EntityRepository[T]):
         results = list(self._store.values())
         if filters:
             results = [
-                e
-                for e in results
-                if all(getattr(e, k, None) == v for k, v in filters.items())
+                e for e in results if all(getattr(e, k, None) == v for k, v in filters.items())
             ]
         return results[offset : offset + limit]
 
