@@ -34,7 +34,7 @@
 | 10 | Domain Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; RDAP profiles, domain profiles, related domains, fraud report/campaign links; GPT Luna verified (Layer A) |
 | 11 | Certificate Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | Certificate timelines, SAN tracking, newly observed domains, cert relationships; part of modules 10-12 combined |
 | 12 | IP/ASN Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | IP history, domain-IP linking, related domains by IP, abuse contacts, source licensing enforcement; part of modules 10-12 combined |
-| 13 | Citizen Platform | NOT_STARTED | — | — | |
+| 13 | Citizen Platform | ACCEPTED | 2026-08-26 | 2026-08-26 | 56 tests; entity check (PUBLIC-only), report submission (UNVERIFIED start), status state machine, anonymous reporting, alert subscriptions, rate limiting, audit logging; GPT Luna verified (Layer A) |
 | 14 | Fraud Reporting | NOT_STARTED | — | — | |
 | 15 | Fraud Detection | NOT_STARTED | — | — | |
 | 16 | Campaign Engine | NOT_STARTED | — | — | |
@@ -69,5 +69,5 @@
 
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
-| 00-12 (combined) | 766 | ALL PASSING |
-| Full suite | 766 | 0 failures, 0 errors |
+| 00-13 (combined) | 822 | ALL PASSING |
+| Full suite | 822 | 0 failures, 0 errors |
