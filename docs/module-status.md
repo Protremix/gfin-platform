@@ -37,7 +37,7 @@
 | 13 | Citizen Platform | ACCEPTED | 2026-08-26 | 2026-08-26 | 56 tests; entity check (PUBLIC-only), report submission (UNVERIFIED start), status state machine, anonymous reporting, alert subscriptions, rate limiting, audit logging; GPT Luna verified (Layer A) |
 | 14 | Fraud Reporting | ACCEPTED | 2026-08-26 | 2026-08-26 | 61 tests; triage (priority, spam, volume spike), enrichment (entity/campaign/infra), scoring (0-100 composite), dedup (similarity > 0.8), campaign linking; GPT Luna verified (Layer A) |
 | 15 | Fraud Detection | ACCEPTED | 2026-08-26 | 2026-08-26 | 38 tests; 7 signals, 4 patterns, 4 rule types, threshold detection (75=HIGH, 90=CRITICAL), auto-detection from signals; GPT Luna verified (Layer A) |
-| 16 | Campaign Engine | NOT_STARTED | — | — | |
+| 16 | Campaign Engine | ACCEPTED | 2026-08-26 | 2026-08-26 | 43 tests; detection (report+infra clustering), scoring (0-100), lifecycle (DRAFT→ACTIVE→DORMANT→DISMANTLED), linking, auto-dormant; GPT Luna verified (Layer A) |
 | 17 | Continuous Monitoring | NOT_STARTED | — | — | |
 | 18 | Alert Engine | NOT_STARTED | — | — | |
 | 19 | Model Gateway | ACCEPTED | 2026-08-25 | 2026-08-25 | OpenAI adapter (gpt-5.6-luna) implemented + tested as part of Module 01 extension |
@@ -69,5 +69,5 @@
 
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
-| 00-15 (combined) | 921 | ALL PASSING |
-| Full suite | 921 | 0 failures, 0 errors |
+| 00-16 (combined) | 964 | ALL PASSING |
+| Full suite | 964 | 0 failures, 0 errors |
