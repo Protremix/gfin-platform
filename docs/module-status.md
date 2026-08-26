@@ -42,7 +42,7 @@
 | 18 | Alert Engine | ACCEPTED | 2026-08-26 | 2026-08-26 | 64 tests; routing (5 channels, custom rules), escalation (4 levels, time-based), templates (6 types), digest, statistics; GPT Luna verified (Layer A) |
 | 19 | Model Gateway | ACCEPTED | 2026-08-25 | 2026-08-25 | OpenAI adapter (gpt-5.6-luna) implemented + tested as part of Module 01 extension |
 | 20 | OpenAI | ACCEPTED | 2026-08-25 | 2026-08-25 | GPT-5.6-LUNA gateway adapter, 17 tests, classification-aware routing |
-| 21 | Local AI | NOT_STARTED | — | — | |
+| 21 | Local AI | ACCEPTED | 2026-08-26 | 2026-08-26 | 67 tests; classifier (6 fraud types), embeddings (128d hash), OCR (mock), language detector (10 langs), gateway routing (classification-aware); GPT Luna verified (Layer A) |
 | 22 | AI Investigation Orchestrator | NOT_STARTED | — | — | |
 | 23 | Police API | NOT_STARTED | — | — | |
 | 24 | Police Connector SDK | NOT_STARTED | — | — | |
@@ -69,5 +69,5 @@
 
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
-| 00-18 (combined) | 1074 | ALL PASSING |
-| Full suite | 1074 | 0 failures, 0 errors |
+| 00-21 (combined) | 1141 | ALL PASSING |
+| Full suite | 1141 | 0 failures, 0 errors |
