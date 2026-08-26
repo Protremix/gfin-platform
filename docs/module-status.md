@@ -47,7 +47,7 @@
 | 23 | Police API | ACCEPTED | 2026-08-26 | 2026-08-26 | 58 tests; 8 endpoints, RBAC auth (officer/supervisor/admin), immutable audit log, per-org rate limiting, cross-border request workflow; GPT Luna verified (Layer A) |
 | 24 | Police Connector SDK | ACCEPTED | 2026-08-26 | 2026-08-26 | 49 tests; 8-method ABC interface, mock connector, registry (auth_all/sync_all), credential rotation with redaction, sync result with conflicts; GPT Luna verified (Layer A) |
 | 25 | Global Matching | ACCEPTED | 2026-08-26 | 2026-08-26 | 39 tests; global entity index, match engine (cross-border, same-jurisdiction exclusion), federation boundary policy (permitted fields only), match notifications (PENDING→SENT→ACK), Match≠Guilt; GPT Luna verified (Layer A) |
-| 26 | Cross-Border Requests | NOT_STARTED | — | — | |
+| 26 | Cross-Border Requests | ACCEPTED | 2026-08-26 | 2026-08-26 | 44 tests; 7-stage workflow (submit→validate→authorize→route→review→decide→close), validator (legal basis, purpose), authorizer (per-org jurisdiction perms), router, 3 decision types (approve/partial/deny), policy filtering on response, audit trail, urgency levels; GPT Luna verified (Layer A) |
 | 27 | Police Console | NOT_STARTED | — | — | |
 | 28 | Crypto Intelligence | NOT_STARTED | — | — | |
 | 29 | Multilingual | NOT_STARTED | — | — | |
@@ -69,5 +69,5 @@
 
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
-| 00-25 (combined) | 1344 | ALL PASSING |
-| Full suite | 1344 | 0 failures, 0 errors |
+| 00-26 (combined) | 1388 | ALL PASSING |
+| Full suite | 1388 | 0 failures, 0 errors |
