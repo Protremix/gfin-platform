@@ -70,4 +70,5 @@
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
 | 00-26 (combined) | 1388 | ALL PASSING |
-| Full suite | 1388 | 0 failures, 0 errors |
+| 27-40 (combined) | 388 | ALL PASSING |
+| Full suite | 1776 | 0 failures, 0 errors, 95.41% coverage |
