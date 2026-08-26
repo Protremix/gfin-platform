@@ -38,7 +38,7 @@
 | 14 | Fraud Reporting | ACCEPTED | 2026-08-26 | 2026-08-26 | 61 tests; triage (priority, spam, volume spike), enrichment (entity/campaign/infra), scoring (0-100 composite), dedup (similarity > 0.8), campaign linking; GPT Luna verified (Layer A) |
 | 15 | Fraud Detection | ACCEPTED | 2026-08-26 | 2026-08-26 | 38 tests; 7 signals, 4 patterns, 4 rule types, threshold detection (75=HIGH, 90=CRITICAL), auto-detection from signals; GPT Luna verified (Layer A) |
 | 16 | Campaign Engine | ACCEPTED | 2026-08-26 | 2026-08-26 | 43 tests; detection (report+infra clustering), scoring (0-100), lifecycle (DRAFT→ACTIVE→DORMANT→DISMANTLED), linking, auto-dormant; GPT Luna verified (Layer A) |
-| 17 | Continuous Monitoring | NOT_STARTED | — | — | |
+| 17 | Continuous Monitoring | ACCEPTED | 2026-08-26 | 2026-08-26 | 46 tests; subscriptions, change detection (entity+campaign), alert engine (6 types, 4 priorities), monitoring loop; GPT Luna verified (Layer A) |
 | 18 | Alert Engine | NOT_STARTED | — | — | |
 | 19 | Model Gateway | ACCEPTED | 2026-08-25 | 2026-08-25 | OpenAI adapter (gpt-5.6-luna) implemented + tested as part of Module 01 extension |
 | 20 | OpenAI | ACCEPTED | 2026-08-25 | 2026-08-25 | GPT-5.6-LUNA gateway adapter, 17 tests, classification-aware routing |
@@ -69,5 +69,5 @@
 
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
-| 00-16 (combined) | 964 | ALL PASSING |
-| Full suite | 964 | 0 failures, 0 errors |
+| 00-17 (combined) | 1010 | ALL PASSING |
+| Full suite | 1010 | 0 failures, 0 errors |
