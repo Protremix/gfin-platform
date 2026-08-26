@@ -48,20 +48,20 @@
 | 24 | Police Connector SDK | ACCEPTED | 2026-08-26 | 2026-08-26 | 49 tests; 8-method ABC interface, mock connector, registry (auth_all/sync_all), credential rotation with redaction, sync result with conflicts; GPT Luna verified (Layer A) |
 | 25 | Global Matching | ACCEPTED | 2026-08-26 | 2026-08-26 | 39 tests; global entity index, match engine (cross-border, same-jurisdiction exclusion), federation boundary policy (permitted fields only), match notifications (PENDING→SENT→ACK), Match≠Guilt; GPT Luna verified (Layer A) |
 | 26 | Cross-Border Requests | ACCEPTED | 2026-08-26 | 2026-08-26 | 44 tests; 7-stage workflow (submit→validate→authorize→route→review→decide→close), validator (legal basis, purpose), authorizer (per-org jurisdiction perms), router, 3 decision types (approve/partial/deny), policy filtering on response, audit trail, urgency levels; GPT Luna verified (Layer A) |
-| 27 | Police Console | NOT_STARTED | — | — | |
-| 28 | Crypto Intelligence | NOT_STARTED | — | — | |
-| 29 | Multilingual | NOT_STARTED | — | — | |
-| 30 | Analytics | NOT_STARTED | — | — | |
-| 31 | Global Early Warning | NOT_STARTED | — | — | |
-| 32 | Federation | NOT_STARTED | — | — | |
-| 33 | Compliance | NOT_STARTED | — | — | |
-| 34 | Observability | NOT_STARTED | — | — | |
-| 35 | Disaster Recovery | NOT_STARTED | — | — | |
-| 36 | Security Testing | NOT_STARTED | — | — | |
-| 37 | AI Evaluation | NOT_STARTED | — | — | |
-| 38 | Load Testing | NOT_STARTED | — | — | |
-| 39 | Pilot | NOT_STARTED | — | — | |
-| 40 | Production | NOT_STARTED | — | — | |
+| 27 | Police Console | ACCEPTED | 2026-08-26 | 2026-08-26 | 38 tests; dashboard, case management, search, evidence, reports, officer stats; GPT Luna verified (Layer A) |
+| 28 | Crypto Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; wallet profiling, transaction tracking, fund tracing (BFS), risk assessment, 6 blockchains; GPT Luna verified (Layer A) |
+| 29 | Multilingual | ACCEPTED | 2026-08-26 | 2026-08-26 | 20 tests; language detection (10 langs), translation w/ cache, batch translate, cross-language entity matching, 27 supported languages; GPT Luna verified (Layer A) |
+| 30 | Analytics | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; metrics, trend analysis (up/down/stable), fraud stats by category, geographic data, top countries, dashboard; GPT Luna verified (Layer A) |
+| 31 | Global Early Warning | ACCEPTED | 2026-08-26 | 2026-08-26 | 34 tests; rule-based detection, 4 warning levels, 5 rule types, entity monitoring, notification dispatch; GPT Luna verified (Layer A) |
+| 32 | Federation | ACCEPTED | 2026-08-26 | 2026-08-26 | 31 tests; node network, message routing (6 types, delivery status), heartbeat, topology, audit log; GPT Luna verified (Layer A) |
+| 33 | Compliance | ACCEPTED | 2026-08-26 | 2026-08-26 | 30 tests; 5 data classification levels, 6 accessor roles, access checks, privacy filtering, retention policies, violation tracking; GPT Luna verified (Layer A) |
+| 34 | Observability | ACCEPTED | 2026-08-26 | 2026-08-26 | 30 tests; metrics (counter/gauge/histogram), health checks, distributed tracing, system metrics snapshot; GPT Luna verified (Layer A) |
+| 35 | Disaster Recovery | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; backup/restore, failover/failback, RTO/RPO targets, verification, DR summary; GPT Luna verified (Layer A) |
+| 36 | Security Testing | ACCEPTED | 2026-08-26 | 2026-08-26 | 33 tests; test management, findings tracking, 15-item security checklist, remediation workflow; GPT Luna verified (Layer A) |
+| 37 | AI Evaluation | ACCEPTED | 2026-08-26 | 2026-08-26 | 25 tests; 7 metric types, model comparison, evaluation summary; GPT Luna verified (Layer A) |
+| 38 | Load Testing | ACCEPTED | 2026-08-26 | 2026-08-26 | 19 tests; load test scenarios, throughput/latency measurement, pass/fail thresholds; GPT Luna verified (Layer A) |
+| 39 | Pilot | ACCEPTED | 2026-08-26 | 2026-08-26 | 30 tests; pilot program management, participant tracking, feedback collection, program summary; GPT Luna verified (Layer A) |
+| 40 | Production | ACCEPTED | 2026-08-26 | 2026-08-26 | 23 tests; 26-item readiness checklist, 12 infrastructure requirements, go-live assessment; GPT Luna verified (Layer A) |
 
 ---
 
