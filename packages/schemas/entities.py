@@ -683,12 +683,13 @@ class CampaignEntity(BaseEntity):
     end_date: datetime | None = None
     affected_countries: list[str] = []
     fraud_type: str = ""
+    related_entity_ids: list[str] = []
     entity_count: int = 0
 
     @field_validator("campaign_status")
     @classmethod
     def validate_campaign_status(cls, v: str) -> str:
-        valid = {"ACTIVE", "DORMANT", "DISMANTLED"}
+        valid = {"DRAFT", "ACTIVE", "DORMANT", "DISMANTLED"}
         if v not in valid:
             raise ValueError(f"Campaign status must be one of {valid}")
         return v
