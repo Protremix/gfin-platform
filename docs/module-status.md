@@ -36,7 +36,7 @@
 | 12 | IP/ASN Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | IP history, domain-IP linking, related domains by IP, abuse contacts, source licensing enforcement; part of modules 10-12 combined |
 | 13 | Citizen Platform | ACCEPTED | 2026-08-26 | 2026-08-26 | 56 tests; entity check (PUBLIC-only), report submission (UNVERIFIED start), status state machine, anonymous reporting, alert subscriptions, rate limiting, audit logging; GPT Luna verified (Layer A) |
 | 14 | Fraud Reporting | ACCEPTED | 2026-08-26 | 2026-08-26 | 61 tests; triage (priority, spam, volume spike), enrichment (entity/campaign/infra), scoring (0-100 composite), dedup (similarity > 0.8), campaign linking; GPT Luna verified (Layer A) |
-| 15 | Fraud Detection | NOT_STARTED | — | — | |
+| 15 | Fraud Detection | ACCEPTED | 2026-08-26 | 2026-08-26 | 38 tests; 7 signals, 4 patterns, 4 rule types, threshold detection (75=HIGH, 90=CRITICAL), auto-detection from signals; GPT Luna verified (Layer A) |
 | 16 | Campaign Engine | NOT_STARTED | — | — | |
 | 17 | Continuous Monitoring | NOT_STARTED | — | — | |
 | 18 | Alert Engine | NOT_STARTED | — | — | |
@@ -69,5 +69,5 @@
 
 | Module(s) | Tests | Status |
 |-----------|-------|--------|
-| 00-14 (combined) | 883 | ALL PASSING |
-| Full suite | 883 | 0 failures, 0 errors |
+| 00-15 (combined) | 921 | ALL PASSING |
+| Full suite | 921 | 0 failures, 0 errors |
