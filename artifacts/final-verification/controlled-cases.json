@@ -1,0 +1,168 @@
+{
+  "artifact": "controlled-cases.json",
+  "task": "TASK_24_CONTROLLED_CASES",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "required_case_types": [
+    "synthetic_fraud",
+    "legitimate_company",
+    "crypto_fraud",
+    "social_engineering_fraud",
+    "cross_border_corporate_fraud",
+    "false_correlation"
+  ],
+  "existing_cases": [
+    {
+      "case_id": "GFIN-CASE-001",
+      "target": "cncintelinfo.com",
+      "status": "INVESTIGATING",
+      "priority": "MEDIUM",
+      "confidence": 0.8,
+      "scam_patterns": [
+        "BRAND_IMPERSONATION",
+        "RECOVERY_SCAM",
+        "EMAIL_PHISHING"
+      ],
+      "victim_count": 3
+    },
+    {
+      "case_id": "GFIN-CASE-002",
+      "target": "neex.com / Vlad",
+      "status": "INVESTIGATING",
+      "priority": "HIGH",
+      "confidence": 0.85,
+      "scam_patterns": [
+        "investment_fraud",
+        "telegram_promotion",
+        "coordinated_campaign"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-CASE-003",
+      "target": "teamforcetechnologies.com",
+      "status": "INVESTIGATING",
+      "priority": "HIGH",
+      "confidence": 0.8,
+      "scam_patterns": [
+        "investment_fraud",
+        "call_center",
+        "cyprus_offshore"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-CASE-004",
+      "target": "Telegram user 'REVERSE ENGINEER'",
+      "status": "INVESTIGATING",
+      "priority": "MEDIUM",
+      "confidence": 0.75,
+      "scam_patterns": [
+        "recovery_scam",
+        "service_provider",
+        "data_broker"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "target": "Telegram user 'Monde HR'",
+      "status": "INVESTIGATING",
+      "priority": "CRITICAL",
+      "confidence": 0.9,
+      "scam_patterns": [
+        "human_trafficking",
+        "scam_compound",
+        "recruitment"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-CASE-006",
+      "target": "Telegram user 'RS Database House'",
+      "status": "INVESTIGATING",
+      "priority": "HIGH",
+      "confidence": 0.85,
+      "scam_patterns": [
+        "data_broker",
+        "victim_database_selling",
+        "enabler"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-CASE-007",
+      "target": "Telegram user 'Tati'",
+      "status": "INVESTIGATING",
+      "priority": "CRITICAL",
+      "confidence": 0.85,
+      "scam_patterns": [
+        "human_trafficking",
+        "recruitment",
+        "fx_agent",
+        "relocation"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-CASE-008",
+      "target": "Kyiv call center (t.me/work_crypto_fx)",
+      "status": "INVESTIGATING",
+      "priority": "HIGH",
+      "confidence": 0.8,
+      "scam_patterns": [
+        "investment_fraud",
+        "call_center",
+        "crypto_fraud"
+      ],
+      "victim_count": 1
+    },
+    {
+      "case_id": "GFIN-LAUDR-001",
+      "target": "@btcv123",
+      "status": "INVESTIGATING",
+      "priority": "CRITICAL",
+      "confidence": 0.9,
+      "scam_patterns": [
+        "money_laundering",
+        "crypto_laundering",
+        "telegram_operations"
+      ],
+      "victim_count": 0
+    },
+    {
+      "case_id": "GFIN-LAUDR-002",
+      "target": "@KarI_Fx (KarI Fx)",
+      "status": "INVESTIGATING",
+      "priority": "MEDIUM",
+      "confidence": 0.9,
+      "scam_patterns": [
+        "money_laundering",
+        "crypto_laundering",
+        "telegram_operations"
+      ],
+      "victim_count": 0
+    }
+  ],
+  "existing_case_types": {
+    "GFIN-CASE-001": "brand_impersonation (domain)",
+    "GFIN-CASE-002": "investment_fraud (domain + person)",
+    "GFIN-CASE-003": "call_center_fraud (domain)",
+    "GFIN-CASE-004": "scam_service_provider (telegram)",
+    "GFIN-CASE-005": "human_trafficking_recruitment (telegram)",
+    "GFIN-CASE-006": "victim_database_selling (telegram)",
+    "GFIN-CASE-007": "fx_agent_recruitment (telegram)",
+    "GFIN-CASE-008": "crypto_fraud (telegram + domain)",
+    "GFIN-LAUDR-001": "money_laundering (telegram wallet)",
+    "GFIN-LAUDR-002": "crypto_scam (telegram wallet)"
+  },
+  "controlled_case_coverage": {
+    "synthetic_fraud": "NOT_TESTED",
+    "legitimate_company": "NOT_TESTED",
+    "crypto_fraud": "PARTIALLY_COVERED_BY_GFIN-LAUDR-001",
+    "social_engineering_fraud": "PARTIALLY_COVERED_BY_GFIN-CASE-005_007",
+    "cross_border_corporate_fraud": "NOT_TESTED",
+    "false_correlation": "NOT_TESTED"
+  },
+  "status": "PARTIALLY_COVERED",
+  "finding": "10 real cases exist but they are reactive investigations (triggered by intelligence), not controlled test cases. Required 6 controlled case types: 4 NOT_TESTED, 2 partially covered. Controlled cases with known ground truth needed to validate the full investigation pipeline."
+}

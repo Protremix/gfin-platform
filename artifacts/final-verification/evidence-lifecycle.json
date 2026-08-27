@@ -1,0 +1,51 @@
+{
+  "artifact": "evidence-lifecycle.json",
+  "task": "TASK_02_EVIDENCE_LIFECYCLE",
+  "created_at": "2026-08-27T20:10:40.141359+00:00",
+  "lifecycle_states": [
+    "FOUND",
+    "RELEVANT",
+    "CORRELATED",
+    "CORROBORATED",
+    "EVIDENCE",
+    "ATTRIBUTED",
+    "REJECTED",
+    "DISPUTED"
+  ],
+  "transition_rules": [
+    "FOUND -> RELEVANT: requires relevance evaluation",
+    "RELEVANT -> CORRELATED: requires at least one cross-reference",
+    "CORRELATED -> CORROBORATED: requires independent second source confirmation",
+    "CORROBORATED -> EVIDENCE: requires complete provenance",
+    "EVIDENCE -> ATTRIBUTED: requires evidence claim with confidence method",
+    "Any -> REJECTED: if false positive",
+    "Any -> DISPUTED: if contradictory evidence found"
+  ],
+  "claim_statuses": [
+    "SUPPORTED",
+    "CORROBORATED",
+    "INFERRED",
+    "UNRESOLVED",
+    "CONTRADICTED",
+    "DISPROVEN"
+  ],
+  "provenance_required_fields": [
+    "source",
+    "provider",
+    "endpoint",
+    "query",
+    "original_ref",
+    "content_hash",
+    "collector"
+  ],
+  "database_changes_applied": [
+    "evidence.lifecycle_status column added",
+    "evidence provenance fields (7 columns) added",
+    "evidence_claims table created",
+    "evidence_contradictions table created",
+    "investigation_decisions table created",
+    "confidence_calibration table created",
+    "entity_links relationship validation fields added"
+  ],
+  "status": "SCHEMA_IMPLEMENTED - data migration pending for full lifecycle tracking"
+}

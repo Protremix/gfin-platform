@@ -1,0 +1,123 @@
+{
+  "artifact": "evidence-claims.json",
+  "task": "TASK_03_EVIDENCE_CLAIMS",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "claim_statuses": [
+    "SUPPORTED",
+    "CORROBORATED",
+    "INFERRED",
+    "UNRESOLVED",
+    "CONTRADICTED",
+    "DISPROVEN"
+  ],
+  "required_claim_fields": [
+    "claim_id",
+    "claim",
+    "subject",
+    "object",
+    "relationship",
+    "evidence_ids",
+    "source_ids",
+    "timestamps",
+    "confidence",
+    "confidence_method",
+    "corroboration",
+    "contradictions",
+    "status"
+  ],
+  "current_claims_count": 0,
+  "status": "SCHEMA_IMPLEMENTED_NO_CLAIMS_YET",
+  "sample_evidence": [
+    {
+      "case_id": "GFIN-CASE-004",
+      "evidence_id": "E-TG-14832-GFIN-CASE-004",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex Jobs in Moldova 🇲🇩'. Scam type: RECOVERY_SCAM. Message: Extraction service:\n*Leads/traffic extraction from any website/GEO.\n*Crypto site\n*Investment site\n*Casino/gambling site \n*Real estate site.\n*Crms hack.\n*Removal of negative Google reviews.\n*Developers",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-9320-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-9584-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-9908-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-10284-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-10611-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-10938-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-11265-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-11558-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "evidence_id": "E-TG-11923-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: 🔤🔤🔤🔤🔤🔤🔤🔤 🔤🔤🔤🔤🔤\n\n**Portuguese Retention Agents** And Spanish retention \n– 🇦🇲Armenia, full relocation package\n\n**Portuguese Retention Agents** – Relocation to the Dominican Republic. Full relocation pac",
+      "confidence": "HIGH",
+      "lifecycle_status": "FOUND",
+      "provenance_complete": false
+    }
+  ],
+  "finding": "Evidence claims table created but no formal claims have been generated yet. Existing evidence items have 'confidence' as arbitrary strings (HIGH/MEDIUM/LOW) without formal claim structure."
+}

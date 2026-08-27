@@ -1,0 +1,29 @@
+{
+  "artifact": "provenance-audit.json",
+  "task": "TASK_04_PROVENANCE",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "total_evidence_items": 171,
+  "provenance_completeness": {
+    "complete_provenance": 1,
+    "has_source": 171,
+    "has_endpoint": 171,
+    "has_content_hash": 0,
+    "has_query_reference": 0,
+    "missing_provenance": 170,
+    "completeness_rate": "1/171 (0.6%)"
+  },
+  "required_provenance_fields": [
+    "source",
+    "provider",
+    "endpoint/acquisition method",
+    "query/reference",
+    "timestamp",
+    "original reference",
+    "content hash",
+    "processing history",
+    "case_id",
+    "collector"
+  ],
+  "status": "PARTIAL",
+  "finding": "1/171 evidence items have complete provenance. 170 items have PROVENANCE_INCOMPLETE. Most items have source_provider and source_url but lack acquisition method, query reference, and processing history."
+}

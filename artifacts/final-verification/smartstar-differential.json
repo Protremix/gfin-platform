@@ -1,0 +1,39 @@
+{
+  "artifact": "smartstar-differential.json",
+  "task": "TASK_23_SMARTSTAR_REINVESTIGATION",
+  "created_at": "2026-08-27T20:12:46.378330+00:00",
+  "original_investigation_exists": true,
+  "original_case": "CASE-SMARTSTAR-001",
+  "target": "SmartStar Technology Ltd",
+  "allegation": "SmartStar Technology Ltd may be involved in fraudulent activity",
+  "original_investigator": "GPT Luna (GFIN-CEA)",
+  "original_mode": "AUTONOMOUS",
+  "original_status": "COMPLETED",
+  "investigation_passes": {
+    "smartstar-001": 15,
+    "smartstar-002": 26,
+    "smartstar-uk-005": 34,
+    "smartstar-uk-007": 42
+  },
+  "total_artifact_files": 117,
+  "entities_discovered": {
+    "UK": {
+      "name": "SmartStar Technology Ltd",
+      "company_number": "14511663",
+      "status": "Dissolved"
+    },
+    "NZ": {
+      "name": "SmartStar Technology Limited",
+      "company_number": "1925143",
+      "status": "Registered"
+    },
+    "Singapore": {
+      "name": "SmartStar Technology Pte. Ltd.",
+      "uen": "202409677D",
+      "status": "Registered"
+    }
+  },
+  "reinvestigation_performed": false,
+  "status": "ORIGINAL_EXISTS_REINVESTIGATION_NOT_PERFORMED",
+  "finding": "SmartStar investigation artifacts exist from 4 passes with 117 total files. Original investigation was autonomous OSINT. Fresh reinvestigation NOT performed — pipeline not wired as on-demand service."
+}

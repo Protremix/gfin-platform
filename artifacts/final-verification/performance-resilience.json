@@ -1,0 +1,28 @@
+{
+  "artifact": "performance-resilience.json",
+  "task": "TASK_26_PERFORMANCE_RESILIENCE",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "tests_performed": {
+    "load_test": {
+      "result": "PASS",
+      "details": "200 concurrent requests, 100% success rate. Health endpoint: 0.4ms median. Cases API: 45ms median at 100 concurrent.",
+      "tested_at": "2026-08-27T20:12:06.478526+00:00"
+    },
+    "concurrent_cases": "NOT_TESTED",
+    "large_evidence_volume": "PARTIALLY_TESTED (171 evidence items, 260K telegram messages)",
+    "large_graph": "NOT_TESTED",
+    "provider_timeout": "NOT_TESTED",
+    "database_restart": "NOT_TESTED",
+    "brain_restart": "NOT_TESTED",
+    "network_interruption": "NOT_TESTED",
+    "queue_failure": "NOT_TESTED",
+    "object_storage_failure": "NOT_TESTED",
+    "api_rate_limits": "TESTED (1000/min, properly enforced with X-Forwarded-For)"
+  },
+  "evidence_loss_check": "NOT_TESTED",
+  "corruption_check": "NOT_TESTED",
+  "duplication_check": "NOT_TESTED",
+  "cross_case_contamination": "NOT_TESTED",
+  "status": "PARTIALLY_TESTED",
+  "finding": "Load testing passed (200 concurrent). Most resilience scenarios NOT_TESTED. Need to test database restart, evidence preservation under failure, and cross-case contamination."
+}

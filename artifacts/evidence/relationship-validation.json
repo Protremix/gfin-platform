@@ -1,0 +1,13 @@
+{
+  "artifact": "relationship-validation.json",
+  "task": "TASK_06_RELATIONSHIP_VALIDATION",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "total_relationships": 0,
+  "relationships_with_type": 0,
+  "relationships_with_evidence": 0,
+  "auto_generated": 0,
+  "manually_validated": 0,
+  "rule": "Shared IP/hosting/CDN/registrar/username/wallet infrastructure must NOT automatically establish ownership",
+  "status": "SCHEMA_ADDED_NOT_VALIDATED",
+  "finding": "entity_links table has 0 relationships. 0 have relationship_type, 0 have source_evidence_id. Relationship validation fields added but existing data not backfilled with proper types."
+}

@@ -1,0 +1,21 @@
+{
+  "artifact": "confidence-calibration.json",
+  "task": "TASK_11_CONFIDENCE_CALIBRATION",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "current_confidence_values_in_evidence": [
+    "MEDIUM",
+    "CRITICAL",
+    "HIGH"
+  ],
+  "current_confidence_values_in_cases": [
+    0.75,
+    0.8,
+    0.85,
+    0.9
+  ],
+  "calibration_records": 0,
+  "rule": "Every numerical confidence must have: rule/model version, validation dataset, sample size, calibration method, metrics and date. If no calibration exists, use qualitative confidence.",
+  "status": "NO_CALIBRATION_EXISTS",
+  "finding": "All confidence values are arbitrary (0.75, 0.8, 0.85, 0.9, HIGH, MEDIUM, LOW, CRITICAL). No validation dataset, no calibration method, no sample size. Per task requirement, these should be replaced with qualitative confidence (UNVERIFIED, LOW, MEDIUM, HIGH, CONFIRMED) until proper calibration is performed.",
+  "recommendation": "Replace numerical confidence with qualitative labels until calibration benchmark is established. Run false-positive benchmark (Task 09) to establish baseline precision/recall."
+}

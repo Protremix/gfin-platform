@@ -1,0 +1,322 @@
+{
+  "artifact": "baseline.json",
+  "task": "TASK_01_BASELINE",
+  "created_at": "2026-08-27T20:09:39.700588+00:00",
+  "version": {
+    "gfin_server": "2.0.0",
+    "git_commit": "a91489e5502ed87ab886f26fb3301567e4f45310",
+    "git_message": "a91489e Production hardening: PgBouncer connection pooling, Prometheus alerting (13 rules, 4 exporters), DB partitioning (246K records), token refresh+revocation, /metrics endpoint, rate limiter fix (X-Forwarded-For), structured JSON logging, CI/CD pipeline, pentest scope doc",
+    "python": "3.12.13",
+    "postgresql": "16.15",
+    "fastapi": "unknown",
+    "nginx": "alpine-latest"
+  },
+  "environment": {
+    "server_ip": "83.136.252.48",
+    "provider": "Hetzner",
+    "region": "London, UK",
+    "specs": "4 vCPU, 8GB RAM",
+    "os": "Ubuntu 22.04",
+    "domain": "gfin-system.com",
+    "tls": "1.2/1.3 via Nginx"
+  },
+  "containers": [
+    {
+      "name": "gfin_postgres_1",
+      "image": "postgres:16-alpine",
+      "status": "healthy"
+    },
+    {
+      "name": "gfin_redis_1",
+      "image": "redis:7-alpine",
+      "status": "healthy"
+    },
+    {
+      "name": "gfin_nginx",
+      "image": "nginx:alpine",
+      "status": "running"
+    },
+    {
+      "name": "gfin_kafka_1",
+      "image": "apache/kafka:3.7.1",
+      "status": "running"
+    },
+    {
+      "name": "gfin_neo4j_1",
+      "image": "neo4j:5-community",
+      "status": "healthy"
+    },
+    {
+      "name": "gfin_minio_1",
+      "image": "minio/minio:latest",
+      "status": "healthy"
+    },
+    {
+      "name": "gfin_opensearch_1",
+      "image": "opensearchproject/opensearch:2.18.0",
+      "status": "healthy"
+    },
+    {
+      "name": "gfin_vault_1",
+      "image": "hashicorp/vault:1.18",
+      "status": "running"
+    },
+    {
+      "name": "gfin_grafana_1",
+      "image": "grafana/grafana:latest",
+      "status": "running"
+    },
+    {
+      "name": "gfin_prometheus_1",
+      "image": "prom/prometheus:latest",
+      "status": "running"
+    },
+    {
+      "name": "gfin_pgbouncer_1",
+      "image": "edoburu/pgbouncer:latest",
+      "status": "running"
+    },
+    {
+      "name": "gfin_pg_exporter",
+      "image": "prometheuscommunity/postgres-exporter:v0.15.0",
+      "status": "running"
+    },
+    {
+      "name": "gfin_redis_exporter",
+      "image": "oliver006/redis_exporter:v1.67.0",
+      "status": "running"
+    }
+  ],
+  "database": {
+    "type": "PostgreSQL 16.15",
+    "tables": [
+      "alerts",
+      "api_keys",
+      "audit_log",
+      "case_actions",
+      "case_entities",
+      "case_favorites",
+      "case_files",
+      "case_notes",
+      "case_timeline",
+      "cases",
+      "complaint_files",
+      "country_routing",
+      "entity_links",
+      "evidence",
+      "investigation_steps",
+      "people",
+      "police_officers",
+      "refresh_tokens",
+      "scam_websites",
+      "search_cache",
+      "telegram_domains",
+      "telegram_groups",
+      "telegram_intelligence",
+      "telegram_wallets",
+      "token_blacklist",
+      "tracked_domains",
+      "victim_complaints",
+      "victim_notifications",
+      "victim_sessions",
+      "victims"
+    ],
+    "table_count": 30,
+    "record_counts": {
+      "cases": 10,
+      "evidence": 171,
+      "telegram_intelligence": 260809,
+      "telegram_groups": 32,
+      "police_officers": 2,
+      "victims": 8,
+      "victim_complaints": 9,
+      "case_entities": 6,
+      "investigation_steps": 12,
+      "country_routing": 189,
+      "audit_log": 496,
+      "scam_websites": 0,
+      "tracked_domains": 0,
+      "case_notes": 0
+    }
+  },
+  "api": {
+    "total_path_entries": 344,
+    "total_methods": 352,
+    "modules_integrated": 39,
+    "framework": "FastAPI",
+    "documentation": "/openapi.json"
+  },
+  "providers_and_connectors": {
+    "no_auth_connectors": [
+      {
+        "name": "BAILII",
+        "type": "legal_database",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "UK_Tribunals",
+        "type": "legal_database",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "GitHub",
+        "type": "code_repository",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "SEC_EDGAR",
+        "type": "financial_database",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "ICIJ",
+        "type": "investigative_database",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "GDELT",
+        "type": "news_database",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      }
+    ],
+    "telegram": {
+      "type": "messaging_intelligence",
+      "auth": "Telethon (user session)",
+      "account": "Meni (+44 7446378384, ID 8935933339)",
+      "monitored_groups": 32,
+      "total_messages_collected": 260809,
+      "status": "LIVE"
+    },
+    "openai": {
+      "type": "ai_model",
+      "model": "gpt-5.6-luna",
+      "auth": "API key in .env.openai",
+      "status": "LIVE_TESTED",
+      "usage": "Case summaries, AI analysis"
+    },
+    "tor": {
+      "type": "anonymity_network",
+      "status": "LIVE",
+      "exit_ip": "192.42.116.145",
+      "socks_proxy": "127.0.0.1:9050"
+    },
+    "blockchain_apis": [
+      {
+        "name": "blockchain.info",
+        "chain": "BTC",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "Blockscout",
+        "chain": "ETH/BSC/Polygon/Arbitrum",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "Tronscan/TronGrid",
+        "chain": "Tron",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "Solscan",
+        "chain": "Solana",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "TONScan",
+        "chain": "TON",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "XRPL",
+        "chain": "XRP",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "Blockchair",
+        "chain": "LTC/DOGE",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "AlgoExplorer",
+        "chain": "Algorand",
+        "auth": "none",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      }
+    ],
+    "threat_feeds": [
+      {
+        "name": "URLHaus",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      },
+      {
+        "name": "ThreatFox",
+        "status": "IMPLEMENTED_NOT_TESTED"
+      }
+    ]
+  },
+  "model_config": {
+    "primary_ai": "gpt-5.6-luna",
+    "detection_engine": "v3.0 (deterministic, 300+ patterns)",
+    "scam_detection": "local-first (80% deterministic, 20% AI optional)",
+    "hunter_version": "v3.0 (disabled from creating cases)"
+  },
+  "services": {
+    "gfin-server": "active",
+    "gfin-monitor": "active (24/7 monitoring)",
+    "gfin-spy": "active (Telegram monitoring)",
+    "tor": "active (SOCKS proxy 9050)",
+    "pgbouncer": "active (connection pooling port 6432)"
+  },
+  "security": {
+    "rate_limiting": "1000/min general, 10/min auth",
+    "rate_limiter_ip_source": "X-Forwarded-For (Nginx)",
+    "security_middleware": "SQLi, XSS, SSRF, path traversal, command injection, LDAP injection",
+    "security_headers": "HSTS, CSP, X-Frame-Options, X-Content-Type-Options",
+    "ssh": "key-only auth, MaxAuthTries 3",
+    "fail2ban": "active",
+    "token_lifecycle": "JWT with refresh + revocation",
+    "evidence_gating": "has_strong_evidence required for case promotion"
+  },
+  "known_failures_and_limitations": [
+    "Layer B (production multi-AZ) NOT PROVISIONED — Terraform validated but no cloud credentials",
+    "External penetration test NOT PERFORMED — scope document prepared",
+    "Only 2 police officers registered — multi-country collaboration not validated",
+    "Provider connectors (BAILII, GitHub, SEC EDGAR, ICIJ, GDELT) IMPLEMENTED_NOT_TESTED — no live API validation performed",
+    "Blockchain API connectors IMPLEMENTED_NOT_TESTED — no live wallet verification performed",
+    "Evidence table lacks formal lifecycle status (FOUND/RELEVANT/CORRELATED/CORROBORATED/EVIDENCE/ATTRIBUTED) — phase field exists but not formalized",
+    "Provenance fields incomplete — source_provider and source_url exist but no acquisition method, query reference, or processing history",
+    "Entity resolution has no formal benchmark or false-positive measurement",
+    "Confidence values are arbitrary strings (HIGH/MEDIUM/LOW) — no calibration, validation dataset, or methodology",
+    "Contradiction detection not implemented — no mechanism to record conflicting evidence or alternative explanations",
+    "Autonomous investigation not implemented — investigations are pipeline-triggered, not Brain-directed",
+    "Decision audit records actions but not the structured decision metadata required by Task 14",
+    "No stop-condition logic — investigations run to pipeline completion without formal stop reasoning",
+    "Next-best-source ranking not implemented — source selection is fixed pipeline order",
+    "Provider failure recovery not implemented — no retry/alternative/fallback chain",
+    "Case/tenant isolation not formally tested — RLS not enabled on all tables",
+    "Evidence integrity — content_hash exists but no chain-of-custody verification or tamper detection",
+    "Police report quality — no formal fact/evidence/inference/lead labeling in reports",
+    "Telegram intelligence is raw data (260K messages) — NOT verified evidence",
+    "10 real cases exist but evidence provenance is incomplete for most items"
+  ],
+  "test_status": {
+    "unit_tests": "2466 passed, 0 failed, 0 skipped (historical, not re-run this session)",
+    "load_test": "200 concurrent, 100% success rate (tested this session)",
+    "backup_restore": "10/10 cases, 171/171 evidence matched (tested this session)",
+    "terraform_validation": "26/26 IaC tests passed (historical)",
+    "go_no_go_gates": "6 PASSING, 6 BLOCKED (historical)"
+  }
+}

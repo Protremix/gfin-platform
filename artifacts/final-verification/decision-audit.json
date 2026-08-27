@@ -1,0 +1,68 @@
+{
+  "artifact": "decision-audit.json",
+  "task": "TASK_14_DECISION_AUDIT",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "structured_decisions_logged": 0,
+  "existing_investigation_steps": 12,
+  "required_decision_fields": [
+    "decision_id",
+    "case_id",
+    "question",
+    "data_gap",
+    "source",
+    "connector",
+    "authorization",
+    "action",
+    "result",
+    "evidence",
+    "next_action",
+    "reason_code",
+    "timestamp"
+  ],
+  "existing_step_fields": [
+    "step_id",
+    "case_id",
+    "step_name",
+    "status",
+    "findings"
+  ],
+  "status": "SCHEMA_IMPLEMENTED_NO_STRUCTURED_DECISIONS",
+  "finding": "investigation_decisions table created (0 records). Existing investigation_steps table has 12 records but uses different schema (step_name/status/findings) not the structured decision metadata required. Migration needed to convert existing steps to decision format.",
+  "sample_investigation_steps": [
+    {
+      "id": 6,
+      "case_id": "GFIN-CASE-001",
+      "step_name": "Initial evidence assessment",
+      "status": "COMPLETED",
+      "result": {}
+    },
+    {
+      "id": 11,
+      "case_id": "GFIN-CASE-001",
+      "step_name": "Evidence gate validation",
+      "status": "COMPLETED",
+      "result": {}
+    },
+    {
+      "id": 20,
+      "case_id": "GFIN-CASE-001",
+      "step_name": "Domain analysis (WHOIS, DNS, SSL)",
+      "status": "COMPLETED",
+      "result": {}
+    },
+    {
+      "id": 29,
+      "case_id": "GFIN-CASE-001",
+      "step_name": "Financial tracing (wallet analysis)",
+      "status": "PENDING",
+      "result": {}
+    },
+    {
+      "id": 38,
+      "case_id": "GFIN-CASE-001",
+      "step_name": "Infrastructure mapping",
+      "status": "PENDING",
+      "result": {}
+    }
+  ]
+}

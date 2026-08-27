@@ -1,0 +1,55 @@
+{
+  "artifact": "police-report-quality.json",
+  "task": "TASK_25_POLICE_REPORT_QUALITY",
+  "created_at": "2026-08-27T20:12:06.478526+00:00",
+  "required_labels": [
+    "FACT",
+    "EVIDENCE",
+    "CORROBORATED_FINDING",
+    "INFERENCE",
+    "LEAD",
+    "UNRESOLVED",
+    "DISPROVEN"
+  ],
+  "reports_with_labels": 0,
+  "reports_without_labels": 5,
+  "sample_reports": [
+    {
+      "case_id": "GFIN-CASE-002",
+      "summary": "Vlad operates an organized investment fraud network promoting neex.com across multiple Telegram scam groups. Evidence from 4 monitored groups shows coordinated promotion of fraudulent investment platf",
+      "investigation_narrative": null,
+      "risk_assessment": null,
+      "action_plan": null
+    },
+    {
+      "case_id": "GFIN-CASE-003",
+      "summary": "TeamForce Technologies operates a call center from Cyprus targeting victims with investment fraud. Contact: +357 9636 7698. Operator identified as 'Evelyn'.",
+      "investigation_narrative": null,
+      "risk_assessment": null,
+      "action_plan": null
+    },
+    {
+      "case_id": "GFIN-CASE-004",
+      "summary": "Telegram user 'REVERSE ENGINEER' offers extraction services for scam operations, providing leads and victim data to other fraudsters. Enabler of fraud ecosystem.",
+      "investigation_narrative": null,
+      "risk_assessment": null,
+      "action_plan": null
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "summary": "Monde HR recruits 'Retention Agents' for relocation to Armenia. This is a human trafficking recruitment channel for scam compound operations.",
+      "investigation_narrative": null,
+      "risk_assessment": null,
+      "action_plan": null
+    },
+    {
+      "case_id": "GFIN-LAUDR-001",
+      "summary": "Money laundering network operated by @btcv123. Active in 6 countries (Brazil, Romania, Malta, Ghana, Luxembourg, Colombia). Operating across 6 Telegram groups. Patterns: defrauded funds exchange, bulk",
+      "investigation_narrative": null,
+      "risk_assessment": null,
+      "action_plan": null
+    }
+  ],
+  "status": "NOT_IMPLEMENTED",
+  "finding": "Case summaries and investigation narratives exist but do not use formal fact/evidence/inference/lead/unresolved/disproven labels. Conclusions are not traced to evidence IDs in the reports. Report quality formatting needs to be implemented."
+}
