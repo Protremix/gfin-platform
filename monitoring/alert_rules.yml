@@ -1,0 +1,133 @@
+groups:
+  - name: gfin-critical
+    interval: 30s
+    rules:
+      # GFIN Server down
+      - alert: GfinServerDown
+        expr: up{job="gfin-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "GFIN API Server is DOWN"
+          description: "The main GFIN FastAPI server on port 8000 is not responding."
+
+      # PostgreSQL down
+      - alert: PostgresDown
+        expr: up{job="postgres"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "PostgreSQL is DOWN"
+          description: "Primary database is not responding. All services affected."
+
+      # Redis down
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 30s
+        labels:
+          severity: warning
+        annotations:
+          summary: "Redis is DOWN"
+          description: "Cache and session store is not responding."
+
+      # High CPU
+      - alert: HighCPU
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage ({{ $value }}%)"
+          description: "Server CPU has been above 80% for 5 minutes."
+
+      # High Memory
+      - alert: HighMemory
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage ({{ $value }}%)"
+          description: "Server memory has been above 85% for 5 minutes."
+
+      # Disk space low
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 80
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low disk space ({{ $value }}% used)"
+          description: "Root filesystem is above 80% capacity."
+
+      # Disk space critical
+      - alert: DiskSpaceCritical
+        expr: (1 - (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 90
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "CRITICAL: Disk space ({{ $value }}% used)"
+          description: "Root filesystem is above 90% capacity. Immediate action required."
+
+      # Kafka down
+      - alert: KafkaDown
+        expr: up{job="kafka"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Kafka is DOWN"
+          description: "Event bus is not responding. Async processing affected."
+
+      # Neo4j down
+      - alert: Neo4jDown
+        expr: up{job="neo4j"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Neo4j is DOWN"
+          description: "Entity graph database is not responding."
+
+      # PgBouncer down
+      - alert: PgBouncerDown
+        expr: up{job="pgbouncer"} == 0
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "PgBouncer is DOWN"
+          description: "Connection pooler is down. Database connections will fail."
+
+      # Too many DB connections
+      - alert: HighDbConnections
+        expr: pg_stat_activity_count > 40
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database connections ({{ $value }})"
+          description: "PostgreSQL has more than 40 active connections."
+
+      # GFIN Spy service stopped
+      - alert: GfinSpyStopped
+        expr: node_systemd_unit_state{name="gfin-spy.service",state="active"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Telegram Spy service is STOPPED"
+          description: "24/7 Telegram intelligence monitoring is not running."
+
+      # GFIN Monitor stopped
+      - alert: GfinMonitorStopped
+        expr: node_systemd_unit_state{name="gfin-monitor.service",state="active"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "GFIN Monitor service is STOPPED"
+          description: "24/7 continuous monitoring is not running."

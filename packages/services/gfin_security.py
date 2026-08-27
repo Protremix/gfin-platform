@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ["gfin-system.com", "www.gfin-system.com", "localhost", "127.0.0
 MAX_REQUEST_SIZE = 10 * 1024 * 1024  # 10MB general, 50MB for uploads
 MAX_UPLOAD_SIZE = 50 * 1024 * 1024  # 50MB
 RATE_LIMIT_WINDOW = 60  # 60 seconds
-RATE_LIMIT_MAX = 500  # requests per window
+RATE_LIMIT_MAX = 1000  # requests per window
 AUTH_RATE_LIMIT_MAX = 100  # auth requests per window
 UPLOAD_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt', '.csv', '.xlsx', '.mp4', '.mov', '.wav', '.mp3'}
 
@@ -237,14 +237,20 @@ class AttackDetectionMiddleware(BaseHTTPMiddleware):
     """Detect and block malicious requests."""
     
     async def dispatch(self, request: Request, call_next):
-        # Get client IP
-        client_ip = request.headers.get('X-Real-IP', request.client.host if request.client else 'unknown')
+        # Get client IP (use X-Forwarded-For from Nginx, fall back to direct IP)
+        forwarded = request.headers.get('X-Forwarded-For', '')
+        if forwarded:
+            client_ip = forwarded.split(',')[0].strip()
+        else:
+            client_ip = request.headers.get('X-Real-IP', request.client.host if request.client else 'unknown')
         
-        # Skip rate limiting for internal localhost endpoints
-        is_internal = client_ip in ('127.0.0.1', '::1', 'localhost', 'unknown') and '/internal/' in str(request.url.path)
+        # Skip rate limiting for internal endpoints and Prometheus metrics
+        path = str(request.url.path)
+        is_internal = client_ip in ('127.0.0.1', '::1', 'localhost', 'unknown') and '/internal/' in path
+        is_exempt = path in ('/metrics', '/health', '/health/', '/api/health')
         
-        # Rate limiting (skip for internal localhost)
-        if not is_internal:
+        # Rate limiting (skip for internal localhost and exempt paths)
+        if not is_internal and not is_exempt:
             is_auth = '/police/login' in str(request.url.path)
             max_req = AUTH_RATE_LIMIT_MAX if is_auth else RATE_LIMIT_MAX
             

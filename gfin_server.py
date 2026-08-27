@@ -16,6 +16,7 @@ from gfin_anomaly_detector import anomaly_detector
 from gfin_misp_integration import misp_integration
 from gfin_midas import midas_pipeline
 from midas_alert_bridge import midas_alert_bridge
+from gfin_logging import setup_logging, get_logger, create_request_logger
 import os, sys, json, time, hashlib, logging, secrets, shutil
 import asyncio
 from contextlib import asynccontextmanager
@@ -30,9 +31,14 @@ try:
 except Exception as e:
     print(f"Warning: v3 engine not loaded: {e}")
 try:
-    from police_auth import (generate_token, verify_token, hash_password, verify_password,
+    import police_auth
+    from police_auth import (generate_token, verify_token, hash_password, verify_password, validate_refresh_token, generate_refresh_token, revoke_token, revoke_all_tokens, init_auth_tables,
         auth_police, auth_police_admin, rate_limiter, POLICE_LOGIN_HTML, POLICE_SCHEMA)
     _police_auth = True
+    try:
+        init_auth_tables()
+    except:
+        pass
 except Exception as e:
     _police_auth = False
     print(f"Warning: police auth not loaded: {e}")
@@ -714,6 +720,10 @@ async def lifespan(app: FastAPI):
     if db_pool: await db_pool.close()
 
 app = FastAPI(title="GFIN Server v2.0", version="2.0.0", lifespan=lifespan)
+setup_logging()
+_gfin_logger = get_logger()
+_gfin_logger.info("GFIN server starting up")
+app.middleware("http")(create_request_logger())
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
@@ -3336,6 +3346,113 @@ async def midas_anomalies(request: Request):
     payload = await auth_police(request)
     stats = midas_pipeline.midas.get_stats()
     return {"top_anomalies": stats["top_anomalies"], "stats": stats}
+
+
+
+# ============================================================
+# PROMETHEUS METRICS ENDPOINT
+# ============================================================
+REQUEST_COUNT = 0
+SERVER_START_TIME = time.time()
+
+@app.middleware("http")
+async def count_requests(request: Request, call_next):
+    global REQUEST_COUNT
+    REQUEST_COUNT += 1
+    response = await call_next(request)
+    return response
+
+@app.get("/metrics")
+async def prometheus_metrics():
+    """Prometheus-compatible metrics endpoint."""
+    import time as _t
+    lines = []
+    lines.append("# TYPE gfin_server_up gauge")
+    lines.append("gfin_server_up 1")
+    lines.append("# TYPE gfin_server_uptime_seconds counter")
+    lines.append(f"gfin_server_uptime_seconds {_t.time() - SERVER_START_TIME}")
+    lines.append("# TYPE gfin_http_requests_total counter")
+    lines.append(f"gfin_http_requests_total {REQUEST_COUNT}")
+    try:
+        conn = await asyncpg.connect(**DB_CONFIG)
+        row = await conn.fetchrow("SELECT count(*) as c FROM cases WHERE status != 'CLOSED'")
+        if row:
+            lines.append("# TYPE gfin_active_cases gauge")
+            lines.append(f"gfin_active_cases {row['c']}")
+        row = await conn.fetchrow("SELECT count(*) as c FROM evidence")
+        if row:
+            lines.append("# TYPE gfin_evidence_items gauge")
+            lines.append(f"gfin_evidence_items {row['c']}")
+        row = await conn.fetchrow("SELECT count(*) as c FROM police_officers WHERE is_active = true")
+        if row:
+            lines.append("# TYPE gfin_active_officers gauge")
+            lines.append(f"gfin_active_officers {row['c']}")
+        row = await conn.fetchrow("SELECT count(*) as c FROM telegram_intelligence")
+        if row:
+            lines.append("# TYPE gfin_telegram_messages gauge")
+            lines.append(f"gfin_telegram_messages {row['c']}")
+        await conn.close()
+    except Exception as e:
+        lines.append(f"# DB error: {e}")
+    return PlainTextResponse("\n".join(lines) + "\n")
+
+# ============================================================
+# TOKEN REFRESH & REVOCATION ENDPOINTS
+# ============================================================
+@app.post("/api/auth/refresh")
+async def refresh_token_endpoint(request: Request):
+    """Exchange a refresh token for a new access token."""
+    try:
+        body = await request.json()
+    except:
+        raise HTTPException(status_code=400, detail="JSON body required")
+    refresh_tok = body.get("refresh_token")
+    if not refresh_tok:
+        raise HTTPException(status_code=400, detail="Refresh token required")
+    if _police_auth:
+        officer_id = police_auth.validate_refresh_token(refresh_tok)
+        if not officer_id:
+            raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
+        conn = await asyncpg.connect(**DB_CONFIG)
+        officer = await conn.fetchrow("SELECT * FROM police_officers WHERE id = $1", officer_id)
+        await conn.close()
+        if not officer:
+            raise HTTPException(status_code=401, detail="Officer not found")
+        new_access = police_auth.generate_token(officer["id"], officer["role"], officer["agency"])
+        new_refresh = police_auth.generate_refresh_token(
+            officer["id"],
+            request.client.host if request.client else "",
+            request.headers.get("user-agent", "")
+        )
+        return {
+            "access_token": new_access,
+            "refresh_token": new_refresh,
+            "token_type": "bearer",
+            "expires_in": 86400 * 7
+        }
+    raise HTTPException(status_code=501, detail="Auth not configured")
+
+@app.post("/api/auth/revoke")
+async def revoke_token_endpoint(request: Request):
+    """Revoke current access token (logout)."""
+    auth = request.headers.get("Authorization", "")
+    token = auth.replace("Bearer ", "")
+    if _police_auth and token:
+        payload = police_auth.verify_token(token)
+        if payload:
+            police_auth.revoke_token(token, payload.get("oid", 0))
+    return {"status": "revoked"}
+
+@app.post("/api/auth/logout-all")
+async def logout_all_endpoint(request: Request):
+    """Revoke all tokens for current user."""
+    auth = request.headers.get("Authorization", "")
+    token = auth.replace("Bearer ", "")
+    if _police_auth and token:
+        payload = police_auth.verify_token(token)
+        if payload:
+            police_auth.revoke_all_tokens(payload.get("oid", 0))
+    return {"status": "all_tokens_revoked"}
 
 
 if __name__ == "__main__":

@@ -302,3 +302,99 @@ if (!token) {
 </body>
 </html>
 """
+
+# ============================================================
+# TOKEN REFRESH & REVOCATION (v2 upgrade)
+# ============================================================
+import psycopg2 as _psycopg2
+import hashlib as _hashlib
+
+_AUTH_DB = {"host": "127.0.0.1", "port": 6432, "dbname": "gfin", "user": "gfin", "password": "GfinSecure2026!"}
+
+def _auth_conn():
+    return _psycopg2.connect(**_AUTH_DB)
+
+def _hash_tok(token):
+    return _hashlib.sha256(token.encode()).hexdigest()
+
+def init_auth_tables():
+    conn = _auth_conn()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS token_blacklist (
+            token_hash VARCHAR(64) PRIMARY KEY,
+            token_type VARCHAR(10) NOT NULL,
+            officer_id INTEGER NOT NULL,
+            revoked_at TIMESTAMPTZ DEFAULT NOW(),
+            expires_at TIMESTAMPTZ NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS refresh_tokens (
+            token_hash VARCHAR(64) PRIMARY KEY,
+            officer_id INTEGER NOT NULL,
+            issued_at TIMESTAMPTZ DEFAULT NOW(),
+            expires_at TIMESTAMPTZ NOT NULL,
+            used BOOLEAN DEFAULT FALSE,
+            ip_address VARCHAR(45),
+            user_agent TEXT
+        );
+    """)
+    conn.commit()
+    conn.close()
+
+def generate_refresh_token(officer_id, ip="", ua=""):
+    """Generate and store a refresh token."""
+    token = secrets.token_urlsafe(48)
+    conn = _auth_conn()
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO refresh_tokens (token_hash, officer_id, expires_at, ip_address, user_agent) VALUES (%s, %s, NOW() + INTERVAL \"7 days\", %s, %s)",
+        (_hash_tok(token), officer_id, ip, ua)
+    )
+    conn.commit()
+    conn.close()
+    return token
+
+def validate_refresh_token(token):
+    """Validate refresh token (single-use). Returns officer_id or None."""
+    conn = _auth_conn()
+    cur = conn.cursor()
+    cur.execute(
+        "SELECT officer_id FROM refresh_tokens WHERE token_hash = %s AND expires_at > NOW() AND used = FALSE",
+        (_hash_tok(token),)
+    )
+    result = cur.fetchone()
+    if result:
+        cur.execute("UPDATE refresh_tokens SET used = TRUE WHERE token_hash = %s", (_hash_tok(token),))
+        conn.commit()
+        conn.close()
+        return result[0]
+    conn.close()
+    return None
+
+def revoke_token(token, officer_id):
+    """Add token to blacklist."""
+    conn = _auth_conn()
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT INTO token_blacklist (token_hash, token_type, officer_id, expires_at) VALUES (%s, %s, %s, NOW() + INTERVAL \"1 hour\") ON CONFLICT DO NOTHING",
+        (_hash_tok(token), "ACCESS", officer_id)
+    )
+    conn.commit()
+    conn.close()
+
+def is_token_revoked(token):
+    """Check if token is blacklisted."""
+    conn = _auth_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT 1 FROM token_blacklist WHERE token_hash = %s AND expires_at > NOW()", (_hash_tok(token),))
+    result = cur.fetchone()
+    conn.close()
+    return result is not None
+
+def revoke_all_tokens(officer_id):
+    """Revoke all refresh tokens for an officer."""
+    conn = _auth_conn()
+    cur = conn.cursor()
+    cur.execute("DELETE FROM refresh_tokens WHERE officer_id = %s", (officer_id,))
+    conn.commit()
+    conn.close()

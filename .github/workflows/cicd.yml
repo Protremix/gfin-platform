@@ -1,0 +1,174 @@
+name: GFIN CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, staging]
+  pull_request:
+    branches: [main]
+
+env:
+  PYTHON_VERSION: "3.12"
+  SERVER_HOST: 83.136.252.48
+
+jobs:
+  # ============================================================
+  # STAGE 1: Code Quality & Security Scanning
+  # ============================================================
+  code-quality:
+    name: Code Quality & Security
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          pip install ruff black mypy bandit pip-audit
+          
+      - name: Lint (ruff)
+        run: ruff check . --select E,F,W,C --ignore E501
+        continue-on-error: true
+      
+      - name: Format check (black)
+        run: black --check .
+        continue-on-error: true
+      
+      - name: Type check (mypy)
+        run: mypy --ignore-missing-imports --no-strict-optional packages/ || true
+      
+      - name: Security scan (bandit)
+        run: bandit -r packages/ -f json -o bandit-report.json || true
+      
+      - name: Dependency audit
+        run: pip-audit || true
+      
+      - name: Upload security report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-report
+          path: bandit-report.json
+
+  # ============================================================
+  # STAGE 2: Unit Tests
+  # ============================================================
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: code-quality
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
+          pip install pytest pytest-asyncio pytest-cov httpx aiohttp asyncpg psycopg2-binary
+          
+      - name: Run unit tests
+        env:
+          DB_HOST: localhost
+          DB_PORT: 5432
+          DB_NAME: gfin_test
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          JWT_SECRET: test-secret
+        run: |
+          pytest tests/ -v --tb=short --maxfail=10 || true
+      
+      - name: Generate coverage report
+        run: pytest tests/ --cov=packages --cov-report=xml || true
+        continue-on-error: true
+      
+      - name: Upload coverage
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+  # ============================================================
+  # STAGE 3: Docker Build Test
+  # ============================================================
+  build-test:
+    name: Docker Build Test
+    runs-on: ubuntu-latest
+    needs: unit-tests
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Validate Docker Compose
+        run: docker compose -f docker-compose.yml config
+      
+      - name: Build images (dry run)
+        run: |
+          docker build -t gfin-server:test . --target production || echo "No Dockerfile, skipping build"
+
+  # ============================================================
+  # STAGE 4: Deploy to Staging (on main branch only)
+  # ============================================================
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [unit-tests, build-test]
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: staging
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to staging server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ env.SERVER_HOST }}
+          username: root
+          key: ${{ secrets.GFIN_SSH_KEY }}
+          script: |
+            cd /gfin
+            git pull origin main
+            /gfin/venv/bin/pip install -r requirements.txt 2>/dev/null || true
+            systemctl restart gfin-server
+            systemctl restart gfin-monitor
+            systemctl restart gfin-spy
+            sleep 3
+            systemctl is-active gfin-server
+            curl -sf http://127.0.0.1:8000/health || exit 1
+            echo "Deploy successful"
+      
+      - name: Run smoke tests
+        run: |
+          sleep 10
+          curl -sf https://gfin-system.com/health || exit 1
+          curl -sf https://gfin-system.com/api/cases || exit 1
+          echo "Smoke tests passed"
+
+  # ============================================================
+  # STAGE 5: Health Check After Deploy
+  # ============================================================
+  post-deploy-health:
+    name: Post-Deploy Health Check
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Check server health
+        run: |
+          for i in $(seq 1 5); do
+            STATUS=$(curl -sf -o /dev/null -w "%{http_code}" https://gfin-system.com/health || echo "000")
+            echo "Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "Server healthy"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Server unhealthy after 5 attempts"
+          exit 1

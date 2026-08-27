@@ -94,3 +94,6 @@ __generated__/
 auth_state.json
 telegram_session.json
 gfin_ssh_key
+.env.openai
+.env.telegram
+.env

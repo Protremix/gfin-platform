@@ -2,7 +2,57 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
 
+rule_files:
+  - /etc/prometheus/alert_rules.yml
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets: ["localhost:9093"]
+
 scrape_configs:
-  - job_name: 'gfin'
+  # Prometheus self-monitoring
+  - job_name: "prometheus"
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ["localhost:9090"]
+
+  # Node exporter (system metrics)
+  - job_name: "node"
+    static_configs:
+      - targets: ["127.0.0.1:9100"]
+
+  # GFIN Server health
+  - job_name: "gfin-server"
+    static_configs:
+      - targets: ["127.0.0.1:8000"]
+    metrics_path: /metrics
+
+  # PostgreSQL
+  - job_name: "postgres"
+    static_configs:
+      - targets: ["127.0.0.1:9187"]
+
+  # Redis
+  - job_name: "redis"
+    static_configs:
+      - targets: ["127.0.0.1:9121"]
+
+  # PgBouncer
+  - job_name: "pgbouncer"
+    static_configs:
+      - targets: ["127.0.0.1:6432"]
+
+  # Kafka
+  - job_name: "kafka"
+    static_configs:
+      - targets: ["127.0.0.1:7071"]
+
+  # Neo4j
+  - job_name: "neo4j"
+    static_configs:
+      - targets: ["127.0.0.1:2004"]
+
+  # Systemd services
+  - job_name: "systemd"
+    static_configs:
+      - targets: ["127.0.0.1:9558"]
