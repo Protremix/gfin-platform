@@ -25,7 +25,8 @@ class SECEdgarConnector(BaseConnector):
             url = f"{self.api_url}/submissions/CIK{cik.zfill(10)}.json"
         else:
             # Search by company name
-            url = f"https://www.sec.gov/cgi-bin/browse-edgar?company={urllib.parse.quote(company_name)}&output=atom"
+            url = f"https://efts.sec.gov/LATEST/search-index?q={urllib.parse.quote(company_name)}"
+            headers = {"User-Agent": "GFIN research@example.com"}
         headers = {"User-Agent": "GFIN Research contact@gfin.local"}
         try:
             return self._make_request(url, headers)
@@ -47,7 +48,7 @@ class ICIJConnector(BaseConnector):
     
     def query(self, search_term: str = "", **kwargs) -> ConnectorResult:
         # ICIJ provides a search API
-        url = f"https://offshoreleaks.icij.org/api/1/search?q={urllib.parse.quote(search_term)}&type=entities"
+        url = f"https://offshoreleaks.icij.org/api/1/search?q={urllib.parse.quote(search_term)}"
         headers = {"User-Agent": "GFIN/1.0", "Accept": "application/json"}
         try:
             return self._make_request(url, headers)

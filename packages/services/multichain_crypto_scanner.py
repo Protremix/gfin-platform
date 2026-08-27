@@ -1,3 +1,4 @@
+import os
 #!/usr/bin/env python3
 """
 GFIN Multi-Chain Crypto Wallet Detection & Tracing Module
@@ -311,7 +312,9 @@ class MultiChainCryptoScanner:
         }
 
         # Tronscan API (free, no auth)
-        data = self._http_get_json(f"https://apilist.tronscanapi.com/api/account/tokens?address={address}&show=15,10,100", timeout=12)
+        tronscan_key = os.getenv("TRONSCAN_API_KEY", "")
+        tronscan_headers = {"TRON-PRO-API-KEY": tronscan_key} if tronscan_key else {}
+        data = self._http_get_json(f"https://apilist.tronscanapi.com/api/account/tokens?address={address}&show=15,10,100", timeout=12, headers=tronscan_headers)
         if data:
             # TRX balance
             tron_data = data.get("trc20token_balances", [])
@@ -389,7 +392,9 @@ class MultiChainCryptoScanner:
         }
 
         # Solscan API (free)
-        data = self._http_get_json(f"https://public-api.solscan.io/account/{address}", timeout=12)
+        solscan_key = os.getenv("SOLSCAN_API_KEY", "")
+        solscan_headers = {"token": solscan_key} if solscan_key else {}
+        data = self._http_get_json(f"https://pro-api.solscan.io/v2/account/metadata?address={address}", timeout=12, headers=solscan_headers)
         if data:
             try:
                 lamports = data.get("lamports", 0)
@@ -399,7 +404,7 @@ class MultiChainCryptoScanner:
             results["transaction_count"] = data.get("txCount", 0)
 
         # Check for token accounts (USDT SPL)
-        tokens_data = self._http_get_json(f"https://public-api.solscan.io/account/tokens?account={address}", timeout=12)
+        tokens_data = self._http_get_json(f"https://pro-api.solscan.io/v2/account/token/balance?address={address}", timeout=12, headers=solscan_headers)
         if tokens_data and isinstance(tokens_data, list):
             for token in tokens_data[:20]:
                 token_addr = token.get("tokenAddress", "")

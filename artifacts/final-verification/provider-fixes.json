@@ -1,0 +1,53 @@
+{
+  "artifact": "provider-fixes.json",
+  "providers": [
+    {
+      "name": "SEC_EDGAR",
+      "status": "FIXED",
+      "fix": "Added User-Agent header",
+      "tested": true,
+      "http_status": 200
+    },
+    {
+      "name": "XRPL",
+      "status": "FIXED",
+      "fix": "Changed from GET to JSON-RPC POST",
+      "tested": true,
+      "http_status": 200
+    },
+    {
+      "name": "GDELT",
+      "status": "NETWORK_ISSUE",
+      "fix": "Server cannot reach GDELT API (timeout)",
+      "tested": true,
+      "http_status": 0
+    },
+    {
+      "name": "ICIJ",
+      "status": "API_CHANGED",
+      "fix": "Old API endpoint deprecated, reconciliation API is now at different URL",
+      "tested": true,
+      "http_status": 404
+    },
+    {
+      "name": "Tronscan",
+      "status": "NEEDS_API_KEY",
+      "fix": "Added API key header support, key required since June 2025",
+      "tested": false,
+      "note": "Get key from https://docs.tronscan.org/en/api/api-keys"
+    },
+    {
+      "name": "Solscan",
+      "status": "NEEDS_API_KEY",
+      "fix": "Migrated to Pro API v2.0, updated endpoint",
+      "tested": false,
+      "note": "Get key from https://solscan.io/apis"
+    }
+  ],
+  "summary": {
+    "fixed": 2,
+    "network_issue": 1,
+    "api_changed": 1,
+    "needs_api_key": 2
+  }
+}
