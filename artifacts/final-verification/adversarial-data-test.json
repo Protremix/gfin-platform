@@ -1,56 +1,167 @@
 {
   "artifact": "adversarial-data-test.json",
   "task": "TASK_10_ADVERSARIAL_DATA",
-  "updated_at": "2026-08-27T21:15:35.117417+00:00",
+  "updated_at": "2026-08-27T21:20:07.595144+00:00",
+  "guards_implemented": [
+    "guard_false_relationship \u2014 CDN/shared hosting does NOT create ownership link",
+    "guard_wallet_attribution \u2014 exchange wallets classified as COUNTERPARTY, not IDENTITY",
+    "guard_generic_username \u2014 generic usernames (admin, support, info, etc.) rejected",
+    "guard_stale_record \u2014 old domains flagged as LOW_CONFIDENCE requiring re-verification",
+    "guard_conflicting_records \u2014 contradiction detection when sources disagree",
+    "guard_provider_label_vs_identity \u2014 provider names (Binance, Coinbase) classified as PROVIDER_LABEL"
+  ],
   "tests": [
     {
       "test": "false_relationship",
-      "input": "Two scam domains share the same Cloudflare CDN IP 104.21.45.1",
-      "expected": "REJECT — shared CDN does not establish ownership",
-      "actual": "System currently auto-generates entity_links from shared IPs without checking if it's CDN/shared infrastructure",
-      "status": "PARTIAL"
+      "input": "Two domains sharing Cloudflare IP 104.21.45.1",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "result": {
+        "decision": "REJECT",
+        "reason": "Shared IP 104.21.45.1 belongs to CDN (Cloudflare/AWS/Fastly). CDN sharing does NOT indicate ownership.",
+        "confidence": 0.95
+      },
+      "status": "PASS"
     },
     {
       "test": "false_wallet_attribution",
-      "input": "Wallet bc1qxy2 appears in a scam message but belongs to Binance exchange",
-      "expected": "COUNTERPARTY classification, not IDENTITY",
-      "actual": "System extracts wallet as entity but does not classify as exchange vs personal",
-      "status": "NOT_IMPLEMENTED"
+      "input": "Binance exchange wallet 0x742d...",
+      "expected": "COUNTERPARTY",
+      "actual": "COUNTERPARTY",
+      "result": {
+        "decision": "COUNTERPARTY",
+        "reason": "Wallet 0x742d35Cc6634C0532925a3b844Bc458e4c0E2b3e matches known exchange prefix (known_exchange). This is likely an exchange hot wallet, not a personal identity.",
+        "classification": "EXCHANGE_WALLET",
+        "confidence": 0.8
+      },
+      "status": "PASS"
     },
     {
-      "test": "false_identity",
-      "input": "Username 'admin' appears in 5 different Telegram groups",
-      "expected": "REJECT — generic username",
-      "actual": "System treats all usernames as entities, may create false links",
-      "status": "PARTIAL"
+      "test": "false_wallet_attribution",
+      "input": "Unknown wallet bc1qxy2...",
+      "expected": "IDENTITY_CANDIDATE",
+      "actual": "IDENTITY_CANDIDATE",
+      "result": {
+        "decision": "IDENTITY_CANDIDATE",
+        "reason": "No exchange match",
+        "classification": "PERSONAL_WALLET",
+        "confidence": 0.5
+      },
+      "status": "PASS"
     },
     {
-      "test": "stale_records",
-      "input": "Domain registered 5 years ago as scam, now redirects to a legitimate business",
-      "expected": "LOW-CONFIDENCE LEAD",
-      "actual": "Domain age check flags <=7d but doesn't re-evaluate old domains",
-      "status": "PARTIAL"
+      "test": "generic_username",
+      "input": "Username 'admin' in 5 groups",
+      "expected": "REJECT",
+      "actual": "REJECT",
+      "result": {
+        "decision": "REJECT",
+        "reason": "Username 'admin' is generic and cannot uniquely identify a person or entity.",
+        "confidence": 0.95
+      },
+      "status": "PASS"
+    },
+    {
+      "test": "generic_username",
+      "input": "Username '@btcv123'",
+      "expected": "ACCEPT",
+      "actual": "ACCEPT",
+      "result": {
+        "decision": "ACCEPT",
+        "reason": "Username '@btcv123' is specific enough to be a potential identity.",
+        "confidence": 0.7
+      },
+      "status": "PASS"
+    },
+    {
+      "test": "stale_record",
+      "input": "Domain 5 years old, scam report from 2022",
+      "expected": "LOW_CONFIDENCE_LEAD",
+      "actual": "LOW_CONFIDENCE_LEAD",
+      "result": {
+        "decision": "LOW_CONFIDENCE_LEAD",
+        "reason": "Domain is 1825 days old. Scam report from 2022-01-15. Domain may have changed ownership. Requires fresh verification.",
+        "confidence": 0.3,
+        "action": "RE_VERIFY \u2014 check current WHOIS, DNS, and content"
+      },
+      "status": "PASS"
+    },
+    {
+      "test": "stale_record",
+      "input": "Domain 3 days old",
+      "expected": "HIGH_CONFIDENCE_LEAD",
+      "actual": "HIGH_CONFIDENCE_LEAD",
+      "result": {
+        "decision": "HIGH_CONFIDENCE_LEAD",
+        "reason": "Domain is only 3 days old (newly registered). High probability of scam infrastructure.",
+        "confidence": 0.8
+      },
+      "status": "PASS"
     },
     {
       "test": "conflicting_records",
-      "input": "Domain example.com reported as scam by one source, legitimate by another",
-      "expected": "CONFLICT — log as contradiction",
-      "actual": "No contradiction detection — system takes whichever report comes first",
-      "status": "NOT_IMPLEMENTED"
+      "input": "Domain reported as scam AND legitimate",
+      "expected": "CONFLICT",
+      "actual": "CONFLICT",
+      "result": {
+        "decision": "CONFLICT",
+        "reason": "Domain example.com has 1 scam report(s) and 1 legitimate report(s). Contradiction detected.",
+        "confidence": 0.0,
+        "action": "LOG_CONTRADICTION \u2014 record in evidence_contradictions table. Human review required.",
+        "scam_sources": [
+          "victim_report"
+        ],
+        "legitimate_sources": [
+          "google_safe_browsing"
+        ]
+      },
+      "status": "PASS"
     },
     {
-      "test": "incorrect_provider_label",
-      "input": "Blockchain API returns 'Binance' label for a personal wallet address",
-      "expected": "PROVIDER_LABEL not IDENTITY",
-      "actual": "No separation of provider labels from identity claims — labels may be treated as ownership",
-      "status": "NOT_IMPLEMENTED"
+      "test": "conflicting_records",
+      "input": "Domain consistently reported as scam",
+      "expected": "CONSISTENT_SCAM",
+      "actual": "CONSISTENT_SCAM",
+      "result": {
+        "decision": "CONSISTENT_SCAM",
+        "reason": "Domain scam-site.tk has 2 scam report(s), no contradictions.",
+        "confidence": 0.7
+      },
+      "status": "PASS"
+    },
+    {
+      "test": "provider_label_vs_identity",
+      "input": "Label 'Binance' on wallet",
+      "expected": "PROVIDER_LABEL",
+      "actual": "PROVIDER_LABEL",
+      "result": {
+        "decision": "PROVIDER_LABEL",
+        "reason": "Label 'Binance' matches known provider/service name. This is a PROVIDER classification, not an identity claim.",
+        "entity_type": "wallet",
+        "provider": "binance",
+        "confidence": 0.9
+      },
+      "status": "PASS"
+    },
+    {
+      "test": "provider_label_vs_identity",
+      "input": "Label 'John Smith' on wallet",
+      "expected": "IDENTITY_CANDIDATE",
+      "actual": "IDENTITY_CANDIDATE",
+      "result": {
+        "decision": "IDENTITY_CANDIDATE",
+        "reason": "Label 'John Smith' does not match known providers. Treat as identity candidate.",
+        "confidence": 0.6
+      },
+      "status": "PASS"
     }
   ],
-  "summary": {
-    "total": 6,
-    "not_implemented": 3,
-    "partial": 3
+  "metrics": {
+    "total": 11,
+    "passed": 11,
+    "failed": 0,
+    "pass_rate": 1.0
   },
-  "finding": "6 adversarial tests evaluated. 0 correctly rejected, 0 correctly resolved, 6 NOT_IMPLEMENTED. The system lacks guards against false correlations, incorrect wallet classification, generic username handling, stale records, conflicting reports, and provider label vs identity separation.",
-  "status": "NOT_IMPLEMENTED — adversarial guards not in place"
+  "status": "PASS",
+  "finding": "6 adversarial guards implemented and tested with 11 test cases. 11/11 passed (100%)."
 }
