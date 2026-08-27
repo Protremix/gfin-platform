@@ -1,0 +1,31 @@
+============================= test session starts ==============================
+collecting ... collected 26 items
+
+tests/production/test_terraform_iac.py::test_terraform_files_exist[main.tf] PASSED [  3%]
+tests/production/test_terraform_iac.py::test_terraform_files_exist[variables.tf] PASSED [  7%]
+tests/production/test_terraform_iac.py::test_terraform_files_exist[aws-stateful.tf] PASSED [ 11%]
+tests/production/test_terraform_iac.py::test_terraform_files_exist[hetzner.tf] PASSED [ 15%]
+tests/production/test_terraform_iac.py::test_terraform_files_exist[security.tf] PASSED [ 19%]
+tests/production/test_terraform_iac.py::test_terraform_files_exist[outputs.tf] PASSED [ 23%]
+tests/production/test_terraform_iac.py::test_k3s_scripts_exist PASSED    [ 26%]
+tests/production/test_terraform_iac.py::test_terraform_required_version PASSED [ 30%]
+tests/production/test_terraform_iac.py::test_aws_provider_configured PASSED [ 34%]
+tests/production/test_terraform_iac.py::test_hetzner_provider_configured PASSED [ 38%]
+tests/production/test_terraform_iac.py::test_s3_backend_configured PASSED [ 42%]
+tests/production/test_terraform_iac.py::test_rds_postgres_defined PASSED [ 46%]
+tests/production/test_terraform_iac.py::test_msk_kafka_defined PASSED    [ 50%]
+tests/production/test_terraform_iac.py::test_opensearch_defined PASSED   [ 53%]
+tests/production/test_terraform_iac.py::test_elasticache_redis_defined PASSED [ 57%]
+tests/production/test_terraform_iac.py::test_s3_evidence_worm_compliance PASSED [ 61%]
+tests/production/test_terraform_iac.py::test_kms_key_defined PASSED      [ 65%]
+tests/production/test_terraform_iac.py::test_hetzner_master_node PASSED  [ 69%]
+tests/production/test_terraform_iac.py::test_hetzner_worker_nodes PASSED [ 73%]
+tests/production/test_terraform_iac.py::test_hetzner_private_network PASSED [ 76%]
+tests/production/test_terraform_iac.py::test_hetzner_firewall_rules PASSED [ 80%]
+tests/production/test_terraform_iac.py::test_security_groups_restrict_access PASSED [ 84%]
+tests/production/test_terraform_iac.py::test_no_hardcoded_secrets PASSED [ 88%]
+tests/production/test_terraform_iac.py::test_sensitive_variables_marked PASSED [ 92%]
+tests/production/test_terraform_iac.py::test_outputs_defined PASSED      [ 96%]
+tests/production/test_terraform_iac.py::test_sensitive_outputs_marked PASSED [100%]
+
+============================== 26 passed in 0.11s ==============================

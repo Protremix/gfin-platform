@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>GFIN — Scam Website Database</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gov-blue: #003366;
+            --gov-blue-light: #1a5276;
+            --gov-blue-dark: #002244;
+            --gov-gold: #c5a55a;
+            --gov-white: #ffffff;
+            --gov-light-gray: #f5f7fa;
+            --gov-mid-gray: #e1e8ed;
+            --gov-dark-gray: #2c3e50;
+            --gov-text: #1a1a2e;
+            --gov-red: #c0392b;
+            --gov-green: #27ae60;
+            --gov-radius: 6px;
+        }
+        body {
+            background: var(--gov-light-gray);
+            color: var(--gov-text);
+            font-family: 'Inter', sans-serif;
+        }
+        .top-bar { background: var(--gov-blue-dark); color: rgba(255,255,255,0.8); font-size: 12px; padding: 6px 0; }
+        .top-bar .container { display: flex; justify-content: space-between; }
+        .top-bar a { color: var(--gov-gold); text-decoration: none; margin-left: 16px; }
+        .header { background: white; border-bottom: 3px solid var(--gov-blue); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .header .container { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
+        .logo-block { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .logo-seal { width: 48px; height: 48px; background: var(--gov-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gov-gold); }
+        .logo-seal svg { width: 28px; height: 28px; }
+        .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--gov-blue); }
+        .logo-text p { font-size: 10px; color: var(--gov-dark-gray); letter-spacing: 1px; text-transform: uppercase; }
+        .nav a { color: var(--gov-dark-gray); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 4px; }
+        .nav a:hover { background: var(--gov-light-gray); }
+        .nav .btn-report { background: var(--gov-blue); color: white; padding: 8px 18px; border-radius: 4px; font-weight: 600; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        .page-header { background: var(--gov-blue); color: white; padding: 40px 0; text-align: center; }
+        .page-header h2 { font-size: 26px; font-weight: 700; }
+        .page-header p { opacity: 0.8; font-size: 14px; margin-top: 6px; }
+        
+        .content { padding: 30px 0; }
+        
+        .search-section { background: white; border-radius: var(--gov-radius); padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; }
+        .search-box { display: flex; gap: 10px; }
+        .search-box input { flex: 1; padding: 14px 16px; border: 2px solid var(--gov-mid-gray); border-radius: var(--gov-radius); font-size: 15px; font-family: 'Roboto Mono', monospace; }
+        .search-box input:focus { outline: none; border-color: var(--gov-blue); }
+        .search-box button { background: var(--gov-blue); color: white; border: none; padding: 14px 24px; border-radius: var(--gov-radius); font-weight: 600; cursor: pointer; }
+        .search-box button:hover { background: var(--gov-blue-light); }
+        
+        .check-result { margin-top: 16px; padding: 18px; border-radius: var(--gov-radius); display: none; }
+        .check-result.danger { background: #fce4ec; border: 2px solid var(--gov-red); display: block; }
+        .check-result.safe { background: #e8f5e9; border: 2px solid var(--gov-green); display: block; }
+        .check-result.loading { background: var(--gov-light-gray); display: block; text-align: center; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+        .stat-card { background: white; border-radius: var(--gov-radius); padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-top: 3px solid var(--gov-blue); }
+        .stat-card .number { font-size: 28px; font-weight: 800; color: var(--gov-blue); }
+        .stat-card .label { font-size: 12px; color: var(--gov-dark-gray); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .filters { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .filters select { padding: 10px 14px; background: white; border: 1px solid var(--gov-mid-gray); border-radius: var(--gov-radius); color: var(--gov-text); font-size: 14px; font-family: inherit; }
+        
+        .table-card { background: white; border-radius: var(--gov-radius); overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; padding: 14px 16px; background: var(--gov-light-gray); border-bottom: 2px solid var(--gov-mid-gray); color: var(--gov-dark-gray); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        td { padding: 14px 16px; border-bottom: 1px solid var(--gov-mid-gray); font-size: 14px; }
+        tr:hover { background: var(--gov-light-gray); }
+        .domain-cell { font-family: 'Roboto Mono', monospace; font-weight: 600; color: var(--gov-blue); }
+        .scam-type { text-transform: capitalize; }
+        
+        .risk-badge { padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+        .risk-CRITICAL { background: var(--gov-red); color: white; }
+        .risk-HIGH { background: #e67e22; color: white; }
+        .risk-MEDIUM { background: #f39c12; color: white; }
+        .risk-LOW { background: var(--gov-green); color: white; }
+        
+        .telegram-info { background: white; border-radius: var(--gov-radius); padding: 14px; text-align: center; margin-bottom: 20px; border-left: 4px solid var(--gov-blue); }
+        .telegram-info a { color: var(--gov-blue); font-weight: 600; text-decoration: none; }
+        
+        .footer { background: var(--gov-blue-dark); color: rgba(255,255,255,0.7); padding: 30px 0; text-align: center; font-size: 13px; }
+        .footer a { color: var(--gov-gold); text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .nav { display: none; }
+            .search-box { flex-direction: column; }
+        }
+
+        /* ===== MOBILE / SAMSUNG BROWSER FIX ===== */
+        @media (max-width: 768px) {
+            body { font-size: 15px !important; }
+            .container { max-width: 100% !important; padding: 14px !important; }
+            input, select, textarea { font-size: 16px !important; }
+            button, .btn { font-size: 15px !important; padding: 12px !important; }
+            table { font-size: 13px !important; }
+            th, td { padding: 6px 4px !important; }
+            .header { padding: 12px 16px !important; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; gap: 10px; }
+            .search-box { flex-direction: column; gap: 8px; }
+            .search-box input { width: 100%; }
+            .search-box button { width: 100%; }
+            .filters { flex-direction: column; gap: 6px; }
+            .filters select, .filters button { width: 100%; }
+            .header .container { padding: 10px 14px; }
+            .logo-seal { width: 40px; height: 40px; }
+            .logo-text h1 { font-size: 16px; }
+            .logo-text p { font-size: 10px; }
+            .top-bar { font-size: 11px; }
+            .top-bar .container { justify-content: center; flex-wrap: wrap; gap: 4px; }
+            h2 { font-size: 20px; }
+            .container { padding: 0 14px; }
+            div[style*="flex-wrap:wrap"] { flex-direction: column; gap: 8px; }
+        }
+        @media (max-width: 360px) {
+            .logo-text p { display: none; }
+            .logo-text h1 { font-size: 14px; }
+            h2 { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar"><div class="container"><div>🛡️ Official Government-Grade Fraud Intelligence Platform</div><div><a href="/">Home</a><a href="/victim">Report</a><a href="/scam-sites">Scam DB</a><a href="/police/login">Police</a></div></div></div>
+    
+    <header class="header">
+        <div class="container">
+            <a href="/" class="logo-block">
+                <div class="logo-seal"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke="#c5a55a" stroke-width="2"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="logo-text"><h1>GFIN</h1><p>Global Fraud Intelligence Network</p></div>
+            </a>
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="/victim">Report a Scam</a>
+                <a href="/scam-sites" style="color:var(--gov-blue);font-weight:600;">Scam Database</a>
+                <a href="/analytics">Analytics</a>
+                <a href="/police/login" class="btn-report">Police Login</a>
+            </nav>
+        </div>
+        <div style="position:relative;display:inline-block;margin-left:12px">
+          <button id="langBtn" onclick="document.getElementById('langDropdown').classList.toggle('show')" style="background:transparent;border:1px solid #334155;color:#94a3b8;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px">&#127760; <span id="currentLang">EN</span> &#9662;</button>
+          <div id="langDropdown" style="display:none;position:absolute;right:0;top:100%;background:#0a0e1a;border:1px solid #334155;border-radius:8px;min-width:140px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.5)"></div>
+        </div>
+    </header>
+    
+    <div class="page-header">
+        <h2>🔍 Scam Website Database</h2>
+        <p>Check if a website has been reported as a scam — free, instant, no registration</p>
+    </div>
+    
+    <div class="content">
+        <div class="container">
+            <div class="telegram-info">
+                💬 Also available on Telegram: send <code>/check example.com</code> to <a href="https://t.me/GFINofficialbot" target="_blank">@GFINofficialbot</a>
+            </div>
+            
+            <div class="search-section">
+                <div class="search-box">
+                    <input type="text" id="domainInput" placeholder="Enter a domain (e.g., example.com)" onkeypress="if(event.key==='Enter') checkDomain()">
+                    <button onclick="checkDomain()">🔍 Check Now</button>
+                </div>
+                <div id="checkResult" class="check-result"></div>
+            </div>
+            
+            <div class="stats-grid" id="statsGrid"></div>
+            
+            <div class="filters">
+                <select id="filterType" onchange="loadSites()">
+                    <option value="">All Scam Types</option>
+                    <option value="RECOVERY_SCAM">Recovery Scam</option>
+                    <option value="INVESTMENT_FRAUD">Investment Fraud</option>
+                    <option value="ROMANCE_SCAM">Romance Scam</option>
+                    <option value="PHISHING">Phishing</option>
+                    <option value="IMPERSONATION">Impersonation</option>
+                    <option value="CRYPTO_FRAUD">Crypto Fraud</option>
+                </select>
+                <select id="filterRisk" onchange="loadSites()">
+                    <option value="">All Risk Levels</option>
+                    <option value="CRITICAL">🔴 Critical</option>
+                    <option value="HIGH">🟠 High</option>
+                    <option value="MEDIUM">🟡 Medium</option>
+                    <option value="LOW">🟢 Low</option>
+                </select>
+                <select id="sortBy" onchange="loadSites()">
+                    <option value="report_count">Most Reported</option>
+                    <option value="recent">Most Recent</option>
+                    <option value="loss">Highest Loss</option>
+                    <option value="domain">Domain (A-Z)</option>
+                </select>
+            </div>
+            
+            <div class="table-card">
+                <table>
+                    <thead><tr><th>Domain</th><th>Scam Type</th><th>Risk</th><th>Reports</th><th>Loss</th><th>Last Reported</th></tr></thead>
+                    <tbody id="sitesTable"></tbody>
+                </table>
+            </div>
+            
+            <div style="text-align:center; margin-top:20px;">
+                <button id="loadMoreBtn" onclick="loadMore()" style="padding:10px 24px; background:var(--gov-blue); color:white; border:none; border-radius:var(--gov-radius); cursor:pointer; font-weight:600;">Load More</button>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <div class="container">
+            <p data-i18n="footer_copyright">© 2026 Global Fraud Intelligence Network</p>
+            <p style="margin-top:8px;">
+                <a href="/" data-i18n="nav_home">Home</a> · 
+                <a href="/victim" data-i18n="nav_report">Report</a> · 
+                <a href="/scam-sites" data-i18n="nav_scam_db">Scam DB</a> · 
+                <a href="/police/login" data-i18n="nav_police">Police</a> · 
+                <a href="/privacy" data-i18n="footer_privacy">Privacy</a> · 
+                <a href="/terms" data-i18n="footer_terms">Terms</a> · 
+                <a href="/contact" data-i18n="footer_contact">Contact</a> · 
+                <a href="/api/docs" data-i18n="footer_api_docs">API Docs</a>
+            </p>
+        </div>
+    </footer>
+    
+    <script>
+        let offset = 0;
+        async function checkDomain() {
+            const input = document.getElementById('domainInput').value.trim();
+            if (!input) return;
+            const r = document.getElementById('checkResult');
+            r.className = 'check-result loading'; r.innerHTML = 'Checking database...';
+            try {
+                const resp = await fetch(`/api/scam-sites/check/${encodeURIComponent(input)}`);
+                const data = await resp.json();
+                if (data.found) {
+                    r.className = 'check-result danger';
+                    const rc = {'CRITICAL':'var(--gov-red)','HIGH':'#e67e22','MEDIUM':'#f39c12','LOW':'var(--gov-green)'};
+                    r.innerHTML = `<div style="font-size:18px;font-weight:700;color:var(--gov-red);margin-bottom:8px;">⚠️ SCAM WEBSITE DETECTED</div>
+                    <div style="font-family:'Roboto Mono',monospace;font-weight:600;margin-bottom:10px;">${data.domain}</div>
+                    <div style="display:flex;gap:16px;flex-wrap:wrap;font-size:14px;">
+                        <span><strong>Type:</strong> ${data.scam_type.replace(/_/g,' ').toLowerCase()}</span>
+                        <span><strong>Risk:</strong> <span style="color:${rc[data.risk_level]};font-weight:700;">${data.risk_level}</span></span>
+                        <span><strong>Reports:</strong> ${data.report_count}</span>
+                        ${data.total_loss_reported > 0 ? `<span><strong>Loss:</strong> $${data.total_loss_reported.toLocaleString()}</span>` : ''}
+                    </div>
+                    <div style="margin-top:10px;font-weight:600;color:var(--gov-red);">⚠️ Do NOT send money or personal information to this website.</div>
+                    <a href="/victim" style="display:inline-block;margin-top:10px;color:var(--gov-blue);font-weight:600;text-decoration:none;">Report a scam →</a>`;
+                } else {
+                    r.className = 'check-result safe';
+                    r.innerHTML = `<div style="font-size:18px;font-weight:700;color:var(--gov-green);margin-bottom:8px;">✅ Not Found in Scam Database</div>
+                    <div style="font-family:'Roboto Mono',monospace;font-weight:600;margin-bottom:8px;">${data.domain || input}</div>
+                    <div style="font-size:14px;color:var(--gov-dark-gray);">This domain has not been reported as a scam. This does NOT guarantee it's safe.</div>
+                    <a href="/victim" style="display:inline-block;margin-top:10px;color:var(--gov-blue);font-weight:600;text-decoration:none;">Report this site →</a>`;
+                }
+            } catch(e) { r.className='check-result'; r.style.background='#fce4ec'; r.innerHTML='❌ Error checking domain.'; }
+        }
+        async function loadStats() {
+            try { const r = await fetch('/api/scam-sites/stats'); const d = await r.json();
+                document.getElementById('statsGrid').innerHTML = `
+                    <div class="stat-card"><div class="number">${d.total_sites||0}</div><div class="label">Total Scam Sites</div></div>
+                    <div class="stat-card"><div class="number" style="color:var(--gov-red)">${d.by_risk_level?.CRITICAL||0}</div><div class="label">Critical Risk</div></div>
+                    <div class="stat-card"><div class="number" style="color:#e67e22">${d.by_risk_level?.HIGH||0}</div><div class="label">High Risk</div></div>
+                    <div class="stat-card"><div class="number" style="color:var(--gov-green)">$${(d.total_loss_reported||0).toLocaleString()}</div><div class="label">Loss Reported</div></div>`;
+            } catch(e) {}
+        }
+        async function loadSites(append) {
+            const t=document.getElementById('filterType').value, r=document.getElementById('filterRisk').value, s=document.getElementById('sortBy').value;
+            let url=`/api/scam-sites/list?limit=20&offset=${append?offset:0}&sort=${s}`;
+            if(t) url+=`&scam_type=${t}`; if(r) url+=`&risk_level=${r}`;
+            try { const resp=await fetch(url); const data=await resp.json();
+                const tbody=document.getElementById('sitesTable');
+                if(!append){tbody.innerHTML='';offset=0;}
+                if(data.sites){data.sites.forEach(s=>{const row=document.createElement('tr');
+                    row.innerHTML=`<td class="domain-cell">${s.domain}</td><td class="scam-type">${(s.scam_type||'').replace(/_/g,' ').toLowerCase()}</td><td><span class="risk-badge risk-${s.risk_level}">${s.risk_level||'N/A'}</span></td><td>${s.report_count}</td><td>${s.total_loss>0?'$'+s.total_loss.toLocaleString():'-'}</td><td>${s.last_reported?s.last_reported.slice(0,10):'-'}</td>`;
+                    tbody.appendChild(row);});
+                    offset+=data.sites.length;
+                    document.getElementById('loadMoreBtn').style.display=data.sites.length<20?'none':'inline-block';
+                }
+            } catch(e) {}
+        }
+        function loadMore(){loadSites(true);}
+        loadStats(); loadSites();
+    </script>
+<script src="/gfin-i18n.js"></script>
+</body>
+</html>

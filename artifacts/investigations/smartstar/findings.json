@@ -1,0 +1,76 @@
+{
+  "case_id": "CASE-SMARTSTAR-001",
+  "findings": [
+    {
+      "id": "FND-001",
+      "description": "Three distinct legal entities share the name SmartStar Technology but are separate companies in different jurisdictions with different directors",
+      "evidence_ids": [
+        "EVI-001",
+        "EVI-002",
+        "EVI-003"
+      ],
+      "confidence": "HIGH",
+      "classification": "CORROBORATED FACT"
+    },
+    {
+      "id": "FND-002",
+      "description": "UK SmartStar Technology Ltd was dissolved via compulsory strike-off on October 7, 2025, for non-compliance with statutory returns",
+      "evidence_ids": [
+        "EVI-001",
+        "EVI-012"
+      ],
+      "confidence": "HIGH",
+      "classification": "CORROBORATED FACT"
+    },
+    {
+      "id": "FND-003",
+      "description": "SmartJobs is a legitimate B2B job management and site health & safety software platform operated by the NZ entity",
+      "evidence_ids": [
+        "EVI-004",
+        "EVI-005",
+        "EVI-006",
+        "EVI-007",
+        "EVI-010"
+      ],
+      "confidence": "HIGH",
+      "classification": "CORROBORATED FACT"
+    },
+    {
+      "id": "FND-004",
+      "description": "No fraud reports, scam complaints, or regulatory warnings found for any SmartStar Technology entity across 10+ databases",
+      "evidence_ids": [
+        "EVI-011"
+      ],
+      "confidence": "HIGH",
+      "classification": "CORROBORATED FACT"
+    },
+    {
+      "id": "FND-005",
+      "description": "The UK entity had an unusually high declared share capital of 10M GBP for a company at a virtual office address",
+      "evidence_ids": [
+        "EVI-001"
+      ],
+      "confidence": "MEDIUM",
+      "classification": "OBSERVATION"
+    },
+    {
+      "id": "FND-006",
+      "description": "No cryptocurrency indicators, Telegram presence, or advertising campaigns found for any entity",
+      "evidence_ids": [],
+      "confidence": "HIGH",
+      "classification": "NEGATIVE FINDING"
+    },
+    {
+      "id": "FND-007",
+      "description": "The UK entity and NZ entity have different directors (Rojs Gordons vs Rex Huang) and should not be merged",
+      "evidence_ids": [
+        "EVI-001",
+        "EVI-002"
+      ],
+      "confidence": "HIGH",
+      "classification": "CORROBORATED FACT"
+    }
+  ],
+  "conclusion": "NO FRAUD ESTABLISHED - Evidence does not support the allegation. The target appears to be a legitimate software company. The UK entity dissolution was due to administrative non-compliance, not fraud.",
+  "timestamp": "2026-08-26T15:18:43.772009+00:00"
+}

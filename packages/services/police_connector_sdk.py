@@ -11,7 +11,7 @@ Layer B: Real connectors with mTLS, credential vault (REQUIRES EXTERNAL INFRASTR
 import contextlib
 from abc import ABC, abstractmethod
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -19,26 +19,26 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class SyncDirection(str, Enum):
+class SyncDirection(StrEnum):
     PUSH = "PUSH"
     PULL = "PULL"
     BIDIRECTIONAL = "BIDIRECTIONAL"
 
 
-class SyncStatus(str, Enum):
+class SyncStatus(StrEnum):
     SUCCESS = "SUCCESS"
     PARTIAL = "PARTIAL"
     FAILED = "FAILED"
 
 
-class ConnectorStatus(str, Enum):
+class ConnectorStatus(StrEnum):
     DISCONNECTED = "DISCONNECTED"
     CONNECTING = "CONNECTING"
     CONNECTED = "CONNECTED"
     ERROR = "ERROR"
 
 
-class ConnectorEventType(str, Enum):
+class ConnectorEventType(StrEnum):
     MATCH = "MATCH"
     ALERT = "ALERT"
     REQUEST = "REQUEST"

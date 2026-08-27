@@ -1,0 +1,127 @@
+{
+  "phase": "API_BLIND",
+  "method": "System received only evidence gaps. No API names provided. System had to discover whether APIs exist, who provides them, and how to access them.",
+  "api_discoveries": [
+    {
+      "gap": "Corporate data",
+      "api_exists": "YES",
+      "provider": "Companies House UK",
+      "endpoint": "api.company-information.service.gov.uk/company/{number}",
+      "auth": "API key (Basic Auth)",
+      "authorization": "Free registration at developer.company-information.service.gov.uk",
+      "coverage": "All UK company filings, officers, PSC, charges",
+      "limitations": "Rate limited, requires registration",
+      "result": "AUTH_REQUIRED (401 without key). Data accessed via public web interface instead."
+    },
+    {
+      "gap": "DNS records",
+      "api_exists": "YES",
+      "provider": "Google DoH",
+      "endpoint": "8.8.8.8/resolve?name={domain}&type={type}",
+      "auth": "NONE",
+      "authorization": "Public",
+      "coverage": "All DNS record types",
+      "limitations": "None for basic queries",
+      "result": "SUCCESS \u2014 12 domains tested, 4 resolved"
+    },
+    {
+      "gap": "DNS records (verification)",
+      "api_exists": "YES",
+      "provider": "Cloudflare DoH",
+      "endpoint": "1.1.1.1/dns-query?name={domain}&type={type}",
+      "auth": "NONE",
+      "authorization": "Public",
+      "coverage": "All DNS record types",
+      "limitations": "None for basic queries",
+      "result": "SUCCESS \u2014 confirmed Google DoH results"
+    },
+    {
+      "gap": "Domain registration",
+      "api_exists": "YES",
+      "provider": "RDAP (rdap.org)",
+      "endpoint": "rdap.org/domain/{domain}",
+      "auth": "NONE",
+      "authorization": "Public",
+      "coverage": "Registration dates, registrar, nameservers, status",
+      "limitations": "Privacy-redacted registrant data (GDPR)",
+      "result": "SUCCESS \u2014 smartstar.co.uk data retrieved"
+    },
+    {
+      "gap": "Historical web",
+      "api_exists": "YES",
+      "provider": "Internet Archive",
+      "endpoint": "web.archive.org/cdx/search/cdx?url={domain}&output=json",
+      "auth": "NONE",
+      "authorization": "Public",
+      "coverage": "Historical web page captures",
+      "limitations": "Not all pages archived, API can timeout",
+      "result": "SUCCESS \u2014 10 captures for smartstar.co.uk"
+    },
+    {
+      "gap": "Code repository metadata",
+      "api_exists": "YES",
+      "provider": "GitHub",
+      "endpoint": "api.github.com/users/{username} and /repos",
+      "auth": "NONE (for public data, rate limited)",
+      "authorization": "Public for public repos",
+      "coverage": "User profile, repos, commits, languages",
+      "limitations": "60 requests/hour without auth",
+      "result": "SUCCESS \u2014 Protremix account and 4 repos"
+    },
+    {
+      "gap": "App store metadata",
+      "api_exists": "YES",
+      "provider": "Apple iTunes",
+      "endpoint": "itunes.apple.com/search?term={query}&entity=software",
+      "auth": "NONE",
+      "authorization": "Public",
+      "coverage": "App name, seller, bundle ID, release date, description",
+      "limitations": "Only Apple App Store, not Google Play",
+      "result": "SUCCESS \u2014 3 SmartStar apps found"
+    },
+    {
+      "gap": "Certificate transparency",
+      "api_exists": "YES",
+      "provider": "crt.sh (Sectigo)",
+      "endpoint": "crt.sh/?q={domain}&output=json",
+      "auth": "NONE",
+      "authorization": "Public",
+      "coverage": "All CT logs for TLS certificates",
+      "limitations": "Can be slow/unavailable",
+      "result": "FAILED \u2014 502 Bad Gateway during test. SOURCE_UNAVAILABLE."
+    },
+    {
+      "gap": "Corporate data (aggregator)",
+      "api_exists": "YES",
+      "provider": "Open Corporates",
+      "endpoint": "api.opencorporates.com/v0.4/companies/search",
+      "auth": "API token required",
+      "authorization": "Free tier available with registration",
+      "coverage": "140+ jurisdictions",
+      "limitations": "Rate limited, requires token",
+      "result": "AUTH_REQUIRED (401)"
+    },
+    {
+      "gap": "Blockchain data",
+      "api_exists": "YES",
+      "provider": "Etherscan",
+      "endpoint": "api.etherscan.io/api?module=account&action=balance&address={addr}",
+      "auth": "API key (optional for free tier)",
+      "authorization": "Public",
+      "coverage": "Ethereum blockchain transactions and balances",
+      "limitations": "Only Ethereum, requires wallet address",
+      "result": "SUCCESS (API accessible) but NO_DATA \u2014 no wallet address for Verdis Chain (testnet)"
+    }
+  ],
+  "no_api_found": [
+    {
+      "gap": "UK Gazette notices via API",
+      "finding": "NO_API_FOUND \u2014 UK Gazette API endpoint returned 404. The Gazette is searchable via web interface only."
+    },
+    {
+      "gap": "UK Insolvency Service via API",
+      "finding": "NO_API_FOUND \u2014 service URL returned 404. May have been migrated."
+    }
+  ],
+  "status": "COMPLETED"
+}

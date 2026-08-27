@@ -1,0 +1,25 @@
+{
+  "banking": "AUTHORIZATION_REQUIRED",
+  "payments": "AUTHORIZATION_REQUIRED",
+  "authorization_gap_analysis": {
+    "uk_entity": {
+      "information_needed": "Bank account details, transaction records, payment processing accounts",
+      "institution_holding_data": "Unknown UK bank (no charges registered, suggesting no bank loans)",
+      "official_channel": "UK bank account information requires: (1) court order or police warrant, (2) authorized investigation under Proceeds of Crime Act 2002, (3) HMRC information notice",
+      "authorization_required": "Law enforcement warrant, court order, or regulatory demand",
+      "jurisdiction": "United Kingdom (England and Wales)",
+      "case_authority_required": "Active fraud investigation with reasonable suspicion threshold met",
+      "evidence_potentially_established": "Whether the company received payments, from whom, and for what services. Whether the \u00a310M declared capital was ever partially paid."
+    },
+    "nz_entity": {
+      "information_needed": "Annual returns, financial statements, shareholder details",
+      "institution_holding_data": "NZ Companies Office, Inland Revenue",
+      "official_channel": "NZ Companies Office public registry (limited), full financials require authorized access",
+      "authorization_required": "NZ Companies Office subscription for detailed records",
+      "jurisdiction": "New Zealand",
+      "case_authority_required": "Standard NZ company registry access for public records; financial details require authorized investigation",
+      "evidence_potentially_established": "NZ entity trading volumes, customer base, financial health, relationship to other entities"
+    }
+  },
+  "conclusion": "Banking and payment data remain AUTHORIZATION_REQUIRED. No credentials or legal authority available to access this data. The authorization gap is fully documented for future lawful access if required."
+}

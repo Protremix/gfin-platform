@@ -1,0 +1,11 @@
+{
+  "manual_target_selection": false,
+  "manual_source_selection": false,
+  "manual_search_selection": false,
+  "manual_relationship_creation": false,
+  "manual_finding_creation": false,
+  "manual_report_editing": false,
+  "manual_interventions": 0,
+  "timestamp": "2026-08-26T15:15:45.943849+00:00",
+  "case_id": "integration-test-suite"
+}

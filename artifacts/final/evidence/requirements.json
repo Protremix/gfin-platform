@@ -1,0 +1,154 @@
+{
+  "timestamp": "2026-08-26T14:02:10.992585+00:00",
+  "source_documents": [
+    "Constitution v1.0",
+    "Master Spec v1.0",
+    "Directive v1.0",
+    "Legal Assumptions",
+    "Privacy Model",
+    "AI Policy",
+    "Source Policy",
+    "Security Policy",
+    "Threat Model"
+  ],
+  "total": 22,
+  "verified": 15,
+  "partially_verified": 3,
+  "blocked": 2,
+  "not_verified": 2,
+  "failed": 0,
+  "requirements": [
+    {
+      "id": "REQ-001",
+      "req": "Modular development (41 modules)",
+      "status": "VERIFIED",
+      "evidence": "2,743 tests"
+    },
+    {
+      "id": "REQ-002",
+      "req": "Evidence-first pipeline",
+      "status": "VERIFIED",
+      "evidence": "29 tests"
+    },
+    {
+      "id": "REQ-003",
+      "req": "Provider independence (Model Gateway)",
+      "status": "VERIFIED",
+      "evidence": "32 tests"
+    },
+    {
+      "id": "REQ-004",
+      "req": "Zero trust security",
+      "status": "VERIFIED",
+      "evidence": "27 tests"
+    },
+    {
+      "id": "REQ-005",
+      "req": "Police federation (no bulk uploads)",
+      "status": "VERIFIED",
+      "evidence": "92 tests"
+    },
+    {
+      "id": "REQ-006",
+      "req": "Citizen reports as allegations",
+      "status": "VERIFIED",
+      "evidence": "56 tests"
+    },
+    {
+      "id": "REQ-007",
+      "req": "Continuous intelligence monitoring",
+      "status": "VERIFIED",
+      "evidence": "128 tests"
+    },
+    {
+      "id": "REQ-008",
+      "req": "Two-layer architecture",
+      "status": "VERIFIED",
+      "evidence": "71 tests"
+    },
+    {
+      "id": "REQ-009",
+      "req": "Legal compliance (DPA/MLAT)",
+      "status": "PARTIALLY VERIFIED",
+      "evidence": "27/32 compliant, 5 require legal counsel"
+    },
+    {
+      "id": "REQ-010",
+      "req": "GEOINT integration",
+      "status": "BLOCKED",
+      "evidence": "External provider access required"
+    },
+    {
+      "id": "REQ-011",
+      "req": "Multilingual support",
+      "status": "VERIFIED",
+      "evidence": "22 tests"
+    },
+    {
+      "id": "REQ-012",
+      "req": "Crypto/financial intelligence",
+      "status": "VERIFIED (synthetic)",
+      "evidence": "38 tests"
+    },
+    {
+      "id": "REQ-013",
+      "req": "Campaign DNA",
+      "status": "VERIFIED",
+      "evidence": "89 tests"
+    },
+    {
+      "id": "REQ-014",
+      "req": "Unknown fraud discovery",
+      "status": "VERIFIED",
+      "evidence": "96 tests"
+    },
+    {
+      "id": "REQ-015",
+      "req": "Investigation Copilot",
+      "status": "VERIFIED",
+      "evidence": "96 tests"
+    },
+    {
+      "id": "REQ-016",
+      "req": "Contract testing",
+      "status": "VERIFIED",
+      "evidence": "59 tests"
+    },
+    {
+      "id": "REQ-017",
+      "req": "Fault injection testing",
+      "status": "VERIFIED",
+      "evidence": "80 tests"
+    },
+    {
+      "id": "REQ-018",
+      "req": "External penetration test",
+      "status": "PENDING EXTERNAL",
+      "evidence": "Engagement letter ready"
+    },
+    {
+      "id": "REQ-019",
+      "req": "Production cloud provisioning",
+      "status": "BLOCKED",
+      "evidence": "Terraform validated, credentials required"
+    },
+    {
+      "id": "REQ-020",
+      "req": "Backup and restore",
+      "status": "NOT VERIFIED",
+      "evidence": "Requires production infrastructure"
+    },
+    {
+      "id": "REQ-021",
+      "req": "Disaster recovery drill",
+      "status": "VERIFIED (simulated)",
+      "evidence": "26 tests"
+    },
+    {
+      "id": "REQ-022",
+      "req": "Performance verification",
+      "status": "PARTIALLY VERIFIED",
+      "evidence": "Baseline metrics only"
+    }
+  ]
+}

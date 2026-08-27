@@ -1,0 +1,7 @@
+{
+  "test": "Model A \u2192 persist \u2192 Model B \u2192 continue",
+  "result": "NOT_VERIFIED",
+  "reason": "Schemas are model-agnostic and test verifies state preservation, but no actual model replacement was executed with two different real models. Mock gateways were used.",
+  "state_preservation_test": "PASS",
+  "timestamp": "2026-08-26T15:15:45.943849+00:00"
+}

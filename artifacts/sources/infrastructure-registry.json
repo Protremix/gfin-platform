@@ -1,0 +1,99 @@
+{
+  "task": "TASK 05 \u2014 Internet Infrastructure",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "Shodan",
+      "auth": "API_KEY (free)",
+      "connector": "ShodanConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "IP/host intelligence, services, ports, banners, TLS, historical"
+    },
+    {
+      "provider": "SecurityTrails",
+      "auth": "API_KEY (free)",
+      "connector": "DNSHistoryConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "DNS, IP, WHOIS, historical DNS, associated IPs"
+    },
+    {
+      "provider": "VirusTotal",
+      "auth": "API_KEY (free)",
+      "connector": "VirusTotalConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Domains, URLs, IPs, files, threat reputation"
+    },
+    {
+      "provider": "Censys",
+      "auth": "API_KEY (free)",
+      "connector": "CensysConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Hosts, certificates, attack-surface intelligence"
+    },
+    {
+      "provider": "DomainTools",
+      "auth": "API_KEY (free)",
+      "connector": "DomainToolsConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Domain history, WHOIS/RDAP, registrant intelligence"
+    },
+    {
+      "provider": "GreyNoise",
+      "auth": "API_KEY (free)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "CONNECTOR_DESIGNED",
+      "coverage": "IP scanner classification, benign/malicious context"
+    },
+    {
+      "provider": "URLScan.io",
+      "auth": "OPTIONAL (free search)",
+      "connector": "URLScanConnector",
+      "status": "IMPLEMENTED_LIVE_TESTED",
+      "coverage": "URL scanning, screenshots, network data, DOM"
+    },
+    {
+      "provider": "ThreatFox (abuse.ch)",
+      "auth": "API_KEY (free)",
+      "connector": "ThreatFoxConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Malware IOCs: IPs, domains, URLs, hashes"
+    },
+    {
+      "provider": "URLHaus (abuse.ch)",
+      "auth": "API_KEY (free)",
+      "connector": "URLHausConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Malicious URLs by domain"
+    },
+    {
+      "provider": "Pulsedive",
+      "auth": "OPTIONAL (free)",
+      "connector": "PulsediveConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Threat indicators, IPs, domains, URLs"
+    },
+    {
+      "provider": "ICANN RDAP",
+      "auth": "NONE",
+      "connector": "RDAPConnector",
+      "status": "IMPLEMENTED_LIVE_TESTED",
+      "coverage": "Domain registration data"
+    },
+    {
+      "provider": "crt.sh",
+      "auth": "NONE",
+      "connector": "CTLogConnector",
+      "status": "UNAVAILABLE",
+      "coverage": "Certificate transparency",
+      "alternative": "SecurityTrails provides CT data via API"
+    }
+  ],
+  "test_chain": "DNS \u2192 IP \u2192 ASN \u2192 certificate \u2192 domain \u2192 historical infrastructure \u2014 supported via RDAP + SecurityTrails + Shodan + Censys + URLScan",
+  "egress_policy": "Hostname-based allowlist, no IP hardcoding, TLS validation required",
+  "summary": {
+    "live_tested": 2,
+    "auth_required": 8,
+    "unavailable": 1,
+    "designed": 1
+  }
+}

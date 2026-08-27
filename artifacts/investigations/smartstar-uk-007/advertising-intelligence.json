@@ -1,0 +1,22 @@
+{
+  "status": "NOT_IMPLEMENTED",
+  "sources_checked": [
+    {
+      "api": "Facebook Ad Library API",
+      "status": "NOT_IMPLEMENTED \u2014 requires Facebook app review and access token",
+      "result": "NOT_CHECKED"
+    },
+    {
+      "api": "Google Ads Transparency Center",
+      "status": "NOT_IMPLEMENTED \u2014 no API connector available",
+      "result": "NOT_CHECKED"
+    },
+    {
+      "api": "TikTok Ad Library",
+      "status": "NOT_IMPLEMENTED \u2014 no API connector available",
+      "result": "NOT_CHECKED"
+    }
+  ],
+  "finding": "No advertising infrastructure found for UK SmartStar Technology Ltd via any source. UK entity had no web presence, no domains, no social media, no apps. Advertising intelligence APIs are not implemented in GFIN.",
+  "connector_gap": "Advertising library APIs (Facebook, Google, TikTok) require implementation and authentication"
+}

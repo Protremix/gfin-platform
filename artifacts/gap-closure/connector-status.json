@@ -1,0 +1,137 @@
+{
+  "total_connectors": 18,
+  "status_breakdown": {
+    "LIVE_TESTED": 6,
+    "UNIT_TESTED": 1,
+    "CONNECTOR_READY_AUTH_REQUIRED": 10,
+    "UNAVAILABLE": 1
+  },
+  "connectors": [
+    {
+      "name": "BAILIIConnector",
+      "class": "COURTS_LEGAL",
+      "status": "LIVE_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "UKTribunalConnector",
+      "class": "COURTS_LEGAL",
+      "status": "LIVE_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "GitHubConnector",
+      "class": "SOCIAL_MESSAGING",
+      "status": "LIVE_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "SafeBrowsingConnector",
+      "class": "THREAT_INTELLIGENCE",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "VirusTotalConnector",
+      "class": "THREAT_INTELLIGENCE",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "AbuseIPDBConnector",
+      "class": "THREAT_INTELLIGENCE",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "NominatimConnector",
+      "class": "GEOINT",
+      "status": "LIVE_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "NumverifyConnector",
+      "class": "PHONE_TELECOM",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "CompaniesHouseConnector",
+      "class": "CORPORATE",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "EtherscanConnector",
+      "class": "CRYPTO_EXCHANGE",
+      "status": "LIVE_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "BlockchainInfoConnector",
+      "class": "CRYPTO_EXCHANGE",
+      "status": "LIVE_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "CTLogConnector",
+      "class": "HISTORICAL",
+      "status": "UNAVAILABLE",
+      "security": "PASS",
+      "integration": "UNAVAILABLE"
+    },
+    {
+      "name": "DNSHistoryConnector",
+      "class": "HISTORICAL",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "OpenSanctionsConnector",
+      "class": "LICENSED_INTELLIGENCE",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "OpenCorporatesConnector",
+      "class": "CORPORATE",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "EntityResolutionConnector",
+      "class": "IDENTITY",
+      "status": "UNIT_TESTED",
+      "security": "PASS",
+      "integration": "PASS"
+    },
+    {
+      "name": "FacebookAdLibraryConnector",
+      "class": "ADVERTISING",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    },
+    {
+      "name": "PaymentIntelligenceConnector",
+      "class": "FINANCIAL_PAYMENT",
+      "status": "CONNECTOR_READY",
+      "security": "PASS",
+      "integration": "AUTH_REQUIRED"
+    }
+  ]
+}

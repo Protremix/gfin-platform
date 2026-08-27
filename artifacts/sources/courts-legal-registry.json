@@ -1,0 +1,84 @@
+{
+  "task": "TASK 03 \u2014 Courts & Legal Sources",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "BAILII",
+      "jurisdiction": "UK/Ireland",
+      "auth": "NONE",
+      "connector": "BAILIIConnector",
+      "status": "LIVE_TESTED",
+      "coverage": "Case law, judgments, court decisions",
+      "test_evidence": "Live search returned results"
+    },
+    {
+      "provider": "UK Judiciary Tribunal Decisions",
+      "jurisdiction": "UK",
+      "auth": "NONE",
+      "connector": "UKTribunalConnector",
+      "status": "LIVE_TESTED",
+      "coverage": "Tribunal decisions, regulatory rulings",
+      "test_evidence": "Live search returned results"
+    },
+    {
+      "provider": "PACER (US Courts)",
+      "jurisdiction": "USA",
+      "auth": "ACCOUNT ($0.10/page)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Federal court cases",
+      "reason": "Paid service"
+    },
+    {
+      "provider": "SEC EDGAR",
+      "jurisdiction": "USA",
+      "auth": "NONE",
+      "connector": "SECEdgarConnector",
+      "status": "IMPLEMENTED",
+      "coverage": "Public company filings, enforcement actions",
+      "test_evidence": "API accessible"
+    },
+    {
+      "provider": "EU e-Justice Portal",
+      "jurisdiction": "EU",
+      "auth": "UNKNOWN",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "EU legal systems, BRIS",
+      "reason": "No public API found"
+    },
+    {
+      "provider": "FCA Register",
+      "jurisdiction": "UK",
+      "auth": "NONE (web only)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Financial conduct regulation",
+      "reason": "403 Forbidden \u2014 web-only access"
+    },
+    {
+      "provider": "UK Insolvency Service",
+      "jurisdiction": "UK",
+      "auth": "NONE",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "MIGRATED",
+      "coverage": "Insolvency records",
+      "reason": "Migrated to Companies House API \u2014 available with Companies House API key"
+    },
+    {
+      "provider": "LexisNexis Risk Solutions",
+      "jurisdiction": "Global",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Court records, investigative data",
+      "reason": "Commercial license required"
+    }
+  ],
+  "summary": {
+    "live_tested": 2,
+    "implemented": 1,
+    "blocked": 4,
+    "migrated": 1
+  }
+}

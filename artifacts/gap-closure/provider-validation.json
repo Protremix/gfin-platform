@@ -1,0 +1,84 @@
+{
+  "validated_providers": [
+    {
+      "provider": "BAILII",
+      "validated": true,
+      "method": "Live API call \u2014 search returned results",
+      "endpoint": "bailii.org/cgi-bin/markup.cgi"
+    },
+    {
+      "provider": "GitHub",
+      "validated": true,
+      "method": "Live API call \u2014 user profile returned",
+      "endpoint": "api.github.com/users"
+    },
+    {
+      "provider": "OpenStreetMap Nominatim",
+      "validated": true,
+      "method": "Live API call \u2014 geocode returned features",
+      "endpoint": "nominatim.openstreetmap.org/search"
+    },
+    {
+      "provider": "Etherscan",
+      "validated": true,
+      "method": "Live API call \u2014 balance query returned",
+      "endpoint": "api.etherscan.io/api"
+    },
+    {
+      "provider": "Blockchain.com",
+      "validated": true,
+      "method": "Live API call \u2014 rawaddr query returned",
+      "endpoint": "blockchain.info/rawaddr"
+    },
+    {
+      "provider": "Companies House UK",
+      "validated": true,
+      "method": "401 without API key confirms endpoint is correct and auth-protected",
+      "endpoint": "api.company-information.service.gov.uk"
+    },
+    {
+      "provider": "OpenSanctions",
+      "validated": true,
+      "method": "401 confirms endpoint exists and requires API key",
+      "endpoint": "api.opensanctions.org"
+    },
+    {
+      "provider": "VirusTotal",
+      "validated": true,
+      "method": "401 confirms endpoint exists and requires API key",
+      "endpoint": "virustotal.com/api/v3"
+    },
+    {
+      "provider": "Google Safe Browsing",
+      "validated": true,
+      "method": "Endpoint documented by Google, requires API key",
+      "endpoint": "safebrowsing.googleapis.com/v4"
+    },
+    {
+      "provider": "Google CT Logs",
+      "validated": false,
+      "method": "404 \u2014 endpoint may have changed or requires different path",
+      "endpoint": "ct.googleapis.com/logs"
+    },
+    {
+      "provider": "crt.sh",
+      "validated": false,
+      "method": "502 Bad Gateway \u2014 service temporarily unavailable",
+      "endpoint": "crt.sh"
+    },
+    {
+      "provider": "Facebook Ad Library",
+      "validated": true,
+      "method": "OAuth documented by Meta, requires app review",
+      "endpoint": "graph.facebook.com/v18.0/ads_archive"
+    },
+    {
+      "provider": "Numverify",
+      "validated": true,
+      "method": "API documented by apilayer, requires API key",
+      "endpoint": "api.apilayer.com/number_verification"
+    }
+  ],
+  "total_validated": 11,
+  "total_unvalidated": 2
+}

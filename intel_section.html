@@ -1,0 +1,100 @@
+<!-- TELEGRAM INTEL SECTION — replaces existing viewIntel section -->
+    <section id="viewIntel" class="view-section">
+      <div class="page-header">
+        <div class="page-title">Telegram Intelligence</div>
+        <div class="page-subtitle">Spy system monitoring Telegram groups — wallets, domains, phones, IPs, victims, scam patterns</div>
+      </div>
+
+      <!-- KPI Stats -->
+      <div class="stats-grid" id="intelStats"></div>
+
+      <!-- Sub-tabs for Intel -->
+      <div class="tabs-bar" style="margin-top:16px;">
+        <button class="tab-btn active" onclick="intelTab(event,'overview')"><i class="fa-solid fa-chart-pie"></i> Overview</button>
+        <button class="tab-btn" onclick="intelTab(event,'groups')"><i class="fa-solid fa-users"></i> Groups</button>
+        <button class="tab-btn" onclick="intelTab(event,'domains')"><i class="fa-solid fa-globe"></i> Domains</button>
+        <button class="tab-btn" onclick="intelTab(event,'wallets')"><i class="fa-solid fa-wallet"></i> Wallets</button>
+        <button class="tab-btn" onclick="intelTab(event,'victims')"><i class="fa-solid fa-user-injured"></i> Victims</button>
+        <button class="tab-btn" onclick="intelTab(event,'feed')"><i class="fa-solid fa-fingerprint"></i> Intel Feed</button>
+        <button class="tab-btn" onclick="intelTab(event,'search')"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+      </div>
+
+      <!-- TAB: Overview -->
+      <div id="intelTabOverview" class="tab-content active">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div class="info-panel">
+            <div class="card-title"><i class="fa-solid fa-tag"></i> Scam Types Detected</div>
+            <div id="intelScamTypes" style="margin-top:12px;"></div>
+          </div>
+          <div class="info-panel">
+            <div class="card-title"><i class="fa-solid fa-globe"></i> Top Tracked Domains</div>
+            <div id="intelTopDomains" style="margin-top:12px;"></div>
+          </div>
+        </div>
+        <div class="info-panel" style="margin-top:16px;">
+          <div class="card-title"><i class="fa-solid fa-wallet"></i> Top Tracked Wallets</div>
+          <div id="intelTopWallets" style="margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Groups -->
+      <div id="intelTabGroups" class="tab-content">
+        <div class="info-panel">
+          <div class="card-title"><i class="fa-solid fa-users"></i> Monitored Telegram Groups</div>
+          <div id="intelGroupsList" style="margin-top:12px;"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Domains -->
+      <div id="intelTabDomains" class="tab-content">
+        <div class="info-panel">
+          <div class="card-title"><i class="fa-solid fa-globe"></i> All Tracked Domains</div>
+          <table class="data-table" id="intelDomainsTable">
+            <thead><tr><th>Domain</th><th>Mentions</th><th>Risk</th><th>First Seen In</th><th>Sender</th><th>Last Seen</th></tr></thead>
+            <tbody id="intelDomainsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: Wallets -->
+      <div id="intelTabWallets" class="tab-content">
+        <div class="info-panel">
+          <div class="card-title"><i class="fa-solid fa-wallet"></i> All Tracked Crypto Wallets</div>
+          <table class="data-table" id="intelWalletsTable">
+            <thead><tr><th>Address</th><th>Type</th><th>Mentions</th><th>First Seen In</th><th>Sender</th><th>Last Seen</th></tr></thead>
+            <tbody id="intelWalletsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: Victims -->
+      <div id="intelTabVictims" class="tab-content">
+        <div class="info-panel">
+          <div class="card-title"><i class="fa-solid fa-user-injured"></i> Detected Victims</div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">People detected as potential scam victims based on message patterns. These individuals may need outreach or have valuable intelligence.</p>
+          <div id="intelVictimsList"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Feed -->
+      <div id="intelTabFeed" class="tab-content">
+        <div class="info-panel">
+          <div class="card-title"><i class="fa-solid fa-fingerprint"></i> Recent Intelligence Items</div>
+          <div id="intelFeedList" style="max-height:600px;overflow-y:auto;"></div>
+        </div>
+      </div>
+
+      <!-- TAB: Search -->
+      <div id="intelTabSearch" class="tab-content">
+        <div class="info-panel">
+          <div class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Search Intelligence</div>
+          <p style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Search by wallet address, domain, phone, sender name, or keyword.</p>
+          <div style="display:flex;gap:8px;margin-bottom:16px;">
+            <input type="text" id="intelSearchInput" placeholder="Search wallet, domain, name, keyword..." style="flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:6px;font-size:13px;" onkeypress="if(event.key==='Enter')intelSearch()">
+            <button onclick="intelSearch()" style="padding:10px 20px;background:var(--navy);color:white;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;"><i class="fa-solid fa-search"></i> Search</button>
+          </div>
+          <div id="intelSearchResults"></div>
+        </div>
+      </div>
+
+    </section>

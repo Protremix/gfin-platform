@@ -8,13 +8,13 @@ Layer B: Real pilot deployment tracking (REQUIRES EXTERNAL INFRASTRUCTURE)
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class PilotStatus(str, Enum):
+class PilotStatus(StrEnum):
     PLANNED = "PLANNED"
     ACTIVE = "ACTIVE"
     PAUSED = "PAUSED"
@@ -22,7 +22,7 @@ class PilotStatus(str, Enum):
     CANCELLED = "CANCELLED"
 
 
-class ParticipantStatus(str, Enum):
+class ParticipantStatus(StrEnum):
     INVITED = "INVITED"
     ENROLLED = "ENROLLED"
     ACTIVE = "ACTIVE"

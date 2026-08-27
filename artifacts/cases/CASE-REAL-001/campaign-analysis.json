@@ -1,0 +1,32 @@
+{
+  "case_id": "CASE-REAL-001",
+  "campaign_candidate": "CAMPAIGN-CANDIDATE-001: CNC Intelligence Impersonation Recovery Scam Network",
+  "status": "CAMPAIGN CANDIDATE (not confirmed attribution)",
+  "characteristics": {
+    "brand_target": "CNC Intelligence Inc. (cncintel.com) \u2014 legitimate crypto investigation firm",
+    "fraud_type": "Advance-fee recovery scam (victims of prior scams are targeted for 'recovery' fees)",
+    "modus_operandi": "Register lookalike domains, use email (ProtonMail) to contact victims, claim to be CNC Intelligence representatives, request crypto payments for 'recovery services'",
+    "domain_patterns": "cncintel*, cnc-intel*, cncintell* \u2014 all contain 'cncintel' brand name",
+    "registrars": "NameCheap (primary), NameSilo, Hostinger \u2014 low-cost registrars commonly used for bulk domain registration",
+    "email_service": "ProtonMail \u2014 encrypted email service that provides privacy",
+    "timeline": "June 2024 \u2014 present (2+ years ongoing)",
+    "scale": "50+ domains documented, multiple victim reports, FBI action against connected entities"
+  },
+  "connected_entities": [
+    "Payback LTD (FBI seized)",
+    "Cyber-Forensics.net (scam tracker listed)",
+    "MyChargeBack (FBI seized)",
+    "Claim Justice (FBI seized)",
+    "Rapid Digital Recovery (SEO spam reported)"
+  ],
+  "similarity_indicators": {
+    "domain_naming": "All use variations of 'cncintel' brand name",
+    "registrar_choice": "Low-cost registrars (NameCheap, NameSilo, Hostinger)",
+    "infrastructure": "Different from legitimate site (no Cloudflare, no Zoho, no enterprise verification)",
+    "email_config": "ProtonMail MX records (encrypted email for anonymity)",
+    "targeting": "Victims of prior crypto scams seeking recovery (advance-fee fraud pattern)"
+  },
+  "false_positive_check": "The legitimate CNC Intelligence (cncintel.com) uses Cloudflare + Zoho + Google/OpenAI verification \u2014 distinctly different infrastructure from all fraudulent domains. No false positives identified.",
+  "confidence": "HIGH that this is a coordinated campaign. MEDIUM on attribution to a single operator group.",
+  "limitations": "Cannot confirm single operator. Multiple independent actors may be using the same brand impersonation pattern."
+}

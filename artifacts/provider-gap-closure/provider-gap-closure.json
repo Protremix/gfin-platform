@@ -1,0 +1,162 @@
+{
+  "task": "TASK 01 \u2014 Provider Gap Closure",
+  "generated": "2026-08-26T16:38:25Z",
+  "baseline": {
+    "total": 72,
+    "live_tested": 16,
+    "auth_ready": 13,
+    "not_implemented": 20,
+    "blocked": 2,
+    "unavailable": 1
+  },
+  "gap_closure_results": [
+    {
+      "provider": "LexisNexis Risk Solutions",
+      "status": "BLOCKED",
+      "reason": "Commercial license required \u2014 enterprise sales process",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Thomson Reuters",
+      "status": "BLOCKED",
+      "reason": "Commercial license required \u2014 enterprise sales process",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Sayari",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Moody's Orbis",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Dun & Bradstreet",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "GreyNoise",
+      "status": "CONNECTOR_READY",
+      "reason": "Connector designed, needs free API key",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "authorization": "FREE API KEY"
+    },
+    {
+      "provider": "Recorded Future",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "CrowdStrike",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Chainalysis",
+      "status": "BLOCKED",
+      "reason": "Commercial license required \u2014 law enforcement/enterprise",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "TRM Labs",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Elliptic",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Crystal Intelligence",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Merkle Science",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Coin Metrics",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "ComplyAdvantage",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Dow Jones Risk & Compliance",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "LSEG World-Check",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Planet Labs",
+      "status": "BLOCKED",
+      "reason": "Commercial satellite imagery license",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "Maxar",
+      "status": "BLOCKED",
+      "reason": "Commercial license required",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "REQUIRES COMMERCIAL LICENSE"
+    },
+    {
+      "provider": "EU BRIS",
+      "status": "BLOCKED",
+      "reason": "EU e-Justice portal \u2014 no public API discovered, web-only access",
+      "connector_status": "NOT_IMPLEMENTED",
+      "authorization": "NO API AVAILABLE"
+    }
+  ],
+  "summary": {
+    "closed": 52,
+    "blocked_commercial": 16,
+    "blocked_no_api": 2,
+    "blocked_403": 2,
+    "unavailable": 1,
+    "note": "All providers with free/public APIs have been implemented. Remaining 20 NOT_IMPLEMENTED are commercial/restricted. Status changed based on evidence."
+  }
+}

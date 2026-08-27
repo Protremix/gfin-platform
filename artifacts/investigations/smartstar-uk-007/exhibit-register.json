@@ -1,0 +1,78 @@
+{
+  "exhibits": [
+    {
+      "exhibit_id": "EX001",
+      "evidence_id": "EV001",
+      "description": "Companies House company page (14511663)",
+      "source": "Companies House UK",
+      "acquisition": "Direct web access",
+      "hash": "N/A (HTML page)",
+      "preservation": "URL documented"
+    },
+    {
+      "exhibit_id": "EX002",
+      "evidence_id": "EV002",
+      "description": "Companies House officers page",
+      "source": "Companies House UK",
+      "acquisition": "Direct web access",
+      "hash": "N/A",
+      "preservation": "URL documented"
+    },
+    {
+      "exhibit_id": "EX003",
+      "evidence_id": "EV005",
+      "description": "Micro-entity accounts filing",
+      "source": "Companies House UK",
+      "acquisition": "Direct web access",
+      "hash": "N/A (PDF on Companies House)",
+      "preservation": "Filing reference documented"
+    },
+    {
+      "exhibit_id": "EX004",
+      "evidence_id": "EV009",
+      "description": "RDAP response for smartstar.co.uk",
+      "source": "rdap.org",
+      "acquisition": "HTTPS API call",
+      "hash": "N/A (JSON response)",
+      "preservation": "JSON stored in artifact"
+    },
+    {
+      "exhibit_id": "EX005",
+      "evidence_id": "EV013",
+      "description": "Wayback CDX response for smartstar.co.uk",
+      "source": "web.archive.org",
+      "acquisition": "HTTPS API call",
+      "hash": "N/A (JSON response)",
+      "preservation": "JSON stored in artifact"
+    },
+    {
+      "exhibit_id": "EX006",
+      "evidence_id": "EV014",
+      "description": "GitHub API response for Protremix user",
+      "source": "api.github.com",
+      "acquisition": "HTTPS API call",
+      "hash": "N/A (JSON response)",
+      "preservation": "JSON stored in artifact"
+    },
+    {
+      "exhibit_id": "EX007",
+      "evidence_id": "EV017",
+      "description": "Apple iTunes Search API response",
+      "source": "itunes.apple.com",
+      "acquisition": "HTTPS API call",
+      "hash": "N/A (JSON response)",
+      "preservation": "JSON stored in artifact"
+    },
+    {
+      "exhibit_id": "EX008",
+      "evidence_id": "EV020",
+      "description": "BAILII search result (no cases)",
+      "source": "bailii.org",
+      "acquisition": "Direct web search",
+      "hash": "N/A",
+      "preservation": "Search URL documented"
+    }
+  ],
+  "total_exhibits": 8,
+  "note": "All exhibits are digital records from public sources. No physical evidence exists. Each exhibit references an evidence ID from the evidence ledger."
+}

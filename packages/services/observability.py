@@ -8,7 +8,7 @@ Layer B: OpenTelemetry, Prometheus export, Grafana dashboards (REQUIRES EXTERNAL
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -16,13 +16,13 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class MetricType(str, Enum):
+class MetricType(StrEnum):
     COUNTER = "COUNTER"
     GAUGE = "GAUGE"
     HISTOGRAM = "HISTOGRAM"
 
 
-class HealthStatus(str, Enum):
+class HealthStatus(StrEnum):
     HEALTHY = "HEALTHY"
     DEGRADED = "DEGRADED"
     UNHEALTHY = "UNHEALTHY"

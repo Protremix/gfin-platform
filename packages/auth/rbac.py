@@ -13,13 +13,13 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from schemas.enums import DataClassification, UserRole
 
 
-class Permission(str, Enum):
+class Permission(StrEnum):
     """GFIN permissions — fine-grained actions that can be authorized."""
 
     # Entity operations
@@ -53,7 +53,7 @@ class Permission(str, Enum):
     ADMIN_MANAGE_CONFIG = "admin:manage_config"
 
 
-class Decision(str, Enum):
+class Decision(StrEnum):
     """Authorization decision."""
 
     ALLOW = "ALLOW"
@@ -236,8 +236,9 @@ class AuthorizationEngine:
             return True
 
         # Different jurisdiction = deny unless federation sharing is authorized
-        if request.action == Permission.FEDERATION_SHARE.value:
-            return True  # Federation sharing is explicitly authorized
+        return request.action == Permission.FEDERATION_SHARE.value
+
+
 
         return False
 

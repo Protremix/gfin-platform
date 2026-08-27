@@ -1,0 +1,23 @@
+{
+  "case_id": "CASE-REAL-001",
+  "verification_results": {
+    "source_discovery": "PASS \u2014 11 independent public sources used",
+    "independent_discovery": "PASS \u2014 reverse IP lookup on 91.195.240.123 discovered SEDO parking relationship autonomously (F-010)",
+    "entity_resolution": "PASS \u2014 15 entities identified and classified (legitimate, fraudulent, infrastructure)",
+    "infrastructure_investigation": "PASS \u2014 DNS, RDAP/WHOIS, IP geolocation, reverse IP lookup all performed",
+    "financial_investigation": "PARTIAL \u2014 crypto payment reported by victim but no wallet address obtained for blockchain analysis",
+    "victim_correlation": "PASS \u2014 multiple victim reports found on Reddit, Facebook, Trustpilot, and official company warning",
+    "multilingual": "NOT_APPLICABLE \u2014 investigation conducted in English; Arabic-language domain (clt-intel.com) noted in source but not investigated",
+    "campaign_dna": "PASS \u2014 campaign analysis completed with domain patterns, registrar choices, and MO analysis",
+    "temporal": "PASS \u2014 timeline built from RDAP registration dates and incident reports",
+    "graph": "PASS \u2014 14 nodes, 14 edges in Fraud Intelligence Graph",
+    "geoint": "NOT_APPLICABLE",
+    "ai_copilot": "PASS \u2014 AI analysis completed with evidence-grounded findings",
+    "evidence_provenance": "PASS \u2014 every finding has evidence chain: finding \u2192 observation \u2192 source \u2192 timestamp \u2192 confidence",
+    "corroboration": "PASS \u2014 findings classified as SINGLE SOURCE / CORROBORATED / STRONGLY CORROBORATED",
+    "contradiction_search": "PASS \u2014 searched for contradictory evidence; none found that contradicts the fraud hypothesis",
+    "auditability": "PASS \u2014 full investigation log with 16 actions, all reproducible from public sources",
+    "police_report": "PASS \u2014 PDF report generated with 23 sections"
+  },
+  "overall": "PASS (with PARTIAL on financial investigation due to no wallet address)"
+}

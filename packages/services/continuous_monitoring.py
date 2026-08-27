@@ -9,7 +9,7 @@ Layer B: Kafka-streamed change events + Redis + WebSocket push (REQUIRES EXTERNA
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
@@ -17,7 +17,7 @@ from pydantic import BaseModel, Field, field_validator
 # ─── Enums ───
 
 
-class WatchType(str, Enum):
+class WatchType(StrEnum):
     NEW_OBSERVATION = "NEW_OBSERVATION"
     RISK_LEVEL_CHANGED = "RISK_LEVEL_CHANGED"
     NEW_REPORTS = "NEW_REPORTS"
@@ -30,7 +30,7 @@ class WatchType(str, Enum):
     ALL = "ALL"
 
 
-class ChangeType(str, Enum):
+class ChangeType(StrEnum):
     NEW_OBSERVATION = "NEW_OBSERVATION"
     RISK_LEVEL_CHANGED = "RISK_LEVEL_CHANGED"
     NEW_REPORTS = "NEW_REPORTS"
@@ -42,7 +42,7 @@ class ChangeType(str, Enum):
     ACTIVITY_SPIKE = "ACTIVITY_SPIKE"
 
 
-class AlertType(str, Enum):
+class AlertType(StrEnum):
     RISK_ESCALATION = "RISK_ESCALATION"
     NEW_REPORT = "NEW_REPORT"
     INFRASTRUCTURE_CHANGE = "INFRASTRUCTURE_CHANGE"
@@ -51,7 +51,7 @@ class AlertType(str, Enum):
     STATUS_CHANGE = "STATUS_CHANGE"
 
 
-class AlertPriority(str, Enum):
+class AlertPriority(StrEnum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"

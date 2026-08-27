@@ -1,0 +1,86 @@
+{
+  "gaps": [
+    {
+      "connector": "Companies House API",
+      "gap": "API key not configured",
+      "required": "Free API key from developer.company-information.service.gov.uk",
+      "priority": "HIGH",
+      "next_action": "Register for Companies House API key"
+    },
+    {
+      "connector": "OpenSanctions API",
+      "gap": "API key not configured",
+      "required": "API key from opensanctions.org",
+      "priority": "MEDIUM",
+      "next_action": "Register for OpenSanctions API key"
+    },
+    {
+      "connector": "VirusTotal API",
+      "gap": "API key not configured",
+      "required": "API key from virustotal.com",
+      "priority": "MEDIUM",
+      "next_action": "Register for VirusTotal free API key"
+    },
+    {
+      "connector": "Google Safe Browsing",
+      "gap": "API key not configured",
+      "required": "Google API key with Safe Browsing API enabled",
+      "priority": "LOW",
+      "next_action": "Enable Safe Browsing API in Google Cloud Console"
+    },
+    {
+      "connector": "Court Records API",
+      "gap": "No connector exists",
+      "required": "UK court record search API or HMCTS data access",
+      "priority": "HIGH",
+      "next_action": "Investigate HMCTS data access or BAILII API"
+    },
+    {
+      "connector": "Action Fraud API",
+      "gap": "No public API exists",
+      "required": "Law enforcement access",
+      "priority": "N/A (law enforcement only)",
+      "next_action": "Establish police investigation partnership"
+    },
+    {
+      "connector": "Facebook Ad Library API",
+      "gap": "No connector",
+      "required": "Facebook app review + access token",
+      "priority": "MEDIUM",
+      "next_action": "Submit Facebook app for review"
+    },
+    {
+      "connector": "Google Ads API",
+      "gap": "No connector",
+      "required": "Google Ads API developer token",
+      "priority": "LOW",
+      "next_action": "Apply for Google Ads API access"
+    },
+    {
+      "connector": "Telegram Bot API",
+      "gap": "No connector",
+      "required": "Bot token from BotFather",
+      "priority": "LOW",
+      "next_action": "Create GFIN Telegram bot"
+    },
+    {
+      "connector": "LinkedIn API",
+      "gap": "No connector",
+      "required": "LinkedIn app approval",
+      "priority": "MEDIUM",
+      "next_action": "Apply for LinkedIn API access"
+    },
+    {
+      "connector": "Open Ownership Register API",
+      "gap": "Access returned 403",
+      "required": "Different access method or API key",
+      "priority": "LOW",
+      "next_action": "Investigate Open Ownership API access method"
+    }
+  ],
+  "total_gaps": 11,
+  "high_priority": 2,
+  "medium_priority": 4,
+  "low_priority": 4,
+  "law_enforcement_only": 1
+}

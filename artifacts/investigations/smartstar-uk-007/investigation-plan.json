@@ -1,0 +1,44 @@
+{
+  "operator_provided": [
+    "case_id",
+    "target_name",
+    "company_number",
+    "jurisdiction",
+    "investigative_objective",
+    "available_authority",
+    "classification",
+    "resource_budget"
+  ],
+  "operator_did_not_provide": [
+    "known domains",
+    "known people",
+    "known emails",
+    "known phones",
+    "known wallets",
+    "known APIs",
+    "known providers",
+    "known related companies",
+    "known social accounts"
+  ],
+  "discovery_sequence": [
+    "Companies House UK (direct web) \u2192 company + officers",
+    "DNS over HTTPS \u2192 domain discovery",
+    "RDAP \u2192 domain registration data",
+    "GitHub API \u2192 code repos + email",
+    "Apple iTunes API \u2192 app ecosystem",
+    "Wayback CDX \u2192 historical web",
+    "Etherscan API \u2192 blockchain check",
+    "BAILII \u2192 court records",
+    "OpenSanctions \u2192 watchlists",
+    "Action Fraud \u2192 victim reports",
+    "Open Ownership \u2192 beneficial ownership",
+    "FCA Register \u2192 regulatory",
+    "VirusTotal \u2192 threat intelligence"
+  ],
+  "stop_conditions": [
+    "all source classes exhausted",
+    "authorization boundary reached",
+    "information gain low",
+    "case objective sufficiently answered"
+  ]
+}

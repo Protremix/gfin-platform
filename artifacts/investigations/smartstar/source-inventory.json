@@ -1,0 +1,102 @@
+{
+  "case_id": "CASE-SMARTSTAR-001",
+  "sources_used": [
+    {
+      "id": "SRC-001",
+      "name": "UK Companies House",
+      "url": "https://find-and-update.company-information.service.gov.uk/company/14511663",
+      "type": "government_registry",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-002",
+      "name": "NZ Companies Office",
+      "url": "https://www.companyhub.nz/companyDetails.cfm?nzbn=9429033507606",
+      "type": "government_registry",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-003",
+      "name": "Singapore ACRA",
+      "url": "https://www.sgpbusiness.com/company/Smartstar-Technology-Pte-Ltd",
+      "type": "government_registry",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-004",
+      "name": "SmartJobs Website",
+      "url": "https://www.smartjobs.io/",
+      "type": "website",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-005",
+      "name": "SmartJobs NZ Website",
+      "url": "https://www.smartjobs.co.nz/",
+      "type": "website",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-006",
+      "name": "Google Play Store",
+      "url": "https://play.google.com/store/apps/developer?id=SmartStar+Technology+Ltd.",
+      "type": "app_store",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-007",
+      "name": "Apple App Store",
+      "url": "https://apps.apple.com/us/developer/smartstar-technology-ltd/id1208440369",
+      "type": "app_store",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-008",
+      "name": "LinkedIn",
+      "url": "https://www.linkedin.com/company/smartstar-technology-pte-ltd",
+      "type": "social_media",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-009",
+      "name": "Facebook",
+      "url": "https://www.facebook.com/pages/Smartstar-Technology-Ltd/275010983256709",
+      "type": "social_media",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-010",
+      "name": "G2 Reviews",
+      "url": "https://www.g2.com/products/smartjobs/reviews",
+      "type": "review_site",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-011",
+      "name": "Tracxn Business Database",
+      "url": "https://tracxn.com/d/legal-entities/new-zealand/smartstar-technology-limited/",
+      "type": "business_database",
+      "classification": "PUBLIC"
+    },
+    {
+      "id": "SRC-012",
+      "name": "SmartJobs Privacy Policy",
+      "url": "https://www.smartjobs.co.nz/privacy-policy",
+      "type": "legal_document",
+      "classification": "PUBLIC"
+    }
+  ],
+  "authorization_required_sources": [
+    {
+      "name": "Banking/Financial records",
+      "reason": "Requires lawful authority (court order, MLAT)"
+    },
+    {
+      "name": "Payment provider data",
+      "reason": "Requires authorized access"
+    }
+  ],
+  "total_sources_used": 12,
+  "total_auth_required": 2,
+  "timestamp": "2026-08-26T15:18:43.772009+00:00"
+}

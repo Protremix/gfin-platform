@@ -1,0 +1,45 @@
+{
+  "sources_checked": [
+    {
+      "source": "BAILII (British and Irish Legal Information Institute)",
+      "url": "bailii.org",
+      "query": "smartstar+technology",
+      "result": "NO_CASES_FOUND",
+      "access": "PUBLIC"
+    },
+    {
+      "source": "UK Judiciary (judiciary.uk)",
+      "url": "judiciary.uk",
+      "query": "SmartStar Technology",
+      "result": "NO_RESULTS_FOUND",
+      "access": "PUBLIC"
+    },
+    {
+      "source": "UK Tribunal Decisions",
+      "url": "judiciary.uk/judgments",
+      "query": "SmartStar Technology",
+      "result": "NO_JUDGMENTS_FOUND",
+      "access": "PUBLIC"
+    },
+    {
+      "source": "UK Courts and Tribunals Online",
+      "url": "courttribunalfinder.service.gov.uk",
+      "result": "NOT_CHECKED \u2014 no search API available",
+      "access": "PUBLIC (web only)"
+    },
+    {
+      "source": "HMCTS (Her Majesty's Courts and Tribunals Service)",
+      "url": "gov.uk/government/organisations/hm-courts-and-tribunals-service",
+      "result": "NOT_CHECKED \u2014 no public case search API",
+      "access": "RESTRICTED"
+    },
+    {
+      "source": "Companies Court (Insolvency)",
+      "url": "gov.uk",
+      "result": "NOT_CHECKED \u2014 no public API for case-by-case search",
+      "access": "RESTRICTED"
+    }
+  ],
+  "court_records_found": 0,
+  "note": "No court records, judgments, or tribunal decisions found for SmartStar Technology Ltd (14511663) or Rojs Gordons in any UK/Irish legal database queried. The company was dissolved via compulsory strike-off (administrative process, not court-ordered insolvency). No litigation found."
+}

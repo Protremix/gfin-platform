@@ -1,0 +1,22 @@
+{
+  "status": "NOT_APPLICABLE",
+  "addresses": {
+    "uk_registered": {
+      "address": "27 Old Gloucester Street, London, WC1N 3AX",
+      "type": "Virtual office (British Monomarks)",
+      "companies_at_address": "4,296+",
+      "analysis": "Well-known mail forwarding address. Cannot determine actual business activity from this address."
+    },
+    "nz_registered": {
+      "address": "365b Papanui Road, Strowan, Christchurch 8052",
+      "type": "Commercial/residential",
+      "analysis": "Legitimate business address in Christchurch. SmartStar NZ operates from here."
+    },
+    "singapore_registered": {
+      "address": "one-north, Singapore",
+      "type": "Co-working/tech hub",
+      "analysis": "Singapore tech district. SmartStar SG operates digital city management platform."
+    }
+  },
+  "justification": "GEOINT cannot materially answer whether the UK and NZ entities are connected. The UK address is a virtual office shared by thousands of companies. The NZ address is a legitimate business address. The Singapore address is a tech hub. Geographic proximity analysis is not relevant when entities are in different countries and the UK address is a mail drop."
+}

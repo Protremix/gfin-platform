@@ -1,0 +1,56 @@
+# GFIN — Global Fraud Intelligence Network
+# robots.txt — Allow all search engines and AI crawlers
+
+User-agent: *
+Allow: /
+Allow: /
+Allow: /victim
+Allow: /scam-sites
+Allow: /scam-sites/
+Allow: /analytics
+Allow: /awareness
+Allow: /about
+Allow: /police/login
+
+# Block API endpoints from indexing (internal)
+Disallow: /api/
+Disallow: /police/dashboard
+Disallow: /police/mobile
+
+# Allow specific AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Sitemap
+Sitemap: https://gfin-system.com/sitemap.xml
+Sitemap: https://gfin-system.com/sitemap-pages.xml
+
+# Crawl delay (be nice to server)
+Crawl-delay: 1

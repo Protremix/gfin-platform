@@ -1,0 +1,45 @@
+{
+  "sources_checked": [
+    {
+      "source": "Companies House UK",
+      "type": "Official corporate registry",
+      "access": "Direct web (non-Google)",
+      "result": "SUCCESS \u2014 company dissolved, no insolvency proceedings, no charges registered"
+    },
+    {
+      "source": "UK FCA Register",
+      "type": "Financial regulatory register",
+      "access": "Direct API attempt (non-Google)",
+      "result": "403 FORBIDDEN \u2014 access restricted"
+    },
+    {
+      "source": "UK Insolvency Service",
+      "type": "Insolvency records",
+      "access": "Direct URL attempt (non-Google)",
+      "result": "404 NOT FOUND \u2014 service URL changed or moved"
+    },
+    {
+      "source": "UK Gazette",
+      "type": "Official public notices",
+      "access": "Direct URL attempt (non-Google)",
+      "result": "404 NOT FOUND \u2014 API endpoint may have changed. Gazette notice confirmed via Companies House filing history (GAZ1 + GAZ2)"
+    },
+    {
+      "source": "Open Ownership Register",
+      "type": "Beneficial ownership register",
+      "access": "Direct URL attempt (non-Google)",
+      "result": "403 FORBIDDEN \u2014 access restricted"
+    }
+  ],
+  "findings": {
+    "insolvency": "NO_INSOLVENCY_PROCEEDINGS \u2014 company was dissolved via compulsory strike-off (administrative), not insolvency. No liquidator appointed.",
+    "regulatory_action": "NOT_FOUND \u2014 no FCA registration found (403 prevented verification). No regulatory enforcement actions found.",
+    "court_judgments": "NOT_CHECKED \u2014 no court record API connector available in GFIN",
+    "legal_status": "DISSOLVED \u2014 assets deemed bona vacantia (belong to Crown)"
+  },
+  "not_implemented": [
+    "Court records API",
+    "Tribunal records API",
+    "Regulatory enforcement API"
+  ]
+}

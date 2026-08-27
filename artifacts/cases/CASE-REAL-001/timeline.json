@@ -1,0 +1,54 @@
+{
+  "case_id": "CASE-REAL-001",
+  "events": [
+    {
+      "date": "2024-06-20",
+      "event": "Domain cnc-intel.com registered via NameCheap \u2014 early impersonation domain",
+      "source": "E-010 (RDAP)",
+      "type": "REGISTRATION"
+    },
+    {
+      "date": "2024-09-25",
+      "event": "CNC Intelligence received scam report involving individual impersonating Tom Kosters",
+      "source": "E-003 (CNC report)",
+      "type": "INCIDENT"
+    },
+    {
+      "date": "2025-12-10",
+      "event": "Domain cncintelltd.com registered via NameSilo",
+      "source": "E-010 (RDAP)",
+      "type": "REGISTRATION"
+    },
+    {
+      "date": "2025-12-08",
+      "event": "CNC Intelligence documents 'Tony Rossi, Recovery department of CNC' scam using fraudulent email",
+      "source": "E-003 (CNC report)",
+      "type": "INCIDENT"
+    },
+    {
+      "date": "2026-02-26",
+      "event": "Domain cncintelinfo.com registered via NameCheap \u2014 configured for ProtonMail email operations",
+      "source": "E-010 (RDAP)",
+      "type": "REGISTRATION"
+    },
+    {
+      "date": "2026-06-20",
+      "event": "Domain cnc-intel.com expires, enters redemption period",
+      "source": "E-010 (RDAP)",
+      "type": "EXPIRATION"
+    },
+    {
+      "date": "2026-07-30",
+      "event": "CNC Intelligence report page last updated \u2014 50+ domains documented",
+      "source": "E-003",
+      "type": "REPORT_UPDATE"
+    },
+    {
+      "date": "2026-08-26T14:26:02.787821+00:00",
+      "event": "GFIN investigation: DNS, RDAP, IP intelligence, victim report discovery, scam tracker correlation",
+      "source": "Investigation log",
+      "type": "INVESTIGATION"
+    }
+  ],
+  "total_events": 8
+}

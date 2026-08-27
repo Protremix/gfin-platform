@@ -1,0 +1,96 @@
+{
+  "providers": [
+    {
+      "provider": "OpenSanctions",
+      "capability": "Sanctions/watchlist screening",
+      "coverage": "Global",
+      "jurisdiction": "Global",
+      "api": "REST JSON",
+      "license": "Open data (CC-BY)",
+      "price": "Free tier + paid",
+      "auth": "API key",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "VirusTotal",
+      "capability": "Domain/IP/file reputation",
+      "coverage": "Global",
+      "jurisdiction": "Global",
+      "api": "REST JSON",
+      "license": "Commercial",
+      "price": "Free tier (4 req/min) + paid",
+      "auth": "API key",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "AbuseIPDB",
+      "capability": "IP abuse reports",
+      "coverage": "Global",
+      "jurisdiction": "Global",
+      "api": "REST JSON",
+      "license": "Commercial",
+      "price": "Free (1000 req/day) + paid",
+      "auth": "API key",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "Numverify",
+      "capability": "Phone validation + carrier",
+      "coverage": "Global",
+      "jurisdiction": "Global",
+      "api": "REST JSON",
+      "license": "Commercial",
+      "price": "Free (100 req/month) + paid",
+      "auth": "API key",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "SecurityTrails",
+      "capability": "DNS history + CT + subdomains",
+      "coverage": "Global",
+      "jurisdiction": "Global",
+      "api": "REST JSON",
+      "license": "Commercial",
+      "price": "Free tier + paid",
+      "auth": "API key",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "OpenCorporates",
+      "capability": "Corporate registry aggregator",
+      "coverage": "140+ jurisdictions",
+      "jurisdiction": "Global",
+      "api": "REST JSON",
+      "license": "Open data + commercial",
+      "price": "Free (500 req/month) + paid",
+      "auth": "API token",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "Companies House",
+      "capability": "UK corporate filings",
+      "coverage": "UK",
+      "jurisdiction": "UK",
+      "api": "REST JSON",
+      "license": "Free public data",
+      "price": "Free",
+      "auth": "API key (Basic Auth)",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    },
+    {
+      "provider": "Facebook Ad Library",
+      "capability": "Advertising intelligence",
+      "coverage": "Global",
+      "jurisdiction": "Global",
+      "api": "Graph API",
+      "license": "Commercial",
+      "price": "Free (with app review)",
+      "auth": "OAuth token",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED"
+    }
+  ],
+  "total_licensed_providers": 8,
+  "all_have_free_tiers": true,
+  "none_provisioned": true,
+  "note": "All providers offer free or freemium tiers. No commercial license required for basic investigative capability. Credentials need to be provisioned via free registration."
+}

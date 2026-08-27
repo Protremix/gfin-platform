@@ -1,0 +1,138 @@
+{
+  "case_id": "CASE-REAL-001",
+  "relationships": [
+    {
+      "id": "REL-001",
+      "from": "ENT-003",
+      "to": "ENT-001",
+      "type": "IMPERSONATES",
+      "source": "S-001 (CNC Intelligence report)",
+      "timestamp": "2026-02-26",
+      "evidence": "E-003, E-010 \u2014 domain name 'cncintelinfo' contains 'cncintel' brand name",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-002",
+      "from": "ENT-004",
+      "to": "ENT-001",
+      "type": "IMPERSONATES",
+      "source": "S-001",
+      "timestamp": "2025-12-10",
+      "evidence": "E-003, E-010 \u2014 domain name 'cncintelltd' contains 'cncintel' brand",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-003",
+      "from": "ENT-005",
+      "to": "ENT-001",
+      "type": "IMPERSONATES",
+      "source": "S-001",
+      "timestamp": "2024-06-20",
+      "evidence": "E-003, E-010 \u2014 domain 'cnc-intel.com' mimics official 'cncintel.com'",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-004",
+      "from": "ENT-003",
+      "to": "ENT-010",
+      "type": "USES_EMAIL_SERVICE",
+      "source": "S-002 (DNS)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-005 \u2014 MX records point to ProtonMail (mail.protonmail.ch, mailsec.protonmail.ch)",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-005",
+      "from": "ENT-003",
+      "to": "ENT-011",
+      "type": "REGISTERED_AT",
+      "source": "S-003 (RDAP)",
+      "timestamp": "2026-02-26",
+      "evidence": "E-010 \u2014 RDAP shows registrar=NameCheap, Inc.",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-006",
+      "from": "ENT-004",
+      "to": "ENT-012",
+      "type": "REGISTERED_AT",
+      "source": "S-003 (RDAP)",
+      "timestamp": "2025-12-10",
+      "evidence": "E-010 \u2014 RDAP shows registrar=NameSilo, LLC",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-007",
+      "from": "ENT-004",
+      "to": "ENT-009",
+      "type": "HOSTED_BY",
+      "source": "S-004 (ipinfo.io)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-007 \u2014 IP 91.195.240.123 belongs to AS47846 SEDO GmbH (domain parking)",
+      "confidence": "HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-008",
+      "from": "ENT-007",
+      "to": "ENT-001",
+      "type": "CONNECTED_TO_IMPERSONATION",
+      "source": "S-007 (Reddit), S-010 (FBI)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-012, E-016 \u2014 Reddit warning links CNCINTEL with PAYBACK LTD; FBI seized Payback LTD as recovery scam",
+      "confidence": "HIGH",
+      "status": "STRONGLY CORROBORATED"
+    },
+    {
+      "id": "REL-009",
+      "from": "ENT-008",
+      "to": "ENT-001",
+      "type": "CONNECTED_TO_IMPERSONATION",
+      "source": "S-008 (CryptoLegal), S-009 (LegalByte)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-014 \u2014 cyber-forensics.net listed as recovery scam on multiple trackers alongside CNCINTEL references",
+      "confidence": "MEDIUM-HIGH",
+      "status": "CORROBORATED"
+    },
+    {
+      "id": "REL-010",
+      "from": "ENT-013",
+      "to": "ENT-001",
+      "type": "CONNECTED_TO_IMPERSONATION",
+      "source": "S-006, S-007 (Reddit)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-013 \u2014 Reddit victims mention 'Rapid Digital Recovery' in context of CNC Intelligence impersonation",
+      "confidence": "MEDIUM",
+      "status": "SINGLE SOURCE (Reddit)"
+    },
+    {
+      "id": "REL-011",
+      "from": "ENT-014",
+      "to": "ENT-007",
+      "type": "SAME_NETWORK",
+      "source": "S-010 (FBI)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-016 \u2014 FBI seized MyChargeBack, Payback LTD, and Claim Justice together as connected recovery scam network",
+      "confidence": "HIGH",
+      "status": "STRONGLY CORROBORATED"
+    },
+    {
+      "id": "REL-012",
+      "from": "ENT-015",
+      "to": "ENT-007",
+      "type": "SAME_NETWORK",
+      "source": "S-010 (FBI)",
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "evidence": "E-016 \u2014 FBI seized all three together",
+      "confidence": "HIGH",
+      "status": "STRONGLY CORROBORATED"
+    }
+  ],
+  "total_relationships": 12
+}

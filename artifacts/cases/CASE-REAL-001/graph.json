@@ -1,0 +1,149 @@
+{
+  "case_id": "CASE-REAL-001",
+  "nodes": [
+    {
+      "id": "ENT-001",
+      "label": "CNC Intelligence Inc.",
+      "type": "ORGANIZATION"
+    },
+    {
+      "id": "ENT-002",
+      "label": "cncintel.com",
+      "type": "DOMAIN"
+    },
+    {
+      "id": "ENT-003",
+      "label": "cncintelinfo.com",
+      "type": "DOMAIN"
+    },
+    {
+      "id": "ENT-004",
+      "label": "cncintelltd.com",
+      "type": "DOMAIN"
+    },
+    {
+      "id": "ENT-005",
+      "label": "cnc-intel.com",
+      "type": "DOMAIN"
+    },
+    {
+      "id": "ENT-007",
+      "label": "payback.ltd",
+      "type": "DOMAIN"
+    },
+    {
+      "id": "ENT-008",
+      "label": "cyber-forensics.net",
+      "type": "DOMAIN"
+    },
+    {
+      "id": "ENT-009",
+      "label": "SEDO GmbH",
+      "type": "ORGANIZATION"
+    },
+    {
+      "id": "ENT-010",
+      "label": "ProtonMail",
+      "type": "EMAIL_PROVIDER"
+    },
+    {
+      "id": "ENT-011",
+      "label": "NameCheap",
+      "type": "REGISTRAR"
+    },
+    {
+      "id": "ENT-012",
+      "label": "NameSilo",
+      "type": "REGISTRAR"
+    },
+    {
+      "id": "ENT-013",
+      "label": "Rapid Digital Recovery",
+      "type": "ORGANIZATION"
+    },
+    {
+      "id": "ENT-014",
+      "label": "MyChargeBack",
+      "type": "ORGANIZATION"
+    },
+    {
+      "id": "ENT-015",
+      "label": "Claim Justice",
+      "type": "ORGANIZATION"
+    }
+  ],
+  "edges": [
+    {
+      "source": "ENT-002",
+      "target": "ENT-001",
+      "label": "OFFICIAL_SITE_OF"
+    },
+    {
+      "source": "ENT-003",
+      "target": "ENT-001",
+      "label": "IMPERSONATES"
+    },
+    {
+      "source": "ENT-004",
+      "target": "ENT-001",
+      "label": "IMPERSONATES"
+    },
+    {
+      "source": "ENT-005",
+      "target": "ENT-001",
+      "label": "IMPERSONATES"
+    },
+    {
+      "source": "ENT-003",
+      "target": "ENT-010",
+      "label": "USES_EMAIL_SERVICE"
+    },
+    {
+      "source": "ENT-003",
+      "target": "ENT-011",
+      "label": "REGISTERED_AT"
+    },
+    {
+      "source": "ENT-004",
+      "target": "ENT-012",
+      "label": "REGISTERED_AT"
+    },
+    {
+      "source": "ENT-004",
+      "target": "ENT-009",
+      "label": "HOSTED_BY"
+    },
+    {
+      "source": "ENT-005",
+      "target": "ENT-011",
+      "label": "REGISTERED_AT"
+    },
+    {
+      "source": "ENT-007",
+      "target": "ENT-001",
+      "label": "CONNECTED_TO_IMPERSONATION"
+    },
+    {
+      "source": "ENT-008",
+      "target": "ENT-001",
+      "label": "CONNECTED_TO_IMPERSONATION"
+    },
+    {
+      "source": "ENT-013",
+      "target": "ENT-001",
+      "label": "CONNECTED_TO_IMPERSONATION"
+    },
+    {
+      "source": "ENT-014",
+      "target": "ENT-007",
+      "label": "SAME_NETWORK"
+    },
+    {
+      "source": "ENT-015",
+      "target": "ENT-007",
+      "label": "SAME_NETWORK"
+    }
+  ],
+  "total_nodes": 14,
+  "total_edges": 14
+}

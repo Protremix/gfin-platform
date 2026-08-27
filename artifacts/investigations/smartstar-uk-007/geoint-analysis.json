@@ -1,0 +1,22 @@
+{
+  "status": "NOT_IMPLEMENTED",
+  "geoint_apis_checked": [
+    {
+      "api": "Google Maps API",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "api": "OpenStreetMap API",
+      "status": "NOT_CHECKED \u2014 low priority"
+    },
+    {
+      "api": "Satellite imagery providers",
+      "status": "NOT_IMPLEMENTED"
+    },
+    {
+      "api": "UK Ordnance Survey",
+      "status": "NOT_CHECKED"
+    }
+  ],
+  "address_analysis": "Address analysis performed via corporate registry data (non-GEOINT). No satellite imagery, geospatial datasets, or mapping APIs were queried. GEOINT would not materially advance the investigation given that the UK address is a virtual office shared by 4,296+ companies."
+}

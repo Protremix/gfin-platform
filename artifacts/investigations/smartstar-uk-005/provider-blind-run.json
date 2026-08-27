@@ -1,0 +1,125 @@
+{
+  "phase": "PROVIDER_BLIND",
+  "method": "System received only evidence gaps and data types. No provider names given.",
+  "gaps_and_discoveries": [
+    {
+      "gap": "Corporate filing data for UK company 14511663",
+      "data_type": "corporate_filings",
+      "jurisdiction": "UK",
+      "candidate_providers_discovered": [
+        "Companies House UK (official government registry)",
+        "Open Corporates (aggregator)",
+        "North Data (aggregator)"
+      ],
+      "provider_selected": "Companies House UK",
+      "reason": "Official primary source, highest authority, free public access",
+      "access_method": "Direct URL: find-and-update.company-information.service.gov.uk/company/14511663",
+      "result": "SUCCESS \u2014 company data retrieved"
+    },
+    {
+      "gap": "Domain registration data for potential SmartStar domains",
+      "data_type": "domain_registration",
+      "jurisdiction": "UK",
+      "candidate_providers_discovered": [
+        "Nominet UK (.uk registry)",
+        "RDAP (standard protocol)",
+        "Verisign (.com registry)",
+        "ICANN WHOIS"
+      ],
+      "provider_selected": "RDAP via rdap.org",
+      "reason": "Standard protocol, no API key needed, JSON response",
+      "access_method": "HTTPS GET to rdap.org/domain/{domain}",
+      "result": "SUCCESS \u2014 smartstar.co.uk registration data retrieved. smartstartechnology.co.uk NOT_FOUND"
+    },
+    {
+      "gap": "Historical web presence for UK entity domains",
+      "data_type": "web_archive",
+      "jurisdiction": "Global",
+      "candidate_providers_discovered": [
+        "Internet Archive Wayback Machine",
+        "Archive-It",
+        "UK Web Archive"
+      ],
+      "provider_selected": "Wayback Machine CDX API",
+      "reason": "Largest public web archive, CDX API provides structured JSON",
+      "access_method": "HTTPS GET to web.archive.org/cdx/search/cdx",
+      "result": "SUCCESS \u2014 10 captures for smartstar.co.uk (2017-2024)"
+    },
+    {
+      "gap": "Code repository activity for director/owner",
+      "data_type": "code_metadata",
+      "jurisdiction": "Global",
+      "candidate_providers_discovered": [
+        "GitHub API",
+        "GitLab API",
+        "Bitbucket API"
+      ],
+      "provider_selected": "GitHub API",
+      "reason": "Largest code repository, public API without auth for basic queries",
+      "access_method": "HTTPS GET to api.github.com/users/Protremix",
+      "result": "SUCCESS \u2014 4 repos discovered with descriptions and metadata"
+    },
+    {
+      "gap": "Mobile app presence for SmartStar entity",
+      "data_type": "app_metadata",
+      "jurisdiction": "Global",
+      "candidate_providers_discovered": [
+        "Apple iTunes Search API",
+        "Google Play Store (direct)",
+        "AppBrain"
+      ],
+      "provider_selected": "Apple iTunes Search API",
+      "reason": "Public JSON API, no auth needed, structured metadata",
+      "access_method": "HTTPS GET to itunes.apple.com/search",
+      "result": "SUCCESS \u2014 3 SmartStar Technology Ltd apps found"
+    },
+    {
+      "gap": "DNS records for potential domains",
+      "data_type": "dns_records",
+      "jurisdiction": "Global",
+      "candidate_providers_discovered": [
+        "Google DoH (8.8.8.8)",
+        "Cloudflare DoH (1.1.1.1)",
+        "Quad9 DoH",
+        "dig/nslookup (local)"
+      ],
+      "provider_selected": "Google DoH + Cloudflare DoH",
+      "reason": "Both provide JSON API over HTTPS, no auth needed, cross-verification",
+      "access_method": "HTTPS GET to 8.8.8.8/resolve and 1.1.1.1/dns-query",
+      "result": "SUCCESS \u2014 4 domains resolved with A/MX/NS/TXT records"
+    },
+    {
+      "gap": "Blockchain data for Verdis Chain",
+      "data_type": "blockchain_data",
+      "jurisdiction": "Global",
+      "candidate_providers_discovered": [
+        "Etherscan API",
+        "Blockchair API",
+        "BlockCypher API"
+      ],
+      "provider_selected": "Etherscan API",
+      "reason": "Most comprehensive Ethereum explorer, free API tier",
+      "access_method": "HTTPS GET to api.etherscan.io/api",
+      "result": "SUCCESS (API accessible) but NO_DATA \u2014 Verdis Chain is testnet only, no mainnet contract"
+    }
+  ],
+  "providers_rejected": [
+    {
+      "provider": "Open Corporates",
+      "reason": "401 Unauthorized \u2014 requires API token not available"
+    },
+    {
+      "provider": "FCA Register",
+      "reason": "403 Forbidden \u2014 access restricted"
+    },
+    {
+      "provider": "Nominet WHOIS",
+      "reason": "403 Forbidden \u2014 requires different access method"
+    },
+    {
+      "provider": "Open Ownership Register",
+      "reason": "403 Forbidden \u2014 access restricted"
+    }
+  ],
+  "status": "COMPLETED"
+}

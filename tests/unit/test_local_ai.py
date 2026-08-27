@@ -297,7 +297,7 @@ class TestLocalAIAdapter:
 
     def test_detect_spam(self):
         adapter = LocalAIAdapter()
-        is_spam, conf = adapter.detect_spam("Buy now! Limited offer! Click here! Act now! Winner!")
+        is_spam, _conf = adapter.detect_spam("Buy now! Limited offer! Click here! Act now! Winner!")
         assert is_spam is True
 
     def test_embed(self):

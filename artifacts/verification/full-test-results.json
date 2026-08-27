@@ -1,0 +1,20 @@
+{
+  "total": 2925,
+  "passed": 2920,
+  "failed": 5,
+  "errors": 0,
+  "skipped": 0,
+  "xfailed": 0,
+  "duration_sec": 34.87,
+  "coverage": "90.77%",
+  "failed_tests": [
+    "test_openai_gateway.py::TestOpenAIGatewayIntegration::test_health_check",
+    "test_openai_gateway.py::TestOpenAIGatewayIntegration::test_generate_with_gpt_luna",
+    "test_openai_gateway.py::TestOpenAIGatewayIntegration::test_classify_fraud_type",
+    "test_openai_gateway.py::TestOpenAIGatewayIntegration::test_extract_entities",
+    "test_openai_gateway.py::TestOpenAIGatewayIntegration::test_gfin_system_prompt_enforced"
+  ],
+  "failure_root_cause": "OpenAI API key not valid in test environment (key=test). These are integration tests requiring a real OPENAI_PROJECT_KEY.",
+  "failure_classification": "environment/dependency, not code defect",
+  "timestamp": "2026-08-26T15:15:45.943849+00:00"
+}

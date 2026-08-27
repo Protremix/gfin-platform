@@ -1,0 +1,12 @@
+{
+  "policy": "Hostname-based egress allowlist \u2014 no hardcoded IP addresses",
+  "method": [
+    "Store API hostname (e.g., api.github.com)",
+    "DNS resolution at request time",
+    "TLS certificate validation (hostname match)",
+    "Outbound egress policy on hostname + path",
+    "No static IP allowlists"
+  ],
+  "rationale": "Providers use CDNs and cloud infrastructure. IPs change frequently. Hostname + TLS validation is the correct security boundary.",
+  "applies_to": "All GFIN connectors"
+}

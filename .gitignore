@@ -90,3 +90,7 @@ logs/
 
 # Generated
 __generated__/
+*.env
+auth_state.json
+telegram_session.json
+gfin_ssh_key

@@ -928,7 +928,7 @@ class TestCanAccess:
         auth = AuthorizationContext(
             user_id="u1", user_classification_level=DataClassification.PUBLIC
         )
-        can, reason = can_access(DataClassification.PUBLIC.value, None, None, auth)
+        can, _reason = can_access(DataClassification.PUBLIC.value, None, None, auth)
         assert can
 
     def test_restricted_entity_public_user(self):
@@ -1127,7 +1127,7 @@ class TestDataSharingPolicy:
         auth = AuthorizationContext(user_id="u1", purpose="fraud_investigation")
         policy = DataSharingPolicy()
 
-        can, reason, decision = check_sharing_policy(e, auth, policy)
+        can, _reason, decision = check_sharing_policy(e, auth, policy)
         assert can
         assert decision.decision == "ALLOWED"
 
@@ -1144,7 +1144,7 @@ class TestDataSharingPolicy:
         auth = AuthorizationContext(user_id="u1", purpose=None)
         policy = DataSharingPolicy()
 
-        can, reason, decision = check_sharing_policy(e, auth, policy)
+        can, _reason, decision = check_sharing_policy(e, auth, policy)
         assert not can
         assert decision.decision == "DENIED"
 

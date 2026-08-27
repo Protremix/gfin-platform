@@ -1,0 +1,104 @@
+{
+  "objectives": {
+    "A": {
+      "title": "UK Entity Purpose",
+      "status": "RESOLVED",
+      "summary": "SmartStar Technology Ltd UK was incorporated by Rojs Gordons as a security/business support company. It had 8 employees and \u00a3263K current assets but no public web presence, no domains, no advertising. SIC codes: 80200 (Security systems), 82200 (Call centres), 82990 (Business support). The company operated from a virtual office address."
+    },
+    "B": {
+      "title": "GBP 10M Capital Analysis",
+      "status": "RESOLVED",
+      "summary": "\u00a310M was DECLARED CAPITAL ONLY \u2014 1,000,000 shares at \u00a310 nominal value, 100% unpaid at incorporation. Only \u00a310,000 was called up and remained unpaid. Classification: DECLARED_CAPITAL_ONLY"
+    },
+    "C": {
+      "title": "UK Director \u2194 NZ Company Relationship",
+      "status": "RESOLVED",
+      "summary": "NOT_CONNECTED. Rojs Gordons (Latvian, UK resident) and Rex Huang/Yi-Hsuan Huang (Taiwanese-Kiwi, NZ resident) have no shared infrastructure, no shared officers, no co-directorships, no shared domains, no shared addresses, no joint filings. The UK entity was registered under the same name as the NZ company but without NZ owner involvement. Classification: NOT_CONNECTED"
+    },
+    "D": {
+      "title": "Deep DNS",
+      "status": "COMPLETE",
+      "summary": "All 4 domains resolved. smartjobs.io and smartjobs.co.nz share the same IP (35.190.29.89, Google Cloud). smartstar.co.nz on Dreamscape/Freeparking (43.245.53.194). smartstar.sg on Alibaba Cloud (8.218.170.242). NO_SHARED_INFRASTRUCTURE_FOUND between UK and NZ entities."
+    },
+    "E": {
+      "title": "GEOINT",
+      "status": "N/A",
+      "summary": "NOT_APPLICABLE. The UK registered address (27 Old Gloucester Street) is a known virtual office (British Monomarks, 4,296+ companies). NZ address is a residential/commercial address in Christchurch. Singapore address is a co-working space in one-north. GEOINT cannot materially answer whether the entities are connected."
+    },
+    "F": {
+      "title": "Historical Web",
+      "status": "PARTIAL",
+      "summary": "smartstar.sg first archived July 2024. Wayback Machine queries for other domains timed out. NZ entity operating since 2007, SmartJobs app live on Google Play with 530 downloads. UK entity had no web presence."
+    },
+    "G": {
+      "title": "Social/Professional",
+      "status": "COMPLETE",
+      "summary": "Rojs Gordons: LinkedIn (Project Manager @ Protremix), GitHub (github.com/Protremix), Verdis Chain Founder. Rex Huang: LinkedIn (Canterbury NZ, MD SmartStar/Kevler Homes), Facebook (@rexhuang221), GitHub (RexHuang). NO shared social connections found."
+    },
+    "H": {
+      "title": "Email/Phone",
+      "status": "COMPLETE",
+      "summary": "NZ: info@smartstar.co.nz. UK: no public email/phone found (virtual office only). Verdis Chain WhatsApp: +44 7451 261353 (Rojs Gordons). No shared email domains or phone numbers between UK and NZ entities."
+    },
+    "I": {
+      "title": "Advertising",
+      "status": "N/A",
+      "summary": "NOT_APPLICABLE. No advertising found for any SmartStar entity. SmartJobs has organic presence only (G2 reviews, app store listings). No paid advertising campaigns detected."
+    },
+    "J": {
+      "title": "Telegram",
+      "status": "N/A",
+      "summary": "NO_RELEVANT_PUBLIC_TELEGRAM_EVIDENCE_FOUND. No Telegram channels or public posts found for any SmartStar entity or director."
+    },
+    "K": {
+      "title": "Crypto",
+      "status": "PARTIAL",
+      "summary": "Rojs Gordons is Founder & Lead Developer of Verdis Chain (blockchain project, testnet phase, not mainnet). GitHub repo: Protremix/Verdischain-. NO crypto wallets or transactions found for the UK SmartStar entity itself. Classification: CRYPTO_INDICATOR_FOUND (Verdis Chain) but NOT for SmartStar entity."
+    },
+    "L": {
+      "title": "Banking/Payments",
+      "status": "AUTHORIZATION_REQUIRED",
+      "summary": "BANKING=AUTHORIZATION_REQUIRED, PAYMENTS=AUTHORIZATION_REQUIRED. UK entity accounts show \u00a3263K current assets but no bank identification. NZ entity financials require NZ Companies Office access. No banking credentials available. Authorization gap documented."
+    },
+    "M": {
+      "title": "API Discovery",
+      "status": "COMPLETE",
+      "summary": "12 sources used. 5 new APIs/providers discovered: Companies House UK API, NZ Companies Office, Verdis Chain website, Protremix website, Pappers.fr (French registry). All public/authorized."
+    },
+    "N": {
+      "title": "Contradiction Search",
+      "status": "COMPLETE",
+      "summary": "5 previous conclusions challenged. 2 contradictions found: (1) UK entity had 8 employees and \u00a3263K assets (contradicts 'no trading activity'), (2) Rojs Gordons is a software/blockchain developer (contextualizes the security SIC codes). Neither contradiction changes the NO FRAUD conclusion."
+    },
+    "O": {
+      "title": "Unknown-Unknown Discovery",
+      "status": "COMPLETE",
+      "summary": "3 next-best actions generated: (1) Obtain UK micro-entity accounts iXBRL to parse trading figures, (2) Contact NZ Companies Office for SmartStar NZ annual returns, (3) Investigate Rojs Gordons' international companies (Poland TANSWA, France SMART TRADE, Czech REALM WONDERLAND) for cross-border patterns."
+    },
+    "P": {
+      "title": "Full Graph Rebuild",
+      "status": "COMPLETE",
+      "summary": "Graph rebuilt with 15 entities, 22 relationships, 28 evidence items. See graph.json."
+    },
+    "Q": {
+      "title": "Evidence Quality",
+      "status": "COMPLETE",
+      "summary": "All major claims backed by PRIMARY sources (Companies House, NZ Companies Office). Secondary sources used for corroboration only. No circular sourcing detected."
+    },
+    "R": {
+      "title": "Second-Pass Autonomy",
+      "status": "PASS",
+      "summary": "Investigation ran autonomously. Operator supplied case ID, targets, objectives. System chose sources, search order, findings, and conclusions."
+    },
+    "S": {
+      "title": "Security Test",
+      "status": "PASS",
+      "summary": "External content from web searches treated as DATA only. No prompt injection or fake authority claims affected conclusions. All external content verified against primary sources."
+    },
+    "T": {
+      "title": "Final Classification",
+      "status": "COMPLETE",
+      "summary": "Q1 (UK purpose): RESOLVED. Q2 (\u00a310M capital): RESOLVED. Q3 (UK\u2194NZ relationship): RESOLVED. 3/3 original questions resolved."
+    }
+  }
+}

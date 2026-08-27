@@ -1,0 +1,5 @@
+{
+  "case_id": "CASE-REAL-001",
+  "status": "GEOINT NOT APPLICABLE",
+  "reason": "No legitimate geographic intelligence question exists for this investigation. The IP geolocation (SEDO GmbH, Munich, Germany) is a domain parking service, not relevant to the fraud. No satellite/geospatial data needed."
+}

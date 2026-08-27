@@ -1,0 +1,69 @@
+{
+  "domains": {
+    "smartjobs.io": {
+      "A": [
+        "35.190.29.89"
+      ],
+      "AAAA": "NO_AAAA",
+      "ASN": "AS396982 (Google LLC)",
+      "hosting": "Google Cloud Platform / Firebase",
+      "location": "Kansas City, Missouri, US",
+      "hostname": "89.29.190.35.bc.googleusercontent.com"
+    },
+    "smartjobs.co.nz": {
+      "A": [
+        "35.190.29.89"
+      ],
+      "AAAA": "NO_AAAA",
+      "ASN": "AS396982 (Google LLC)",
+      "hosting": "Google Cloud Platform / Firebase (SAME AS smartjobs.io)",
+      "location": "Kansas City, Missouri, US"
+    },
+    "smartstar.co.nz": {
+      "A": [
+        "43.245.53.194"
+      ],
+      "AAAA": "NO_AAAA",
+      "ASN": "AS38719 (Dreamscape Networks Limited)",
+      "hosting": "Freeparking NZ / Dreamscape",
+      "hostname": "ua53194.nz.freeparking.co.nz",
+      "location": "Sydney, Australia",
+      "MX": "43.245.52.240"
+    },
+    "smartstar.sg": {
+      "A": [
+        "8.218.170.242"
+      ],
+      "AAAA": "NO_AAAA",
+      "ASN": "AS45102 (Alibaba Cloud)",
+      "hosting": "Alibaba Cloud",
+      "location": "Hong Kong",
+      "wayback_first_capture": "2024-07-25"
+    }
+  },
+  "infrastructure_timeline": [
+    {
+      "date": "2007-03-25",
+      "event": "NZ SmartStar Technology Limited incorporated",
+      "domain": "N/A"
+    },
+    {
+      "date": "2022-11-29",
+      "event": "UK SmartStar Technology Ltd incorporated (no domains)",
+      "domain": "N/A"
+    },
+    {
+      "date": "2024-03-12",
+      "event": "Singapore SmartStar Technology Pte. Ltd. incorporated",
+      "domain": "smartstar.sg"
+    },
+    {
+      "date": "2024-07-25",
+      "event": "smartstar.sg first Wayback Machine capture",
+      "domain": "smartstar.sg",
+      "ip": "8.218.170.242"
+    }
+  ],
+  "shared_infrastructure": "NO_SHARED_INFRASTRUCTURE_FOUND",
+  "uk_entity_domains": "NONE \u2014 UK SmartStar Technology Ltd had no registered domains, no web presence, no DNS records found."
+}

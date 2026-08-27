@@ -9,7 +9,7 @@ Layer B: Real email/SMS/webhook delivery via SendGrid/Twilio/Slack (REQUIRES EXT
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -24,7 +24,7 @@ from services.continuous_monitoring import (
 # ─── Enums ───
 
 
-class DeliveryChannel(str, Enum):
+class DeliveryChannel(StrEnum):
     EMAIL = "EMAIL"
     SMS = "SMS"
     WEBHOOK = "WEBHOOK"
@@ -32,14 +32,14 @@ class DeliveryChannel(str, Enum):
     SLACK = "SLACK"
 
 
-class DeliveryStatus(str, Enum):
+class DeliveryStatus(StrEnum):
     PENDING = "PENDING"
     SENT = "SENT"
     FAILED = "FAILED"
     DELIVERED = "DELIVERED"
 
 
-class AlertLifecycle(str, Enum):
+class AlertLifecycle(StrEnum):
     CREATED = "CREATED"
     ROUTED = "ROUTED"
     DELIVERED = "DELIVERED"
@@ -260,7 +260,7 @@ class AlertTemplate:
             "UNKNOWN",
         )
         report_count = next(
-            (c.new_value for c in changes if c.change_type == "NEW_REPORTS"),
+            (c.new_value for c in changes if c.change_type in ("NEW_REPORTS", "ACTIVITY_SPIKE")),
             0,
         )
         new_status = next(
@@ -335,9 +335,7 @@ class AlertRouter:
             return False
         if rule.priority and alert.priority != rule.priority:
             return False
-        if rule.target_type and alert.target_type != rule.target_type:
-            return False
-        return True
+        return not (rule.target_type and alert.target_type != rule.target_type)
 
 
 # ─── Notification Service ───

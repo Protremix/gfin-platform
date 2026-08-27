@@ -9,7 +9,7 @@ Layer B: Legal framework integration, automated enforcement (REQUIRES EXTERNAL I
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -17,7 +17,7 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class DataClassification(str, Enum):
+class DataClassification(StrEnum):
     PUBLIC = "PUBLIC"
     COMMUNITY = "COMMUNITY"
     LAW_ENFORCEMENT = "LAW_ENFORCEMENT"
@@ -25,7 +25,7 @@ class DataClassification(str, Enum):
     HIGHLY_RESTRICTED = "HIGHLY_RESTRICTED"
 
 
-class AccessorRole(str, Enum):
+class AccessorRole(StrEnum):
     PUBLIC = "PUBLIC"
     CITIZEN = "CITIZEN"
     POLICE_OFFICER = "POLICE_OFFICER"

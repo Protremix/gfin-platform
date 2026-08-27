@@ -1,0 +1,81 @@
+{
+  "platforms": [
+    {
+      "platform": "LinkedIn",
+      "api": "OAuth required",
+      "accounts": [
+        {
+          "name": "Rojs Gordons",
+          "url": "uk.linkedin.com/in/rojs-gordons-986928421",
+          "title": "Project Manager @ Protremix",
+          "source": "Google search (baseline)",
+          "api_access": "AUTH_REQUIRED"
+        },
+        {
+          "name": "Rex Huang",
+          "url": "nz.linkedin.com/in/rex-huang-a9a87351",
+          "title": "Managing Director, SmartStar",
+          "source": "Google search (baseline)",
+          "api_access": "AUTH_REQUIRED"
+        }
+      ]
+    },
+    {
+      "platform": "GitHub",
+      "api": "Public API (rate limited)",
+      "accounts": [
+        {
+          "name": "Protremix",
+          "url": "github.com/Protremix",
+          "repos": 4,
+          "email": "info@protremix.com",
+          "bio": "Protremix Software, Blockchain, Platforms",
+          "created": "2026-08-07",
+          "source": "GitHub API (non-Google)",
+          "api_access": "SUCCESS"
+        },
+        {
+          "name": "RexHuang",
+          "url": "github.com/RexHuang",
+          "repos": "NOT_QUERIED",
+          "source": "GitHub API available",
+          "api_access": "NOT_QUERIED"
+        }
+      ]
+    },
+    {
+      "platform": "Facebook",
+      "api": "Graph API (OAuth + app review)",
+      "accounts": [
+        {
+          "name": "Rex Huang",
+          "url": "facebook.com/rexhuang221",
+          "type": "Digital Creator, Christchurch",
+          "source": "Google search (baseline)",
+          "api_access": "AUTH_REQUIRED"
+        }
+      ]
+    },
+    {
+      "platform": "Twitter/X",
+      "api": "API v2 (paid)",
+      "accounts": "NONE FOUND",
+      "api_access": "AUTH_REQUIRED (paid API)"
+    },
+    {
+      "platform": "Telegram",
+      "api": "Bot API (limited)",
+      "accounts": "NONE FOUND",
+      "api_access": "NOT_IMPLEMENTED"
+    },
+    {
+      "platform": "Instagram",
+      "api": "Graph API (OAuth)",
+      "accounts": "NONE FOUND",
+      "api_access": "AUTH_REQUIRED"
+    }
+  ],
+  "social_api_connectors_implemented": 1,
+  "social_api_connectors_auth_required": 4,
+  "note": "GitHub was the only social platform accessible via public API. LinkedIn, Facebook, Twitter, Instagram all require OAuth. Telegram not implemented."
+}

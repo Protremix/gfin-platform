@@ -9,7 +9,7 @@ Layer B: Kafka-streamed pipeline + Redis + Neo4j (REQUIRES EXTERNAL INFRASTRUCTU
 
 import contextlib
 from datetime import UTC, datetime, timedelta
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field, field_validator
@@ -17,21 +17,21 @@ from pydantic import BaseModel, Field, field_validator
 # ─── Enums ───
 
 
-class RuleType(str, Enum):
+class RuleType(StrEnum):
     SIGNAL = "SIGNAL"
     PATTERN = "PATTERN"
     THRESHOLD = "THRESHOLD"
     COMPOSITE = "COMPOSITE"
 
 
-class DetectionSeverity(str, Enum):
+class DetectionSeverity(StrEnum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
     CRITICAL = "CRITICAL"
 
 
-class SignalType(str, Enum):
+class SignalType(StrEnum):
     HIGH_REPORT_VOLUME = "HIGH_REPORT_VOLUME"
     EVIDENCE_CORROBORATION = "EVIDENCE_CORROBORATION"
     CAMPAIGN_CORRELATION = "CAMPAIGN_CORRELATION"
@@ -41,7 +41,7 @@ class SignalType(str, Enum):
     REPEAT_REPORTER_HIGH_CONFIDENCE = "REPEAT_REPORTER_HIGH_CONFIDENCE"
 
 
-class PatternType(str, Enum):
+class PatternType(StrEnum):
     SAME_ENTITY_MULTIPLE_REPORTS = "SAME_ENTITY_MULTIPLE_REPORTS"
     INFRASTRUCTURE_OVERLAP = "INFRASTRUCTURE_OVERLAP"
     TEMPORAL_CLUSTERING = "TEMPORAL_CLUSTERING"

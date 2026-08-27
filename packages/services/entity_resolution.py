@@ -18,7 +18,7 @@ from __future__ import annotations
 import ipaddress
 import re
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
@@ -286,7 +286,7 @@ def normalize_value(entity_type: str, raw_value: str, **kwargs) -> str:
 # ═══════════════════════════════════════════════
 
 
-class MatchType(str, Enum):
+class MatchType(StrEnum):
     """How two entities were matched."""
 
     EXACT = "exact"  # Normalized values are identical

@@ -1,0 +1,420 @@
+# GFIN Kafka Topic CRDs — Strimzi Infrastructure as Code
+# Deploy with: kubectl apply -f kafka-topics.yaml -n gfin
+#
+# Status: REQUIRES EXTERNAL INFRASTRUCTURE
+# Requires: Strimzi Kafka operator deployed in namespace 'gfin'
+
+---
+# Entity Events — 12 partitions, 7 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-entity
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 12
+  replicas: 3
+  config:
+    retention.ms: 604800000
+    min.insync.replicas: 2
+    compression.type: lz4
+    cleanup.policy: delete
+
+---
+# Report Events — 6 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-report
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 6
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+    compression.type: lz4
+
+---
+# Evidence Events — 6 partitions, 90 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-evidence
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 6
+  replicas: 3
+  config:
+    retention.ms: 7776000000
+    min.insync.replicas: 2
+    compression.type: lz4
+
+---
+# Alert Events — 6 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-alert
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 6
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Discovery Events — 12 partitions, 7 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-discovery
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 12
+  replicas: 3
+  config:
+    retention.ms: 604800000
+    min.insync.replicas: 2
+    compression.type: lz4
+
+---
+# Audit Events — 6 partitions, 365 day retention (compliance)
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-audit
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 6
+  replicas: 3
+  config:
+    retention.ms: 31536000000
+    min.insync.replicas: 2
+    compression.type: lz4
+
+---
+# Federation Events — 3 partitions, 90 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-events-federation
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 7776000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Entity — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-entity
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Report — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-report
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Evidence — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-evidence
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Alert — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-alert
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Discovery — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-discovery
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Audit — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-audit
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# Dead Letter Queue: Federation — 3 partitions, 30 day retention
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaTopic
+metadata:
+  name: gfin-dlq-federation
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  partitions: 3
+  replicas: 3
+  config:
+    retention.ms: 2592000000
+    min.insync.replicas: 2
+
+---
+# KafkaUser: gfin-entity-resolver
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-entity-resolver
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Read
+        topic: gfin-events-entity
+        group: gfin-entity-resolver
+      - operation: Write
+        topic: gfin-dlq-entity
+
+---
+# KafkaUser: gfin-alert-engine
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-alert-engine
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Read
+        topic: gfin-events-entity
+        group: gfin-alert-engine
+      - operation: Read
+        topic: gfin-events-report
+        group: gfin-alert-engine
+      - operation: Write
+        topic: gfin-events-alert
+      - operation: Write
+        topic: gfin-dlq-alert
+
+---
+# KafkaUser: gfin-discovery-worker
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-discovery-worker
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Read
+        topic: gfin-events-discovery
+        group: gfin-discovery-worker
+      - operation: Write
+        topic: gfin-events-entity
+      - operation: Write
+        topic: gfin-dlq-discovery
+
+---
+# KafkaUser: gfin-audit-writer
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-audit-writer
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Read
+        topic: gfin-events-audit
+        group: gfin-audit-writer
+      - operation: Write
+        topic: gfin-events-audit
+      - operation: Write
+        topic: gfin-dlq-audit
+
+---
+# KafkaUser: gfin-federation-sync
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-federation-sync
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Read
+        topic: gfin-events-federation
+        group: gfin-federation-sync
+      - operation: Write
+        topic: gfin-events-federation
+      - operation: Write
+        topic: gfin-dlq-federation
+
+---
+# KafkaUser: gfin-app (application publisher)
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-app
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Write
+        topic: gfin-events-entity
+      - operation: Write
+        topic: gfin-events-report
+      - operation: Write
+        topic: gfin-events-evidence
+      - operation: Write
+        topic: gfin-events-alert
+      - operation: Write
+        topic: gfin-events-discovery
+      - operation: Write
+        topic: gfin-events-audit
+      - operation: Write
+        topic: gfin-events-federation
+
+---
+# KafkaUser: gfin-monitoring (describe only)
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: gfin-monitoring
+  namespace: gfin
+  labels:
+    strimzi.io/cluster: gfin-kafka
+    app: gfin
+spec:
+  authentication:
+    type: scram-sha-512
+  authorization:
+    type: simple
+    acls:
+      - operation: Describe
+        topic: "*"

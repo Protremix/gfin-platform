@@ -1,0 +1,58 @@
+{
+  "task": "TASK 13 \u2014 Phone / Email Intelligence",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "Numverify",
+      "auth": "API_KEY (free 100/mo)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Phone validation, carrier, line type, country"
+    },
+    {
+      "provider": "Twilio Lookup",
+      "auth": "API_KEY (paid)",
+      "status": "NOT_IMPLEMENTED",
+      "coverage": "Phone number lookup, carrier, line type",
+      "cost": "$0.005/lookup"
+    },
+    {
+      "provider": "Vonage Number Insight",
+      "auth": "API_KEY (paid)",
+      "status": "NOT_IMPLEMENTED",
+      "coverage": "Phone number intelligence"
+    },
+    {
+      "provider": "Telesign",
+      "auth": "API_KEY (paid)",
+      "status": "NOT_IMPLEMENTED",
+      "coverage": "Phone risk assessment"
+    },
+    {
+      "provider": "HaveIBeenPwned",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Email breach exposure"
+    },
+    {
+      "provider": "Hunter",
+      "auth": "API_KEY (freemium)",
+      "status": "NOT_IMPLEMENTED",
+      "coverage": "Email verification, domain email search"
+    },
+    {
+      "provider": "IPQualityScore",
+      "auth": "API_KEY (freemium)",
+      "status": "NOT_IMPLEMENTED",
+      "coverage": "Phone/email risk scoring"
+    }
+  ],
+  "rules": [
+    "Never access private mailboxes",
+    "Never attempt account takeover or OTP interception",
+    "Public/provider metadata only: country, carrier, line type, business association, risk"
+  ],
+  "summary": {
+    "implemented": 2,
+    "not_implemented": 5
+  }
+}

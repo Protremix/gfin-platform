@@ -10,7 +10,7 @@ Layer B: Kafka federation streaming, mTLS, cross-DC replication (REQUIRES EXTERN
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -18,13 +18,13 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class NodeStatus(str, Enum):
+class NodeStatus(StrEnum):
     ONLINE = "ONLINE"
     OFFLINE = "OFFLINE"
     DEGRADED = "DEGRADED"
 
 
-class MessageType(str, Enum):
+class MessageType(StrEnum):
     MATCH = "MATCH"
     ALERT = "ALERT"
     REQUEST = "REQUEST"
@@ -33,7 +33,7 @@ class MessageType(str, Enum):
     DISCOVERY = "DISCOVERY"
 
 
-class DeliveryStatus(str, Enum):
+class DeliveryStatus(StrEnum):
     PENDING = "PENDING"
     DELIVERED = "DELIVERED"
     FAILED = "FAILED"

@@ -1,0 +1,62 @@
+{
+  "ips": [
+    {
+      "ip": "76.223.54.146",
+      "domain": "smartstar.co.uk",
+      "asn": "Amazon (Global Forwarding)",
+      "hosting": "Parked domain forwarding"
+    },
+    {
+      "ip": "13.248.169.48",
+      "domain": "smartstar.co.uk",
+      "asn": "Amazon (Global Forwarding)",
+      "hosting": "Parked domain forwarding"
+    },
+    {
+      "ip": "72.60.233.61",
+      "domain": "smartstar.uk",
+      "asn": "Hostinger",
+      "hosting": "Web hosting/parking"
+    },
+    {
+      "ip": "3.33.224.147",
+      "domain": "smartjobs.co.uk",
+      "asn": "Amazon/Aftermarket",
+      "hosting": "Domain marketplace"
+    },
+    {
+      "ip": "49.212.180.142",
+      "domain": "smartstartechnology.com",
+      "asn": "Sakura Internet (Japan)",
+      "hosting": "Japanese hosting"
+    },
+    {
+      "ip": "35.190.29.89",
+      "domain": "smartjobs.io + smartjobs.co.nz",
+      "asn": "Google Cloud (AS396982)",
+      "hosting": "Google Cloud/Firebase (NZ entity)"
+    },
+    {
+      "ip": "43.245.53.194",
+      "domain": "smartstar.co.nz",
+      "asn": "Dreamscape/Freeparking (AS38719)",
+      "hosting": "NZ domain hosting"
+    },
+    {
+      "ip": "8.218.170.242",
+      "domain": "smartstar.sg",
+      "asn": "Alibaba Cloud (AS45102)",
+      "hosting": "Alibaba Cloud (SG entity)"
+    }
+  ],
+  "certificate_transparency": {
+    "source": "crt.sh",
+    "status": "502_UNAVAILABLE",
+    "queries": 5,
+    "result": "NO_DATA (service unavailable)"
+  },
+  "subdomains": "NOT_CHECKED \u2014 no UK entity domains to enumerate",
+  "dnssec": "NOT_CHECKED \u2014 no UK entity domains",
+  "tls": "NOT_CHECKED \u2014 no UK entity domains to test TLS",
+  "note": "No infrastructure belongs to or was operated by the UK entity. All discovered infrastructure belongs to NZ entity (Google Cloud), SG entity (Alibaba Cloud), or parked domains (Amazon/Hostinger/Aftermarket)."
+}

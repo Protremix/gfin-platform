@@ -1,0 +1,109 @@
+{
+  "timestamp": "2026-08-26T14:02:10.992585+00:00",
+  "controls": [
+    {
+      "control": "Authentication",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Authorization (RBAC+ABAC)",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Data Classification (5 levels)",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Encryption in Transit (TLS 1.3)",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Encryption at Rest",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Tenant Isolation",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Audit Trail",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Rate Limiting",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Input Validation",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "SAST Scan",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Secret Scanning",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Dependency Analysis",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Threat Model (T1-T10)",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Retention and Deletion",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Access Control Matrix",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "Prompt Injection Defense",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "AI Data Leakage Prevention",
+      "result": "PASS",
+      "risk": "LOW"
+    },
+    {
+      "control": "External Penetration Test",
+      "result": "NOT TESTED",
+      "risk": "MEDIUM"
+    },
+    {
+      "control": "DAST Scan",
+      "result": "NOT TESTED",
+      "risk": "MEDIUM"
+    },
+    {
+      "control": "Production Vault (sealed)",
+      "result": "NOT TESTED",
+      "risk": "MEDIUM"
+    }
+  ],
+  "total": 20,
+  "pass": 17,
+  "not_tested": 3,
+  "fail": 0
+}

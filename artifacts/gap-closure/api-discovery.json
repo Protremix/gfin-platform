@@ -1,0 +1,153 @@
+{
+  "total_apis_discovered": 18,
+  "apis": [
+    {
+      "api": "BAILII Search API",
+      "provider": "BAILII",
+      "auth": "NONE",
+      "exists": true,
+      "connector": "YES",
+      "tested": "LIVE"
+    },
+    {
+      "api": "UK Judiciary Search",
+      "provider": "UK Judiciary",
+      "auth": "NONE",
+      "exists": true,
+      "connector": "YES",
+      "tested": "LIVE"
+    },
+    {
+      "api": "GitHub Users/Repos API",
+      "provider": "GitHub",
+      "auth": "OPTIONAL",
+      "exists": true,
+      "connector": "YES",
+      "tested": "LIVE"
+    },
+    {
+      "api": "Google Safe Browsing API v4",
+      "provider": "Google",
+      "auth": "API_KEY",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "VirusTotal API v3",
+      "provider": "VirusTotal",
+      "auth": "API_KEY",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "AbuseIPDB API v2",
+      "provider": "AbuseIPDB",
+      "auth": "API_KEY",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "Nominatim Search API",
+      "provider": "OpenStreetMap",
+      "auth": "NONE",
+      "exists": true,
+      "connector": "YES",
+      "tested": "LIVE"
+    },
+    {
+      "api": "Numverify API",
+      "provider": "apilayer",
+      "auth": "API_KEY",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "Companies House API",
+      "provider": "UK Government",
+      "auth": "BASIC_AUTH",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "Etherscan API",
+      "provider": "Etherscan",
+      "auth": "OPTIONAL",
+      "exists": true,
+      "connector": "YES",
+      "tested": "LIVE"
+    },
+    {
+      "api": "Blockchain.info API",
+      "provider": "Blockchain.com",
+      "auth": "NONE",
+      "exists": true,
+      "connector": "YES",
+      "tested": "LIVE"
+    },
+    {
+      "api": "Google CT Logs API",
+      "provider": "Google",
+      "auth": "NONE",
+      "exists": true,
+      "connector": "YES",
+      "tested": "UNAVAILABLE"
+    },
+    {
+      "api": "SecurityTrails API",
+      "provider": "SecurityTrails",
+      "auth": "API_KEY",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "OpenSanctions API",
+      "provider": "OpenSanctions",
+      "auth": "API_KEY",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "OpenCorporates API",
+      "provider": "OpenCorporates",
+      "auth": "API_TOKEN",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "Facebook Ad Library API",
+      "provider": "Meta",
+      "auth": "OAUTH",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    },
+    {
+      "api": "GFIN Entity Resolver",
+      "provider": "Internal",
+      "auth": "NONE",
+      "exists": true,
+      "connector": "YES",
+      "tested": "UNIT"
+    },
+    {
+      "api": "Payment Intelligence",
+      "provider": "Multiple",
+      "auth": "VARIES",
+      "exists": true,
+      "connector": "YES",
+      "tested": "AUTH_REQUIRED"
+    }
+  ],
+  "live_tested": 6,
+  "auth_required_tested": 10,
+  "unavailable": 1,
+  "unit_tested": 1
+}

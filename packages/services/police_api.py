@@ -10,7 +10,7 @@ Layer B: FastAPI HTTP endpoints with mTLS, OIDC/OAuth2 (REQUIRES EXTERNAL INFRAS
 
 import contextlib
 from datetime import UTC, datetime, timedelta
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -18,19 +18,19 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class PoliceRole(str, Enum):
+class PoliceRole(StrEnum):
     POLICE_OFFICER = "POLICE_OFFICER"
     POLICE_SUPERVISOR = "POLICE_SUPERVISOR"
     POLICE_ADMIN = "POLICE_ADMIN"
 
 
-class AccessLevel(str, Enum):
+class AccessLevel(StrEnum):
     MATCH_ONLY = "MATCH_ONLY"
     REQUEST_REQUIRED = "REQUEST_REQUIRED"
     FULL_ACCESS = "FULL_ACCESS"
 
 
-class RequestStatus(str, Enum):
+class RequestStatus(StrEnum):
     PENDING = "PENDING"
     REVIEW = "REVIEW"
     APPROVED = "APPROVED"
@@ -39,7 +39,7 @@ class RequestStatus(str, Enum):
     CLOSED = "CLOSED"
 
 
-class EndpointName(str, Enum):
+class EndpointName(StrEnum):
     MATCH = "match"
     OBSERVATION = "observation"
     ENTITY_INTEL = "entity_intel"
@@ -402,10 +402,7 @@ class PoliceAuth:
             return False
 
         min_role = ENDPOINT_MIN_ROLE.get(endpoint, PoliceRole.POLICE_ADMIN.value)
-        if ROLE_LEVEL.get(session.role, 0) < ROLE_LEVEL.get(min_role, 0):
-            return False
-
-        return True
+        return not ROLE_LEVEL.get(session.role, 0) < ROLE_LEVEL.get(min_role, 0)
 
     def get_session(self, session_id: str) -> PoliceSession | None:
         return self._sessions.get(session_id)

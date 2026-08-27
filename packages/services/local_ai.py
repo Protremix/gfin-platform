@@ -12,7 +12,7 @@ import hashlib
 import math
 import struct
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -20,20 +20,20 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class LocalAIModel(str, Enum):
+class LocalAIModel(StrEnum):
     CLASSIFIER = "local-classifier"
     EMBEDDING = "local-embedding"
     OCR = "local-ocr"
     LANGUAGE = "local-language"
 
 
-class ModelHealth(str, Enum):
+class ModelHealth(StrEnum):
     HEALTHY = "HEALTHY"
     DEGRADED = "DEGRADED"
     UNAVAILABLE = "UNAVAILABLE"
 
 
-class LanguageCode(str, Enum):
+class LanguageCode(StrEnum):
     EN = "en"
     ES = "es"
     FR = "fr"

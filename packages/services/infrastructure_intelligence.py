@@ -18,7 +18,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
@@ -31,7 +31,7 @@ from schemas.base import Provenance, utc_now
 # ═══════════════════════════════════════════════
 
 
-class DNSRecordType(str, Enum):
+class DNSRecordType(StrEnum):
     A = "A"
     AAAA = "AAAA"
     MX = "MX"
@@ -205,7 +205,7 @@ class TechnologyFingerprint(BaseModel):
 # ═══════════════════════════════════════════════
 
 
-class InfraRelationType(str, Enum):
+class InfraRelationType(StrEnum):
     """Typed infrastructure relationships.
 
     Per Luna: Model IP, ASN, CDN, origin, hosting, ownership as DISTINCT typed relationships.

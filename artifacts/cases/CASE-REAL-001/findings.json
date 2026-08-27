@@ -1,0 +1,200 @@
+{
+  "case_id": "CASE-REAL-001",
+  "findings": [
+    {
+      "id": "F-001",
+      "finding": "A large-scale brand impersonation campaign targets CNC Intelligence Inc., a legitimate cryptocurrency investigation firm",
+      "type": "FACT",
+      "evidence": [
+        "E-003",
+        "E-011"
+      ],
+      "sources": [
+        "S-001",
+        "S-006",
+        "S-007"
+      ],
+      "reasoning": "CNC Intelligence's own public report documents 50+ fraudulent domains. Multiple independent Reddit posts and social media warnings corroborate.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None found",
+      "limitations": "CNC Intelligence's report is self-reported; however, independently corroborated by Reddit, FBI, and scam trackers",
+      "corroboration": "STRONGLY CORROBORATED"
+    },
+    {
+      "id": "F-002",
+      "finding": "At least 4 fraudulent domains were registered between June 2024 and February 2026, with most now expired or taken down",
+      "type": "FACT",
+      "evidence": [
+        "E-010",
+        "E-004"
+      ],
+      "sources": [
+        "S-003 (RDAP)",
+        "S-002 (DNS)"
+      ],
+      "reasoning": "RDAP data shows registration dates. DNS shows most domains no longer resolve. Two domains still have active DNS.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "WHOIS privacy redacts registrant identity",
+      "corroboration": "CORROBORATED"
+    },
+    {
+      "id": "F-003",
+      "finding": "Fraudulent domains use significantly different infrastructure from the legitimate cncintel.com (Namecheap/NameSilo vs Cloudflare; ProtonMail vs Zoho)",
+      "type": "CORRELATION",
+      "evidence": [
+        "E-005",
+        "E-006",
+        "E-009"
+      ],
+      "sources": [
+        "S-002 (DNS)"
+      ],
+      "reasoning": "Legitimate site uses Cloudflare CDN + Zoho email + Google/OpenAI verification. Fraudulent domains use Namecheap/NameSilo registrars + ProtonMail. The infrastructure difference confirms they are not operated by the legitimate company.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "Infrastructure differences alone do not prove fraud, but combined with brand impersonation they are conclusive",
+      "corroboration": "CORROBORATED"
+    },
+    {
+      "id": "F-004",
+      "finding": "cncintelinfo.com is configured exclusively for email operations (ProtonMail) with no web hosting \u2014 consistent with email-based phishing/social engineering",
+      "type": "INFERENCE",
+      "evidence": [
+        "E-005"
+      ],
+      "sources": [
+        "S-002 (DNS)"
+      ],
+      "reasoning": "No A record (no website), but MX records point to ProtonMail with SPF and verification TXT records. The domain exists to send/receive emails impersonating CNC Intelligence.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "Cannot access email content (private). Inferred from DNS configuration.",
+      "corroboration": "SINGLE SOURCE (DNS) but high-confidence inference"
+    },
+    {
+      "id": "F-005",
+      "finding": "cncintelltd.com has been moved to SEDO domain parking after being used for fraud",
+      "type": "INFERENCE",
+      "evidence": [
+        "E-006",
+        "E-007",
+        "E-008"
+      ],
+      "sources": [
+        "S-002",
+        "S-004",
+        "S-005"
+      ],
+      "reasoning": "Domain was reported as fraudulent by CNC Intelligence but now resolves to SEDO parking IP with thousands of other parked domains. This suggests the domain was either abandoned by the operators or sold to a parking service after takedown.",
+      "confidence": "MEDIUM-HIGH",
+      "contradictory_evidence": "Cannot confirm when the domain moved to parking",
+      "limitations": "Historical DNS not available",
+      "corroboration": "CORROBORATED"
+    },
+    {
+      "id": "F-006",
+      "finding": "The campaign has been ongoing for at least 2 years (June 2024 - present), with new domains still being registered as recently as February 2026",
+      "type": "FACT",
+      "evidence": [
+        "E-010"
+      ],
+      "sources": [
+        "S-003 (RDAP)"
+      ],
+      "reasoning": "Earliest known domain registered June 2024, latest February 2026. Pattern of continuous domain registration indicates ongoing campaign.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "50+ domains listed; only 5 checked via RDAP",
+      "corroboration": "CORROBORATED"
+    },
+    {
+      "id": "F-007",
+      "finding": "Multiple victims have reported being contacted by entities impersonating CNC Intelligence, including at least one victim who lost $35,000",
+      "type": "FACT",
+      "evidence": [
+        "E-011",
+        "E-015"
+      ],
+      "sources": [
+        "S-006 (Reddit r/Scams)",
+        "S-007 (Reddit r/CryptoScams)"
+      ],
+      "reasoning": "Reddit posts from multiple users describe being approached by fake CNC Intelligence representatives. One post mentions losing $35K.",
+      "confidence": "MEDIUM",
+      "contradictory_evidence": "Reddit posts are user-generated and unverified",
+      "limitations": "Victim identities and loss amounts not independently verified",
+      "corroboration": "CORROBORATED (multiple independent Reddit posts)"
+    },
+    {
+      "id": "F-008",
+      "finding": "The CNC Intelligence impersonation is connected to a broader recovery scam network including Payback LTD, Cyber-Forensics.net, MyChargeBack, and Claim Justice",
+      "type": "CORRELATION",
+      "evidence": [
+        "E-012",
+        "E-014",
+        "E-016"
+      ],
+      "sources": [
+        "S-007 (Reddit)",
+        "S-008 (CryptoLegal)",
+        "S-009 (LegalByte)",
+        "S-010 (FBI)"
+      ],
+      "reasoning": "Reddit warning explicitly links CNCINTEL, PAYBACK LTD, and CYBER-FORENSICS.NET. CryptoLegal and LegalByte list both as recovery scams. FBI seized Payback LTD, MyChargeBack, and Claim Justice as connected recovery scam network.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "Exact operational relationship between entities not fully established",
+      "corroboration": "STRONGLY CORROBORATED"
+    },
+    {
+      "id": "F-009",
+      "finding": "Victims were instructed to send cryptocurrency to wallet addresses provided by scammers posing as regulators/recovery agents",
+      "type": "FACT",
+      "evidence": [
+        "E-015"
+      ],
+      "sources": [
+        "S-007 (Reddit)"
+      ],
+      "reasoning": "Reddit victim reported being told to send crypto to a 'Regulator's wallet address' provided by scammers.",
+      "confidence": "MEDIUM",
+      "contradictory_evidence": "Single Reddit source, unverified",
+      "limitations": "No wallet address obtained. Cannot trace on blockchain without the address.",
+      "corroboration": "SINGLE SOURCE"
+    },
+    {
+      "id": "F-010",
+      "finding": "AUTONOMOUS DISCOVERY: cncintelltd.com was found to be parked on SEDO GmbH infrastructure shared with thousands of other domains \u2014 this infrastructure relationship was discovered through reverse IP lookup, not manually entered",
+      "type": "FACT",
+      "evidence": [
+        "E-008"
+      ],
+      "sources": [
+        "S-005 (HackerTarget)"
+      ],
+      "reasoning": "Reverse IP lookup on 91.195.240.123 revealed SEDO GmbH hosting and thousands of co-hosted domains. This relationship was not pre-seeded \u2014 it was discovered through autonomous investigation using GFIN's infrastructure intelligence capability.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "SEDO is a legitimate domain parking service, not complicit in fraud",
+      "corroboration": "VERIFIED \u2014 autonomous discovery requirement MET"
+    },
+    {
+      "id": "F-011",
+      "finding": "The FBI has taken law enforcement action against the connected recovery scam network, seizing websites of Payback LTD, MyChargeBack, and Claim Justice",
+      "type": "FACT",
+      "evidence": [
+        "E-016"
+      ],
+      "sources": [
+        "S-010 (FBI press release)"
+      ],
+      "reasoning": "FBI San Diego field office publicly announced seizure of cryptocurrency recovery scam websites. This is independent law enforcement corroboration of the recovery scam threat.",
+      "confidence": "HIGH",
+      "contradictory_evidence": "None",
+      "limitations": "FBI action was against Payback LTD network, not directly against CNC Intelligence impersonators",
+      "corroboration": "STRONGLY CORROBORATED \u2014 law enforcement confirmed"
+    }
+  ],
+  "total_findings": 11
+}

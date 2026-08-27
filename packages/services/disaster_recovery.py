@@ -8,33 +8,33 @@ Layer B: Real backup infrastructure, multi-region failover (REQUIRES EXTERNAL IN
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class BackupType(str, Enum):
+class BackupType(StrEnum):
     FULL = "FULL"
     INCREMENTAL = "INCREMENTAL"
     SNAPSHOT = "SNAPSHOT"
 
 
-class BackupStatus(str, Enum):
+class BackupStatus(StrEnum):
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
 
 
-class RecoveryStatus(str, Enum):
+class RecoveryStatus(StrEnum):
     PENDING = "PENDING"
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
 
 
-class FailoverStatus(str, Enum):
+class FailoverStatus(StrEnum):
     PRIMARY = "PRIMARY"
     FAILOVER = "FAILOVER"
     FAILED_BACK = "FAILED_BACK"

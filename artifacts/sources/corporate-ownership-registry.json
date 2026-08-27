@@ -1,0 +1,84 @@
+{
+  "task": "TASK 04 \u2014 Corporate / Ownership",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "Companies House UK",
+      "auth": "BASIC_AUTH (free API key)",
+      "connector": "CompaniesHouseConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Companies, officers, filings, PSC, insolvency, gazette notices"
+    },
+    {
+      "provider": "OpenCorporates",
+      "auth": "API_TOKEN (free)",
+      "connector": "OpenCorporatesConnector",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Global companies (140+ jurisdictions), officers, addresses"
+    },
+    {
+      "provider": "Open Ownership/BODS",
+      "auth": "UNKNOWN (403)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Beneficial ownership data",
+      "alternative": "Companies House PSC endpoint provides beneficial ownership for UK"
+    },
+    {
+      "provider": "SEC EDGAR",
+      "auth": "NONE",
+      "connector": "SECEdgarConnector",
+      "status": "IMPLEMENTED",
+      "coverage": "US public companies, filings, issuer data"
+    },
+    {
+      "provider": "EU BRIS",
+      "auth": "UNKNOWN",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "EU company registers",
+      "reason": "No public API"
+    },
+    {
+      "provider": "FCA Register",
+      "auth": "NONE (403 Forbidden)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "FCA-regulated firms",
+      "alternative": "Web search at register.fca.org.uk"
+    },
+    {
+      "provider": "Nominet WHOIS",
+      "auth": "NONE (403 Forbidden)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "ALTERNATIVE_FOUND",
+      "alternative": "RDAP (rdap.org) provides equivalent .uk domain data \u2014 already implemented and working"
+    },
+    {
+      "provider": "ICIJ Offshore Leaks",
+      "auth": "NONE",
+      "connector": "ICIJConnector",
+      "status": "IMPLEMENTED",
+      "coverage": "810K+ offshore entities, people, intermediaries, addresses"
+    },
+    {
+      "provider": "Dun & Bradstreet",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Business identity, hierarchy, DUNS numbers"
+    }
+  ],
+  "retest_results": {
+    "Open Ownership": "RETESTED \u2014 still 403. Alternative: Companies House PSC endpoint",
+    "Nominet": "RETESTED \u2014 still 403. Alternative: RDAP working",
+    "FCA Register": "RETESTED \u2014 still 403. Web-only access",
+    "UK Insolvency": "RETESTED \u2014 migrated to Companies House API"
+  },
+  "summary": {
+    "implemented": 4,
+    "auth_required": 2,
+    "blocked": 3,
+    "alternative_found": 1
+  }
+}

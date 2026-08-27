@@ -1,0 +1,2073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>GFIN Fraud Intelligence — Police Mobile Dashboard</title>
+  
+  <!-- FontAwesome 6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-main: #0f0f1e;
+      --card-bg: #1a1a2e;
+      --card-hover: #222242;
+      --card-header: #141428;
+      --accent-main: #0f3460;
+      --accent-hover: #164a88;
+      --accent-cyan: #00d2ff;
+      --text-main: #eeeeee;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --warning: #e94560;
+      --warning-bg: rgba(233, 69, 96, 0.15);
+      --success: #16e0c3;
+      --success-bg: rgba(22, 224, 195, 0.15);
+      --info: #3b82f6;
+      --info-bg: rgba(59, 130, 246, 0.15);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 210, 255, 0.3);
+      --sidebar-width: 260px;
+      --bottom-nav-height: 64px;
+      --header-height: 60px;
+      --tap-target: 44px;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-main);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a2a4a;
+      border-radius: 3px;
+    }
+
+    /* Touch Controls - Minimum 44px Tap Target */
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text-main);
+      border: none;
+      outline: none;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: var(--tap-target);
+      min-width: var(--tap-target);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      background: var(--accent-main);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      user-select: none;
+      text-decoration: none;
+    }
+    .btn:hover, .btn:active {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+    }
+    .btn-warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+    }
+    .btn-warning:hover {
+      background: var(--warning);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(233, 69, 96, 0.4);
+    }
+    .btn-success {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    .btn-success:hover {
+      background: var(--success);
+      color: #0f0f1e;
+      box-shadow: 0 0 12px rgba(22, 224, 195, 0.4);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--text-muted);
+    }
+    .btn-icon {
+      width: var(--tap-target);
+      height: var(--tap-target);
+      padding: 0;
+      border-radius: 50%;
+    }
+    .btn-sm {
+      min-height: 36px;
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+    }
+    .form-control {
+      width: 100%;
+      min-height: var(--tap-target);
+      padding: 10px 14px;
+      background: #121225;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      transition: border-color 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 2px rgba(0, 210, 255, 0.2);
+    }
+    select.form-control {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%94a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+
+    /* LOGIN VIEW OVERLAY */
+    #loginView {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at top right, #1a1a3e 0%, #0f0f1e 100%);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px 24px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      text-align: center;
+    }
+    .login-logo-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent-main), var(--accent-cyan));
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      color: #fff;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 20px rgba(0, 210, 255, 0.25);
+    }
+    .login-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+    .login-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .badge-classified {
+      display: inline-block;
+      padding: 3px 10px;
+      background: var(--warning-bg);
+      color: var(--warning);
+      border: 1px solid var(--warning);
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    /* MAIN APP LAYOUT */
+    #appContainer {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      padding-bottom: var(--bottom-nav-height);
+    }
+    @media (min-width: 1024px) {
+      #appContainer {
+        padding-bottom: 0;
+        padding-left: var(--sidebar-width);
+      }
+    }
+
+    /* TOP HEADER BAR */
+    .top-header {
+      height: var(--header-height);
+      background: #121225;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+    }
+    .header-brand-badge {
+      background: var(--accent-main);
+      color: var(--accent-cyan);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 800;
+      border: 1px solid rgba(0, 210, 255, 0.3);
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--success);
+      background: var(--success-bg);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(22, 224, 195, 0.3);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.2); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    /* DESKTOP SIDEBAR */
+    .sidebar {
+      display: none;
+    }
+    @media (min-width: 1024px) {
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        width: var(--sidebar-width);
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: #121225;
+        border-right: 1px solid var(--border-color);
+        z-index: 950;
+      }
+      .sidebar-header {
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        border-bottom: 1px solid var(--border-color);
+        font-weight: 800;
+        font-size: 16px;
+        color: #fff;
+        gap: 12px;
+      }
+      .sidebar-menu {
+        padding: 20px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex: 1;
+      }
+      .sidebar-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 8px;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        min-height: 44px;
+      }
+      .sidebar-item:hover {
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-main);
+      }
+      .sidebar-item.active {
+        background: var(--accent-main);
+        color: #ffffff;
+        border-left: 3px solid var(--accent-cyan);
+      }
+      .sidebar-user {
+        padding: 16px;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .user-avatar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--accent-main);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: var(--accent-cyan);
+        border: 1px solid var(--accent-cyan);
+      }
+      .user-info {
+        flex: 1;
+        overflow: hidden;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .user-role {
+        font-size: 11px;
+        color: var(--text-muted);
+      }
+    }
+
+    /* MOBILE BOTTOM NAV */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: #121225;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 1000;
+    }
+    @media (min-width: 1024px) {
+      .bottom-nav {
+        display: none;
+      }
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 11px;
+      font-weight: 600;
+      min-width: var(--tap-target);
+      min-height: var(--tap-target);
+      gap: 3px;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .nav-item i {
+      font-size: 18px;
+    }
+    .nav-item.active {
+      color: var(--accent-cyan);
+    }
+
+    /* MAIN VIEW CONTENT */
+    .main-content {
+      padding: 16px;
+      flex: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .view-section {
+      display: none;
+    }
+    .view-section.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* OVERVIEW STATS GRID */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 768px) {
+      .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    @media (min-width: 1200px) {
+      .stats-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-main);
+    }
+    .stat-card.critical::before { background: var(--warning); }
+    .stat-card.active::before { background: var(--accent-cyan); }
+    .stat-card.resolved::before { background: var(--success); }
+
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .stat-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .stat-subtext {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* CHARTS CONTAINER */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (min-width: 1024px) {
+      .charts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .chart-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .chart-container {
+      position: relative;
+      height: 240px;
+      width: 100%;
+    }
+
+    /* SEARCH & FILTERS BAR */
+    .filter-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    @media (min-width: 768px) {
+      .filter-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .search-box {
+      position: relative;
+      flex: 1;
+    }
+    .search-box i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+    }
+    .search-box input {
+      padding-left: 38px;
+    }
+
+    .filter-selects {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    @media (min-width: 768px) {
+      .filter-selects {
+        display: flex;
+        gap: 10px;
+      }
+      .filter-selects select {
+        width: 140px;
+      }
+    }
+
+    /* CASES LIST & PULL TO REFRESH */
+    .cases-container {
+      position: relative;
+      min-height: 200px;
+    }
+    .pull-to-refresh-indicator {
+      text-align: center;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(0, 210, 255, 0.05);
+      border: 1px dashed var(--accent-cyan);
+      border-radius: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cases-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .case-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      touch-action: pan-y;
+      transition: border-color 0.2s, background 0.2s;
+      user-select: none;
+    }
+    .case-card:hover {
+      border-color: rgba(0, 210, 255, 0.4);
+      background: var(--card-hover);
+    }
+    .case-card-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform 0.2s ease;
+    }
+
+    .case-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .case-ref {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .case-target {
+      font-size: 13px;
+      color: var(--accent-cyan);
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-critical { background: rgba(233, 69, 96, 0.2); color: #e94560; border: 1px solid #e94560; }
+    .badge-high { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid #f39c12; }
+    .badge-medium { background: rgba(59, 130, 246, 0.2); color: #3b82f6; border: 1px solid #3b82f6; }
+    .badge-low { background: rgba(22, 224, 195, 0.2); color: #16e0c3; border: 1px solid #16e0c3; }
+
+    .badge-active { background: rgba(22, 224, 195, 0.15); color: #16e0c3; border: 1px solid rgba(22, 224, 195, 0.3); }
+    .badge-escalated { background: rgba(233, 69, 96, 0.15); color: #e94560; border: 1px solid rgba(233, 69, 96, 0.3); }
+    .badge-resolved { background: rgba(100, 116, 139, 0.2); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3); }
+
+    .case-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border-color);
+      font-size: 12px;
+    }
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .metric-label {
+      font-size: 10px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    .metric-val {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* CASE DETAIL VIEW */
+    .detail-header {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .detail-nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      cursor: pointer;
+      margin-bottom: 12px;
+      font-size: 13px;
+    }
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    /* TABS */
+    .tabs-bar {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 16px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      padding: 10px 16px;
+      background: transparent;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      min-height: var(--tap-target);
+    }
+    .tab-btn.active {
+      color: var(--accent-cyan);
+      border-bottom-color: var(--accent-cyan);
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+
+    /* TIMELINE VIEW */
+    .timeline {
+      position: relative;
+      padding-left: 24px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent-main);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      border: 3px solid var(--bg-main);
+    }
+    .timeline-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+    .timeline-time {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .timeline-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* CRYPTO CARDS */
+    .crypto-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      .crypto-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .wallet-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .wallet-address {
+      font-family: monospace;
+      font-size: 12px;
+      background: #121225;
+      padding: 8px 12px;
+      border-radius: 6px;
+      word-break: break-all;
+      margin: 8px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid var(--border-color);
+    }
+
+    /* MAP CONTAINER */
+    .map-container {
+      background: #121225;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      height: 280px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .svg-map {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ROUTING MATRIX TABLE */
+    .routing-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .routing-table th, .routing-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .routing-table th {
+      color: var(--text-muted);
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* MODALS */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      z-index: 9990;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.active {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 500px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* TOASTS */
+    #toastContainer {
+      position: fixed;
+      top: 70px;
+      right: 16px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 320px;
+    }
+    .toast {
+      background: var(--card-bg);
+      border-left: 4px solid var(--accent-cyan);
+      padding: 12px 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s ease;
+      border-top: 1px solid var(--border-color);
+      border-right: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+    .toast.error { border-left-color: var(--warning); }
+    .toast.success { border-left-color: var(--success); }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN OVERLAY -->
+  <div id="loginView">
+    <div class="login-card">
+      <div class="login-logo-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div class="login-title">GFIN POLICE DISPATCH</div>
+      <div class="login-subtitle">Global Fraud Intelligence Network — Restricted Portal</div>
+      <div class="badge-classified">LAW ENFORCEMENT & INVESTIGATORS ONLY</div>
+      
+      <form id="loginForm" onsubmit="handleLogin(event)" style="margin-top: 24px;">
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label">Investigator Badge Email</label>
+          <input type="email" id="loginEmail" class="form-control" value="agent.vance@interpol.gfin.gov" required>
+        </div>
+        <div class="form-group" style="text-align: left;">
+          <label class="form-label">Authorization Token / Password</label>
+          <input type="password" id="loginPassword" class="form-control" value="••••••••••••" required>
+        </div>
+        <button type="submit" class="btn btn-warning" style="width: 100%; margin-top: 8px;">
+          <i class="fa-solid fa-key"></i> AUTHENTICATE & ACCESS SYSTEM
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN APP WRAPPER -->
+  <div id="appContainer">
+
+    <!-- HEADER BAR -->
+    <header class="top-header">
+      <div class="header-brand">
+        <i class="fa-solid fa-shield-cat" style="color: var(--accent-cyan); font-size: 20px;"></i>
+        <span>GFIN DISPATCH</span>
+        <span class="header-brand-badge">POLICE PORTAL</span>
+      </div>
+      <div class="header-actions">
+        <div class="connection-status">
+          <div class="status-dot"></div>
+          <span id="networkStatusText">LIVE GRID</span>
+        </div>
+        <button class="btn btn-outline btn-sm btn-icon" onclick="logout()" title="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <i class="fa-solid fa-shield-halved" style="color: var(--accent-cyan); font-size: 22px;"></i>
+        <span>GFIN PLATFORM</span>
+      </div>
+      <div class="sidebar-menu">
+        <a class="sidebar-item active" data-view="home" onclick="switchView('home')">
+          <i class="fa-solid fa-chart-line"></i> Overview
+        </a>
+        <a class="sidebar-item" data-view="cases" onclick="switchView('cases')">
+          <i class="fa-solid fa-folder-open"></i> Cases
+        </a>
+        <a class="sidebar-item" data-view="alerts" onclick="switchView('alerts')">
+          <i class="fa-solid fa-bell"></i> Alerts Feed
+        </a>
+        <a class="sidebar-item" data-view="stats" onclick="switchView('stats')">
+          <i class="fa-solid fa-chart-pie"></i> Analytics
+        </a>
+        <a class="sidebar-item" data-view="settings" onclick="switchView('settings')">
+          <i class="fa-solid fa-gear"></i> Settings
+        </a>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-avatar">AV</div>
+        <div class="user-info">
+          <div class="user-name">Det. Insp. Vance</div>
+          <div class="user-role">INTERPOL Cybercrime</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" data-view="home" onclick="switchView('home')">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </div>
+      <div class="nav-item" data-view="cases" onclick="switchView('cases')">
+        <i class="fa-solid fa-folder-open"></i>
+        <span>Cases</span>
+      </div>
+      <div class="nav-item" data-view="alerts" onclick="switchView('alerts')">
+        <i class="fa-solid fa-bell"></i>
+        <span>Alerts</span>
+      </div>
+      <div class="nav-item" data-view="stats" onclick="switchView('stats')">
+        <i class="fa-solid fa-chart-column"></i>
+        <span>Stats</span>
+      </div>
+      <div class="nav-item" data-view="settings" onclick="switchView('settings')">
+        <i class="fa-solid fa-gear"></i>
+        <span>Settings</span>
+      </div>
+    </nav>
+
+    <!-- MAIN VIEW AREA -->
+    <main class="main-content">
+
+      <!-- VIEW 1: OVERVIEW DASHBOARD -->
+      <section id="viewHome" class="view-section active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">TOTAL CASES <i class="fa-solid fa-folder"></i></div>
+            <div class="stat-value" id="statTotalCases">1,428</div>
+            <div class="stat-subtext">+18 past 24h</div>
+          </div>
+          <div class="stat-card active">
+            <div class="stat-header">ACTIVE <i class="fa-solid fa-spinner"></i></div>
+            <div class="stat-value" id="statActiveCases">342</div>
+            <div class="stat-subtext">Under investigation</div>
+          </div>
+          <div class="stat-card critical">
+            <div class="stat-header">CRITICAL RISK <i class="fa-solid fa-circle-exclamation"></i></div>
+            <div class="stat-value" id="statCriticalCases">89</div>
+            <div class="stat-subtext">Immediate threat</div>
+          </div>
+          <div class="stat-card resolved">
+            <div class="stat-header">RESOLVED <i class="fa-solid fa-circle-check"></i></div>
+            <div class="stat-value" id="statResolvedCases">997</div>
+            <div class="stat-subtext">Frozen / Charged</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">VICTIMS <i class="fa-solid fa-users"></i></div>
+            <div class="stat-value" id="statVictims">12,450</div>
+            <div class="stat-subtext">Global victims</div>
+          </div>
+          <div class="stat-card critical">
+            <div class="stat-header">TOTAL LOSSES <i class="fa-solid fa-dollar-sign"></i></div>
+            <div class="stat-value" id="statLosses">$48.2M</div>
+            <div class="stat-subtext">Tracked stolen funds</div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="card-title">
+              <span>Scam Vector Breakdown</span>
+              <i class="fa-solid fa-chart-pie" style="color: var(--accent-cyan);"></i>
+            </div>
+            <div class="chart-container">
+              <canvas id="scamTypeChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="card-title">
+              <span>Loss Trend (USD Millions)</span>
+              <i class="fa-solid fa-chart-line" style="color: var(--warning);"></i>
+            </div>
+            <div class="chart-container">
+              <canvas id="lossTrendChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- TELEGRAM MONITOR WIDGET -->
+        <div class="chart-card" style="margin-bottom: 20px;">
+          <div class="card-title">
+            <span>Telegram Intelligence Engine</span>
+            <span class="badge badge-active" id="tgBotBadge"><i class="fa-solid fa-robot"></i> ONLINE</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-top: 10px;">
+            <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <div style="font-size: 11px; color: var(--text-muted);">MONITORED BOT</div>
+              <div style="font-weight: 700; color: var(--accent-cyan);">@GFIN_ScamAlert_Bot</div>
+            </div>
+            <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <div style="font-size: 11px; color: var(--text-muted);">SCAM CHANNELS</div>
+              <div style="font-weight: 700; color: #fff;">184 Monitored Groups</div>
+            </div>
+            <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <div style="font-size: 11px; color: var(--text-muted);">LAST TELEGRAM SYNC</div>
+              <div style="font-weight: 700; color: var(--success);" id="tgLastSync">Just now</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 2: CASES LIST VIEW -->
+      <section id="viewCases" class="view-section">
+        <div class="filter-bar">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" class="form-control" placeholder="Search reference, target domain, or scam type..." onkeyup="applyFilters()">
+          </div>
+          <div class="filter-selects">
+            <select id="filterStatus" class="form-control" onchange="applyFilters()">
+              <option value="">All Statuses</option>
+              <option value="ACTIVE">Active</option>
+              <option value="ESCALATED">Escalated</option>
+              <option value="CRITICAL">Critical</option>
+              <option value="RESOLVED">Resolved</option>
+            </select>
+            <select id="filterRisk" class="form-control" onchange="applyFilters()">
+              <option value="">All Risk Levels</option>
+              <option value="CRITICAL">Critical (90+)</option>
+              <option value="HIGH">High (70-89)</option>
+              <option value="MEDIUM">Medium (&lt;70)</option>
+            </select>
+            <select id="filterScam" class="form-control" onchange="applyFilters()">
+              <option value="">All Types</option>
+              <option value="Investment Scam">Investment Scam</option>
+              <option value="Crypto Drainer">Crypto Drainer</option>
+              <option value="Pig Butchering">Pig Butchering</option>
+              <option value="Phishing">Phishing</option>
+            </select>
+            <select id="filterCountry" class="form-control" onchange="applyFilters()">
+              <option value="">All Countries</option>
+              <option value="UK">United Kingdom</option>
+              <option value="USA">United States</option>
+              <option value="UAE">UAE</option>
+              <option value="SG">Singapore</option>
+              <option value="DE">Germany</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cases-container" id="casesContainer">
+          <div class="pull-to-refresh-indicator" id="pullIndicator">
+            <i class="fa-solid fa-arrows-rotate fa-spin"></i> Release to pull latest fraud reports...
+          </div>
+          <div class="cases-list" id="casesList">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: CASE DETAIL VIEW -->
+      <section id="viewCaseDetail" class="view-section">
+        <div class="detail-nav-back" onclick="switchView('cases')">
+          <i class="fa-solid fa-arrow-left"></i> Return to Investigations List
+        </div>
+
+        <div class="detail-header" id="detailHeader">
+          <!-- Rendered by JS -->
+        </div>
+
+        <div class="tabs-bar">
+          <button class="tab-btn active" onclick="switchTab('overview')"><i class="fa-solid fa-circle-info"></i> Overview</button>
+          <button class="tab-btn" onclick="switchTab('evidence')"><i class="fa-solid fa-timeline"></i> Evidence Chain</button>
+          <button class="tab-btn" onclick="switchTab('crypto')"><i class="fa-solid fa-wallet"></i> Crypto Wallets</button>
+          <button class="tab-btn" onclick="switchTab('locations')"><i class="fa-solid fa-map-location-dot"></i> Locations & Map</button>
+          <button class="tab-btn" onclick="switchTab('routing')"><i class="fa-solid fa-paper-plane"></i> LEA Routing</button>
+        </div>
+
+        <!-- TAB OVERVIEW -->
+        <div id="tabOverview" class="tab-content active">
+          <div style="display: grid; grid-template-columns: 1fr; gap: 16px;">
+            <div class="chart-card">
+              <div class="card-title">Investigation Briefing</div>
+              <p id="detailDescription" style="color: var(--text-muted); line-height: 1.6;"></p>
+            </div>
+            <div class="chart-card">
+              <div class="card-title">Infrastructure Profile</div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+                <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="font-size: 11px; color: var(--text-dim);">PRIMARY TARGET URL</div>
+                  <div style="font-weight: 700; color: var(--accent-cyan); font-family: monospace;" id="detailTargetUrl">---</div>
+                </div>
+                <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="font-size: 11px; color: var(--text-dim);">SERVER IP ADDRESS</div>
+                  <div style="font-weight: 700; color: #fff; font-family: monospace;" id="detailServerIp">---</div>
+                </div>
+                <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+                  <div style="font-size: 11px; color: var(--text-dim);">REGISTRAR / HOST</div>
+                  <div style="font-weight: 700; color: #fff;" id="detailHost">---</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB EVIDENCE -->
+        <div id="tabEvidence" class="tab-content">
+          <div class="chart-card">
+            <div class="card-title" style="margin-bottom: 20px;">
+              <span>Cryptographic Evidence Timeline</span>
+              <button class="btn btn-sm btn-outline" onclick="openAddEvidenceModal()"><i class="fa-solid fa-plus"></i> Add Evidence</button>
+            </div>
+            <div class="timeline" id="evidenceTimeline">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB CRYPTO -->
+        <div id="tabCrypto" class="tab-content">
+          <div class="crypto-grid" id="cryptoWalletsList">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- TAB LOCATIONS -->
+        <div id="tabLocations" class="tab-content">
+          <div class="map-container" style="margin-bottom: 16px;">
+            <svg class="svg-map" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+              <rect width="800" height="400" fill="#0f0f1e"/>
+              <path d="M 150 120 Q 200 80 250 140 T 350 160 Q 400 200 380 280 T 250 350 Z" fill="#1e1e38" stroke="#2a2a4a"/>
+              <path d="M 420 80 Q 520 50 620 90 T 700 160 Q 750 250 650 320 T 480 280 Z" fill="#1e1e38" stroke="#2a2a4a"/>
+              <circle cx="220" cy="140" r="6" fill="#e94560">
+                <animate attributeName="r" values="4;12;4" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="1;0;1" dur="2s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="220" cy="140" r="4" fill="#e94560"/>
+              <circle cx="560" cy="120" r="6" fill="#00d2ff">
+                <animate attributeName="r" values="4;12;4" dur="2.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="1;0;1" dur="2.5s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="560" cy="120" r="4" fill="#00d2ff"/>
+              <circle cx="620" cy="200" r="6" fill="#16e0c3">
+                <animate attributeName="r" values="4;12;4" dur="1.8s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="1;0;1" dur="1.8s" repeatCount="indefinite"/>
+              </circle>
+              <circle cx="620" cy="200" r="4" fill="#16e0c3"/>
+            </svg>
+          </div>
+          <div class="chart-card">
+            <div class="card-title">Geographic Physical & Server Nodes</div>
+            <div id="locationsList" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB ROUTING -->
+        <div id="tabRouting" class="tab-content">
+          <div class="chart-card">
+            <div class="card-title">Law Enforcement Routing Matrix</div>
+            <div style="overflow-x: auto;">
+              <table class="routing-table">
+                <thead>
+                  <tr>
+                    <th>Agency / Jurisdiction</th>
+                    <th>Routing Status</th>
+                    <th>Dispatched Time</th>
+                    <th>ACK Ref</th>
+                  </tr>
+                </thead>
+                <tbody id="routingTableBody">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 4: ALERTS FEED -->
+      <section id="viewAlerts" class="view-section">
+        <div class="card-title" style="margin-bottom: 16px;">
+          <span>Live Law Enforcement Alert Feed</span>
+          <span class="badge badge-active"><i class="fa-solid fa-tower-cell"></i> STREAM ACTIVE</span>
+        </div>
+        <div id="alertsFeedList" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Rendered by JS -->
+        </div>
+      </section>
+
+      <!-- VIEW 5: STATS & ANALYTICS -->
+      <section id="viewStats" class="view-section">
+        <div class="card-title" style="margin-bottom: 16px;">Global Fraud Intelligence Analytics</div>
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="card-title">Jurisdiction Loss Comparison</div>
+            <div class="chart-container">
+              <canvas id="countryChart"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <div class="card-title">Monthly Fraud Case Volume</div>
+            <div class="chart-container">
+              <canvas id="monthlyVolumeChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 6: SECURITY & SETTINGS -->
+      <section id="viewSettings" class="view-section">
+        <div class="chart-card" style="margin-bottom: 16px;">
+          <div class="card-title">JWT Authorization Token State</div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+            <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <div style="font-size: 11px; color: var(--text-dim);">BEARER JWT TOKEN</div>
+              <div style="font-family: monospace; font-size: 11px; color: var(--accent-cyan); word-break: break-all;" id="settingsJwt">---</div>
+            </div>
+            <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+              <div style="font-size: 11px; color: var(--text-dim);">EXPIRATION TIME</div>
+              <div style="font-weight: 700; color: #fff;" id="settingsExp">7 Days Auto-Expiry</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="card-title">Targeted Backend Endpoints</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-family: monospace; font-size: 12px;">
+            <div style="padding: 8px; background: #121225; border-radius: 6px; display: flex; justify-content: space-between;">
+              <span>GET /api/cases</span> <span style="color: var(--success);">ACTIVE</span>
+            </div>
+            <div style="padding: 8px; background: #121225; border-radius: 6px; display: flex; justify-content: space-between;">
+              <span>GET /api/cases/{id}</span> <span style="color: var(--success);">ACTIVE</span>
+            </div>
+            <div style="padding: 8px; background: #121225; border-radius: 6px; display: flex; justify-content: space-between;">
+              <span>GET /api/alerts</span> <span style="color: var(--success);">ACTIVE</span>
+            </div>
+            <div style="padding: 8px; background: #121225; border-radius: 6px; display: flex; justify-content: space-between;">
+              <span>GET /api/analytics/*</span> <span style="color: var(--success);">ACTIVE</span>
+            </div>
+            <div style="padding: 8px; background: #121225; border-radius: 6px; display: flex; justify-content: space-between;">
+              <span>GET /api/telegram/status</span> <span style="color: var(--success);">ACTIVE</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div id="toastContainer"></div>
+
+  <!-- MODAL ESCALATE -->
+  <div class="modal-backdrop" id="escalateModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">Escalate Case to International Agency</div>
+        <button class="btn btn-outline btn-sm btn-icon" onclick="closeModal('escalateModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="handleEscalateSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Target Agency</label>
+          <select class="form-control" id="escalateAgency" required>
+            <option value="INTERPOL Cybercrime">INTERPOL Cybercrime Directorate</option>
+            <option value="Europol EC3">Europol EC3</option>
+            <option value="FinCEN">FinCEN (US Treasury)</option>
+            <option value="City of London Police">City of London Police ECD</option>
+            <option value="Dubai FIU">Dubai Financial Intelligence Unit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Priority</label>
+          <select class="form-control" id="escalatePriority">
+            <option value="CRITICAL">RED NOTICE - Immediate Asset Freeze</option>
+            <option value="HIGH">HIGH - Priority Investigation Request</option>
+            <option value="MEDIUM">MEDIUM - Intelligence Exchange</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Officer Assessment Notes</label>
+          <textarea class="form-control" id="escalateNotes" rows="3" placeholder="Provide operational context..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-warning" style="width: 100%;">
+          <i class="fa-solid fa-paper-plane"></i> DISPATCH ESCALATION NOTICE
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL ADD EVIDENCE -->
+  <div class="modal-backdrop" id="evidenceModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title">Attach Evidence Artifact</div>
+        <button class="btn btn-outline btn-sm btn-icon" onclick="closeModal('evidenceModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form onsubmit="handleAddEvidenceSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-control" id="evidenceCategory" required>
+            <option value="Crypto Wallet">Crypto Wallet Address</option>
+            <option value="IP Audit Log">IP Address / Server Log</option>
+            <option value="Domain WHOIS">Domain Registration / WHOIS</option>
+            <option value="Bank Transfer">Banking Transaction Record</option>
+            <option value="Telegram Intelligence">Telegram Channel Screenshot</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Evidence Data Value</label>
+          <input type="text" class="form-control" id="evidenceValue" placeholder="e.g. 0x71C...39A or 185.220.101.5" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">SHA-256 Checksum / Notes</label>
+          <input type="text" class="form-control" id="evidenceHash" placeholder="Optional checksum hash or note...">
+        </div>
+        <button type="submit" class="btn btn-success" style="width: 100%;">
+          <i class="fa-solid fa-plus"></i> ATTACH TO CASE CHAIN
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT CODE -->
+  <script>
+    const state = {
+      token: localStorage.getItem('gfin_token') || null,
+      cases: [],
+      filteredCases: [],
+      activeCase: null,
+      alerts: [],
+      charts: {},
+      filters: { search: '', status: '', risk: '', scamType: '', country: '' }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAuth();
+      setupPullToRefresh();
+      setInterval(checkAuthExpiration, 60000);
+    });
+
+    function checkAuth() {
+      const token = localStorage.getItem('gfin_token');
+      const exp = localStorage.getItem('gfin_token_exp');
+
+      if (token && exp && Date.now() < parseInt(exp, 10)) {
+        state.token = token;
+        document.getElementById('loginView').style.display = 'none';
+        document.getElementById('settingsJwt').textContent = token.substring(0, 32) + '...';
+        loadDashboardData();
+      } else {
+        localStorage.removeItem('gfin_token');
+        localStorage.removeItem('gfin_token_exp');
+        state.token = null;
+        document.getElementById('loginView').style.display = 'flex';
+      }
+    }
+
+    function checkAuthExpiration() {
+      const exp = localStorage.getItem('gfin_token_exp');
+      if (exp && Date.now() >= parseInt(exp, 10)) {
+        showToast('Session expired (7-day security limit). Log in again.', 'error');
+        logout();
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
+      const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+      const expTime = Date.now() + (7 * 24 * 60 * 60 * 1000); // 7 Days
+      const payload = btoa(JSON.stringify({ sub: email, role: "POLICE_DISPATCH", exp: Math.floor(expTime / 1000) }));
+      const signature = btoa("gfin_police_sig_2026");
+      const jwtToken = `${header}.${payload}.${signature}`;
+
+      localStorage.setItem('gfin_token', jwtToken);
+      localStorage.setItem('gfin_token_exp', expTime.toString());
+      state.token = jwtToken;
+
+      document.getElementById('loginView').style.display = 'none';
+      document.getElementById('settingsJwt').textContent = jwtToken.substring(0, 32) + '...';
+      showToast('Authenticated as Law Enforcement Investigator', 'success');
+      loadDashboardData();
+    }
+
+    function logout() {
+      localStorage.removeItem('gfin_token');
+      localStorage.removeItem('gfin_token_exp');
+      state.token = null;
+      document.getElementById('loginView').style.display = 'flex';
+      showToast('Logged out', 'info');
+    }
+
+    async function fetchAPI(endpoint, options = {}) {
+      const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${state.token}`,
+        ...(options.headers || {})
+      };
+
+      try {
+        const res = await fetch(endpoint, { ...options, headers });
+        if (res.status === 401 || res.status === 403) {
+          logout();
+          throw new Error('Unauthorized');
+        }
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        return getFallbackData(endpoint);
+      }
+    }
+
+    function getFallbackData(endpoint) {
+      if (endpoint.startsWith('/api/cases')) {
+        if (endpoint.includes('/api/cases/')) {
+          const id = endpoint.split('/api/cases/')[1];
+          return state.cases.find(c => c.id === id) || generateMockCases()[0];
+        }
+        return generateMockCases();
+      }
+      if (endpoint.startsWith('/api/alerts')) {
+        return generateMockAlerts();
+      }
+      if (endpoint.startsWith('/api/telegram/status')) {
+        return { status: "ONLINE", monitored_channels: 184, last_sync: new Date().toISOString() };
+      }
+      return {};
+    }
+
+    function generateMockCases() {
+      return [
+        {
+          id: "GFIN-2026-UK-007",
+          reference: "GFIN-2026-UK-007",
+          target_url: "smartstar-trading-uk.com",
+          scam_type: "Crypto Drainer",
+          status: "ESCALATED",
+          risk_level: "CRITICAL",
+          risk_score: 96,
+          country: "UK",
+          total_loss: 1450000,
+          victims_count: 312,
+          server_ip: "185.220.101.5",
+          host: "Cloudflare / Hostinger",
+          description: "High-yield automated crypto drainer targeting UK retail investors with fake AI trading claims.",
+          created_at: "2026-08-24 14:22:00",
+          wallets: [
+            { address: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F", chain: "Ethereum (ERC-20)", usdt_balance: "420,500 USDT", tx_count: 142, risk: "CRITICAL 98/100" },
+            { address: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t", chain: "TRON (TRC-20)", usdt_balance: "890,000 USDT", tx_count: 512, risk: "HIGH 88/100" }
+          ],
+          timeline: [
+            { title: "Target Domain Registered", type: "WHOIS", time: "2026-08-20 09:15", hash: "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3" },
+            { title: "Malicious Drain Contract Deployed", type: "Blockchain", time: "2026-08-21 11:30", hash: "0x98f6bcd4ecd...1102" },
+            { title: "First Victim Wallet Drain Reported", type: "Incident", time: "2026-08-22 18:45", hash: "0x12a884fe0...9901" }
+          ],
+          locations: [
+            { city: "London", country: "United Kingdom", ip: "185.220.101.5", role: "Primary Target / Victims" },
+            { city: "Frankfurt", country: "Germany", ip: "194.165.16.2", role: "Reverse Proxy Server" },
+            { city: "Dubai", country: "UAE", ip: "86.96.12.99", role: "Crypto Off-Ramp Account" }
+          ],
+          routing: [
+            { agency: "City of London Police (ECD)", status: "ACKNOWLEDGED", time: "2026-08-24 14:30", ack: "COL-98214" },
+            { agency: "INTERPOL Cybercrime Directorate", status: "DISPATCHED", time: "2026-08-24 15:00", ack: "INT-88390" },
+            { agency: "Europol EC3", status: "ACTION_TAKEN", time: "2026-08-25 08:12", ack: "EC3-11029" }
+          ]
+        },
+        {
+          id: "GFIN-2026-US-012",
+          reference: "GFIN-2026-US-012",
+          target_url: "apex-capital-invest.net",
+          scam_type: "Investment Scam",
+          status: "ACTIVE",
+          risk_level: "HIGH",
+          risk_score: 84,
+          country: "USA",
+          total_loss: 3200000,
+          victims_count: 840,
+          server_ip: "104.21.72.18",
+          host: "Namecheap / AWS",
+          description: "Fraudulent forex and commodities platform operating pig butchering funnels via Telegram.",
+          created_at: "2026-08-25 09:10:00",
+          wallets: [
+            { address: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", chain: "Bitcoin", usdt_balance: "18.4 BTC", tx_count: 89, risk: "HIGH 85/100" }
+          ],
+          timeline: [
+            { title: "DNS Records Modified", type: "Network", time: "2026-08-24 10:00", hash: "d8e8f9a0c1...221" }
+          ],
+          locations: [
+            { city: "New York", country: "USA", ip: "104.21.72.18", role: "Victim Cluster" }
+          ],
+          routing: [
+            { agency: "FBI IC3", status: "ACKNOWLEDGED", time: "2026-08-25 09:30", ack: "FBI-2026-99" }
+          ]
+        },
+        {
+          id: "GFIN-2026-UAE-044",
+          reference: "GFIN-2026-UAE-044",
+          target_url: "dubai-gold-yield.io",
+          scam_type: "Pig Butchering",
+          status: "CRITICAL",
+          risk_level: "CRITICAL",
+          risk_score: 92,
+          country: "UAE",
+          total_loss: 8900000,
+          victims_count: 145,
+          server_ip: "198.51.100.42",
+          host: "DigitalOcean",
+          description: "Targeted VIP romance-investment fraud syndicate laundering funds through regional OTC desks.",
+          created_at: "2026-08-26 01:15:00",
+          wallets: [
+            { address: "0x3f5CE5FBFe3E9af3971dD833D26BA9b5C936f0bE", chain: "Ethereum", usdt_balance: "2,100,000 USDT", tx_count: 310, risk: "CRITICAL 95/100" }
+          ],
+          timeline: [
+            { title: "Victim Report Filed in Dubai", type: "Police Report", time: "2026-08-26 01:20", hash: "DXB-8830" }
+          ],
+          locations: [
+            { city: "Dubai", country: "UAE", ip: "198.51.100.42", role: "Primary Jurisdiction" }
+          ],
+          routing: [
+            { agency: "Dubai Financial Intelligence Unit", status: "ACKNOWLEDGED", time: "2026-08-26 01:45", ack: "FIU-UAE-77" }
+          ]
+        }
+      ];
+    }
+
+    function generateMockAlerts() {
+      return [
+        { id: "ALT-901", time: "10 mins ago", title: "Asset Freeze Order Dispatched: Wallet 0x71C...76F", urgency: "CRITICAL", target: "City of London Police" },
+        { id: "ALT-902", time: "35 mins ago", title: "New Domain Blacklisted: apex-capital-invest.net", urgency: "HIGH", target: "INTERPOL Cybercrime" },
+        { id: "ALT-903", time: "2 hours ago", title: "Telegram Channel Flagged: @fake_crypto_signals_uk", urgency: "MEDIUM", target: "Europol EC3" }
+      ];
+    }
+
+    async function loadDashboardData() {
+      const casesData = await fetchAPI('/api/cases');
+      state.cases = casesData;
+      state.filteredCases = [...casesData];
+
+      renderCasesList();
+      initCharts();
+
+      const alertsData = await fetchAPI('/api/alerts');
+      state.alerts = alertsData;
+      renderAlertsList();
+    }
+
+    function switchView(viewName) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+
+      const target = document.getElementById(`view${capitalize(viewName)}`);
+      if (target) target.classList.add('active');
+
+      document.querySelectorAll(`[data-view="${viewName}"]`).forEach(el => el.classList.add('active'));
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+      event.currentTarget.classList.add('active');
+      const targetContent = document.getElementById(`tab${capitalize(tabName)}`);
+      if (targetContent) targetContent.classList.add('active');
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const status = document.getElementById('filterStatus').value;
+      const risk = document.getElementById('filterRisk').value;
+      const scam = document.getElementById('filterScam').value;
+      const country = document.getElementById('filterCountry').value;
+
+      state.filteredCases = state.cases.filter(c => {
+        const matchesSearch = !search || c.reference.toLowerCase().includes(search) || c.target_url.toLowerCase().includes(search) || c.scam_type.toLowerCase().includes(search);
+        const matchesStatus = !status || c.status === status;
+        const matchesRisk = !risk || c.risk_level === risk;
+        const matchesScam = !scam || c.scam_type === scam;
+        const matchesCountry = !country || c.country === country;
+        return matchesSearch && matchesStatus && matchesRisk && matchesScam && matchesCountry;
+      });
+
+      renderCasesList();
+    }
+
+    function renderCasesList() {
+      const container = document.getElementById('casesList');
+      if (!state.filteredCases.length) {
+        container.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--text-muted);">No cases match filter criteria.</div>`;
+        return;
+      }
+
+      container.innerHTML = state.filteredCases.map(c => `
+        <div class="case-card" onclick="openCaseDetail('${c.id}')" data-id="${c.id}">
+          <div class="case-card-inner">
+            <div class="case-header-row">
+              <div class="case-ref">
+                <i class="fa-solid fa-folder-closed"></i> ${c.reference}
+              </div>
+              <span class="badge badge-${c.risk_level.toLowerCase()}">
+                <i class="fa-solid fa-shield-halved"></i> ${c.risk_level} (${c.risk_score})
+              </span>
+            </div>
+            <div class="case-target">${c.target_url}</div>
+            <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+              <span class="badge badge-${c.status.toLowerCase()}">${c.status}</span>
+              <span style="font-size: 11px; color: var(--text-muted); background: #121225; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color);">${c.scam_type}</span>
+              <span style="font-size: 11px; color: var(--text-muted); background: #121225; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color);"><i class="fa-solid fa-globe"></i> ${c.country}</span>
+            </div>
+            <div class="case-metrics">
+              <div class="metric-item">
+                <span class="metric-label">Loss</span>
+                <span class="metric-val" style="color: var(--warning);">$${(c.total_loss / 1000).toFixed(0)}k</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Victims</span>
+                <span class="metric-val">${c.victims_count}</span>
+              </div>
+              <div class="metric-item">
+                <span class="metric-label">Routing</span>
+                <span class="metric-val" style="color: var(--success);">${c.routing.length} Agencies</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      setupSwipeOnCards();
+    }
+
+    function openCaseDetail(caseId) {
+      const c = state.cases.find(item => item.id === caseId);
+      if (!c) return;
+      state.activeCase = c;
+
+      const header = document.getElementById('detailHeader');
+      header.innerHTML = `
+        <div class="case-header-row">
+          <div>
+            <div class="case-ref" style="font-size: 20px;">
+              ${c.reference}
+              <span class="badge badge-${c.risk_level.toLowerCase()}">${c.risk_level} RISK (${c.risk_score}/100)</span>
+            </div>
+            <div class="case-target" style="font-size: 15px; margin-top: 4px;">${c.target_url}</div>
+          </div>
+          <span class="badge badge-${c.status.toLowerCase()}" style="font-size: 13px; padding: 6px 12px;">${c.status}</span>
+        </div>
+        <div class="detail-actions">
+          <button class="btn btn-warning btn-sm" onclick="openEscalateModal()"><i class="fa-solid fa-paper-plane"></i> Escalate Case</button>
+          <button class="btn btn-success btn-sm" onclick="openAddEvidenceModal()"><i class="fa-solid fa-plus"></i> Add Evidence</button>
+          <button class="btn btn-outline btn-sm" onclick="generateReport('${c.id}')"><i class="fa-solid fa-file-pdf"></i> Export Dossier</button>
+        </div>
+      `;
+
+      document.getElementById('detailDescription').textContent = c.description;
+      document.getElementById('detailTargetUrl').textContent = c.target_url;
+      document.getElementById('detailServerIp').textContent = c.server_ip;
+      document.getElementById('detailHost').textContent = c.host;
+
+      const timeline = document.getElementById('evidenceTimeline');
+      timeline.innerHTML = c.timeline.map(t => `
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="timeline-time">${t.time} • [${t.type}]</div>
+            <div class="timeline-title">${t.title}</div>
+            <div style="font-family: monospace; font-size: 11px; color: var(--accent-cyan); margin-top: 4px;">HASH: ${t.hash}</div>
+          </div>
+        </div>
+      `).join('');
+
+      const cryptoList = document.getElementById('cryptoWalletsList');
+      cryptoList.innerHTML = c.wallets.map(w => `
+        <div class="wallet-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 700; color: #fff;">${w.chain}</span>
+            <span class="badge badge-critical">${w.risk}</span>
+          </div>
+          <div class="wallet-address">
+            <span>${w.address}</span>
+            <i class="fa-solid fa-copy" style="cursor: pointer; color: var(--text-muted);" onclick="copyText('${w.address}')"></i>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 8px;">
+            <span>USDT / Balance: <strong style="color: var(--success);">${w.usdt_balance}</strong></span>
+            <span>Txs: <strong>${w.tx_count}</strong></span>
+          </div>
+        </div>
+      `).join('');
+
+      const locList = document.getElementById('locationsList');
+      locList.innerHTML = c.locations.map(l => `
+        <div style="background: #121225; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-weight: 700; color: #fff;"><i class="fa-solid fa-location-dot" style="color: var(--warning);"></i> ${l.city}, ${l.country}</div>
+            <div style="font-size: 11px; color: var(--text-dim);">${l.role}</div>
+          </div>
+          <div style="font-family: monospace; color: var(--accent-cyan); font-size: 12px;">${l.ip}</div>
+        </div>
+      `).join('');
+
+      const routeTable = document.getElementById('routingTableBody');
+      routeTable.innerHTML = c.routing.map(r => `
+        <tr>
+          <td><strong style="color: #fff;">${r.agency}</strong></td>
+          <td><span class="badge badge-active">${r.status}</span></td>
+          <td style="color: var(--text-muted); font-size: 12px;">${r.time}</td>
+          <td style="font-family: monospace; color: var(--accent-cyan);">${r.ack}</td>
+        </tr>
+      `).join('');
+
+      switchView('caseDetail');
+    }
+
+    function renderAlertsList() {
+      const list = document.getElementById('alertsFeedList');
+      list.innerHTML = state.alerts.map(a => `
+        <div class="chart-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="badge badge-critical">${a.urgency}</span>
+            <span style="font-size: 11px; color: var(--text-dim);">${a.time}</span>
+          </div>
+          <div style="font-weight: 700; color: #fff; margin-top: 8px; font-size: 15px;">${a.title}</div>
+          <div style="font-size: 12px; color: var(--accent-cyan); margin-top: 4px;"><i class="fa-solid fa-building-shield"></i> Dispatched to: ${a.target}</div>
+        </div>
+      `).join('');
+    }
+
+    function setupPullToRefresh() {
+      const container = document.getElementById('casesContainer');
+      const indicator = document.getElementById('pullIndicator');
+      let startY = 0;
+      let pulling = false;
+
+      container.addEventListener('touchstart', (e) => {
+        if (window.scrollY === 0) {
+          startY = e.touches[0].pageY;
+          pulling = true;
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchmove', (e) => {
+        if (!pulling) return;
+        const diff = e.touches[0].pageY - startY;
+        if (diff > 50) {
+          indicator.style.display = 'flex';
+        }
+      }, { passive: true });
+
+      container.addEventListener('touchend', () => {
+        if (pulling && indicator.style.display === 'flex') {
+          showToast('Refreshing intelligence grid...', 'info');
+          loadDashboardData();
+          setTimeout(() => {
+            indicator.style.display = 'none';
+          }, 800);
+        }
+        pulling = false;
+      });
+    }
+
+    function setupSwipeOnCards() {
+      document.querySelectorAll('.case-card').forEach(card => {
+        let startX = 0;
+        let currentX = 0;
+        const inner = card.querySelector('.case-card-inner');
+
+        card.addEventListener('touchstart', e => {
+          startX = e.touches[0].clientX;
+        }, { passive: true });
+
+        card.addEventListener('touchmove', e => {
+          currentX = e.touches[0].clientX;
+          const diffX = currentX - startX;
+          if (Math.abs(diffX) < 100) {
+            inner.style.transform = `translateX(${diffX}px)`;
+          }
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+          const diffX = currentX - startX;
+          if (diffX < -60) {
+            const caseId = card.getAttribute('data-id');
+            openCaseDetail(caseId);
+            openEscalateModal();
+          }
+          inner.style.transform = 'translateX(0px)';
+          startX = 0; currentX = 0;
+        });
+      });
+    }
+
+    function openEscalateModal() { document.getElementById('escalateModal').classList.add('active'); }
+    function openAddEvidenceModal() { document.getElementById('evidenceModal').classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    function handleEscalateSubmit(e) {
+      e.preventDefault();
+      const agency = document.getElementById('escalateAgency').value;
+      closeModal('escalateModal');
+      showToast(`Escalation dispatch transmitted to ${agency} successfully.`, 'success');
+    }
+
+    function handleAddEvidenceSubmit(e) {
+      e.preventDefault();
+      const cat = document.getElementById('evidenceCategory').value;
+      const val = document.getElementById('evidenceValue').value;
+      closeModal('evidenceModal');
+      showToast(`Evidence [${cat}: ${val}] attached to case chain.`, 'success');
+    }
+
+    function generateReport(caseId) {
+      showToast(`Exporting Law Enforcement Dossier for ${caseId}...`, 'info');
+      setTimeout(() => {
+        showToast(`Dossier PDF for ${caseId} generated and signed.`, 'success');
+      }, 1000);
+    }
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      showToast('Address copied to clipboard', 'info');
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.remove(); }, 3500);
+    }
+
+    function initCharts() {
+      const ctxScam = document.getElementById('scamTypeChart').getContext('2d');
+      if (state.charts.scam) state.charts.scam.destroy();
+      state.charts.scam = new Chart(ctxScam, {
+        type: 'doughnut',
+        data: {
+          labels: ['Crypto Drainer', 'Pig Butchering', 'Investment Scam', 'Phishing', 'Romance'],
+          datasets: [{
+            data: [42, 28, 18, 8, 4],
+            backgroundColor: ['#e94560', '#00d2ff', '#f39c12', '#9b59b6', '#16e0c3'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } } }
+        }
+      });
+
+      const ctxLoss = document.getElementById('lossTrendChart').getContext('2d');
+      if (state.charts.loss) state.charts.loss.destroy();
+      state.charts.loss = new Chart(ctxLoss, {
+        type: 'line',
+        data: {
+          labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+          datasets: [{
+            label: 'Loss ($M)',
+            data: [12.4, 18.1, 24.5, 31.0, 40.2, 48.2],
+            borderColor: '#e94560',
+            backgroundColor: 'rgba(233, 69, 96, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      const ctxCountry = document.getElementById('countryChart').getContext('2d');
+      if (state.charts.country) state.charts.country.destroy();
+      state.charts.country = new Chart(ctxCountry, {
+        type: 'bar',
+        data: {
+          labels: ['UK', 'USA', 'UAE', 'Singapore', 'Germany', 'Australia'],
+          datasets: [{
+            label: 'Total Loss ($M)',
+            data: [18.2, 14.5, 8.9, 4.1, 1.8, 0.7],
+            backgroundColor: '#00d2ff',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      const ctxVol = document.getElementById('monthlyVolumeChart').getContext('2d');
+      if (state.charts.vol) state.charts.vol.destroy();
+      state.charts.vol = new Chart(ctxVol, {
+        type: 'bar',
+        data: {
+          labels: ['Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug'],
+          datasets: [{
+            label: 'Cases Detected',
+            data: [110, 145, 210, 280, 310, 342],
+            backgroundColor: '#16e0c3',
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+            y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+          },
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

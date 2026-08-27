@@ -1,0 +1,53 @@
+{
+  "timestamp": "2026-08-26T14:02:10.992585+00:00",
+  "lint_status": "PASS",
+  "sast_status": "PASS",
+  "secret_scan": "PASS",
+  "dependency_scan": "PASS",
+  "security_tests": "127 passed",
+  "threat_model_tests": "21 passed (T1-T10)",
+  "findings": {
+    "critical": 0,
+    "high": 0,
+    "medium": 2,
+    "low": 1,
+    "info": 3
+  },
+  "medium_findings": [
+    {
+      "id": "MED-001",
+      "title": "Vault running in dev mode",
+      "status": "REQUIRES PRODUCTION"
+    },
+    {
+      "id": "MED-002",
+      "title": "No external penetration test",
+      "status": "PENDING EXTERNAL"
+    }
+  ],
+  "low_findings": [
+    {
+      "id": "LOW-001",
+      "title": "Self-signed TLS on staging",
+      "status": "REQUIRES PRODUCTION"
+    }
+  ],
+  "info_findings": [
+    {
+      "id": "INFO-001",
+      "title": "Legal review pending (5 items)",
+      "status": "PENDING LEGAL"
+    },
+    {
+      "id": "INFO-002",
+      "title": "Production cloud not provisioned",
+      "status": "PENDING CREDENTIALS"
+    },
+    {
+      "id": "INFO-003",
+      "title": "Backup/restore not tested on production",
+      "status": "PENDING INFRA"
+    }
+  ],
+  "status": "NO CRITICAL OR HIGH FINDINGS"
+}

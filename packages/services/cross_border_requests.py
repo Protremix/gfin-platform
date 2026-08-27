@@ -16,7 +16,7 @@ Layer B: Federation protocol over Kafka, encrypted transport (REQUIRES EXTERNAL 
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -26,7 +26,7 @@ from services.global_matching import MatchPolicy
 # ─── Enums ───
 
 
-class RequestStatus(str, Enum):
+class RequestStatus(StrEnum):
     SUBMITTED = "SUBMITTED"
     VALIDATED = "VALIDATED"
     AUTHORIZED = "AUTHORIZED"
@@ -37,14 +37,14 @@ class RequestStatus(str, Enum):
     REJECTED = "REJECTED"
 
 
-class RequestDecision(str, Enum):
+class RequestDecision(StrEnum):
     NONE = "NONE"
     APPROVED = "APPROVED"
     PARTIAL = "PARTIAL"
     DENIED = "DENIED"
 
 
-class UrgencyLevel(str, Enum):
+class UrgencyLevel(StrEnum):
     ROUTINE = "ROUTINE"
     PRIORITY = "PRIORITY"
     EMERGENCY = "EMERGENCY"

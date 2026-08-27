@@ -1,0 +1,54 @@
+{
+  "report_id": "GFIN-FINAL-VERIFICATION-001",
+  "generated_at": "2026-08-26 14:03 UTC",
+  "commit": "f8ad20adde3a98b3e5171fc42e2a7c413d00cd1c",
+  "status": "PARTIALLY_VERIFIED",
+  "production_ready": false,
+  "tests": {
+    "collected": 2743,
+    "executed": 2743,
+    "passed": 2743,
+    "failed": 0,
+    "skipped": 0,
+    "coverage": 93.58
+  },
+  "requirements": {
+    "total": 22,
+    "verified": 15,
+    "partially_verified": 3,
+    "blocked": 2,
+    "not_verified": 2,
+    "failed": 0
+  },
+  "capabilities": {
+    "total": 40,
+    "verified": 39,
+    "blocked": 1,
+    "not_implemented": 0
+  },
+  "security": {
+    "critical": 0,
+    "high": 0,
+    "medium": 2,
+    "low": 1,
+    "info": 3,
+    "controls_pass": 17,
+    "controls_not_tested": 3,
+    "controls_fail": 0
+  },
+  "super_case": "PASS (SYNTHETIC)",
+  "ai": "PASS",
+  "geoint": "BLOCKED",
+  "crypto": "VERIFIED (synthetic)",
+  "police_workflow": "PASS",
+  "citizen_workflow": "PASS",
+  "cross_organization": "PASS",
+  "backup": "NOT VERIFIED",
+  "disaster_recovery": "VERIFIED (simulated), NOT VERIFIED (production)",
+  "performance": "PARTIALLY VERIFIED",
+  "blocking_items": [
+    "Legal review (5 contractual instruments)",
+    "External penetration testing",
+    "Production cloud credentials"
+  ]
+}

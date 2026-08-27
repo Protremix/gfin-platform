@@ -1,0 +1,81 @@
+{
+  "task": "TASK 07 \u2014 Advertising Intelligence",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "Meta Ad Library",
+      "auth": "OAUTH (app review)",
+      "connector": "FacebookAdLibraryConnector",
+      "status": "AUTH_REQUIRED",
+      "pivots": "company/brand/domain/person/landing page",
+      "coverage": "Facebook + Instagram ads"
+    },
+    {
+      "provider": "Google Ads Transparency",
+      "auth": "NONE (web only)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "No official API \u2014 web interface at adstransparency.google.com",
+      "coverage": "Google Search/Display ads"
+    },
+    {
+      "provider": "TikTok Ad Library",
+      "auth": "NONE (web only)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "No public API \u2014 web at ads.tiktok.com/business/creativecenter",
+      "coverage": "TikTok ads"
+    },
+    {
+      "provider": "LinkedIn Ads",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "Commercial API required"
+    },
+    {
+      "provider": "Microsoft Advertising",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "No transparency API"
+    },
+    {
+      "provider": "Reddit Ads",
+      "auth": "OAUTH",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "No ads transparency API found"
+    },
+    {
+      "provider": "Snap Ads",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "No transparency API"
+    },
+    {
+      "provider": "Pinterest Ads",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "reason": "No transparency API"
+    }
+  ],
+  "supported_pivots": [
+    "company",
+    "brand",
+    "domain",
+    "person",
+    "phone",
+    "email",
+    "advertiser_id",
+    "landing_page",
+    "creative"
+  ],
+  "summary": {
+    "auth_required": 1,
+    "blocked": 7,
+    "note": "Most advertising platforms do not offer transparency APIs. Meta Ad Library is the primary available source."
+  }
+}

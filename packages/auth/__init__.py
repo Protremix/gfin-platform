@@ -31,6 +31,7 @@ from auth.validation import (
 )
 
 __all__ = [
+    "ROLE_PERMISSIONS",
     "AccessDecision",
     "AccessRequest",
     "AuditEvent",
@@ -41,7 +42,6 @@ __all__ = [
     "Decision",
     "Permission",
     "RateLimiter",
-    "ROLE_PERMISSIONS",
     "ValidationError",
     "ValidationResult",
     "detect_prompt_injection",

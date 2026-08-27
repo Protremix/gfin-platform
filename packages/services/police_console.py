@@ -11,7 +11,7 @@ Layer B: FastAPI REST + WebSocket + OIDC auth (REQUIRES EXTERNAL INFRASTRUCTURE)
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -25,13 +25,13 @@ from services.global_matching import GlobalMatchEngine, MatchPolicy
 # ─── Enums ───
 
 
-class ConsoleRole(str, Enum):
+class ConsoleRole(StrEnum):
     OFFICER = "OFFICER"
     SUPERVISOR = "SUPERVISOR"
     ADMIN = "ADMIN"
 
 
-class ConsoleAction(str, Enum):
+class ConsoleAction(StrEnum):
     SEARCH_ENTITY = "search_entity"
     VIEW_ENTITY = "view_entity"
     SUBMIT_OBSERVATION = "submit_observation"
@@ -43,7 +43,7 @@ class ConsoleAction(str, Enum):
     VIEW_AUDIT_TRAIL = "view_audit_trail"
 
 
-class WorkspaceStatus(str, Enum):
+class WorkspaceStatus(StrEnum):
     OPEN = "OPEN"
     IN_PROGRESS = "IN_PROGRESS"
     CLOSED = "CLOSED"

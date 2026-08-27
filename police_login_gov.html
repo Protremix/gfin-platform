@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>GFIN — Police Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --gov-blue: #003366;
+            --gov-blue-light: #1a5276;
+            --gov-blue-dark: #002244;
+            --gov-gold: #c5a55a;
+            --gov-white: #ffffff;
+            --gov-light-gray: #f5f7fa;
+            --gov-mid-gray: #e1e8ed;
+            --gov-dark-gray: #2c3e50;
+            --gov-text: #1a1a2e;
+            --gov-red: #c0392b;
+            --gov-green: #27ae60;
+            --gov-radius: 6px;
+        }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(135deg, var(--gov-blue-dark) 0%, var(--gov-blue) 100%);
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .login-container {
+            max-width: 440px;
+            width: 100%;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header .seal {
+            width: 72px; height: 72px;
+            background: var(--gov-blue);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 3px solid var(--gov-gold);
+            margin: 0 auto 16px;
+        }
+        .login-header .seal svg { width: 40px; height: 40px; }
+        .login-header h1 { color: white; font-size: 24px; font-weight: 700; }
+        .login-header p { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px; }
+        
+        .login-card {
+            background: white;
+            border-radius: var(--gov-radius);
+            padding: 36px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        .login-card h2 { font-size: 20px; font-weight: 700; color: var(--gov-text); margin-bottom: 4px; }
+        .login-card .subtitle { font-size: 14px; color: var(--gov-dark-gray); margin-bottom: 24px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--gov-text); margin-bottom: 6px; }
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid var(--gov-mid-gray);
+            border-radius: var(--gov-radius);
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus { outline: none; border-color: var(--gov-blue); }
+        .btn-login {
+            width: 100%;
+            background: var(--gov-blue);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: var(--gov-radius);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 6px;
+        }
+        .btn-login:hover { background: var(--gov-blue-light); }
+        .btn-login:disabled { background: var(--gov-mid-gray); cursor: not-allowed; }
+        .alert {
+            padding: 12px 14px;
+            border-radius: var(--gov-radius);
+            font-size: 13px;
+            margin-bottom: 18px;
+            display: none;
+        }
+        .alert.error { background: #fce4ec; color: var(--gov-red); display: block; border-left: 4px solid var(--gov-red); }
+        .alert.success { background: #e8f5e9; color: var(--gov-green); display: block; border-left: 4px solid var(--gov-green); }
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gov-mid-gray);
+            font-size: 13px;
+            color: var(--gov-dark-gray);
+        }
+        .login-footer a { color: var(--gov-blue); text-decoration: none; font-weight: 600; }
+        .secure-badge {
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            font-size: 12px; color: var(--gov-dark-gray);
+            margin-top: 16px;
+        }
+        .secure-badge::before { content: '🔒'; }
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a { color: rgba(255,255,255,0.7); font-size: 13px; text-decoration: none; }
+        .back-link a:hover { color: white; }
+
+        /* ===== MOBILE / SAMSUNG BROWSER FIX ===== */
+        @media (max-width: 768px) {
+            .login-container, .container { max-width: 100% !important; padding: 16px !important; margin: 0 !important; }
+            .login-box, .login-card, .card { padding: 20px 16px !important; border-radius: 10px !important; }
+            h1, h2, .login-title { font-size: 20px !important; }
+            label { font-size: 15px !important; }
+            input, select, textarea { font-size: 16px !important; padding: 12px !important; }
+            button, .btn, .login-btn { font-size: 16px !important; padding: 14px !important; width: 100% !important; }
+            body { font-size: 15px !important; }
+            .header { padding: 14px 16px !important; }
+            .header h1 { font-size: 18px !important; }
+        }
+        @media (max-width: 480px) {
+            .login-container, .container { padding: 10px !important; }
+            h1, h2 { font-size: 18px !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="seal">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke="#c5a55a" stroke-width="2"/>
+                    <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h1>GFIN</h1>
+            <p data-i18n="police_title">Law Enforcement Secure Access</p>
+        </div>
+        
+        <div class="login-card">
+            <h2 data-i18n="police_subtitle">Police Officer Login</h2>
+            <p class="subtitle" data-i18n="police_authorized">Authorized personnel only. All access is logged.</p>
+            
+            <div id="alert" class="alert"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email" data-i18n="police_email">Email Address</label>
+                    <input type="email" id="email" placeholder="officer@police.gov" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" data-i18n="police_password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-login" id="loginBtn"><span data-i18n="police_signin">Sign In Securely</span></button>
+            </form>
+            
+            <div class="secure-badge" data-i18n="police_encrypted">Encrypted connection • JWT authenticated</div>
+            
+            <div class="login-footer">
+                First-time access? The first registered officer becomes the system administrator.<br>
+                <a href="/api/police/register" style="display:block; margin-top:8px;">Register as officer →</a>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="/">← Back to GFIN homepage</a>
+        <div style="position:relative;display:inline-block;margin-left:12px">
+          <button id="langBtn" onclick="document.getElementById('langDropdown').classList.toggle('show')" style="background:transparent;border:1px solid #334155;color:#94a3b8;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px">&#127760; <span id="currentLang">EN</span> &#9662;</button>
+          <div id="langDropdown" style="display:none;position:absolute;right:0;top:100%;background:#0a0e1a;border:1px solid #334155;border-radius:8px;min-width:140px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.5)"></div>
+        </div>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const alert = document.getElementById('alert');
+            
+            btn.disabled = true;
+            btn.textContent = 'Authenticating...';
+            alert.className = 'alert';
+            
+            try {
+                const resp = await fetch('/api/police/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: document.getElementById('email').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+                
+                const data = await resp.json();
+                
+                if (resp.ok && data.token) {
+                    // Store token in BOTH cookie and localStorage for maximum compatibility
+                    document.cookie = 'gfin_police_token=' + data.token + '; path=/; max-age=604800; SameSite=Lax; Secure';
+                    localStorage.setItem('gfin_token', data.token);
+                    alert.className = 'alert success';
+                    alert.textContent = 'Login successful. Redirecting...';
+                    window.location.href = '/dashboard?t=' + Date.now();
+                } else {
+                    alert.className = 'alert error';
+                    alert.textContent = data.detail || data.error || 'Login failed. Check your credentials.';
+                    btn.disabled = false;
+                    btn.textContent = '<span data-i18n="police_signin">Sign In Securely</span>';
+                }
+            } catch (err) {
+                alert.className = 'alert error';
+                alert.textContent = 'Connection error. Please try again.';
+                btn.disabled = false;
+                btn.textContent = '<span data-i18n="police_signin">Sign In Securely</span>';
+            }
+        });
+    </script>
+<script src="/gfin-i18n.js"></script>
+</body>
+</html>

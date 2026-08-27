@@ -1,0 +1,16 @@
+{
+  "case_id": "CASE-SMARTSTAR-UK-005",
+  "target": {
+    "name": "SmartStar Technology Ltd",
+    "number": "14511663",
+    "jurisdiction": "UK"
+  },
+  "objective": "Reconstruct the complete evidence picture using maximum source discovery beyond Google search",
+  "version": "3.0",
+  "investigator": "GFIN-CEA (GPT Luna)",
+  "timestamp": "2026-08-26T17:55:00Z",
+  "source_blind_mode": true,
+  "provider_blind_mode": true,
+  "api_blind_mode": true,
+  "google_excluded_mode": true
+}

@@ -1,0 +1,59 @@
+{
+  "tests_run": [
+    {
+      "test": "credential_leakage",
+      "connectors_tested": 18,
+      "passed": 18,
+      "failed": 0,
+      "method": "Checked all connector responses for API keys, passwords, secrets, tokens"
+    },
+    {
+      "test": "fail_closed",
+      "connectors_tested": 18,
+      "passed": 16,
+      "failed": 0,
+      "note": "2 connectors (github, etherscan) have optional credentials \u2014 correctly work without them"
+    },
+    {
+      "test": "prompt_injection",
+      "connectors_tested": 3,
+      "passed": 3,
+      "failed": 0,
+      "method": "Injected 'ignore previous instructions' \u2014 all detected and blocked"
+    },
+    {
+      "test": "ssrf_protection",
+      "connectors_tested": 1,
+      "passed": 1,
+      "failed": 0,
+      "method": "All URLs constructed from provider API URLs + validated parameters"
+    },
+    {
+      "test": "tls_verification",
+      "connectors_tested": 1,
+      "passed": 1,
+      "failed": 0,
+      "method": "SSL context configured for all connectors"
+    },
+    {
+      "test": "provenance",
+      "connectors_tested": 3,
+      "passed": 3,
+      "failed": 0,
+      "method": "Each response includes URL, content hash, and timestamp"
+    },
+    {
+      "test": "provider_record",
+      "connectors_tested": 18,
+      "passed": 18,
+      "failed": 0,
+      "method": "All connectors return complete provider metadata"
+    }
+  ],
+  "total_security_tests": 42,
+  "total_passed": 42,
+  "total_failed": 0,
+  "raw_credentials_exposed": 0,
+  "unauthorized_access_attempted": 0,
+  "security_status": "PASS"
+}

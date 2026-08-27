@@ -1,0 +1,53 @@
+{
+  "case_id": "CASE-SMARTSTAR-002",
+  "title": "Deep Investigation & Unresolved-Questions Closure Test",
+  "version": "1.0",
+  "type": "second_pass_investigation",
+  "previous_case": "CASE-SMARTSTAR-001",
+  "target_family": [
+    {
+      "name": "SmartStar Technology Ltd",
+      "jurisdiction": "UK",
+      "company_number": "14511663",
+      "status": "Dissolved"
+    },
+    {
+      "name": "SmartStar Technology Limited",
+      "jurisdiction": "NZ",
+      "company_number": "1925143",
+      "status": "Registered"
+    },
+    {
+      "name": "SmartStar Technology Pte. Ltd.",
+      "jurisdiction": "Singapore",
+      "uen": "202409677D",
+      "status": "Registered"
+    }
+  ],
+  "authorized_jurisdiction": "UK, NZ, Singapore, EU public records",
+  "available_permissions": "public OSINT only",
+  "objectives": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T"
+  ],
+  "investigator": "GFIN-CEA (GPT Luna)",
+  "timestamp": "2026-08-26T17:40:00Z"
+}

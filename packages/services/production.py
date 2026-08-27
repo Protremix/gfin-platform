@@ -9,20 +9,20 @@ Layer B: Real infrastructure deployment (REQUIRES EXTERNAL INFRASTRUCTURE)
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class ReadinessLevel(str, Enum):
+class ReadinessLevel(StrEnum):
     NOT_READY = "NOT_READY"
     PARTIALLY_READY = "PARTIALLY_READY"
     READY = "READY"
     LIVE = "LIVE"
 
 
-class CheckCategory(str, Enum):
+class CheckCategory(StrEnum):
     INFRASTRUCTURE = "INFRASTRUCTURE"
     SECURITY = "SECURITY"
     MONITORING = "MONITORING"

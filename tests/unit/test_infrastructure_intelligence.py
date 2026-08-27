@@ -241,7 +241,7 @@ class TestRelationships:
         assert "multiple corroborating" in reason
 
     def test_criminal_association_with_correlation_works(self, svc):
-        rel, reason = svc.add_relationship(
+        rel, _ = svc.add_relationship(
             "john",
             "evil.com",
             InfraRelationType.CRIMINAL_ASSOCIATION,
@@ -290,8 +290,8 @@ class TestInterpretationRules:
     def test_criminal_single_correlation_fails(self):
         rules = check_interpretation_rules("criminal_association", has_multiple_correlations=False)
         assert any(
-            not r.passed
-            and "single correlation" in r.message.lower()
+            (not r.passed
+            and "single correlation" in r.message.lower())
             or "multiple" in r.message.lower()
             for r in rules
         )
@@ -328,7 +328,7 @@ class TestInterpretationRules:
 
 class TestValidateAttribution:
     def test_non_attribution_valid(self):
-        valid, reason = validate_attribution("resolves_to")
+        valid, _reason = validate_attribution("resolves_to")
         assert valid
 
     def test_attribution_without_evidence_invalid(self):
@@ -337,19 +337,19 @@ class TestValidateAttribution:
         assert "INSUFFICIENT_DATA" in reason
 
     def test_attribution_with_evidence_valid(self):
-        valid, reason = validate_attribution(
+        valid, _reason = validate_attribution(
             "owns", evidence_id="EVD-001", analyst_justification="WHOIS"
         )
         assert valid
 
     def test_criminal_without_correlation_invalid(self):
-        valid, reason = validate_attribution(
+        valid, _reason = validate_attribution(
             "criminal_association", evidence_id="EVD-001", analyst_justification="ok"
         )
         assert not valid
 
     def test_criminal_with_correlation_valid(self):
-        valid, reason = validate_attribution(
+        valid, _reason = validate_attribution(
             "criminal_association",
             evidence_id="EVD-001",
             analyst_justification="ok",
@@ -473,13 +473,13 @@ class TestIntegration:
         svc.add_relationship("1.2.3.4", "AS999", InfraRelationType.ANNOUNCED_BY)
 
         # Attempt criminal attribution without evidence
-        rel, reason = svc.add_relationship(
+        rel, _ = svc.add_relationship(
             "john", "evil.com", InfraRelationType.CRIMINAL_ASSOCIATION
         )
         assert rel is None
 
         # With evidence + justification + correlations
-        rel, reason = svc.add_relationship(
+        rel, _ = svc.add_relationship(
             "john",
             "evil.com",
             InfraRelationType.CRIMINAL_ASSOCIATION,

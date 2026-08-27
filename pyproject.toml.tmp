@@ -1,0 +1,5 @@
+[[tool.mypy.overrides]]
+module = "common.postgres_repository.*"
+# SQLAlchemy PostgreSQL dialect methods (on_conflict_do_nothing, etc.)
+# are not fully covered by mypy type stubs.
+ignore_errors = true

@@ -15,15 +15,19 @@
 
 from __future__ import annotations
 
+import logging
+import uuid
 from abc import ABC, abstractmethod
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
+logger = logging.getLogger("common.model_gateway")
 
-class ModelProvider(str, Enum):
+
+class ModelProvider(StrEnum):
     """Supported AI providers."""
 
     OPENAI = "openai"
@@ -31,7 +35,7 @@ class ModelProvider(str, Enum):
     OTHER = "other"
 
 
-class TaskType(str, Enum):
+class TaskType(StrEnum):
     """AI task types for routing decisions."""
 
     CLASSIFICATION = "classification"
@@ -139,6 +143,21 @@ class BaseModelGateway(ModelGateway):
         self._fallback = fallback_provider
         self._max_retries = max_retries
         self._timeout = timeout_seconds
+        self._total_requests = 0
+        self._total_errors = 0
+        self._total_tokens = 0
+
+    @property
+    def total_requests(self) -> int:
+        return self._total_requests
+
+    @property
+    def total_errors(self) -> int:
+        return self._total_errors
+
+    @property
+    def total_tokens(self) -> int:
+        return self._total_tokens
 
     def _route(self, task_type: TaskType, classification: str) -> ModelProvider:
         """Route a request to the appropriate provider.
@@ -182,21 +201,67 @@ class BaseModelGateway(ModelGateway):
         self, provider: ModelProvider, request: ModelRequest, operation: str
     ) -> ModelResponse:
         """Call provider with retry and fallback."""
-        try:
-            return await self._call_provider(provider, request, operation)
-        except Exception as primary_error:
-            if self._fallback and self._fallback != provider:
-                try:
-                    return await self._call_provider(self._fallback, request, operation)
-                except Exception:
-                    pass
+        if not request.correlation_id:
+            request.correlation_id = str(uuid.uuid4())
+
+        self._total_requests += 1
+        logger.info(
+            "Calling gateway operation=%s provider=%s task_type=%s correlation_id=%s",
+            operation,
+            provider.value if hasattr(provider, "value") else str(provider),
+            request.task_type.value if hasattr(request.task_type, "value") else str(request.task_type),
+            request.correlation_id,
+        )
+
+        # Empty prompt validation
+        if not request.prompt or not request.prompt.strip():
+            self._total_errors += 1
+            logger.error("Empty prompt in ModelRequest correlation_id=%s", request.correlation_id)
             return ModelResponse(
                 content="",
-                provider=provider.value,
+                provider=provider.value if hasattr(provider, "value") else str(provider),
                 model="error",
-                task_type=request.task_type.value,
+                task_type=request.task_type.value if hasattr(request.task_type, "value") else str(request.task_type),
+                error="Empty prompt provided",
+                unverified=True,
+                correlation_id=request.correlation_id,
+            )
+
+        try:
+            res = await self._call_provider(provider, request, operation)
+            if not res.correlation_id:
+                res.correlation_id = request.correlation_id
+            self._total_tokens += res.tokens_used
+            return res
+        except Exception as primary_error:
+            logger.warning(
+                "Primary provider %s failed for correlation_id=%s: %s",
+                provider.value if hasattr(provider, "value") else str(provider),
+                request.correlation_id,
+                primary_error,
+            )
+            if self._fallback and self._fallback != provider:
+                try:
+                    res = await self._call_provider(self._fallback, request, operation)
+                    if not res.correlation_id:
+                        res.correlation_id = request.correlation_id
+                    self._total_tokens += res.tokens_used
+                    return res
+                except Exception as fallback_error:
+                    logger.error(
+                        "Fallback provider failed for correlation_id=%s: %s",
+                        request.correlation_id,
+                        fallback_error,
+                    )
+            self._total_errors += 1
+            return ModelResponse(
+                content="",
+                provider=provider.value if hasattr(provider, "value") else str(provider),
+                model="error",
+                task_type=request.task_type.value if hasattr(request.task_type, "value") else str(request.task_type),
                 error=str(primary_error),
                 unverified=True,
+                correlation_id=request.correlation_id,
             )
 
     async def _call_provider(

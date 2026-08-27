@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>About GFIN | Global Fraud Intelligence Network</title>
+    <meta name="description" content="Learn about the Global Fraud Intelligence Network (GFIN) — connecting 189 countries to detect, investigate, and prevent financial fraud through evidence-based intelligence.">
+    <meta name="keywords" content="GFIN, about GFIN, fraud intelligence, scam detection, cybercrime platform, international fraud network, law enforcement cooperation">
+    <meta name="author" content="Global Fraud Intelligence Network (GFIN)">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GFIN — Global Fraud Intelligence Network">
+    <meta property="og:title" content="About GFIN | Global Fraud Intelligence Network">
+    <meta property="og:description" content="Connecting 189 countries to detect, investigate, and prevent financial fraud through evidence-based intelligence.">
+    <meta property="og:url" content="https://gfin-system.com/about">
+    <meta property="og:image" content="https://gfin-system.com/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="About GFIN | Global Fraud Intelligence Network">
+    <meta name="twitter:description" content="Connecting 189 countries to detect, investigate, and prevent financial fraud.">
+    <link rel="icon" href="/favicon.ico">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GovernmentOrganization",
+        "name": "Global Fraud Intelligence Network",
+        "alternateName": "GFIN",
+        "url": "https://gfin-system.com",
+        "description": "International law enforcement platform for fraud detection, investigation, and prevention across 189 countries.",
+        "areaServed": "Worldwide"
+    }
+    </script>
+    <style>
+        :root {
+            --gov-blue: #003366;
+            --gov-blue-dark: #0d365d;
+            --gov-blue-light: #1a4a7a;
+            --gov-gold: #c5a55a;
+            --gov-gold-light: #d9b96e;
+            --gov-text: #1e293b;
+            --gov-dark-gray: #64748b;
+            --gov-mid-gray: #cbd5e1;
+            --gov-light-gray: #f1f5f9;
+            --gov-radius: 8px;
+            --gov-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --gov-shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', Roboto, Arial, sans-serif; color: var(--gov-text); background: #f8fafc; line-height: 1.6; }
+        a { color: var(--gov-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        /* Top Bar */
+        .top-bar { background: var(--gov-blue-dark); color: rgba(255,255,255,0.8); font-size: 12px; padding: 6px 0; }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+        .top-bar a { color: rgba(255,255,255,0.8); padding: 2px 8px; }
+
+        /* Header */
+        .header { background: white; border-bottom: 1px solid var(--gov-mid-gray); position: relative; }
+        .header .container { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
+        .logo-block { display: flex; align-items: center; gap: 14px; }
+        .logo-seal { width: 52px; height: 52px; background: var(--gov-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gov-gold); flex-shrink: 0; }
+        .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--gov-blue); letter-spacing: -0.3px; }
+        .logo-text p { font-size: 11px; color: var(--gov-dark-gray); letter-spacing: 1px; text-transform: uppercase; }
+        .nav { display: flex; gap: 2px; align-items: center; }
+        .nav a { color: var(--gov-dark-gray); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 4px; transition: all 0.2s; }
+        .nav a:hover, .nav a.active { background: var(--gov-light-gray); color: var(--gov-blue); }
+        .nav .btn-report { background: var(--gov-blue); color: white !important; padding: 8px 18px; border-radius: 4px; font-weight: 600; margin-left: 10px; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--gov-blue); }
+
+        /* Hero */
+        .hero { background: linear-gradient(135deg, var(--gov-blue-dark) 0%, var(--gov-blue) 50%, var(--gov-blue-light) 100%); color: white; padding: 60px 0; position: relative; overflow: hidden; }
+        .hero .container { max-width: 900px; text-align: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 20px; }
+        .hero h2 { font-size: 38px; font-weight: 800; line-height: 1.15; margin-bottom: 16px; letter-spacing: -0.5px; }
+        .hero h2 .gold { color: var(--gov-gold-light); }
+        .hero p { font-size: 17px; opacity: 0.9; margin-bottom: 28px; max-width: 620px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+
+        /* Sections */
+        section { padding: 60px 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-header { text-align: center; margin-bottom: 40px; }
+        .section-header .eyebrow { color: var(--gov-blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px; }
+        .section-header h3 { font-size: 28px; font-weight: 700; color: var(--gov-text); }
+        .section-header p { color: var(--gov-dark-gray); margin-top: 8px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* Mission */
+        .mission-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 30px; }
+        .mission-card { background: white; border: 1px solid var(--gov-mid-gray); border-radius: var(--gov-radius); padding: 28px; box-shadow: var(--gov-shadow); }
+        .mission-card .icon { width: 52px; height: 52px; border-radius: var(--gov-radius); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; background: var(--gov-light-gray); }
+        .mission-card h4 { font-size: 17px; font-weight: 700; color: var(--gov-blue); margin-bottom: 8px; }
+        .mission-card p { font-size: 14px; color: var(--gov-dark-gray); line-height: 1.6; }
+
+        /* Evidence Chain */
+        .evidence-chain { background: var(--gov-blue-dark); color: white; padding: 60px 0; }
+        .evidence-chain .section-header h3 { color: white; }
+        .evidence-chain .section-header p { color: rgba(255,255,255,0.7); }
+        .chain-flow { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 30px; }
+        .chain-step { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); padding: 12px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; text-align: center; }
+        .chain-arrow { color: var(--gov-gold); font-size: 18px; display: flex; align-items: center; }
+        .chain-desc { text-align: center; margin-top: 24px; font-size: 14px; opacity: 0.7; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* Technology */
+        .tech-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 30px; }
+        .tech-card { background: white; border: 1px solid var(--gov-mid-gray); border-radius: var(--gov-radius); padding: 24px; transition: all 0.2s; }
+        .tech-card:hover { border-color: var(--gov-blue); box-shadow: var(--gov-shadow-lg); }
+        .tech-card h4 { font-size: 16px; font-weight: 700; color: var(--gov-blue); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .tech-card p { font-size: 14px; color: var(--gov-dark-gray); line-height: 1.6; }
+
+        /* Stats */
+        .stats-bar { background: var(--gov-blue); color: white; padding: 50px 0; }
+        .stats-bar .container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; text-align: center; }
+        .stat-item .number { font-size: 36px; font-weight: 800; color: var(--gov-gold-light); }
+        .stat-item .label { font-size: 13px; opacity: 0.8; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* Public Tools */
+        .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 30px; }
+        .tool-card { background: white; border: 1px solid var(--gov-mid-gray); border-radius: var(--gov-radius); padding: 24px; text-align: center; transition: all 0.2s; }
+        .tool-card:hover { border-color: var(--gov-gold); box-shadow: var(--gov-shadow-lg); }
+        .tool-card .tool-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--gov-light-gray); display: flex; align-items: center; justify-content: center; font-size: 26px; margin: 0 auto 16px; }
+        .tool-card h4 { font-size: 16px; font-weight: 700; color: var(--gov-blue); margin-bottom: 8px; }
+        .tool-card p { font-size: 13px; color: var(--gov-dark-gray); margin-bottom: 14px; }
+        .tool-card a { display: inline-block; padding: 8px 18px; background: var(--gov-blue); color: white; border-radius: 4px; font-size: 13px; font-weight: 600; text-decoration: none; }
+        .tool-card a:hover { background: var(--gov-blue-dark); }
+
+        /* Footer */
+        .footer { background: var(--gov-blue-dark); color: rgba(255,255,255,0.7); padding: 50px 0 0; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+        .footer-brand h4 { color: white; font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .footer-brand p { font-size: 13px; line-height: 1.6; }
+        .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; padding: 4px 0; text-decoration: none; }
+        .footer-col a:hover { color: var(--gov-gold-light); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 20px 0; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 10px; box-shadow: var(--gov-shadow-lg); z-index: 100; }
+            .nav.open { display: flex; }
+            .nav a { padding: 12px 16px; font-size: 15px; }
+            .mobile-menu-btn { display: block; }
+            .top-bar { font-size: 11px; }
+            .top-bar .container { flex-wrap: wrap; gap: 4px; }
+            .hero { padding: 40px 0; }
+            .hero h2 { font-size: 28px; }
+            .hero p { font-size: 15px; }
+            section { padding: 40px 0; }
+            .container { padding: 0 16px; }
+            .section-header h3 { font-size: 22px; }
+            .mission-grid { grid-template-columns: 1fr; gap: 16px; }
+            .tech-grid { grid-template-columns: 1fr; gap: 16px; }
+            .stats-bar .container { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .tools-grid { grid-template-columns: 1fr; gap: 16px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .top-bar .container { justify-content: center; }
+            .hero { padding: 30px 0; }
+            .hero h2 { font-size: 22px; }
+            .hero p { font-size: 14px; }
+            section { padding: 32px 0; }
+            .container { padding: 0 14px; }
+            .section-header h3 { font-size: 19px; }
+            .stats-bar .container { grid-template-columns: 1fr 1fr; gap: 12px; }
+            .stat-item .number { font-size: 28px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+            .footer-bottom { font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container">
+            <div>&#128737; Official Government-Grade Fraud Intelligence Platform</div>
+            <div>
+                <a href="/victim">Report a Scam</a>
+                <a href="/scam-sites">Check a Website</a>
+                <a href="/police/login">Police Access</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="logo-block">
+                <div class="logo-seal">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke="#c5a55a" stroke-width="2" fill="none"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="logo-text">
+                    <h1>GFIN</h1>
+                    <p>Global Fraud Intelligence Network</p>
+                </div>
+            </div>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/victim">Report a Scam</a>
+                <a href="/scam-sites">Scam Database</a>
+                <a href="/awareness">Awareness</a>
+                <a href="/about" class="active">About</a>
+                <a href="/police/login" class="btn-report">Police Login</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="document.getElementById('mainNav').classList.toggle('open'); event.stopPropagation();">&#9776;</button>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">&#128737; Official Government-Grade Platform</div>
+            <h2>About <span class="gold">GFIN</span></h2>
+            <p data-i18n="about_hero_desc">The Global Fraud Intelligence Network connects law enforcement agencies across 189 countries to detect, investigate, and prevent financial fraud — from crypto scams to cross-border impersonation networks.</p>
+        </div>
+    </section>
+
+    <!-- MISSION -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Our Mission</div>
+                <h3>Fighting Fraud Through International Cooperation</h3>
+                <p data-i18n="about_mission_desc">GFIN bridges the gap between citizens, national cybercrime units, and international bodies — ensuring every fraud report reaches the right authorities within seconds.</p>
+            </div>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="icon">&#128274;</div>
+                    <h4 data-i18n="about_mission_detect">Detect</h4>
+                    <p data-i18n="about_mission_detect_desc">Our deterministic scam detection engine analyzes 300+ patterns across 15 scam categories in multiple languages — no AI dependency required for core detection.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="icon">&#128269;</div>
+                    <h4 data-i18n="about_mission_investigate">Investigate</h4>
+                    <p data-i18n="about_mission_investigate_desc">The Intelligence Playbook traces from subject through full evidence chains to physical addresses, mapping 13 entity types across domains, wallets, companies, and people.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="icon">&#129309;</div>
+                    <h4 data-i18n="about_mission_prevent">Prevent</h4>
+                    <p data-i18n="about_mission_prevent_desc">Public awareness broadcasts, a scam website database, and Telegram alerts empower citizens to recognize and avoid fraud before it happens.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EVIDENCE CHAIN -->
+    <section class="evidence-chain">
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" style="color: var(--gov-gold);">Methodology</div>
+                <h3>Evidence-First Intelligence</h3>
+                <p>Every claim is unverified until corroborated. Our pipeline follows a strict evidence chain — no assumptions, no hallucinations.</p>
+            </div>
+            <div class="chain-flow">
+                <div class="chain-step">SOURCE</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">OBSERVATION</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">EVIDENCE</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">ENTITY</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">RELATIONSHIP</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">GRAPH</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">CORRELATION</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">AI ANALYSIS</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">CONFIDENCE</div>
+                <div class="chain-arrow">&rarr;</div>
+                <div class="chain-step">HUMAN REVIEW</div>
+            </div>
+            <p class="chain-desc">All external content is treated as DATA, not AUTHORITY. Citizen reports are allegations until corroborated through our investigation pipeline.</p>
+        </div>
+    </section>
+
+    <!-- TECHNOLOGY -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Technology</div>
+                <h3>Built for Scale, Designed for Independence</h3>
+                <p data-i18n="about_tech_desc">GFIN's local-first hybrid intelligence model keeps deterministic logic at the core, with AI as an optional reasoning enhancement.</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <h4>&#9889; Deterministic Detection Engine v3</h4>
+                    <p>300+ patterns across 15 scam categories, 10 behavioral heuristics, multi-language detection (EN/ES/DE/FR), known-bad databases, and risk scoring with confidence levels. Zero external AI dependency.</p>
+                </div>
+                <div class="tech-card">
+                    <h4>&#128279; Multi-Chain Crypto Scanner</h4>
+                    <p>Detects and traces 10 wallet types: BTC, ETH/EVM, Tron, Solana, TON, Algorand, XRP, Litecoin, Dogecoin. USDT tracked across 9 chains. Free API integrations with Blockscout, Tronscan, Solscan, and more.</p>
+                </div>
+                <div class="tech-card">
+                    <h4>&#128202; Intelligence Playbook v5.2</h4>
+                    <p>Traces from Subject through full Evidence Chain to Physical Address. 13 entity types, 8 trigger types, adversarial testing rejects shared CDN/registrar links to prevent false accusations.</p>
+                </div>
+                <div class="tech-card">
+                    <h4>&#129504; Model Gateway</h4>
+                    <p>Provider-independent AI architecture. OpenAI (gpt-5.6-luna) as primary, with Local AI and other approved models. The gateway ensures GFIN is never hard-coded to a single AI provider.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stat-item">
+                <div class="number">189</div>
+                <div class="label">Countries Connected</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">15</div>
+                <div class="label">Scam Categories</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">24/7</div>
+                <div class="label">Continuous Monitoring</div>
+            </div>
+            <div class="stat-item">
+                <div class="number">4</div>
+                <div class="label">Languages Supported</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PUBLIC TOOLS -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow">Public Tools</div>
+                <h3>Empowering Citizens to Fight Fraud</h3>
+                <p>Free, accessible tools that help the public recognize, report, and avoid scams.</p>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">&#128241;</div>
+                    <h4>Telegram Alert Bot</h4>
+                    <p>@GFINofficialbot provides anonymized scam alerts, website checking, and educational awareness broadcasts on a 6-hour cycle across 12 scam types.</p>
+                    <a href="https://t.me/GFINofficialbot" target="_blank">Open Bot &rarr;</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">&#127760;</div>
+                    <h4>Scam Website Database</h4>
+                    <p>Auto-populated from complaint submissions and monitor detections. Search, filter, and check any domain before sending money or data.</p>
+                    <a href="/scam-sites">Check a Website &rarr;</a>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon">&#128214;</div>
+                    <h4>Awareness Library</h4>
+                    <p>Educational materials covering 12 scam types: Recovery, Romance, Investment, Phishing, Impersonation, Crypto, Tech Support, and more.</p>
+                    <a href="/awareness">Learn More &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h4>&#128737; GFIN</h4>
+                    <p>Global Fraud Intelligence Network — connecting law enforcement across 189 countries to detect, investigate, and prevent financial fraud through evidence-based intelligence.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Platform</h5>
+                    <a href="/">Home</a>
+                    <a href="/victim">Report a Scam</a>
+                    <a href="/scam-sites">Scam Database</a>
+                    <a href="/awareness">Awareness</a>
+                    <a href="/about">About</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Legal</h5>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/terms">Terms of Use</a>
+                    <a href="/gdpr">GDPR Compliance</a>
+                    <a href="/contact">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Tools</h5>
+                    <a href="https://t.me/GFINofficialbot" target="_blank">Telegram Bot</a>
+                    <a href="/scam-sites">Check a Website</a>
+                    <a href="/police/login">Police Access</a>
+                    <a href="/api/docs">API Documentation</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 Global Fraud Intelligence Network (GFIN). All rights reserved.</div>
+                <div>gfin-system.com</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    // Close mobile menu on link click
+    document.querySelectorAll('.nav a').forEach(a => a.addEventListener('click', () => document.getElementById('mainNav').classList.remove('open')));
+    </script>
+    <script src="/gfin-i18n.js"></script>
+</body>
+</html>

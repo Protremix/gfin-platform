@@ -1,0 +1,85 @@
+{
+  "task": "TASK 08 \u2014 Threat Intelligence",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "VirusTotal",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "domain/IP/URL/file reputation"
+    },
+    {
+      "provider": "URLScan.io",
+      "auth": "OPTIONAL (free)",
+      "status": "IMPLEMENTED_LIVE_TESTED",
+      "support": "URL scanning, screenshots, network"
+    },
+    {
+      "provider": "ThreatFox (abuse.ch)",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "malware IOCs"
+    },
+    {
+      "provider": "URLHaus (abuse.ch)",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "malicious URLs"
+    },
+    {
+      "provider": "Pulsedive",
+      "auth": "OPTIONAL (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "threat indicators"
+    },
+    {
+      "provider": "Google Safe Browsing",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "malicious URL detection"
+    },
+    {
+      "provider": "AbuseIPDB",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "IP abuse reports"
+    },
+    {
+      "provider": "Shodan",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "host intelligence"
+    },
+    {
+      "provider": "Censys",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "support": "certificate/host intelligence"
+    },
+    {
+      "provider": "Recorded Future",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "support": "threat intelligence feeds"
+    },
+    {
+      "provider": "CrowdStrike",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "support": "adversary intelligence"
+    },
+    {
+      "provider": "GreyNoise",
+      "auth": "API_KEY (free)",
+      "status": "CONNECTOR_DESIGNED",
+      "support": "IP scanner classification"
+    }
+  ],
+  "payload_safety": "GFIN never executes malicious payloads. Threat intelligence connectors receive metadata only.",
+  "summary": {
+    "live_tested": 1,
+    "auth_required": 7,
+    "designed": 1,
+    "blocked": 2
+  }
+}

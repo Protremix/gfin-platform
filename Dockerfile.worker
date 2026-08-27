@@ -1,0 +1,17 @@
+# GFIN Worker Dockerfile
+# Layer B: Production deployment (REQUIRES EXTERNAL INFRASTRUCTURE)
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Application code
+COPY packages/ ./packages/
+
+# Run worker process (Layer B: will be a real worker loop)
+# Layer A: placeholder
+CMD ["python", "-c", "print('GFIN Worker starting... (Layer B: REQUIRES EXTERNAL INFRASTRUCTURE)')"]

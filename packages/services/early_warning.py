@@ -10,7 +10,7 @@ Layer B: Real-time Kafka stream processing, ML anomaly detection (REQUIRES EXTER
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -18,14 +18,14 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class WarningLevel(str, Enum):
+class WarningLevel(StrEnum):
     INFO = "INFO"
     WATCH = "WATCH"
     WARNING = "WARNING"
     CRITICAL = "CRITICAL"
 
 
-class WarningRuleType(str, Enum):
+class WarningRuleType(StrEnum):
     ENTITY_VELOCITY = "ENTITY_VELOCITY"
     CAMPAIGN_ESCALATION = "CAMPAIGN_ESCALATION"
     INFRASTRUCTURE_CHANGE = "INFRASTRUCTURE_CHANGE"

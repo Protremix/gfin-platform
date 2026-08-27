@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>GFIN — Victim Portal</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e1a; color: #e1e5f0; min-height: 100vh;
+        }
+        .header {
+            background: linear-gradient(135deg, #0d47a1, #1565c0); padding: 20px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .header h1 { font-size: 22px; color: white; }
+        .header .logo { font-size: 28px; }
+        .header .badge { background: #ff6b6b; color: white; padding: 4px 10px; border-radius: 12px; font-size: 12px; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .card {
+            background: #141b2d; border-radius: 12px; padding: 24px; margin-bottom: 16px;
+            border: 1px solid #1e2a3d;
+        }
+        .card h2 { color: #64b5f6; font-size: 18px; margin-bottom: 16px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; color: #90a4ae; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%; padding: 10px 14px; background: #0a0e1a; border: 1px solid #2a3a4d;
+            border-radius: 8px; color: #e1e5f0; font-size: 14px;
+        }
+        .form-group textarea { min-height: 100px; resize: vertical; }
+        .btn {
+            padding: 12px 24px; border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn-primary { background: #1565c0; color: white; }
+        .btn-primary:hover { background: #0d47a1; }
+        .btn-secondary { background: #2a3a4d; color: #90a4ae; }
+        .btn-success { background: #2e7d32; color: white; }
+        .stage-tracker { display: flex; flex-direction: column; gap: 0; }
+        .stage {
+            display: flex; align-items: center; gap: 12px; padding: 12px 0;
+            position: relative;
+        }
+        .stage::before {
+            content: ''; position: absolute; left: 15px; top: 36px; bottom: -12px;
+            width: 2px; background: #2a3a4d;
+        }
+        .stage:last-child::before { display: none; }
+        .stage-dot {
+            width: 32px; height: 32px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+            z-index: 1;
+        }
+        .stage-dot.completed { background: #2e7d32; color: white; }
+        .stage-dot.active { background: #1565c0; color: white; animation: pulse 2s infinite; }
+        .stage-dot.pending { background: #2a3a4d; color: #546e7a; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .stage-info { flex: 1; }
+        .stage-info h4 { font-size: 15px; color: #e1e5f0; }
+        .stage-info p { font-size: 13px; color: #90a4ae; }
+        .stage-time { font-size: 12px; color: #546e7a; }
+        .notification {
+            background: #0d1521; border-left: 4px solid #1565c0; padding: 12px 16px;
+            border-radius: 8px; margin-bottom: 8px;
+        }
+        .notification .from { font-size: 12px; color: #64b5f6; margin-bottom: 4px; }
+        .notification .msg { font-size: 14px; color: #e1e5f0; }
+        .notification .time { font-size: 11px; color: #546e7a; margin-top: 4px; }
+        .badge-stage {
+            display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 12px;
+            font-weight: 600;
+        }
+        .stage-received { background: #37474f; color: #90a4ae; }
+        .stage-review { background: #e65100; color: white; }
+        .stage-investigating { background: #1565c0; color: white; }
+        .stage-evidence { background: #6a1b9a; color: white; }
+        .stage-routed { background: #00838f; color: white; }
+        .stage-police { background: #2e7d32; color: white; }
+        .stage-action { background: #f57f17; color: #1a1a1a; }
+        .stage-closed { background: #424242; color: #90a4ae; }
+        .alert {
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 16px;
+            font-size: 14px;
+        }
+        .alert-success { background: rgba(46,125,50,0.15); border: 1px solid #2e7d32; color: #81c784; }
+        .alert-error { background: rgba(183,28,28,0.15); border: 1px solid #c62828; color: #ef5350; }
+        .alert-info { background: rgba(21,101,192,0.15); border: 1px solid #1565c0; color: #64b5f6; }
+        .ref-number {
+            font-size: 24px; font-weight: 700; color: #64b5f6; letter-spacing: 2px;
+            text-align: center; padding: 16px; background: #0a0e1a; border-radius: 8px;
+            border: 1px dashed #1565c0; margin: 12px 0;
+        }
+        .tabs { display: flex; gap: 4px; margin-bottom: 20px; border-bottom: 1px solid #1e2a3d; }
+        .tab { padding: 12px 20px; cursor: pointer; color: #546e7a; font-size: 15px; border-bottom: 2px solid transparent; }
+        .tab.active { color: #64b5f6; border-bottom: 2px solid #1565c0; }
+        .file-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .file-chip { background: #1e2a3d; padding: 6px 12px; border-radius: 16px; font-size: 13px; color: #90a4ae; }
+        .hidden { display: none; }
+        .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-box { text-align: center; padding: 16px; background: #0a0e1a; border-radius: 8px; }
+        .stat-box .num { font-size: 28px; font-weight: 700; color: #64b5f6; }
+        .stat-box .label { font-size: 12px; color: #546e7a; margin-top: 4px; }
+
+        /* ===== MOBILE / SAMSUNG BROWSER FIX ===== */
+        @media (max-width: 768px) {
+            .header { padding: 14px 16px; flex-wrap: wrap; gap: 8px; }
+            .header h1 { font-size: 18px; }
+            .header .logo { font-size: 22px; }
+            .header .badge { font-size: 10px; padding: 3px 8px; }
+            .container { padding: 14px; max-width: 100%; }
+            .card { padding: 16px; border-radius: 10px; }
+            .card h2 { font-size: 16px; }
+            .form-group label { font-size: 15px; }
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 16px !important; padding: 12px 14px;
+            }
+            .btn { padding: 14px 20px; font-size: 16px; width: 100%; }
+            .tabs { flex-wrap: wrap; gap: 0; }
+            .tab { padding: 10px 14px; font-size: 14px; }
+            .stat-grid { grid-template-columns: 1fr; gap: 8px; }
+            .stat-box .num { font-size: 22px; }
+            .stat-box .label { font-size: 13px; }
+            .stage-info h4 { font-size: 16px; }
+            .stage-info p { font-size: 14px; }
+            .ref-number { font-size: 18px; padding: 12px; }
+            .notification .msg { font-size: 15px; }
+        }
+        @media (max-width: 480px) {
+            .header { flex-direction: column; text-align: center; }
+            .header h1 { font-size: 16px; }
+            .card { padding: 14px; }
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 16px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><span class="logo">🛡️</span> GFIN Victim Portal</h1>
+        <span class="badge">Secure & Confidential</span>
+    </div>
+
+    <div class="container">
+        <!-- LOGIN / REGISTER VIEW -->
+        <div id="auth-view">
+            <div class="card">
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTab('login')">Login</div>
+                    <div class="tab" onclick="switchTab('register')">Register</div>
+                    <div class="tab" onclick="switchTab('track')">Track Complaint</div>
+                </div>
+
+                <!-- LOGIN TAB -->
+                <div id="login-tab">
+                    <h2>Login to Your Account</h2>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="login-email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-password" placeholder="••••••••">
+                    </div>
+                    <button class="btn btn-primary" onclick="login()">Login</button>
+                    <div id="login-error"></div>
+                </div>
+
+                <!-- REGISTER TAB -->
+                <div id="register-tab" class="hidden">
+                    <h2>Register to File a Complaint</h2>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="reg-name" placeholder="John Doe">
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="reg-email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-password" placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <select id="reg-country">
+                            <option value="">Select your country</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="ES">Spain</option>
+                            <option value="DE">Germany</option>
+                            <option value="FR">France</option>
+                            <option value="IT">Italy</option>
+                            <option value="NL">Netherlands</option>
+                            <option value="US">United States</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number (optional)</label>
+                        <input type="tel" id="reg-phone" placeholder="+44 7XXX XXX XXX">
+                    </div>
+                    <button class="btn btn-primary" onclick="register()">Register</button>
+                    <div id="reg-error"></div>
+                </div>
+
+                <!-- TRACK TAB -->
+                <div id="track-tab" class="hidden">
+                    <h2>Track Your Complaint</h2>
+                    <p style="color: #90a4ae; margin-bottom: 16px;">Enter your complaint reference number to see the current status.</p>
+                    <div class="form-group">
+                        <label>Reference Number</label>
+                        <input type="text" id="track-ref" placeholder="GFIN-2026-XXXXXX" style="font-size: 18px; letter-spacing: 2px;">
+                    </div>
+                    <button class="btn btn-primary" onclick="trackComplaint()">Track</button>
+                    <div id="track-error"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard-view" class="hidden">
+            <!-- FILE NEW COMPLAINT -->
+            <div class="card">
+                <h2>📝 File a New Complaint</h2>
+                <div id="complaint-form">
+                    <div class="form-group">
+                        <label>What type of scam happened to you?</label>
+                        <select id="scam-type">
+                            <option value="">Select scam type</option>
+                            <option value="RECOVERY_SCAM">Recovery Scam (someone promised to recover your lost money)</option>
+                            <option value="INVESTMENT_FRAUD">Investment Fraud / Crypto Scam</option>
+                            <option value="BRAND_IMPERSONATION">Brand Impersonation (fake company/organization)</option>
+                            <option value="PHISHING">Phishing (fake emails, websites)</option>
+                            <option value="ROMANCE_SCAM">Romance Scam</option>
+                            <option value="PAYMENT_FRAUD">Payment Fraud / Unauthorized Charges</option>
+                            <option value="SOCIAL_ENGINEERING">Social Engineering</option>
+                            <option value="OTHER">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Who or what targeted you? (website, company name, person, phone, email)</label>
+                        <input type="text" id="complaint-target" placeholder="e.g., cncintelinfo.com, John Smith, +44 7XXX">
+                    </div>
+                    <div class="form-group">
+                        <label>When did this happen?</label>
+                        <input type="date" id="complaint-date">
+                    </div>
+                    <div class="form-group">
+                        <label>How much money did you lose? (if any)</label>
+                        <input type="text" id="complaint-loss" placeholder="e.g., $5,000 USD">
+                    </div>
+                    <div class="form-group">
+                        <label>Describe what happened in detail</label>
+                        <textarea id="complaint-description" placeholder="Please describe step by step what happened. Include names, websites, phone numbers, email addresses, crypto wallet addresses, and any other details you can remember. The more detail you provide, the better we can investigate."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Upload Evidence (screenshots, emails, receipts, chat logs)</label>
+                        <input type="file" id="complaint-files" multiple>
+                        <div class="file-list" id="file-list"></div>
+                    </div>
+                    <button class="btn btn-success" onclick="submitComplaint()">Submit Complaint & Start Investigation</button>
+                    <div id="complaint-error"></div>
+                </div>
+            </div>
+
+            <!-- MY COMPLAINTS -->
+            <div class="card" id="my-complaints-card">
+                <h2>📋 My Complaints</h2>
+                <div id="complaints-list"></div>
+            </div>
+
+            <!-- COMPLAINT DETAIL -->
+            <div class="card hidden" id="complaint-detail">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 id="detail-title"></h2>
+                    <button class="btn btn-secondary" onclick="closeDetail()">← Back</button>
+                </div>
+                <div class="ref-number" id="detail-ref"></div>
+                
+                <!-- Stage Tracker -->
+                <h2 style="margin-top: 20px;">Investigation Progress</h2>
+                <div class="stage-tracker" id="stage-tracker"></div>
+                
+                <!-- Notifications -->
+                <h2 style="margin-top: 20px;">Notifications from Police</h2>
+                <div id="notifications-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = window.location.origin.includes('8000') ? '' : '';
+        let currentVictim = null;
+        let victimToken = null;
+
+        // Tab switching
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            document.querySelectorAll('#auth-view > .card > div').forEach(d => d.classList.add('hidden'));
+            document.getElementById(tab + '-tab').classList.remove('hidden');
+        }
+
+        // Register
+        async function register() {
+            const data = {
+                name: document.getElementById('reg-name').value,
+                email: document.getElementById('reg-email').value,
+                password: document.getElementById('reg-password').value,
+                country: document.getElementById('reg-country').value,
+                phone: document.getElementById('reg-phone').value
+            };
+            if (!data.name || !data.email || !data.password) {
+                showMsg('reg-error', 'Please fill all required fields', 'error');
+                return;
+            }
+            try {
+                const res = await fetch(`${API}/api/victim/register`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showMsg('reg-error', 'Registration successful! Please login.', 'success');
+                    setTimeout(() => switchTab('login'), 1500);
+                } else {
+                    showMsg('reg-error', result.error || 'Registration failed', 'error');
+                }
+            } catch (e) { showMsg('reg-error', 'Connection error', 'error'); }
+        }
+
+        // Login
+        async function login() {
+            const data = {
+                email: document.getElementById('login-email').value,
+                password: document.getElementById('login-password').value
+            };
+            try {
+                const res = await fetch(`${API}/api/victim/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    currentVictim = result.victim;
+                    victimToken = result.token;
+                    localStorage.setItem('gfin_victim_token', result.token);
+                    localStorage.setItem('gfin_victim_id', result.victim.id);
+                    showDashboard();
+                } else {
+                    showMsg('login-error', result.error || 'Login failed', 'error');
+                }
+            } catch (e) { showMsg('login-error', 'Connection error', 'error'); }
+        }
+
+        // Track complaint (no login needed)
+        async function trackComplaint() {
+            const ref = document.getElementById('track-ref').value.trim().toUpperCase();
+            if (!ref) { showMsg('track-error', 'Enter reference number', 'error'); return; }
+            try {
+                const res = await fetch(`${API}/api/victim/track/${ref}`);
+                const result = await res.json();
+                if (result.success) {
+                    showTrackedComplaint(result.complaint);
+                } else {
+                    showMsg('track-error', result.error || 'Complaint not found', 'error');
+                }
+            } catch (e) { showMsg('track-error', 'Connection error', 'error'); }
+        }
+
+        function showTrackedComplaint(c) {
+            const stages = getStages();
+            const currentStage = c.investigation_stage;
+            const stageIdx = stages.findIndex(s => s.key === currentStage);
+            
+            let html = '<div class="alert alert-info">Complaint found. Current status below.</div>';
+            html += `<div class="ref-number">${c.reference_number}</div>`;
+            html += '<h2>Investigation Progress</h2><div class="stage-tracker">';
+            stages.forEach((s, i) => {
+                let dotClass = 'pending';
+                if (i < stageIdx) dotClass = 'completed';
+                else if (i === stageIdx) dotClass = 'active';
+                html += `<div class="stage"><div class="stage-dot ${dotClass}">${i < stageIdx ? '✓' : i+1}</div>
+                    <div class="stage-info"><h4>${s.label}</h4><p>${s.description}</p></div></div>`;
+            });
+            html += '</div>';
+            document.getElementById('track-tab').innerHTML = html;
+        }
+
+        // Submit complaint
+        async function submitComplaint() {
+            const data = {
+                scam_type: document.getElementById('scam-type').value,
+                target: document.getElementById('complaint-target').value,
+                incident_date: document.getElementById('complaint-date').value,
+                financial_loss: document.getElementById('complaint-loss').value,
+                description: document.getElementById('complaint-description').value
+            };
+            if (!data.scam_type || !data.target || !data.description) {
+                showMsg('complaint-error', 'Please fill all required fields', 'error');
+                return;
+            }
+            const formData = new FormData();
+            Object.keys(data).forEach(k => formData.append(k, data[k]));
+            const files = document.getElementById('complaint-files').files;
+            for (let i = 0; i < files.length; i++) formData.append('files', files[i]);
+            
+            try {
+                const res = await fetch(`${API}/api/victim/complaint`, {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showMsg('complaint-error', `Complaint filed! Your reference number is ${result.reference_number}`, 'success');
+                    loadComplaints();
+                } else {
+                    showMsg('complaint-error', result.error || 'Failed to submit', 'error');
+                }
+            } catch (e) { showMsg('complaint-error', 'Connection error', 'error'); }
+        }
+
+        // Show dashboard
+        async function showDashboard() {
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            await loadComplaints();
+        }
+
+        // Load complaints
+        async function loadComplaints() {
+            const token = localStorage.getItem('gfin_victim_token');
+            try {
+                const res = await fetch(`${API}/api/victim/complaints`, {
+                    headers: {'Authorization': `Bearer ${token}`}
+                });
+                const result = await res.json();
+                if (result.success) {
+                    renderComplaints(result.complaints);
+                }
+            } catch (e) {}
+        }
+
+        function renderComplaints(complaints) {
+            const container = document.getElementById('complaints-list');
+            if (!complaints.length) {
+                container.innerHTML = '<p style="color:#546e7a;">No complaints filed yet. Use the form above.</p>';
+                return;
+            }
+            container.innerHTML = complaints.map(c => {
+                const stageClass = getStageClass(c.investigation_stage);
+                const stageLabel = getStageLabel(c.investigation_stage);
+                return `<div class="card" style="background:#0a0e1a; cursor:pointer;" onclick="viewComplaint('${c.reference_number}')">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div><strong>${c.reference_number}</strong><br>
+                        <span style="color:#90a4ae; font-size:13px;">${c.scam_type} — ${c.target}</span></div>
+                        <span class="badge-stage ${stageClass}">${stageLabel}</span>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function viewComplaint(ref) {
+            const token = localStorage.getItem('gfin_victim_token');
+            try {
+                const res = await fetch(`${API}/api/victim/complaint/${ref}`, {
+                    headers: {'Authorization': `Bearer ${token}`}
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showComplaintDetail(result.complaint);
+                }
+            } catch (e) {}
+        }
+
+        function showComplaintDetail(c) {
+            document.getElementById('complaints-list').parentElement.style.display = 'none';
+            document.getElementById('complaint-form').parentElement.style.display = 'none';
+            const detail = document.getElementById('complaint-detail');
+            detail.classList.remove('hidden');
+            document.getElementById('detail-title').textContent = `${c.scam_type} — ${c.target}`;
+            document.getElementById('detail-ref').textContent = c.reference_number;
+            
+            // Render stages
+            const stages = getStages();
+            const stageIdx = stages.findIndex(s => s.key === c.investigation_stage);
+            document.getElementById('stage-tracker').innerHTML = stages.map((s, i) => {
+                let dotClass = 'pending';
+                if (i < stageIdx) dotClass = 'completed';
+                else if (i === stageIdx) dotClass = 'active';
+                return `<div class="stage"><div class="stage-dot ${dotClass}">${i < stageIdx ? '✓' : i+1}</div>
+                    <div class="stage-info"><h4>${s.label}</h4><p>${s.description}</p></div></div>`;
+            }).join('');
+            
+            // Render notifications
+            const notifs = c.notifications || [];
+            const nContainer = document.getElementById('notifications-list');
+            if (!notifs.length) {
+                nContainer.innerHTML = '<p style="color:#546e7a;">No notifications yet. You will receive updates here as the investigation progresses.</p>';
+            } else {
+                nContainer.innerHTML = notifs.map(n => `<div class="notification">
+                    <div class="from">From: ${n.from_agency || 'GFIN System'}</div>
+                    <div class="msg">${n.message}</div>
+                    <div class="time">${new Date(n.created_date).toLocaleString()}</div>
+                </div>`).join('');
+            }
+        }
+
+        function closeDetail() {
+            document.getElementById('complaint-detail').classList.add('hidden');
+            document.getElementById('complaints-list').parentElement.style.display = '';
+            document.getElementById('complaint-form').parentElement.style.display = '';
+        }
+
+        // Helper functions
+        function getStages() {
+            return [
+                {key: 'RECEIVED', label: 'Complaint Received', description: 'Your complaint has been received and logged'},
+                {key: 'UNDER_REVIEW', label: 'Under Review', description: 'GFIN system is analyzing your complaint'},
+                {key: 'INVESTIGATING', label: 'Investigating', description: 'Automated investigation is running — collecting evidence'},
+                {key: 'EVIDENCE_COLLECTED', label: 'Evidence Collected', description: 'Evidence has been gathered and analyzed'},
+                {key: 'ROUTED_TO_POLICE', label: 'Routed to Police', description: 'Your case has been sent to the relevant national police authority'},
+                {key: 'POLICE_REVIEW', label: 'Police Review', description: 'Police are reviewing your case'},
+                {key: 'ACTION_TAKEN', label: 'Action Taken', description: 'Police have taken action on your case'},
+                {key: 'CLOSED', label: 'Case Closed', description: 'The investigation is complete'}
+            ];
+        }
+        function getStageLabel(key) {
+            const s = getStages().find(s => s.key === key);
+            return s ? s.label : key;
+        }
+        function getStageClass(key) {
+            const map = {RECEIVED:'stage-received', UNDER_REVIEW:'stage-review', INVESTIGATING:'stage-investigating',
+                EVIDENCE_COLLECTED:'stage-evidence', ROUTED_TO_POLICE:'stage-routed', POLICE_REVIEW:'stage-police',
+                ACTION_TAKEN:'stage-action', CLOSED:'stage-closed'};
+            return map[key] || 'stage-received';
+        }
+        function showMsg(id, msg, type) {
+            const el = document.getElementById(id);
+            el.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+        }
+
+        // Auto-login on page load
+        (async function() {
+            const token = localStorage.getItem('gfin_victim_token');
+            if (token) {
+                try {
+                    const res = await fetch(`${API}/api/victim/me`, {headers: {'Authorization': `Bearer ${token}`}});
+                    const result = await res.json();
+                    if (result.success) { currentVictim = result.victim; showDashboard(); }
+                } catch (e) {}
+            }
+        })();
+    </script>
+</body>
+</html>

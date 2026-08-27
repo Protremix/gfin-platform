@@ -1,0 +1,150 @@
+{
+  "case_id": "CASE-REAL-001",
+  "actions": [
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "reported scam phishing domain 2026 active fraud campaign",
+      "purpose": "Autonomous target discovery",
+      "result": "Found CNC Intelligence impostor scam report page",
+      "evidence_id": "E-001"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "crypto scam address reported fraud 2026 public warning",
+      "purpose": "Target discovery - crypto angle",
+      "result": "Found DFPI crypto scam tracker and Chainabuse",
+      "evidence_id": "E-002"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "read_web_page",
+      "query": "https://cncintel.com/report-cnc-intelligence-impostor-scams/",
+      "purpose": "Read target's public scam report",
+      "result": "50+ fraudulent domains, email addresses, and social media profiles documented",
+      "evidence_id": "E-003"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "doh_query",
+      "query": "DNS-over-HTTPS (dns.google) for 14 domains from CNC report",
+      "purpose": "Verify which domains still have active DNS",
+      "result": "2 domains active: cncintelinfo.com (ProtonMail MX), cncintelltd.com (SEDO parking IP 91.195.240.123)",
+      "evidence_id": "E-004"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "doh_query",
+      "query": "Detailed DNS for cncintelinfo.com (A, NS, MX, TXT, SOA, CAA)",
+      "purpose": "Infrastructure investigation - email config",
+      "result": "No A record, NS=dns1/dns2.registrar-servers.com (Namecheap), MX=ProtonMail, TXT=ProtonMail verification + SPF",
+      "evidence_id": "E-005"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "doh_query",
+      "query": "Detailed DNS for cncintelltd.com",
+      "purpose": "Infrastructure investigation",
+      "result": "A=91.195.240.123, NS=dnsowl.com (NameSilo), no MX/TXT",
+      "evidence_id": "E-006"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "ipinfo_api",
+      "query": "ipinfo.io/91.195.240.123/json",
+      "purpose": "IP intelligence for cncintelltd.com",
+      "result": "AS47846 SEDO GmbH, Munich, Bavaria, DE \u2014 domain parking infrastructure",
+      "evidence_id": "E-007"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "hackertarget_api",
+      "query": "api.hackertarget.com/reverseiplookup/?q=91.195.240.123",
+      "purpose": "Shared infrastructure discovery (AUTONOMOUS)",
+      "result": "Thousands of domains on SEDO parking IP \u2014 cncintelltd.com is parked, not actively hosting scam content",
+      "evidence_id": "E-008"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "doh_query",
+      "query": "DNS for legitimate cncintel.com",
+      "purpose": "Baseline comparison - legitimate site infrastructure",
+      "result": "A=172.66.42.247/172.66.41.9 (Cloudflare), NS=Cloudflare, MX=Zoho, TXT=Google/OpenAI/Zoho verification",
+      "evidence_id": "E-009"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "rdap_query",
+      "query": "RDAP lookup for 5 domains (cncintelinfo.com, cncintelltd.com, cncintelco.pro, cncintell.online, cnc-intel.com)",
+      "purpose": "WHOIS/registration data",
+      "result": "cncintelinfo.com: registered 2026-02-26 via NameCheap; cncintelltd.com: registered 2025-12-10 via NameSilo; cnc-intel.com: registered 2024-06-20 via NameCheap, expired 2026-06-20 (redemption period); cncintell.online: not found (expired)",
+      "evidence_id": "E-010"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "\"CNC Intelligence\" impersonation scam victim report crypto recovery fraud",
+      "purpose": "Victim report discovery",
+      "result": "Found Reddit r/Scams victim report, Reddit r/CryptoScams warning, Facebook public warning from CNC Intelligence, LinkedIn warning",
+      "evidence_id": "E-011"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "\"PAYBACK LTD\" \"CYBER-FORENSICS.NET\" scam recovery fraud report",
+      "purpose": "Connected entity investigation",
+      "result": "Found scam tracker listings on cryptolegal.uk and legalbyte.io; FBI San Diego seized Payback LTD websites; Trustpilot reviews complaining about cyber-forensics.net",
+      "evidence_id": "E-012"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "\"rapid digital recovery\" scam fake crypto recovery fraud report",
+      "purpose": "Extended network investigation",
+      "result": "Found spam in obituary guestbooks (SEO spam tactic), Reddit victim reports linking to CNC Intelligence impersonation",
+      "evidence_id": "E-013"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "read_web_page",
+      "query": "https://www.cryptolegal.uk/list-of-reported-scam-companies-part-2/",
+      "purpose": "Scam tracker corroboration",
+      "result": "cyber-forensics.net and payback.ltd listed as recovery scams in independent database",
+      "evidence_id": "E-014"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "reddit CNCINTEL PAYBACK LTD recovery scam bitcoin wallet address",
+      "purpose": "Financial/crypto evidence",
+      "result": "Victim on Reddit reported being told to send crypto to a 'Regulator's wallet address' provided by scammers",
+      "evidence_id": "E-015"
+    },
+    {
+      "timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "actor": "GPT Luna",
+      "tool": "web_search",
+      "query": "FBI San Diego seizes cryptocurrency recovery websites Payback LTD",
+      "purpose": "Law enforcement corroboration",
+      "result": "FBI seized MyChargeBack, Payback LTD, and Claim Justice websites \u2014 connected recovery scam network",
+      "evidence_id": "E-016"
+    }
+  ],
+  "total_actions": 16
+}

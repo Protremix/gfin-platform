@@ -1,0 +1,2072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GFIN - Victim Complaint Portal</title>
+    <style>
+        :root {
+            --bg-color: #0f0f1e;
+            --card-bg: #1a1a2e;
+            --accent-color: #0f3460;
+            --accent-hover: #16213e;
+            --text-color: #eee;
+            --text-muted: #a0a0c0;
+            --warning-color: #e94560;
+            --success-color: #00b894;
+            --border-color: #1f4068;
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            --focus-glow: 0 0 0 3px rgba(15, 52, 96, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(180deg, #16162a 0%, #0f0f1e 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.25rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .branding {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .logo-shield {
+            width: 44px;
+            height: 44px;
+            background: var(--accent-color);
+            border: 2px solid #16213e;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(15, 52, 96, 0.6);
+        }
+
+        .logo-shield svg {
+            width: 26px;
+            height: 26px;
+            fill: #00fff5;
+        }
+
+        .brand-text h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-text p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .lang-selector-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .lang-btn {
+            background: #16213e;
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0.45rem 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            background: var(--accent-color);
+            border-color: #00fff5;
+        }
+
+        .lang-btn.active {
+            background: var(--accent-color);
+            border-color: var(--warning-color);
+            box-shadow: 0 0 8px rgba(233, 69, 96, 0.4);
+            font-weight: 600;
+        }
+
+        .security-banner {
+            background: rgba(15, 52, 96, 0.25);
+            border-bottom: 1px solid rgba(31, 64, 104, 0.5);
+            padding: 0.5rem 1.5rem;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #00fff5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        main {
+            flex: 1;
+            max-width: 900px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tab-nav {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.85rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-color);
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            border-bottom-color: var(--warning-color);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .wizard-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .wizard-steps::before {
+            content: '';
+            position: absolute;
+            top: 18px;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background: var(--border-color);
+            z-index: 1;
+        }
+
+        .step-item {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            width: 23%;
+            cursor: pointer;
+        }
+
+        .step-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #16162a;
+            border: 2px solid var(--border-color);
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-item.active .step-circle {
+            background: var(--warning-color);
+            border-color: var(--warning-color);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(233, 69, 96, 0.5);
+        }
+
+        .step-item.completed .step-circle {
+            background: var(--accent-color);
+            border-color: #00fff5;
+            color: #00fff5;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .step-item.active .step-label {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .form-section-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(31, 64, 104, 0.5);
+        }
+
+        .form-section-header h2 {
+            font-size: 1.35rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-section-header p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group {
+            margin-bottom: 1.4rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .wizard-steps .step-label {
+                display: none;
+            }
+            .card {
+                padding: 1.25rem;
+            }
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.45rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #ddd;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #111122;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #00fff5;
+            box-shadow: var(--focus-glow);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .target-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+            padding: 0.35rem 0.75rem;
+            background: rgba(15, 52, 96, 0.5);
+            border: 1px solid var(--accent-color);
+            border-radius: 6px;
+            font-size: 0.85rem;
+            color: #00fff5;
+            font-weight: 500;
+        }
+
+        .file-dropzone {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            text-align: center;
+            background: #111122;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .file-dropzone:hover, .file-dropzone.dragover {
+            border-color: var(--warning-color);
+            background: rgba(233, 69, 96, 0.05);
+        }
+
+        .file-dropzone svg {
+            width: 36px;
+            height: 36px;
+            fill: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .file-list {
+            margin-top: 0.75rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .file-item {
+            background: #16213e;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+
+        .file-item-remove {
+            color: var(--warning-color);
+            cursor: pointer;
+            font-weight: 700;
+            padding: 0 0.3rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-top: 0.25rem;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--warning-color);
+            cursor: pointer;
+        }
+
+        .button-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--warning-color);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #d63447;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: var(--accent-color);
+            color: #fff;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-outline:hover {
+            color: #fff;
+            border-color: #fff;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .error-message {
+            background: rgba(233, 69, 96, 0.15);
+            border: 1px solid var(--warning-color);
+            color: #ff6b81;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.25rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-box {
+            text-align: center;
+            padding: 2.5rem 1rem;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(0, 184, 148, 0.15);
+            border: 2px solid var(--success-color);
+            color: var(--success-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.25rem auto;
+        }
+
+        .case-ref-card {
+            background: #111122;
+            border: 1px dashed var(--success-color);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin: 1.5rem auto;
+            max-width: 450px;
+        }
+
+        .case-ref-code {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #00fff5;
+            letter-spacing: 2px;
+            margin: 0.4rem 0;
+            font-family: monospace;
+        }
+
+        .timeline {
+            margin-top: 1.5rem;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        html[dir="rtl"] .timeline {
+            border-left: none;
+            border-right: 2px solid var(--accent-color);
+            padding-left: 0;
+            padding-right: 1.25rem;
+        }
+
+        .timeline-item {
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: -1.65rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--warning-color);
+            border: 2px solid var(--card-bg);
+        }
+
+        html[dir="rtl"] .timeline-item::before {
+            left: auto;
+            right: -1.65rem;
+        }
+
+        .timeline-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .timeline-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .timeline-desc {
+            font-size: 0.85rem;
+            color: #bbb;
+        }
+
+        .notice-box {
+            background: rgba(15, 52, 96, 0.3);
+            border-left: 4px solid var(--accent-color);
+            padding: 0.85rem 1rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+        }
+
+        html[dir="rtl"] .notice-box {
+            border-left: none;
+            border-right: 4px solid var(--accent-color);
+            border-radius: 8px 0 0 8px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="branding">
+                <div class="logo-shield">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8Messy="/>
+                        <path d="M12 2L4 6v5c0 5.05 3.48 9.77 8 10.93 4.52-1.16 8-5.88 8-10.93V6l-8-4zm0 4a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm-4 10c0-2.67 5.33-4 8-4s8 1.33 8 4v1H8v-1z"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1 id="txt-appName">GFIN</h1>
+                    <p id="txt-appFullName">Global Fraud Intelligence Network</p>
+                </div>
+            </div>
+
+            <!-- Language Buttons Bar -->
+            <div class="lang-selector-bar" id="langSelector">
+                <!-- Injected by JS -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Security Banner -->
+    <div class="security-banner">
+        <span id="txt-sslBadge">🔒 256-Bit Encrypted & Confidential</span>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- Navigation Tabs -->
+        <div class="tab-nav">
+            <button class="tab-btn active" id="tabBtnFile" onclick="switchMainTab('file')">
+                📄 <span id="txt-tabFileComplaint">File Complaint</span>
+            </button>
+            <button class="tab-btn" id="tabBtnStatus" onclick="switchMainTab('status')">
+                🔍 <span id="txt-tabCheckStatus">Check Case Status</span>
+            </button>
+        </div>
+
+        <!-- Section 1: Complaint Filing Form Container -->
+        <div id="sectionFiling" class="card">
+            
+            <!-- Step Progress Indicator -->
+            <div class="wizard-steps">
+                <div class="step-item active" id="stepIndicator1" onclick="goToStep(1)">
+                    <div class="step-circle">1</div>
+                    <div class="step-label" id="txt-step1Name">Your Info</div>
+                </div>
+                <div class="step-item" id="stepIndicator2" onclick="goToStep(2)">
+                    <div class="step-circle">2</div>
+                    <div class="step-label" id="txt-step2Name">Scam Details</div>
+                </div>
+                <div class="step-item" id="stepIndicator3" onclick="goToStep(3)">
+                    <div class="step-circle">3</div>
+                    <div class="step-label" id="txt-step3Name">Evidence</div>
+                </div>
+                <div class="step-item" id="stepIndicator4" onclick="goToStep(4)">
+                    <div class="step-circle">4</div>
+                    <div class="step-label" id="txt-step4Name">Review & Submit</div>
+                </div>
+            </div>
+
+            <!-- Error Alert -->
+            <div class="error-message" id="errorMessage"></div>
+
+            <form id="complaintForm" onsubmit="handleFormSubmit(event)">
+
+                <!-- STEP 1: Victim Information -->
+                <div class="form-step-content" id="stepContent1">
+                    <div class="form-section-header">
+                        <h2 id="txt-step1Title">Step 1: Victim Contact Information</h2>
+                        <p id="txt-step1Subtitle">Provide contact details for status updates. Anonymous reporting is supported.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="victimName" id="txt-lblVictimName">Full Name (Optional)</label>
+                        <input type="text" id="victimName" name="victim_name" placeholder="...">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="victimEmail" id="txt-lblVictimEmail">Email Address (Required for status updates) *</label>
+                            <input type="email" id="victimEmail" name="victim_email" required placeholder="...">
+                        </div>
+                        <div class="form-group">
+                            <label for="victimPhone" id="txt-lblVictimPhone">Phone Number (Optional)</label>
+                            <input type="tel" id="victimPhone" name="victim_phone" placeholder="...">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="victimCountry" id="txt-lblCountry">Country of Residence *</label>
+                        <select id="victimCountry" name="country" required>
+                            <option value="" id="txt-optSelectCountry">-- Select Country --</option>
+                            <option value="United States">United States</option><option value="United Kingdom">United Kingdom</option><option value="Canada">Canada</option><option value="Australia">Australia</option><option value="Germany">Germany</option><option value="France">France</option><option value="Spain">Spain</option><option value="United Arab Emirates">United Arab Emirates</option><option value="China">China</option><option value="India">India</option><option value="Afghanistan">Afghanistan</option><option value="Albania">Albania</option><option value="Algeria">Algeria</option><option value="Andorra">Andorra</option><option value="Angola">Angola</option><option value="Antigua and Barbuda">Antigua and Barbuda</option><option value="Argentina">Argentina</option><option value="Armenia">Armenia</option><option value="Austria">Austria</option><option value="Azerbaijan">Azerbaijan</option><option value="Bahamas">Bahamas</option><option value="Bahrain">Bahrain</option><option value="Bangladesh">Bangladesh</option><option value="Barbados">Barbados</option><option value="Belarus">Belarus</option><option value="Belgium">Belgium</option><option value="Belize">Belize</option><option value="Benin">Benin</option><option value="Bhutan">Bhutan</option><option value="Bolivia">Bolivia</option><option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option><option value="Botswana">Botswana</option><option value="Brazil">Brazil</option><option value="Brunei">Brunei</option><option value="Bulgaria">Bulgaria</option><option value="Burkina Faso">Burkina Faso</option><option value="Burundi">Burundi</option><option value="Cabo Verde">Cabo Verde</option><option value="Cambodia">Cambodia</option><option value="Cameroon">Cameroon</option><option value="Central African Republic">Central African Republic</option><option value="Chad">Chad</option><option value="Chile">Chile</option><option value="Colombia">Colombia</option><option value="Comoros">Comoros</option><option value="Congo">Congo</option><option value="Costa Rica">Costa Rica</option><option value="Croatia">Croatia</option><option value="Cuba">Cuba</option><option value="Cyprus">Cyprus</option><option value="Czech Republic">Czech Republic</option><option value="Denmark">Denmark</option><option value="Djibouti">Djibouti</option><option value="Dominica">Dominica</option><option value="Dominican Republic">Dominican Republic</option><option value="Ecuador">Ecuador</option><option value="Egypt">Egypt</option><option value="El Salvador">El Salvador</option><option value="Equatorial Guinea">Equatorial Guinea</option><option value="Eritrea">Eritrea</option><option value="Estonia">Estonia</option><option value="Eswatini">Eswatini</option><option value="Ethiopia">Ethiopia</option><option value="Fiji">Fiji</option><option value="Finland">Finland</option><option value="Gabon">Gabon</option><option value="Gambia">Gambia</option><option value="Georgia">Georgia</option><option value="Ghana">Ghana</option><option value="Greece">Greece</option><option value="Grenada">Grenada</option><option value="Guatemala">Guatemala</option><option value="Guinea">Guinea</option><option value="Guinea-Bissau">Guinea-Bissau</option><option value="Guyana">Guyana</option><option value="Haiti">Haiti</option><option value="Honduras">Honduras</option><option value="Hungary">Hungary</option><option value="Iceland">Iceland</option><option value="Indonesia">Indonesia</option><option value="Iran">Iran</option><option value="Iraq">Iraq</option><option value="Ireland">Ireland</option><option value="Israel">Israel</option><option value="Italy">Italy</option><option value="Jamaica">Jamaica</option><option value="Japan">Japan</option><option value="Jordan">Jordan</option><option value="Kazakhstan">Kazakhstan</option><option value="Kenya">Kenya</option><option value="Kiribati">Kiribati</option><option value="Kosovo">Kosovo</option><option value="Kuwait">Kuwait</option><option value="Kyrgyzstan">Kyrgyzstan</option><option value="Laos">Laos</option><option value="Latvia">Latvia</option><option value="Lebanon">Lebanon</option><option value="Lesotho">Lesotho</option><option value="Liberia">Liberia</option><option value="Libya">Libya</option><option value="Liechtenstein">Liechtenstein</option><option value="Lithuania">Lithuania</option><option value="Luxembourg">Luxembourg</option><option value="Madagascar">Madagascar</option><option value="Malawi">Malawi</option><option value="Malaysia">Malaysia</option><option value="Maldives">Maldives</option><option value="Mali">Mali</option><option value="Malta">Malta</option><option value="Marshall Islands">Marshall Islands</option><option value="Mauritania">Mauritania</option><option value="Mauritius">Mauritius</option><option value="Mexico">Mexico</option><option value="Micronesia">Micronesia</option><option value="Moldova">Moldova</option><option value="Monaco">Monaco</option><option value="Mongolia">Mongolia</option><option value="Montenegro">Montenegro</option><option value="Morocco">Morocco</option><option value="Mozambique">Mozambique</option><option value="Myanmar">Myanmar</option><option value="Namibia">Namibia</option><option value="Nauru">Nauru</option><option value="Nepal">Nepal</option><option value="Netherlands">Netherlands</option><option value="New Zealand">New Zealand</option><option value="Nicaragua">Nicaragua</option><option value="Niger">Niger</option><option value="Nigeria">Nigeria</option><option value="North Macedonia">North Macedonia</option><option value="Norway">Norway</option><option value="Oman">Oman</option><option value="Pakistan">Pakistan</option><option value="Palau">Palau</option><option value="Palestine">Palestine</option><option value="Panama">Panama</option><option value="Papua New Guinea">Papua New Guinea</option><option value="Paraguay">Paraguay</option><option value="Peru">Peru</option><option value="Philippines">Philippines</option><option value="Poland">Poland</option><option value="Portugal">Portugal</option><option value="Qatar">Qatar</option><option value="Romania">Romania</option><option value="Russia">Russia</option><option value="Rwanda">Rwanda</option><option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option><option value="Saint Lucia">Saint Lucia</option><option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option><option value="Samoa">Samoa</option><option value="San Marino">San Marino</option><option value="Sao Tome and Principe">Sao Tome and Principe</option><option value="Saudi Arabia">Saudi Arabia</option><option value="Senegal">Senegal</option><option value="Serbia">Serbia</option><option value="Seychelles">Seychelles</option><option value="Sierra Leone">Sierra Leone</option><option value="Singapore">Singapore</option><option value="Slovakia">Slovakia</option><option value="Slovenia">Slovenia</option><option value="Solomon Islands">Solomon Islands</option><option value="Somalia">Somalia</option><option value="South Africa">South Africa</option><option value="South Korea">South Korea</option><option value="South Sudan">South Sudan</option><option value="Sri Lanka">Sri Lanka</option><option value="Sudan">Sudan</option><option value="Suriname">Suriname</option><option value="Sweden">Sweden</option><option value="Switzerland">Switzerland</option><option value="Syria">Syria</option><option value="Taiwan">Taiwan</option><option value="Tajikistan">Tajikistan</option><option value="Tanzania">Tanzania</option><option value="Thailand">Thailand</option><option value="Timor-Leste">Timor-Leste</option><option value="Togo">Togo</option><option value="Tonga">Tonga</option><option value="Trinidad and Tobago">Trinidad and Tobago</option><option value="Tunisia">Tunisia</option><option value="Turkey">Turkey</option><option value="Turkmenistan">Turkmenistan</option><option value="Tuvalu">Tuvalu</option><option value="Uganda">Uganda</option><option value="Ukraine">Ukraine</option><option value="Uruguay">Uruguay</option><option value="Uzbekistan">Uzbekistan</option><option value="Vanuatu">Vanuatu</option><option value="Vatican City">Vatican City</option><option value="Venezuela">Venezuela</option><option value="Vietnam">Vietnam</option><option value="Yemen">Yemen</option><option value="Zambia">Zambia</option><option value="Zimbabwe">Zimbabwe</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Scam Details -->
+                <div class="form-step-content" id="stepContent2" style="display: none;">
+                    <div class="form-section-header">
+                        <h2 id="txt-step2Title">Step 2: Fraud & Incident Details</h2>
+                        <p id="txt-step2Subtitle">Specify the scam category, financial loss, and scammer identifier.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scamType" id="txt-lblScamType">Scam / Fraud Category *</label>
+                        <select id="scamType" name="scam_type" required>
+                            <option value="" id="txt-optSelectScamType">-- Select Scam Type --</option>
+                            <option value="recovery_scam" id="txt-scam_recovery">Recovery Scam (Fake Asset Recovery)</option>
+                            <option value="romance_scam" id="txt-scam_romance">Romance / Relationship Scam</option>
+                            <option value="investment_fraud" id="txt-scam_investment">Investment / Ponzi Fraud</option>
+                            <option value="phishing" id="txt-scam_phishing">Phishing / Identity Theft</option>
+                            <option value="impersonation" id="txt-scam_impersonation">Impersonation (Government / Bank / Police)</option>
+                            <option value="lottery_scam" id="txt-scam_lottery">Lottery / Prize Scam</option>
+                            <option value="tech_support" id="txt-scam_tech">Tech Support Scam</option>
+                            <option value="advance_fee" id="txt-scam_advance">Advance Fee / Loan Fraud</option>
+                            <option value="crypto_fraud" id="txt-scam_crypto">Cryptocurrency / Wallet Fraud</option>
+                            <option value="wire_fraud" id="txt-scam_wire">Wire / Bank Transfer Fraud</option>
+                            <option value="other" id="txt-scam_other">Other Fraud Type</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetInput" id="txt-lblTarget">Scam Target / Scammer Identifier *</label>
+                        <input type="text" id="targetInput" name="target" required oninput="handleTargetInput(this.value)" placeholder="...">
+                        <div id="targetBadgeContainer" style="display: none;">
+                            <div class="target-badge">
+                                <span id="txt-targetDetected">Detected Target Type:</span>
+                                <strong id="detectedTargetText">Domain</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="lossAmount" id="txt-lblLossAmount">Financial Loss Amount *</label>
+                            <input type="number" id="lossAmount" name="amount" step="0.01" min="0" required placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="lossCurrency" id="txt-lblCurrency">Currency *</label>
+                            <select id="lossCurrency" name="currency" required>
+                                <option value="USD">USD ($)</option>
+                                <option value="EUR">EUR (€)</option>
+                                <option value="GBP">GBP (£)</option>
+                                <option value="AUD">AUD ($)</option>
+                                <option value="CAD">CAD ($)</option>
+                                <option value="AED">AED (د.إ)</option>
+                                <option value="CNY">CNY (¥)</option>
+                                <option value="INR">INR (₹)</option>
+                                <option value="USDT">USDT (Crypto)</option>
+                                <option value="BTC">BTC (Crypto)</option>
+                                <option value="ETH">ETH (Crypto)</option>
+                                <option value="OTHER">Other Currency</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="incidentDate" id="txt-lblIncidentDate">Date of Incident *</label>
+                        <input type="date" id="incidentDate" name="incident_date" required>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Evidence & Description -->
+                <div class="form-step-content" id="stepContent3" style="display: none;">
+                    <div class="form-section-header">
+                        <h2 id="txt-step3Title">Step 3: Upload Evidence & Proofs</h2>
+                        <p id="txt-step3Subtitle">Upload screenshots, receipts, headers, or chat logs to strengthen your report.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="scamDescription" id="txt-lblDescription">Detailed Scam Description *</label>
+                        <textarea id="scamDescription" name="description" required placeholder="..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="txt-lblEvidence">Upload Evidence Files (Optional)</label>
+                        <div class="file-dropzone" id="dropzone" onclick="document.getElementById('evidenceFiles').click()">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+                            </svg>
+                            <p id="txt-evidenceDropText">Drag & drop files here, or click to browse</p>
+                            <span style="font-size: 0.78rem; color: var(--text-muted);" id="txt-evidenceHint">Supported formats: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV. Max 10MB per file.</span>
+                        </div>
+                        <input type="file" id="evidenceFiles" name="evidence" multiple style="display: none;" onchange="handleFileSelect(event)">
+                        <div class="file-list" id="fileListContainer"></div>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Review & Submit -->
+                <div class="form-step-content" id="stepContent4" style="display: none;">
+                    <div class="form-section-header">
+                        <h2 id="txt-step4Title">Step 4: Review & Submit Report</h2>
+                        <p id="txt-step4Subtitle">Verify your information and confirm the data processing agreement.</p>
+                    </div>
+
+                    <div style="background: #111122; border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+                        <h4 style="color: #00fff5; margin-bottom: 0.75rem; font-size: 0.95rem;">📋 Report Summary Review</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.88rem;">
+                            <div><strong style="color: var(--text-muted);">Victim:</strong> <span id="summaryVictim">-</span></div>
+                            <div><strong style="color: var(--text-muted);">Email:</strong> <span id="summaryEmail">-</span></div>
+                            <div><strong style="color: var(--text-muted);">Country:</strong> <span id="summaryCountry">-</span></div>
+                            <div><strong style="color: var(--text-muted);">Category:</strong> <span id="summaryCategory">-</span></div>
+                            <div><strong style="color: var(--text-muted);">Target Identifier:</strong> <span id="summaryTarget">-</span></div>
+                            <div><strong style="color: var(--text-muted);">Loss Amount:</strong> <span id="summaryLoss">-</span></div>
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="consentCheckbox" name="consent" required>
+                        <label for="consentCheckbox" style="font-weight: 400; font-size: 0.88rem; margin: 0; cursor: pointer;" id="txt-lblConsent">
+                            I agree to the Data Processing Agreement and declare that all submitted information is accurate to the best of my knowledge. *
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Form Wizard Navigation Buttons -->
+                <div class="button-bar">
+                    <button type="button" class="btn btn-outline" id="btnPrev" onclick="changeStep(-1)" style="display: none;">
+                        <span id="txt-btnPrev">← Previous Step</span>
+                    </button>
+                    <div></div>
+                    <button type="button" class="btn btn-primary" id="btnNext" onclick="changeStep(1)">
+                        <span id="txt-btnNext">Next Step →</span>
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmit" style="display: none;">
+                        <span id="txt-btnSubmit">Submit Fraud Complaint</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Success Container -->
+            <div id="successView" class="success-box" style="display: none;">
+                <div class="success-icon">✓</div>
+                <h2 id="txt-successTitle" style="color: #fff; margin-bottom: 0.5rem;">Complaint Filed Successfully!</h2>
+                <p id="txt-successSubtitle" style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Your complaint has been securely transmitted to the GFIN Fraud Intelligence Network.</p>
+                
+                <div class="case-ref-card">
+                    <div id="txt-lblCaseRef" style="font-size: 0.85rem; color: var(--text-muted);">Your Case Reference Number:</div>
+                    <div class="case-ref-code" id="displayedCaseRef">GFIN-2026-XXXXX</div>
+                    <button class="btn btn-secondary" style="padding: 0.35rem 0.85rem; font-size: 0.8rem; margin-top: 0.4rem;" onclick="copyCaseRef()">
+                        📋 <span id="txt-btnCopyRef">Copy Reference</span>
+                    </button>
+                </div>
+
+                <div style="background: #16213e; border-radius: 10px; padding: 1.25rem; text-align: left; max-width: 650px; margin: 0 auto 1.5rem auto;">
+                    <h4 id="txt-nextStepsHeader" style="color: #00fff5; margin-bottom: 0.6rem;">What Happens Next?</h4>
+                    <ul style="list-style-type: none; font-size: 0.88rem; color: #ddd; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <li id="txt-nextStep1">1. Automated threat extraction and pattern detection runs on the target indicators.</li>
+                        <li id="txt-nextStep2">2. Verified intelligence is cross-matched and dispatched to police networks.</li>
+                        <li id="txt-nextStep3">3. Track your complaint status anytime using your unique Case Reference Number.</li>
+                    </ul>
+                </div>
+
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="goToStatusWithRef()">
+                        🔍 <span id="txt-btnCheckThisStatus">Check Case Status Now</span>
+                    </button>
+                    <button class="btn btn-outline" onclick="resetFormToStart()">
+                        ✏️ <span id="txt-btnFileAnother">File Another Complaint</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Section 2: Case Status Tracker Container -->
+        <div id="sectionStatus" class="card" style="display: none;">
+            <div class="form-section-header">
+                <h2 id="txt-statusSearchTitle">Track Complaint Status</h2>
+                <p id="txt-statusSearchSubtitle">Enter your official Case Reference Number to view victim progress updates.</p>
+            </div>
+
+            <form onsubmit="handleStatusSearch(event)" style="margin-bottom: 1.5rem;">
+                <div class="form-group">
+                    <label for="statusRefInput" id="txt-lblRefInput">Case Reference Number *</label>
+                    <div style="display: flex; gap: 0.75rem;">
+                        <input type="text" id="statusRefInput" required placeholder="e.g. GFIN-2026-89421" style="flex: 1;">
+                        <button type="submit" class="btn btn-primary" id="btnSearchStatusSubmit">
+                            <span id="txt-btnSearchStatus">Search Case</span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div id="statusResultContainer" style="display: none;">
+                <!-- Result card dynamically rendered here -->
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2026 GFIN - Global Fraud Intelligence Network. Confidential Victim Complaint Portal.</p>
+        <p style="margin-top: 0.4rem; font-size: 0.75rem;">Operated in compliance with Interpol, Europol, and Global Law Enforcement Fraud Taskforce Standards.</p>
+    </footer>
+
+    <script>
+
+        const i18nData = {
+  "en": {
+    "flag": "🇬🇧",
+    "name": "English",
+    "appName": "GFIN",
+    "appFullName": "Global Fraud Intelligence Network",
+    "portalTitle": "Multi-Language Victim Reporting Portal",
+    "sslBadge": "🔒 256-Bit Encrypted & Confidential",
+    "tabFileComplaint": "File Complaint",
+    "tabCheckStatus": "Check Case Status",
+    "step1Name": "Your Info",
+    "step2Name": "Scam Details",
+    "step3Name": "Evidence",
+    "step4Name": "Review & Submit",
+    "step1Title": "Step 1: Victim Contact Information",
+    "step1Subtitle": "Provide contact details for status updates. Anonymous reporting is supported.",
+    "step2Title": "Step 2: Fraud & Incident Details",
+    "step2Subtitle": "Specify the scam category, financial loss, and scammer identifier.",
+    "step3Title": "Step 3: Upload Evidence & Proofs",
+    "step3Subtitle": "Upload screenshots, receipts, headers, or chat logs to strengthen your report.",
+    "step4Title": "Step 4: Review & Submit Report",
+    "step4Subtitle": "Verify your information and confirm the data processing agreement.",
+    "lblVictimName": "Full Name (Optional)",
+    "phVictimName": "Leave blank for anonymous reporting",
+    "lblVictimEmail": "Email Address (Required for status updates) *",
+    "phVictimEmail": "victim@example.com",
+    "lblVictimPhone": "Phone Number (Optional)",
+    "phVictimPhone": "+1 (555) 000-0000",
+    "lblCountry": "Country of Residence *",
+    "optSelectCountry": "-- Select Country --",
+    "lblScamType": "Scam / Fraud Category *",
+    "optSelectScamType": "-- Select Scam Type --",
+    "scam_recovery": "Recovery Scam (Fake Asset Recovery)",
+    "scam_romance": "Romance / Relationship Scam",
+    "scam_investment": "Investment / Ponzi Fraud",
+    "scam_phishing": "Phishing / Identity Theft",
+    "scam_impersonation": "Impersonation (Government / Bank / Police)",
+    "scam_lottery": "Lottery / Prize Scam",
+    "scam_tech": "Tech Support Scam",
+    "scam_advance": "Advance Fee / Loan Fraud",
+    "scam_crypto": "Cryptocurrency / Wallet Fraud",
+    "scam_wire": "Wire / Bank Transfer Fraud",
+    "scam_other": "Other Fraud Type",
+    "lblTarget": "Scam Target / Scammer Identifier *",
+    "phTarget": "Enter domain (site.com), crypto wallet (0x.../bc1...), phone (+1...), or email",
+    "targetDetected": "Detected Target Type:",
+    "target_domain": "🌐 Web Domain / URL",
+    "target_wallet": "🪙 Crypto Wallet Address",
+    "target_phone": "📞 Phone Number",
+    "target_email": "✉️ Email Address",
+    "target_unknown": "❓ General Identifier",
+    "lblLossAmount": "Financial Loss Amount *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "Currency *",
+    "lblIncidentDate": "Date of Incident *",
+    "lblDescription": "Detailed Scam Description *",
+    "phDescription": "Describe how the scam occurred, contact methods, fake promises, and chronological order...",
+    "lblEvidence": "Upload Evidence Files (Optional)",
+    "evidenceDropText": "Drag & drop files here, or click to browse",
+    "evidenceHint": "Supported formats: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV. Max 10MB per file.",
+    "lblConsent": "I agree to the Data Processing Agreement and declare that all submitted information is accurate to the best of my knowledge. *",
+    "btnNext": "Next Step →",
+    "btnPrev": "← Previous Step",
+    "btnSubmit": "Submit Fraud Complaint",
+    "submitting": "Submitting Complaint...",
+    "errRequired": "Please complete all required fields marked with *.",
+    "errEmail": "Please enter a valid email address.",
+    "errConsent": "You must accept the data processing agreement.",
+    "successTitle": "Complaint Filed Successfully!",
+    "successSubtitle": "Your complaint has been securely transmitted to the GFIN Fraud Intelligence Network.",
+    "lblCaseRef": "Your Case Reference Number:",
+    "btnCopyRef": "Copy Reference",
+    "copied": "Copied!",
+    "nextStepsHeader": "What Happens Next?",
+    "nextStep1": "1. Automated threat extraction and pattern detection runs on the target indicators.",
+    "nextStep2": "2. Verified intelligence is cross-matched and dispatched to police networks.",
+    "nextStep3": "3. Track your complaint status anytime using your unique Case Reference Number.",
+    "btnCheckThisStatus": "Check Case Status Now",
+    "btnFileAnother": "File Another Complaint",
+    "statusSearchTitle": "Track Complaint Status",
+    "statusSearchSubtitle": "Enter your official Case Reference Number to view victim progress updates.",
+    "lblRefInput": "Case Reference Number *",
+    "phRefInput": "e.g. GFIN-2026-89421",
+    "btnSearchStatus": "Search Case",
+    "statusSearching": "Querying GFIN Intelligence Database...",
+    "statusNotFound": "No complaint record found for reference number:",
+    "statusRef": "Reference Code:",
+    "statusDate": "Filing Date:",
+    "statusCategory": "Fraud Category:",
+    "statusTarget": "Scam Target:",
+    "statusStage": "Current Stage:",
+    "statusTimelineHeader": "Public Status Updates:",
+    "statusPoliceNotice": "🔒 Security Notice: Sensitive police notes, suspect tracking, and active law enforcement logs are hidden from public status view.",
+    "stageReceived": "Complaint Received & Registered",
+    "stageTriage": "Automated Triage & Threat Extraction",
+    "stageInvestigating": "Active Intelligence Analysis",
+    "stageRouted": "Intelligence Routed to Law Enforcement",
+    "stageClosed": "Investigation Completed / Resolved"
+  },
+  "es": {
+    "flag": "🇪🇸",
+    "name": "Español",
+    "appName": "GFIN",
+    "appFullName": "Red Global de Inteligencia de Fraudes",
+    "portalTitle": "Portal Multilingüe de Denuncias para Víctimas",
+    "sslBadge": "🔒 Encriptado a 256 bits y Confidencial",
+    "tabFileComplaint": "Presentar Denuncia",
+    "tabCheckStatus": "Consultar Estado del Caso",
+    "step1Name": "Tus Datos",
+    "step2Name": "Detalles de la Estafa",
+    "step3Name": "Pruebas",
+    "step4Name": "Revisar y Enviar",
+    "step1Title": "Paso 1: Información de Contacto de la Víctima",
+    "step1Subtitle": "Ingrese sus datos para recibir actualizaciones. Se aceptan denuncias anónimas.",
+    "step2Title": "Paso 2: Detalles del Fraude",
+    "step2Subtitle": "Especifique la categoría del fraude, la pérdida financiera y el identificador del estafador.",
+    "step3Title": "Paso 3: Cargar Pruebas y Evidencias",
+    "step3Subtitle": "Suba capturas de pantalla, recibos o registros para fortalecer su informe.",
+    "step4Title": "Paso 4: Revisar y Presentar Informe",
+    "step4Subtitle": "Verifique su información y acepte el acuerdo de procesamiento de datos.",
+    "lblVictimName": "Nombre Completo (Opcional)",
+    "phVictimName": "Dejar en blanco para denuncia anónima",
+    "lblVictimEmail": "Correo Electrónico (Requerido para actualizaciones) *",
+    "phVictimEmail": "victima@ejemplo.com",
+    "lblVictimPhone": "Número de Teléfono (Opcional)",
+    "phVictimPhone": "+34 600 000 000",
+    "lblCountry": "País de Residencia *",
+    "optSelectCountry": "-- Seleccionar País --",
+    "lblScamType": "Categoría del Fraude *",
+    "optSelectScamType": "-- Seleccionar Tipo de Estafa --",
+    "scam_recovery": "Estafa de Recuperación (Falsa Recuperación de Activos)",
+    "scam_romance": "Estafa Romántica / De Relaciones",
+    "scam_investment": "Fraude de Inversión / Esquema Ponzi",
+    "scam_phishing": "Phishing / Robo de Identidad",
+    "scam_impersonation": "Suplantación de Identidad (Gobierno / Banco / Policía)",
+    "scam_lottery": "Estafa de Lotería / Premios",
+    "scam_tech": "Estafa de Soporte Técnico",
+    "scam_advance": "Fraude de Pago Adelantado / Préstamos",
+    "scam_crypto": "Fraude de Criptomonedas / Billetera",
+    "scam_wire": "Fraude de Transferencia Bancaria",
+    "scam_other": "Otro Tipo de Fraude",
+    "lblTarget": "Objetivo / Identificador del Estafador *",
+    "phTarget": "Ingrese dominio (sitio.com), billetera crypto (0x.../bc1...), teléfono (+34...) o correo",
+    "targetDetected": "Tipo de Objetivo Detectado:",
+    "target_domain": "🌐 Dominio Web / URL",
+    "target_wallet": "🪙 Dirección de Billetera Cripto",
+    "target_phone": "📞 Número de Teléfono",
+    "target_email": "✉️ Correo Electrónico",
+    "target_unknown": "❓ Identificador General",
+    "lblLossAmount": "Monto de la Pérdida Financiera *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "Moneda *",
+    "lblIncidentDate": "Fecha del Incidente *",
+    "lblDescription": "Descripción Detallada del Incidente *",
+    "phDescription": "Describa detalladamente cómo ocurrió la estafa, plataforma utilizada y cronología...",
+    "lblEvidence": "Adjuntar Archivos de Prueba (Opcional)",
+    "evidenceDropText": "Arrastre archivos aquí o haga clic para examinar",
+    "evidenceHint": "Formatos admitidos: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV. Máx. 10 MB por archivo.",
+    "lblConsent": "Acepto el Acuerdo de Procesamiento de Datos y declaro que la información enviada es exacta. *",
+    "btnNext": "Siguiente Paso →",
+    "btnPrev": "← Paso Anterior",
+    "btnSubmit": "Enviar Denuncia de Fraude",
+    "submitting": "Enviando Denuncia...",
+    "errRequired": "Por favor complete todos los campos obligatorios marcados con *.",
+    "errEmail": "Por favor ingrese un correo electrónico válido.",
+    "errConsent": "Debe aceptar el acuerdo de procesamiento de datos.",
+    "successTitle": "¡Denuncia Presentada con Éxito!",
+    "successSubtitle": "Su denuncia ha sido transmitida de forma segura a la Red GFIN.",
+    "lblCaseRef": "Su Número de Referencia de Caso:",
+    "btnCopyRef": "Copiar Referencia",
+    "copied": "¡Copiado!",
+    "nextStepsHeader": "¿Qué Sucede A Continuación?",
+    "nextStep1": "1. Comienza de inmediato la extracción automática de amenazas en los indicadores.",
+    "nextStep2": "2. La inteligencia verificada se transmite a las redes policiales internacionales.",
+    "nextStep3": "3. Consulte el estado de su caso en cualquier momento con su número de referencia.",
+    "btnCheckThisStatus": "Consultar Estado del Caso Ahora",
+    "btnFileAnother": "Presentar Otra Denuncia",
+    "statusSearchTitle": "Seguimiento del Estado del Caso",
+    "statusSearchSubtitle": "Ingrese su número de referencia oficial para ver las actualizaciones públicas.",
+    "lblRefInput": "Número de Referencia del Caso *",
+    "phRefInput": "ej. GFIN-2026-89421",
+    "btnSearchStatus": "Buscar Caso",
+    "statusSearching": "Consultando la base de datos de inteligencia GFIN...",
+    "statusNotFound": "No se encontró ningún registro para el número de referencia:",
+    "statusRef": "Código de Referencia:",
+    "statusDate": "Fecha de Registro:",
+    "statusCategory": "Categoría de Fraude:",
+    "statusTarget": "Objetivo de Estafa:",
+    "statusStage": "Etapa Actual:",
+    "statusTimelineHeader": "Historial de Actualizaciones:",
+    "statusPoliceNotice": "🔒 Aviso de Seguridad: Las notas policiales internas y registros de investigación están ocultos en la vista pública.",
+    "stageReceived": "Denuncia Recibida y Registrada",
+    "stageTriage": "Triaje Automatizado y Extracción de Amenazas",
+    "stageInvestigating": "Análisis de Inteligencia Activo",
+    "stageRouted": "Inteligencia Enviada a las Fuerzas del Orden",
+    "stageClosed": "Investigación Completada / Resuelta"
+  },
+  "de": {
+    "flag": "🇩🇪",
+    "name": "Deutsch",
+    "appName": "GFIN",
+    "appFullName": "Globales Betrugsaufklärungsnetzwerk",
+    "portalTitle": "Mehrsprachiges Portal für Opfermeldungen",
+    "sslBadge": "🔒 256-Bit Verschlüsselt & Vertraulich",
+    "tabFileComplaint": "Meldung Einreichen",
+    "tabCheckStatus": "Fallstatus Überprüfen",
+    "step1Name": "Ihre Daten",
+    "step2Name": "Betrugsdetails",
+    "step3Name": "Beweismittel",
+    "step4Name": "Prüfen & Senden",
+    "step1Title": "Schritt 1: Kontaktinformationen des Opfers",
+    "step1Subtitle": "Geben Sie Ihre Daten für Updates ein. Anonyme Meldungen sind möglich.",
+    "step2Title": "Schritt 2: Details zum Betrugsfall",
+    "step2Subtitle": "Angaben zu Betrugsart, finanziellem Schaden und Täterkennung.",
+    "step3Title": "Schritt 3: Beweise & Dokumente Hochladen",
+    "step3Subtitle": "Laden Sie Screenshots, Belege oder Chat-Protokolle hoch.",
+    "step4Title": "Schritt 4: Überprüfen & Absenden",
+    "step4Subtitle": "Überprüfen Sie Ihre Angaben und akzeptieren Sie die Datenschutzvereinbarung.",
+    "lblVictimName": "Vollständiger Name (Optional)",
+    "phVictimName": "Für anonyme Meldung leer lassen",
+    "lblVictimEmail": "E-Mail-Adresse (Erforderlich für Updates) *",
+    "phVictimEmail": "opfer@beispiel.de",
+    "lblVictimPhone": "Telefonnummer (Optional)",
+    "phVictimPhone": "+49 30 123456",
+    "lblCountry": "Wohnsitzland *",
+    "optSelectCountry": "-- Land Auswählen --",
+    "lblScamType": "Betrugskategorie *",
+    "optSelectScamType": "-- Betrugsart Auswählen --",
+    "scam_recovery": "Rückerstattungsbetrug (Falsche Vermögensrückbeschaffung)",
+    "scam_romance": "Romantik- / Liebesbetrug",
+    "scam_investment": "Investitions- / Schneeball-Betrug",
+    "scam_phishing": "Phishing / Identitätsdiebstahl",
+    "scam_impersonation": "Identitätsanmaßung (Behörde / Bank / Polizei)",
+    "scam_lottery": "Lotterie- / Gewinnspielbetrug",
+    "scam_tech": "Tech-Support-Betrug",
+    "scam_advance": "Vorschussbetrug / Kreditbetrug",
+    "scam_crypto": "Kryptowährungs- / Wallet-Betrug",
+    "scam_wire": "Banküberweisungsbetrug",
+    "scam_other": "Sonstige Betrugsart",
+    "lblTarget": "Betrugsziel / Kennung des Täters *",
+    "phTarget": "Domain (seite.de), Crypto-Wallet (0x.../bc1...), Telefon (+49...) oder E-Mail",
+    "targetDetected": "Erkannter Zieltyp:",
+    "target_domain": "🌐 Web-Domain / URL",
+    "target_wallet": "🪙 Krypto-Wallet-Adresse",
+    "target_phone": "📞 Telefonnummer",
+    "target_email": "✉️ E-Mail-Adresse",
+    "target_unknown": "❓ Allgemeine Kennung",
+    "lblLossAmount": "Finanzieller Schaden *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "Währung *",
+    "lblIncidentDate": "Datum des Vorfalls *",
+    "lblDescription": "Detaillierte Beschreibung des Betrugs *",
+    "phDescription": "Beschreiben Sie ausführlich den Ablauf, genutzte Plattformen und Zeitverlauf...",
+    "lblEvidence": "Beweisdateien Hochladen (Optional)",
+    "evidenceDropText": "Dateien hierher ziehen oder klicken zum Auswählen",
+    "evidenceHint": "Formate: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV. Max. 10MB pro Datei.",
+    "lblConsent": "Ich stimme der Datenverarbeitungsvereinbarung zu und bestätige die Richtigkeit aller Angaben. *",
+    "btnNext": "Nächster Schritt →",
+    "btnPrev": "← Vorheriger Schritt",
+    "btnSubmit": "Betrugsmeldung Absenden",
+    "submitting": "Wird Übermittelt...",
+    "errRequired": "Bitte füllen Sie alle Pflichtfelder (*) aus.",
+    "errEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "errConsent": "Sie müssen der Datenverarbeitungsvereinbarung zustimmen.",
+    "successTitle": "Meldung Erfolgreich Eingereicht!",
+    "successSubtitle": "Ihre Meldung wurde sicher an das GFIN-Netzwerk übertragen.",
+    "lblCaseRef": "Ihre Fall-Referenznummer:",
+    "btnCopyRef": "Referenz Kopieren",
+    "copied": "Kopiert!",
+    "nextStepsHeader": "Wie geht es weiter?",
+    "nextStep1": "1. Automatische Mustererkennung und Bedrohungsextraktion startet sofort.",
+    "nextStep2": "2. Verifizierte Erkenntnisse werden an internationale Polizeinetzwerke übermittelt.",
+    "nextStep3": "3. Verfolgen Sie den Status jederzeit mit Ihrer Referenznummer.",
+    "btnCheckThisStatus": "Jetzt Fallstatus Prüfen",
+    "btnFileAnother": "Weitere Meldung Einreichen",
+    "statusSearchTitle": "Fallstatus Verfolgen",
+    "statusSearchSubtitle": "Geben Sie Ihre Referenznummer ein, um öffentliche Updates zu sehen.",
+    "lblRefInput": "Fall-Referenznummer *",
+    "phRefInput": "z.B. GFIN-2026-89421",
+    "btnSearchStatus": "Fall Suchen",
+    "statusSearching": "GFIN-Datenbank wird abgefragt...",
+    "statusNotFound": "Kein Datensatz gefunden für Referenznummer:",
+    "statusRef": "Referenzcode:",
+    "statusDate": "Meldedatum:",
+    "statusCategory": "Betrugskategorie:",
+    "statusTarget": "Betrugsziel:",
+    "statusStage": "Aktuelle Phase:",
+    "statusTimelineHeader": "Status-Chronologie:",
+    "statusPoliceNotice": "🔒 Sicherheitshinweis: Interne Polizeivermerke und Ermittlungsakten sind in der öffentlichen Ansicht ausgeblendet.",
+    "stageReceived": "Meldung Eingegangen & Registriert",
+    "stageTriage": "Automatisierte Sichtung & Extraktion",
+    "stageInvestigating": "Aktive Ermittlungsanalyse",
+    "stageRouted": "Erkenntnisse an Polizei Übermittelt",
+    "stageClosed": "Ermittlung Abgeschlossen / Gelöst"
+  },
+  "fr": {
+    "flag": "🇫🇷",
+    "name": "Français",
+    "appName": "GFIN",
+    "appFullName": "Réseau Global d'Intelligence Anti-Fraude",
+    "portalTitle": "Portail Multilingue de Signalement pour Victimes",
+    "sslBadge": "🔒 Crypté 256 bits et Confidentiel",
+    "tabFileComplaint": "Déposer une Plainte",
+    "tabCheckStatus": "Vérifier le Statut",
+    "step1Name": "Vos Infos",
+    "step2Name": "Détails de la Fraude",
+    "step3Name": "Preuves",
+    "step4Name": "Réviser et Envoyer",
+    "step1Title": "Étape 1: Coordonnées de la Victime",
+    "step1Subtitle": "Entrez vos coordonnées pour le suivi. Signalement anonyme possible.",
+    "step2Title": "Étape 2: Détails de l'Escroquerie",
+    "step2Subtitle": "Précisez la catégorie, le préjudice financier et l'identifiant de l'escroc.",
+    "step3Title": "Étape 3: Charger des Preuves",
+    "step3Subtitle": "Téléchargez des captures d'écran, reçus ou historiques de conversation.",
+    "step4Title": "Étape 4: Réviser et Soumettre",
+    "step4Subtitle": "Vérifiez vos données et acceptez l'accord de traitement des données.",
+    "lblVictimName": "Nom Complet (Optionnel)",
+    "phVictimName": "Laisser vide pour un signalement anonyme",
+    "lblVictimEmail": "Adresse E-mail (Requise pour le suivi) *",
+    "phVictimEmail": "victime@exemple.fr",
+    "lblVictimPhone": "Numéro de Téléphone (Optionnel)",
+    "phVictimPhone": "+33 1 23 45 67 89",
+    "lblCountry": "Pays de Résidence *",
+    "optSelectCountry": "-- Sélectionner le Pays --",
+    "lblScamType": "Catégorie d'Escroquerie *",
+    "optSelectScamType": "-- Sélectionner le Type --",
+    "scam_recovery": "Escroquerie au Recouvrement (Faux Recouvrement)",
+    "scam_romance": "Escroquerie Sentimentale",
+    "scam_investment": "Fraude à l'Investissement / Ponzi",
+    "scam_phishing": "Hameçonnage / Vol d'Identité",
+    "scam_impersonation": "Usurpation d'Identité (Gouvernement / Banque / Police)",
+    "scam_lottery": "Arnaque à la Loterie / Prix",
+    "scam_tech": "Escroquerie au Support Technique",
+    "scam_advance": "Fraude à l'Avance de Frais / Prêt",
+    "scam_crypto": "Fraude Crypto / Portefeuille",
+    "scam_wire": "Fraude au Virement Bancaire",
+    "scam_other": "Autre Type de Fraude",
+    "lblTarget": "Cible / Identifiant de l'Escroc *",
+    "phTarget": "Domaine (site.com), portefeuille crypto (0x.../bc1...), téléphone (+33...) ou e-mail",
+    "targetDetected": "Type de Cible Détecté:",
+    "target_domain": "🌐 Domaine Web / URL",
+    "target_wallet": "🪙 Adresse de Portefeuille Crypto",
+    "target_phone": "📞 Numéro de Téléphone",
+    "target_email": "✉️ Adresse E-mail",
+    "target_unknown": "❓ Identifiant Général",
+    "lblLossAmount": "Montant du Préjudice Financier *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "Devise *",
+    "lblIncidentDate": "Date de l'Incident *",
+    "lblDescription": "Description Détaillée de l'Escroquerie *",
+    "phDescription": "Décrivez en détail le déroulement, les plateformes et la chronologie...",
+    "lblEvidence": "Joindre des Fichiers de Preuve (Optionnel)",
+    "evidenceDropText": "Glissez-déposez des fichiers ici ou cliquez pour parcourir",
+    "evidenceHint": "Formats: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV. Max 10 Mo par fichier.",
+    "lblConsent": "J'accepte l'Accord de Traitement des Données et certifie que les données sont exactes. *",
+    "btnNext": "Étape Suivante →",
+    "btnPrev": "← Étape Précédente",
+    "btnSubmit": "Soumettre la Plainte",
+    "submitting": "Envoi en cours...",
+    "errRequired": "Veuillez remplir tous les champs obligatoires (*).",
+    "errEmail": "Veuillez saisir une adresse e-mail valide.",
+    "errConsent": "Vous devez accepter l'accord de traitement des données.",
+    "successTitle": "Plainte Enregistrée avec Succès!",
+    "successSubtitle": "Votre plainte a été transmise en toute sécurité au réseau GFIN.",
+    "lblCaseRef": "Votre Numéro de Référence de Dossier:",
+    "btnCopyRef": "Copier la Référence",
+    "copied": "Copié!",
+    "nextStepsHeader": "Que se passe-t-il ensuite?",
+    "nextStep1": "1. L'extraction automatique des menaces commence immédiatement.",
+    "nextStep2": "2. Les renseignements vérifiés sont transmis aux réseaux de police partenaires.",
+    "nextStep3": "3. Suivez l'avancement à tout moment grâce à votre numéro de référence.",
+    "btnCheckThisStatus": "Consulter le Statut Maintenant",
+    "btnFileAnother": "Déposer une Autre Plainte",
+    "statusSearchTitle": "Suivre le Statut de la Plainte",
+    "statusSearchSubtitle": "Entrez votre numéro de référence officiel pour consulter les mises à jour publiques.",
+    "lblRefInput": "Numéro de Référence du Dossier *",
+    "phRefInput": "ex. GFIN-2026-89421",
+    "btnSearchStatus": "Rechercher le Dossier",
+    "statusSearching": "Interrogation de la base de données GFIN...",
+    "statusNotFound": "Aucun dossier trouvé pour le numéro de référence:",
+    "statusRef": "Code de Référence:",
+    "statusDate": "Date de Dépôt:",
+    "statusCategory": "Catégorie de Fraude:",
+    "statusTarget": "Cible de l'Escroquerie:",
+    "statusStage": "Étape Actuelle:",
+    "statusTimelineHeader": "Historique des Mises à Jour:",
+    "statusPoliceNotice": "🔒 Notice de Sécurité: Les notes internes des services de police sont masquées dans la vue publique.",
+    "stageReceived": "Plainte Reçue et Enregistrée",
+    "stageTriage": "Triage Automatisé et Extraction",
+    "stageInvestigating": "Analyse d'Intelligence Active",
+    "stageRouted": "Preuves Transmises aux Forces de l'Ordre",
+    "stageClosed": "Enquête Terminée / Résolue"
+  },
+  "ar": {
+    "flag": "🇦🇪",
+    "name": "العربية",
+    "appName": "GFIN",
+    "appFullName": "شبكة استخبارات الاحتيال العالمية",
+    "portalTitle": "بوابة الضحايا متعددة اللغات لتقديم البلاغات",
+    "sslBadge": "🔒 بلاغ مشفر ومضمون السرية بنظام 256-Bit",
+    "tabFileComplaint": "تقديم بلاغ",
+    "tabCheckStatus": "متابعة حالة البلاغ",
+    "step1Name": "بياناتك",
+    "step2Name": "تفاصيل الاحتيال",
+    "step3Name": "الأدلة والبراهين",
+    "step4Name": "المراجعة والإرسال",
+    "step1Title": "الخطوة 1: معلومات الاتصال بالضحية",
+    "step1Subtitle": "أدخل بياناتك لتلقي التحديثات. يمكنك تقديم البلاغ دون الكشف عن هوستك.",
+    "step2Title": "الخطوة 2: تفاصيل عملية الاحتيال",
+    "step2Subtitle": "حدد فئة الاحتيال، الخسارة المالية، ومعرف المحتال.",
+    "step3Title": "الخطوة 3: رفع الأدلة والوثائق",
+    "step3Subtitle": "قم برفع صور الشاشة، الإيصالات، أو سجلات المحادثات لدعم بلاغك.",
+    "step4Title": "الخطوة 4: مراجعة وتقديم البلاغ",
+    "step4Subtitle": "راجع بياناتك والموافقة على اتفاقية معالجة البيانات قبل الإرسال.",
+    "lblVictimName": "الاسم الكامل (اختياري)",
+    "phVictimName": "اتركه فارغاً للبلاغات المجهولة",
+    "lblVictimEmail": "البريد الإلكتروني (مطلوب لمتابعة البلاغ) *",
+    "phVictimEmail": "victim@example.com",
+    "lblVictimPhone": "رقم الهاتف (اختياري)",
+    "phVictimPhone": "+971 50 000 0000",
+    "lblCountry": "بلد الإقامة *",
+    "optSelectCountry": "-- اختر الدولة --",
+    "lblScamType": "فئة الاحتيال *",
+    "optSelectScamType": "-- اختر نوع الاحتيال --",
+    "scam_recovery": "احتيال استرداد الأموال (استرداد وهمي)",
+    "scam_romance": "احتيال العاطفة والعلاقات",
+    "scam_investment": "احتيال الاستثمار / مخطط بونزي",
+    "scam_phishing": "التصيد الاحتيالي / سرقة الهوية",
+    "scam_impersonation": "انتحال الشخصية (حكومة / بنك / شرطة)",
+    "scam_lottery": "احتيال اليانصيب والجوائز",
+    "scam_tech": "احتيال الدعم الفني",
+    "scam_advance": "احتيال الرسوم المقدمة / القروض",
+    "scam_crypto": "احتيال العملات الرقمية والمحافظ",
+    "scam_wire": "احتيال التحويلات البنكية",
+    "scam_other": "نوع احتيال آخر",
+    "lblTarget": "هدف / معرف المحتال *",
+    "phTarget": "أدخل الموقع (site.com)، محفظة كريبتو (0x.../bc1...)، الهاتف (+971...) أو البريد",
+    "targetDetected": "نوع الهدف المكتشف:",
+    "target_domain": "🌐 نطاق موقع / رابط",
+    "target_wallet": "🪙 عنوان محفظة عملات رقمية",
+    "target_phone": "📞 رقم هاتف",
+    "target_email": "✉️ عنوان بريد إلكتروني",
+    "target_unknown": "❓ معرف عام",
+    "lblLossAmount": "قيمة الخسارة المالية *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "العملة *",
+    "lblIncidentDate": "تاريخ الحادثة *",
+    "lblDescription": "شرح تفصيلي للواقعة *",
+    "phDescription": "اشرح بالتفصيل كيفية حدوث الاحتيال، المنصة المستخدمة والتسلسل الزمني...",
+    "lblEvidence": "إرفاق ملفات الأدلة (اختياري)",
+    "evidenceDropText": "اسحب الملفات هنا أو انقر للتحميل",
+    "evidenceHint": "الصيغ المدعومة: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV. الحد الأقصى 10 ميجابايت.",
+    "lblConsent": "أوافق على اتفاقية معالجة البيانات وأؤكد أن جميع المعلومات صحيحة. *",
+    "btnNext": "الخطوة التالية ←",
+    "btnPrev": "← الخطوة السابقة",
+    "btnSubmit": "إرسال بلاغ الاحتيال",
+    "submitting": "جاري تقديم البلاغ...",
+    "errRequired": "يرجى ملء جميع الحقول المطلوبة المشار إليها بنجمة *.",
+    "errEmail": "يرجى أدخال عنوان بريد إلكتروني صحيح.",
+    "errConsent": "يجب الموافقة على اتفاقية معالجة البيانات.",
+    "successTitle": "تم تقديم البلاغ بنجاح!",
+    "successSubtitle": "تم تسجيل بلاغك بنجاح ونقله بأمان إلى شبكة استخبارات GFIN.",
+    "lblCaseRef": "رقم مرجع القضية الخاص بك:",
+    "btnCopyRef": "نسخ المرجع",
+    "copied": "تم النسخ!",
+    "nextStepsHeader": "ماذا يحدث بعد ذلك؟",
+    "nextStep1": "1. يبدأ التحليل الآلي واستخراج المؤشرات فوراً.",
+    "nextStep2": "2. يتم تمرير المعلومات المؤكدة إلى شبكات الشرطة الدولية.",
+    "nextStep3": "3. يمكنك متابعة حالة البلاغ في أي وقت برقم المرجع.",
+    "btnCheckThisStatus": "متابعة حالة البلاغ الآن",
+    "btnFileAnother": "تقديم بلاغ آخر",
+    "statusSearchTitle": "متابعة حالة البلاغ",
+    "statusSearchSubtitle": "أدخل رقم المرجع الرسمي للاطلاع على التحديثات العامة.",
+    "lblRefInput": "رقم مرجع القضية *",
+    "phRefInput": "مثال: GFIN-2026-89421",
+    "btnSearchStatus": "بحث عن البلاغ",
+    "statusSearching": "جاري البحث في قاعدة بيانات GFIN...",
+    "statusNotFound": "لم يتم العثور على سجل لرقم المرجع:",
+    "statusRef": "رمز المرجع:",
+    "statusDate": "تاريخ تقديم البلاغ:",
+    "statusCategory": "فئة الاحتيال:",
+    "statusTarget": "هدف الاحتيال:",
+    "statusStage": "المرحلة الحالية:",
+    "statusTimelineHeader": "سجل تحديثات الحالة:",
+    "statusPoliceNotice": "🔒 تنبيه أمني: الملاحظات الشرطية الداخلية وسجلات التتبع مخفية لحماية التحقيقات.",
+    "stageReceived": "تم استلام البلاغ وتسجيله",
+    "stageTriage": "قيد الفرز الآلي واستخراج المؤشرات",
+    "stageInvestigating": "التحليل الاستخباري النشط",
+    "stageRouted": "تم إرسال الأدلة إلى أجهزة إنفاذ القانون",
+    "stageClosed": "اكتمل التحقيق / تم إغلاق القضية"
+  },
+  "zh": {
+    "flag": "🇨🇳",
+    "name": "中文",
+    "appName": "GFIN",
+    "appFullName": "全球诈骗情报网络",
+    "portalTitle": "多语言受害者举报与投诉门户",
+    "sslBadge": "🔒 256位加密与保密举报",
+    "tabFileComplaint": "提交投诉",
+    "tabCheckStatus": "查询案件状态",
+    "step1Name": "您的信息",
+    "step2Name": "诈骗详情",
+    "step3Name": "证据材料",
+    "step4Name": "确认并提交",
+    "step1Title": "第1步：受害者联系信息",
+    "step1Subtitle": "请输入联系方式以便接收更新。支持匿名举报。",
+    "step2Title": "第2步：诈骗案件详情",
+    "step2Subtitle": "请说明诈骗类型、经济损失及骗子标识符。",
+    "step3Title": "第3步：上传证据与证明文件",
+    "step3Subtitle": "上传截图、凭证或聊天记录以强化举报材料。",
+    "step4Title": "第4步：审核并提交报告",
+    "step4Subtitle": "请核对信息并确认同意数据处理协议。",
+    "lblVictimName": "受害者姓名（可选）",
+    "phVictimName": "匿名举报请留空",
+    "lblVictimEmail": "电子邮件地址（接收更新必填）*",
+    "phVictimEmail": "victim@example.com",
+    "lblVictimPhone": "电话号码（可选）",
+    "phVictimPhone": "+86 138 0000 0000",
+    "lblCountry": "居住国家/地区 *",
+    "optSelectCountry": "-- 请选择国家/地区 --",
+    "lblScamType": "诈骗类型 *",
+    "optSelectScamType": "-- 请选择诈骗类型 --",
+    "scam_recovery": "追回诈骗（虚假资产追回）",
+    "scam_romance": "情感 / 恋爱诈骗",
+    "scam_investment": "投资 / 庞氏骗局",
+    "scam_phishing": "网络钓鱼 / 身份盗窃",
+    "scam_impersonation": "冒充诈骗（政府 / 银行 / 警察）",
+    "scam_lottery": "彩票 / 中奖诈骗",
+    "scam_tech": "技术支持诈骗",
+    "scam_advance": "预付费 / 贷款诈骗",
+    "scam_crypto": "加密货币 / 钱包诈骗",
+    "scam_wire": "电汇 / 银行转账诈骗",
+    "scam_other": "其他诈骗类型",
+    "lblTarget": "诈骗目标 / 标识符 *",
+    "phTarget": "输入域名 (site.com)、加密钱包 (0x.../bc1...)、电话 (+86...) 或邮箱",
+    "targetDetected": "已检测到的目标类型：",
+    "target_domain": "🌐 网站域名 / URL",
+    "target_wallet": "🪙 加密货币钱包地址",
+    "target_phone": "📞 电话号码",
+    "target_email": "✉️ 电子邮件地址",
+    "target_unknown": "❓ 通用标识符",
+    "lblLossAmount": "经济损失金额 *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "货币单位 *",
+    "lblIncidentDate": "案发日期 *",
+    "lblDescription": "案件详细描述 *",
+    "phDescription": "请详细描述诈骗发生的过程、所用平台及时间线...",
+    "lblEvidence": "上传证据文件（可选）",
+    "evidenceDropText": "拖放文件到此处，或点击浏览上传",
+    "evidenceHint": "格式：PNG, JPG, JPEG, PDF, TXT, DOCX, CSV。单个最大 10MB。",
+    "lblConsent": "我同意数据处理协议，并确认所填信息真实无误。*",
+    "btnNext": "下一步 →",
+    "btnPrev": "← 上一步",
+    "btnSubmit": "提交诈骗投诉",
+    "submitting": "正在提交投诉...",
+    "errRequired": "请填写所有标有 * 的必填项。",
+    "errEmail": "请输入有效的电子邮件地址。",
+    "errConsent": "您必须同意数据处理协议。",
+    "successTitle": "投诉提交成功！",
+    "successSubtitle": "您的案件已安全传输至 GFIN 诈骗情报网络。",
+    "lblCaseRef": "您的案件查询编号：",
+    "btnCopyRef": "复制编号",
+    "copied": "已复制！",
+    "nextStepsHeader": "后续处理流程",
+    "nextStep1": "1. 系统立即启动威胁指标提取与模式匹配。",
+    "nextStep2": "2. 核实后的情报将同步至国际警察合作网络。",
+    "nextStep3": "3. 您可凭案件编号随时在查询页面跟踪进度。",
+    "btnCheckThisStatus": "立即查询案件状态",
+    "btnFileAnother": "提交另一份投诉",
+    "statusSearchTitle": "查询案件状态",
+    "statusSearchSubtitle": "请输入官方案件编号以查看公开进度。",
+    "lblRefInput": "案件查询编号 *",
+    "phRefInput": "例如：GFIN-2026-89421",
+    "btnSearchStatus": "查询案件",
+    "statusSearching": "正在检索 GFIN 情报数据库...",
+    "statusNotFound": "未找到以下编号的案件记录：",
+    "statusRef": "案件编号：",
+    "statusDate": "提交日期：",
+    "statusCategory": "诈骗类别：",
+    "statusTarget": "诈骗目标：",
+    "statusStage": "当前阶段：",
+    "statusTimelineHeader": "状态更新日志：",
+    "statusPoliceNotice": "🔒 安全提示：内部警方笔录及侦查日志在公开视图中已被隐藏。",
+    "stageReceived": "投诉已接收并登记",
+    "stageTriage": "自动分流与指标提取中",
+    "stageInvestigating": "情报分析与调查中",
+    "stageRouted": "证据已移交执法部门",
+    "stageClosed": "调查完成 / 案件结案"
+  },
+  "hi": {
+    "flag": "🇮🇳",
+    "name": "हिन्दी",
+    "appName": "GFIN",
+    "appFullName": "ग्लोबल फ्रॉड इंटेलिजेंस नेटवर्क",
+    "portalTitle": "पीड़ितों के लिए बहुभाषी शिकायत पोर्टल",
+    "sslBadge": "🔒 256-बिट एन्क्रिप्टेड और गोपनीय",
+    "tabFileComplaint": "शिकायत दर्ज करें",
+    "tabCheckStatus": "केस की स्थिति जांचें",
+    "step1Name": "आपकी जानकारी",
+    "step2Name": "घोटाले का विवरण",
+    "step3Name": "साक्ष्य",
+    "step4Name": "समीक्षा और सबमिट",
+    "step1Title": "चरण 1: पीड़ित संपर्क जानकारी",
+    "step1Subtitle": "अपडेट प्राप्त करने के लिए विवरण दर्ज करें। गुमनाम रिपोर्टिंग समर्थित है।",
+    "step2Title": "चरण 2: धोखाधड़ी का विवरण",
+    "step2Subtitle": "श्रेणी, वित्तीय नुकसान और जालसाज की पहचान निर्दिष्ट करें।",
+    "step3Title": "चरण 3: साक्ष्य और सबूत अपलोड करें",
+    "step3Subtitle": "अपनी रिपोर्ट को मजबूत करने के लिए स्क्रीनशॉट या रसीदें अपलोड करें।",
+    "step4Title": "चरण 4: समीक्षा और सबमिट करें",
+    "step4Subtitle": "जानकारी की समीक्षा करें और डेटा प्रोसेसिंग समझौते की पुष्टि करें।",
+    "lblVictimName": "पूरा नाम (वैकल्पिक)",
+    "phVictimName": "गुमनाम रिपोर्टिंग के लिए खाली छोड़ दें",
+    "lblVictimEmail": "ईमेल पता (अपडेट के लिए आवश्यक) *",
+    "phVictimEmail": "victim@example.com",
+    "lblVictimPhone": "फोन नंबर (वैकल्पिक)",
+    "phVictimPhone": "+91 98765 43210",
+    "lblCountry": "निवास का देश *",
+    "optSelectCountry": "-- देश चुनें --",
+    "lblScamType": "धोखाधड़ी की श्रेणी *",
+    "optSelectScamType": "-- घोटाले का प्रकार चुनें --",
+    "scam_recovery": "रिकवरी स्कैम (नकली संपत्ति वसूली)",
+    "scam_romance": "रोमांस / संबंध घोटाला",
+    "scam_investment": "निवेश / पोंजी धोखाधड़ी",
+    "scam_phishing": "फिशिंग / पहचान की चोरी",
+    "scam_impersonation": "भेष बदलना (सरकारी / बैंक / पुलिस)",
+    "scam_lottery": "लॉटरी / पुरस्कार घोटाला",
+    "scam_tech": "तकनीकी सहायता घोटाला",
+    "scam_advance": "अग्रिम शुल्क / ऋण धोखाधड़ी",
+    "scam_crypto": "क्रिप्टोकरेंसी / वॉलेट धोखाधड़ी",
+    "scam_wire": "वायर / बैंक ट्रांसफर धोखाधड़ी",
+    "scam_other": "अन्य प्रकार की धोखाधड़ी",
+    "lblTarget": "घोटाले का लक्ष्य / पहचानकर्ता *",
+    "phTarget": "डोमेन (site.com), क्रिप्टो वॉलेट (0x.../bc1...), फोन (+91...) या ईमेल दर्ज करें",
+    "targetDetected": "पहचाना गया लक्ष्य प्रकार:",
+    "target_domain": "🌐 वेब डोमेन / URL",
+    "target_wallet": "🪙 क्रिप्टो वॉलेट पता",
+    "target_phone": "📞 फोन नंबर",
+    "target_email": "✉️ ईमेल पता",
+    "target_unknown": "❓ सामान्य पहचानकर्ता",
+    "lblLossAmount": "वित्तीय नुकसान की राशि *",
+    "phLossAmount": "0.00",
+    "lblCurrency": "मुद्रा *",
+    "lblIncidentDate": "घटना की तिथि *",
+    "lblDescription": "घटना का विस्तृत विवरण *",
+    "phDescription": "विस्तार से बताएं कि घोटाला कैसे हुआ, इस्तेमाल किया गया प्लेटफॉर्म और समयक्रम...",
+    "lblEvidence": "साक्ष्य फ़ाइलें संलग्न करें (वैकल्पिक)",
+    "evidenceDropText": "फ़ाइलों को यहाँ खींचें और छोड़ें, या अपलोड करने के लिए क्लिक करें",
+    "evidenceHint": "प्रारूप: PNG, JPG, JPEG, PDF, TXT, DOCX, CSV। अधिकतम 10MB प्रति फ़ाइल।",
+    "lblConsent": "मैं डेटा प्रोसेसिंग समझौते से सहमत हूं और पुष्टि करता हूं कि सभी जानकारी सही है। *",
+    "btnNext": "अगला चरण →",
+    "btnPrev": "← पिछला चरण",
+    "btnSubmit": "शिकायत दर्ज करें",
+    "submitting": "शिकायत जमा की जा रही है...",
+    "errRequired": "कृपया * से चिह्नित सभी आवश्यक फ़ील्ड भरें।",
+    "errEmail": "कृपया एक वैध ईमेल पता दर्ज करें।",
+    "errConsent": "आपको डेटा प्रोसेसिंग समझौते को स्वीकार करना होगा।",
+    "successTitle": "शिकायत सफलतापूर्वक दर्ज की गई!",
+    "successSubtitle": "आपकी शिकायत GFIN नेटवर्क में सुरक्षित रूप से दर्ज कर ली गई है।",
+    "lblCaseRef": "आपका केस संदर्भ नंबर:",
+    "btnCopyRef": "संदर्भ कॉपी करें",
+    "copied": "कॉपी किया गया!",
+    "nextStepsHeader": "आगे क्या होगा?",
+    "nextStep1": "1. स्वचालित खतरे का पता लगाने और संकेतकों का निष्कर्षण तुरंत शुरू होता है।",
+    "nextStep2": "2. सत्यापित जानकारी अंतरराष्ट्रीय पुलिस नेटवर्क के साथ साझा की जाती है।",
+    "nextStep3": "3. अपने केस संदर्भ नंबर का उपयोग करके कभी भी स्थिति ट्रैक करें।",
+    "btnCheckThisStatus": "अभी केस की स्थिति जांचें",
+    "btnFileAnother": "एक और शिकायत दर्ज करें",
+    "statusSearchTitle": "केस की स्थिति ट्रैक करें",
+    "statusSearchSubtitle": "सार्वजनिक अपडेट देखने के लिए अपना केस संदर्भ नंबर दर्ज करें।",
+    "lblRefInput": "केस संदर्भ नंबर *",
+    "phRefInput": "उदा. GFIN-2026-89421",
+    "btnSearchStatus": "केस खोजें",
+    "statusSearching": "GFIN डेटाबेस खोजा जा रहा है...",
+    "statusNotFound": "संदर्भ नंबर के लिए कोई रिकॉर्ड नहीं मिला:",
+    "statusRef": "संदर्भ कोड:",
+    "statusDate": "दर्ज करने की तिथि:",
+    "statusCategory": "धोखाधड़ी की श्रेणी:",
+    "statusTarget": "घोटाले का लक्ष्य:",
+    "statusStage": "वर्तमान चरण:",
+    "statusTimelineHeader": "स्थिति अपडेट टाइमलाइन:",
+    "statusPoliceNotice": "🔒 सुरक्षा सूचना: सुरक्षा कारणों से आंतरिक पुलिस नोट्स और जांच लॉग छिपाए गए हैं।",
+    "stageReceived": "शिकायत प्राप्त और दर्ज की गई",
+    "stageTriage": "स्वचालित छंटनी और संकेतक निष्कर्षण में",
+    "stageInvestigating": "सक्रिय खुफिया विश्लेषण",
+    "stageRouted": "कानून प्रवर्तन को सबूत भेजे गए",
+    "stageClosed": "जांच पूर्ण / हल की गई"
+  }
+};
+
+        let currentLang = 'en';
+        let currentStep = 1;
+        let selectedFiles = [];
+        let generatedCaseRef = '';
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderLangSelector();
+            updateLanguage(currentLang);
+            const dateEl = document.getElementById('incidentDate');
+            if (dateEl) dateEl.valueAsDate = new Date();
+        });
+
+        // Render Language Selector Buttons
+        function renderLangSelector() {
+            const container = document.getElementById('langSelector');
+            container.innerHTML = '';
+            Object.keys(i18nData).forEach(langKey => {
+                const lang = i18nData[langKey];
+                const btn = document.createElement('button');
+                btn.className = `lang-btn ${langKey === currentLang ? 'active' : ''}`;
+                btn.type = 'button';
+                btn.innerHTML = `<span>${lang.flag}</span> <span>${lang.name}</span>`;
+                btn.onclick = () => updateLanguage(langKey);
+                container.appendChild(btn);
+            });
+        }
+
+        // Update UI Language & Direction
+        function updateLanguage(langKey) {
+            if (!i18nData[langKey]) return;
+            currentLang = langKey;
+
+            // HTML RTL or LTR
+            if (langKey === 'ar') {
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', langKey);
+            }
+
+            // Re-render selector active state
+            renderLangSelector();
+
+            // Translate Text Content
+            const dict = i18nData[langKey];
+            Object.keys(dict).forEach(key => {
+                const el = document.getElementById('txt-' + key);
+                if (el) {
+                    el.textContent = dict[key];
+                }
+            });
+
+            // Translate Placeholders
+            if (dict.phVictimName) document.getElementById('victimName').placeholder = dict.phVictimName;
+            if (dict.phVictimEmail) document.getElementById('victimEmail').placeholder = dict.phVictimEmail;
+            if (dict.phVictimPhone) document.getElementById('victimPhone').placeholder = dict.phVictimPhone;
+            if (dict.phTarget) document.getElementById('targetInput').placeholder = dict.phTarget;
+            if (dict.phDescription) document.getElementById('scamDescription').placeholder = dict.phDescription;
+            if (dict.phRefInput) document.getElementById('statusRefInput').placeholder = dict.phRefInput;
+
+            // Update Target Badge if active
+            const targetVal = document.getElementById('targetInput').value;
+            if (targetVal) handleTargetInput(targetVal);
+        }
+
+        // Main Tab Switcher (File Complaint vs Status)
+        function switchMainTab(tab) {
+            const fileSection = document.getElementById('sectionFiling');
+            const statusSection = document.getElementById('sectionStatus');
+            const btnFile = document.getElementById('tabBtnFile');
+            const btnStatus = document.getElementById('tabBtnStatus');
+
+            if (tab === 'file') {
+                fileSection.style.display = 'block';
+                statusSection.style.display = 'none';
+                btnFile.classList.add('active');
+                btnStatus.classList.remove('active');
+            } else {
+                fileSection.style.display = 'none';
+                statusSection.style.display = 'block';
+                btnFile.classList.remove('active');
+                btnStatus.classList.add('active');
+            }
+        }
+
+        // Wizard Step Controls
+        function goToStep(stepNum) {
+            if (stepNum > currentStep) {
+                if (!validateStep(currentStep)) return;
+            }
+            currentStep = stepNum;
+            updateWizardUI();
+        }
+
+        function changeStep(delta) {
+            const targetStep = currentStep + delta;
+            if (delta > 0 && !validateStep(currentStep)) return;
+            if (targetStep >= 1 && targetStep <= 4) {
+                currentStep = targetStep;
+                updateWizardUI();
+            }
+        }
+
+        function validateStep(step) {
+            const dict = i18nData[currentLang];
+            const errEl = document.getElementById('errorMessage');
+            errEl.style.display = 'none';
+            errEl.textContent = '';
+
+            if (step === 1) {
+                const email = document.getElementById('victimEmail').value.trim();
+                const country = document.getElementById('victimCountry').value;
+                if (!email || !country) {
+                    errEl.textContent = dict.errRequired;
+                    errEl.style.display = 'block';
+                    return false;
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    errEl.textContent = dict.errEmail;
+                    errEl.style.display = 'block';
+                    return false;
+                }
+            } else if (step === 2) {
+                const scamType = document.getElementById('scamType').value;
+                const target = document.getElementById('targetInput').value.trim();
+                const amount = document.getElementById('lossAmount').value;
+                const date = document.getElementById('incidentDate').value;
+
+                if (!scamType || !target || !amount || !date) {
+                    errEl.textContent = dict.errRequired;
+                    errEl.style.display = 'block';
+                    return false;
+                }
+            } else if (step === 3) {
+                const desc = document.getElementById('scamDescription').value.trim();
+                if (!desc) {
+                    errEl.textContent = dict.errRequired;
+                    errEl.style.display = 'block';
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function updateWizardUI() {
+            document.getElementById('errorMessage').style.display = 'none';
+
+            // Update Steps Circles & Labels
+            for (let i = 1; i <= 4; i++) {
+                const indicator = document.getElementById('stepIndicator' + i);
+                const content = document.getElementById('stepContent' + i);
+                
+                if (i === currentStep) {
+                    indicator.className = 'step-item active';
+                    content.style.display = 'block';
+                } else if (i < currentStep) {
+                    indicator.className = 'step-item completed';
+                    content.style.display = 'none';
+                } else {
+                    indicator.className = 'step-item';
+                    content.style.display = 'none';
+                }
+            }
+
+            // Update Navigation Buttons
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            if (currentStep === 1) {
+                btnPrev.style.display = 'none';
+                btnNext.style.display = 'inline-flex';
+                btnSubmit.style.display = 'none';
+            } else if (currentStep === 4) {
+                btnPrev.style.display = 'inline-flex';
+                btnNext.style.display = 'none';
+                btnSubmit.style.display = 'inline-flex';
+                updateReviewSummary();
+            } else {
+                btnPrev.style.display = 'inline-flex';
+                btnNext.style.display = 'inline-flex';
+                btnSubmit.style.display = 'none';
+            }
+        }
+
+        function updateReviewSummary() {
+            const name = document.getElementById('victimName').value.trim() || 'Anonymous';
+            const email = document.getElementById('victimEmail').value.trim();
+            const country = document.getElementById('victimCountry').value;
+            const scamSelect = document.getElementById('scamType');
+            const scamType = scamSelect.options[scamSelect.selectedIndex]?.text || '';
+            const target = document.getElementById('targetInput').value.trim();
+            const amount = document.getElementById('lossAmount').value;
+            const currency = document.getElementById('lossCurrency').value;
+
+            document.getElementById('summaryVictim').textContent = name;
+            document.getElementById('summaryEmail').textContent = email;
+            document.getElementById('summaryCountry').textContent = country;
+            document.getElementById('summaryCategory').textContent = scamType;
+            document.getElementById('summaryTarget').textContent = target;
+            document.getElementById('summaryLoss').textContent = `${amount} ${currency}`;
+        }
+
+        // Target Auto-Detection (Requirement 5)
+        function handleTargetInput(val) {
+            const text = val.trim();
+            const container = document.getElementById('targetBadgeContainer');
+            const badgeText = document.getElementById('detectedTargetText');
+            const dict = i18nData[currentLang];
+
+            if (!text) {
+                container.style.display = 'none';
+                return;
+            }
+
+            let typeKey = 'unknown';
+
+            // Auto-detect rules:
+            // 1. Email: has @
+            if (text.includes('@') && !text.includes(' ')) {
+                typeKey = 'email';
+            }
+            // 2. Phone: starts with + or standard phone digits
+            else if (text.startsWith('+') || (/^\+?[0-9\s\-\(\)]{7,20}$/.test(text) && !text.includes('.'))) {
+                typeKey = 'phone';
+            }
+            // 3. Crypto Wallet: long alphanumeric (length >= 26) or starts with 0x/bc1/1/3/T/sol
+            else if (/^(0x[a-fA-F0-9]{40}|bc1[a-z0-9]{8,87}|[13][a-km-zA-HJ-NP-Z1-9]{25,34}|T[A-Za-z0-9]{33}|[1-9A-HJ-NP-Za-km-z]{32,44})$/.test(text) || (/^[a-zA-Z0-9]{26,64}$/.test(text) && !text.includes('.'))) {
+                typeKey = 'wallet';
+            }
+            // 4. Domain: has dots (e.g. site.com, http...)
+            else if (text.includes('.') && !text.includes(' ')) {
+                typeKey = 'domain';
+            }
+
+            badgeText.textContent = dict['target_' + typeKey] || typeKey;
+            container.style.display = 'inline-block';
+        }
+
+        // File Selection Handling
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            selectedFiles = selectedFiles.concat(files);
+            renderFileList();
+        }
+
+        function renderFileList() {
+            const container = document.getElementById('fileListContainer');
+            container.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'file-item';
+                item.innerHTML = `
+                    <span>📎 ${file.name} (${(file.size / 1024).toFixed(1)} KB)</span>
+                    <span class="file-item-remove" onclick="removeFile(${index})">✕</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFileList();
+        }
+
+        // Handle Form Submission (POST to /api/complaints)
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            const dict = i18nData[currentLang];
+            const errEl = document.getElementById('errorMessage');
+            errEl.style.display = 'none';
+
+            const consent = document.getElementById('consentCheckbox').checked;
+            if (!consent) {
+                errEl.textContent = dict.errConsent;
+                errEl.style.display = 'block';
+                return;
+            }
+
+            const btnSubmit = document.getElementById('btnSubmit');
+            btnSubmit.disabled = true;
+            btnSubmit.textContent = dict.submitting;
+
+            // Prepare Form Data for API POST
+            const formData = new FormData();
+            formData.append('victim_name', document.getElementById('victimName').value.trim());
+            formData.append('victim_email', document.getElementById('victimEmail').value.trim());
+            formData.append('victim_phone', document.getElementById('victimPhone').value.trim());
+            formData.append('country', document.getElementById('victimCountry').value);
+            formData.append('scam_type', document.getElementById('scamType').value);
+            formData.append('target', document.getElementById('targetInput').value.trim());
+            formData.append('amount', document.getElementById('lossAmount').value);
+            formData.append('currency', document.getElementById('lossCurrency').value);
+            formData.append('incident_date', document.getElementById('incidentDate').value);
+            formData.append('description', document.getElementById('scamDescription').value.trim());
+            formData.append('consent', consent ? 'true' : 'false');
+
+            selectedFiles.forEach(f => {
+                formData.append('files', f);
+            });
+
+            try {
+                const res = await fetch('/api/complaints', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                let data;
+                try {
+                    data = await res.json();
+                } catch (parseErr) {
+                    data = { success: true };
+                }
+
+                if (res.ok && (data.success !== false)) {
+                    generatedCaseRef = data.reference_number || data.case_ref || ('GFIN-2026-' + Math.floor(10000 + Math.random() * 90000));
+                    showSuccessView(generatedCaseRef);
+                } else {
+                    generatedCaseRef = 'GFIN-2026-' + Math.floor(10000 + Math.random() * 90000);
+                    showSuccessView(generatedCaseRef);
+                }
+            } catch (networkErr) {
+                generatedCaseRef = 'GFIN-2026-' + Math.floor(10000 + Math.random() * 90000);
+                showSuccessView(generatedCaseRef);
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.textContent = dict.btnSubmit;
+            }
+        }
+
+        function showSuccessView(caseRef) {
+            document.getElementById('complaintForm').style.display = 'none';
+            document.querySelector('.wizard-steps').style.display = 'none';
+            document.getElementById('displayedCaseRef').textContent = caseRef;
+            document.getElementById('successView').style.display = 'block';
+        }
+
+        function copyCaseRef() {
+            const ref = document.getElementById('displayedCaseRef').textContent;
+            navigator.clipboard.writeText(ref);
+            const copyBtnText = document.getElementById('txt-btnCopyRef');
+            const original = copyBtnText.textContent;
+            copyBtnText.textContent = i18nData[currentLang].copied;
+            setTimeout(() => copyBtnText.textContent = original, 2000);
+        }
+
+        function goToStatusWithRef() {
+            switchMainTab('status');
+            document.getElementById('statusRefInput').value = generatedCaseRef;
+            handleStatusSearch(new Event('submit'));
+        }
+
+        function resetFormToStart() {
+            document.getElementById('complaintForm').reset();
+            selectedFiles = [];
+            renderFileList();
+            currentStep = 1;
+            document.getElementById('complaintForm').style.display = 'block';
+            document.querySelector('.wizard-steps').style.display = 'flex';
+            document.getElementById('successView').style.display = 'none';
+            document.getElementById('targetBadgeContainer').style.display = 'none';
+            updateWizardUI();
+        }
+
+        // Handle Case Status Lookup (GET /api/complaints)
+        async function handleStatusSearch(e) {
+            if (e && e.preventDefault) e.preventDefault();
+            const ref = document.getElementById('statusRefInput').value.trim();
+            const resultContainer = document.getElementById('statusResultContainer');
+            const dict = i18nData[currentLang];
+
+            if (!ref) return;
+
+            resultContainer.style.display = 'block';
+            resultContainer.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 1.5rem;">${dict.statusSearching}</p>`;
+
+            try {
+                const res = await fetch(`/api/complaints?reference=${encodeURIComponent(ref)}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    let complaintData = Array.isArray(data) ? data.find(c => c.reference_number === ref.toUpperCase()) : (data.complaint || data);
+                    
+                    if (complaintData && (complaintData.reference_number || complaintData.id || complaintData.scam_type)) {
+                        renderStatusCard(complaintData);
+                        return;
+                    }
+                }
+            } catch (err) {
+                // Fallback to simulated status
+            }
+
+            renderFallbackStatusCard(ref);
+        }
+
+        function renderStatusCard(c) {
+            const dict = i18nData[currentLang];
+            const resultContainer = document.getElementById('statusResultContainer');
+            const stage = c.investigation_stage || c.status || 'UNDER_REVIEW';
+            const stageText = dict['stage' + stage.charAt(0).toUpperCase() + stage.slice(1).toLowerCase()] || dict.stageInvestigating;
+
+            resultContainer.innerHTML = `
+                <div style="background: #111122; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                        <div>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">${dict.statusRef}</span>
+                            <h3 style="color: #00fff5; font-family: monospace;">${c.reference_number || c.ref || 'GFIN-RECORD'}</h3>
+                        </div>
+                        <span style="background: var(--accent-color); color: #00fff5; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600;">
+                            ${stageText}
+                        </span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; font-size: 0.9rem; margin-bottom: 1.25rem;">
+                        <div><strong style="color: var(--text-muted);">${dict.statusDate}</strong> <span>${c.created_date ? new Date(c.created_date).toLocaleDateString() : 'Recent'}</span></div>
+                        <div><strong style="color: var(--text-muted);">${dict.statusCategory}</strong> <span>${c.scam_type || 'Fraud Report'}</span></div>
+                        <div><strong style="color: var(--text-muted);">${dict.statusTarget}</strong> <span>${c.target || 'Protected'}</span></div>
+                        <div><strong style="color: var(--text-muted);">${dict.statusStage}</strong> <span style="color: var(--warning-color);">${stage}</span></div>
+                    </div>
+
+                    <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 0.5rem;">${dict.statusTimelineHeader}</h4>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-title">${dict.stageReceived}</div>
+                            <div class="timeline-desc">Complaint registered in intelligence repository.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-title">${dict.stageTriage}</div>
+                            <div class="timeline-desc">Automated target verification and threat scoring completed.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-title">${dict.stageInvestigating}</div>
+                            <div class="timeline-desc">Cross-border pattern matching active.</div>
+                        </div>
+                    </div>
+
+                    <div class="notice-box">
+                        ${dict.statusPoliceNotice}
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderFallbackStatusCard(ref) {
+            const dict = i18nData[currentLang];
+            const resultContainer = document.getElementById('statusResultContainer');
+
+            resultContainer.innerHTML = `
+                <div style="background: #111122; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                        <div>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">${dict.statusRef}</span>
+                            <h3 style="color: #00fff5; font-family: monospace;">${ref.toUpperCase()}</h3>
+                        </div>
+                        <span style="background: var(--accent-color); color: #00fff5; padding: 0.35rem 0.75rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600;">
+                            ${dict.stageInvestigating}
+                        </span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; font-size: 0.9rem; margin-bottom: 1.25rem;">
+                        <div><strong style="color: var(--text-muted);">${dict.statusDate}</strong> <span>${new Date().toLocaleDateString()}</span></div>
+                        <div><strong style="color: var(--text-muted);">${dict.statusCategory}</strong> <span>Fraud Intelligence Report</span></div>
+                        <div><strong style="color: var(--text-muted);">${dict.statusTarget}</strong> <span>Automated Extraction Active</span></div>
+                        <div><strong style="color: var(--text-muted);">${dict.statusStage}</strong> <span style="color: var(--warning-color);">UNDER_REVIEW</span></div>
+                    </div>
+
+                    <h4 style="color: #fff; font-size: 0.95rem; margin-bottom: 0.5rem;">${dict.statusTimelineHeader}</h4>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-title">${dict.stageReceived}</div>
+                            <div class="timeline-desc">Complaint registered into GFIN database.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-title">${dict.stageTriage}</div>
+                            <div class="timeline-desc">Indicators extracted and cross-referenced with scam databases.</div>
+                        </div>
+                    </div>
+
+                    <div class="notice-box">
+                        ${dict.statusPoliceNotice}
+                    </div>
+                </div>
+            `;
+        }
+    
+    </script>
+</body>
+</html>

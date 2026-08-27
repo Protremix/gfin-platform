@@ -1,0 +1,45 @@
+{
+  "case_id": "CASE-REAL-001",
+  "model": "gpt-5.6-luna (GFIN Model Gateway)",
+  "analysis": {
+    "summary": "The investigation has identified a sustained brand impersonation campaign targeting CNC Intelligence Inc., a legitimate cryptocurrency investigation firm. The campaign operates by registering lookalike domains and using them for email-based social engineering, primarily targeting victims of prior cryptocurrency scams who are seeking recovery services. The campaign is connected to a broader recovery scam network that has been the subject of FBI law enforcement action.",
+    "evidence_quality": "Investigation used 11 independent public sources including the target company's own report, DNS/WHOIS data, Reddit victim reports, independent scam trackers, and FBI press releases. Findings are strongly corroborated where multiple independent sources confirm the same conclusion.",
+    "key_relationships": [
+      "50+ domains impersonating CNC Intelligence (E-003)",
+      "cncintelinfo.com configured for ProtonMail email operations (E-005) \u2014 primary active threat",
+      "cncintelltd.com parked on SEDO after fraudulent use (E-008) \u2014 autonomous discovery",
+      "Connected to Payback LTD / Cyber-Forensics.net network (E-012, E-014)",
+      "FBI seized connected recovery scam websites (E-016)"
+    ],
+    "gaps": [
+      "No blockchain wallet addresses obtained \u2014 victims reported being asked to send crypto but addresses not publicly available",
+      "No access to email content \u2014 can only infer email-based phishing from DNS configuration",
+      "WHOIS privacy redacts registrant identities",
+      "Historical DNS not available \u2014 cannot determine when domains moved to parking",
+      "Victim loss amounts not independently verified"
+    ],
+    "additional_searches_recommended": [
+      "Search dark web forums for wallet addresses associated with CNC Intelligence impersonators",
+      "Monitor cncintelinfo.com for future DNS changes (new A record, new MX)",
+      "Check certificate transparency logs for SSL certificates issued to these domains",
+      "Monitor ProtonMail abuse reports for cncintelinfo.com",
+      "Search court records for any civil litigation against these domains"
+    ],
+    "confidence_assessment": "HIGH confidence that this is a genuine brand impersonation campaign. MEDIUM confidence in the connection between individual domains and specific victims. The FBI seizure of connected entities provides strong law enforcement corroboration.",
+    "facts_vs_hypotheses": {
+      "facts": [
+        "50+ domains registered impersonating CNC Intelligence",
+        "cncintelinfo.com uses ProtonMail for email",
+        "cncintelltd.com parked on SEDO",
+        "FBI seized Payback LTD",
+        "Multiple victim reports on Reddit"
+      ],
+      "hypotheses": [
+        "All 50+ domains are operated by the same group",
+        "cncintelinfo.com is actively sending phishing emails (inferred from DNS, not observed)",
+        "Victim loss amounts are accurate"
+      ]
+    }
+  },
+  "status": "PASS"
+}

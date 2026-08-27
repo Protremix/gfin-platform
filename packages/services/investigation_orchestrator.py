@@ -12,7 +12,7 @@ Layer B: Real AI planning/synthesis via Model Gateway, real tool backends (REQUI
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class StepStatus(str, Enum):
+class StepStatus(StrEnum):
     PENDING = "PENDING"
     RUNNING = "RUNNING"
     COMPLETED = "COMPLETED"
@@ -28,7 +28,7 @@ class StepStatus(str, Enum):
     SKIPPED = "SKIPPED"
 
 
-class EvidenceType(str, Enum):
+class EvidenceType(StrEnum):
     ENTITY_RECORD = "ENTITY_RECORD"
     REPORT = "REPORT"
     CAMPAIGN = "CAMPAIGN"
@@ -41,7 +41,7 @@ class EvidenceType(str, Enum):
     TOOL_OUTPUT = "TOOL_OUTPUT"
 
 
-class UserRole(str, Enum):
+class UserRole(StrEnum):
     INVESTIGATOR = "INVESTIGATOR"
     ANALYST = "ANALYST"
     SUPERVISOR = "SUPERVISOR"

@@ -1,0 +1,27 @@
+{
+  "payment_indicators": "NONE FOUND",
+  "payment_providers_checked": [
+    {
+      "provider": "Stripe",
+      "result": "NOT_FOUND (404 \u2014 no public merchant directory API)",
+      "access": "RESTRICTED"
+    },
+    {
+      "provider": "PayPal",
+      "result": "NOT_CHECKED \u2014 no public merchant search",
+      "access": "RESTRICTED"
+    },
+    {
+      "provider": "Worldpay",
+      "result": "NOT_CHECKED \u2014 no public API",
+      "access": "RESTRICTED"
+    },
+    {
+      "provider": "Square",
+      "result": "NOT_CHECKED \u2014 no public API",
+      "access": "RESTRICTED"
+    }
+  ],
+  "merchant_identifiers": 0,
+  "note": "No payment processor, merchant account, or payment infrastructure found for UK SmartStar Technology Ltd. The company had no website, no domains, no apps \u2014 suggesting payments (if any) were made via direct bank transfer or third-party processors. Identifying the payment provider requires banking data access (AUTHORIZATION_REQUIRED)."
+}

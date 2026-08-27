@@ -1,0 +1,12 @@
+{
+  "brain_latency_ms": "measured, < 10ms (mock gateway, no real AI call)",
+  "tool_routing_latency_ms": "measured, < 5ms",
+  "api_discovery_latency_ms": "measured, < 5ms",
+  "provider_validation_latency_ms": "measured, < 5ms",
+  "context_construction_latency_ms": "measured, < 5ms",
+  "evidence_processing_latency_ms": "measured, < 5ms",
+  "graph_update_latency_ms": "measured, < 5ms",
+  "full_investigation_duration": "NOT_MEASURED - no real AI investigation run",
+  "note": "All measurements are against mock components. Real AI latency not measured (no valid API key).",
+  "timestamp": "2026-08-26T15:15:45.943849+00:00"
+}

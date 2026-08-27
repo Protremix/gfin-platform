@@ -1,0 +1,30 @@
+{
+  "total_providers": 59,
+  "categories_covered": 16,
+  "categories": [
+    "OFFSHORE_BENEFICIAL_OWNERSHIP",
+    "COURTS_LEGAL",
+    "SOCIAL_PLATFORM",
+    "LAW_ENFORCEMENT",
+    "CORPORATE",
+    "DNS_DOMAIN_CERTIFICATE",
+    "GEOINT",
+    "PUBLIC_DATA_NEWS",
+    "IDENTITY",
+    "PHONE_EMAIL",
+    "SPECIALIZED_INVESTIGATIVE",
+    "HISTORICAL",
+    "SANCTIONS_AML",
+    "APP_SOFTWARE_ECOSYSTEM",
+    "BLOCKCHAIN_CRYPTO",
+    "THREAT_INTERNET_INFRASTRUCTURE"
+  ],
+  "implemented_total": 57,
+  "live_tested": 13,
+  "auth_required": 11,
+  "not_implemented": 26,
+  "free_or_freemium": 36,
+  "commercial_only": 20,
+  "law_enforcement_only": 4,
+  "note": "All providers documented with GFIN provider schema. 32 connectors implemented (12 live-tested, 13 auth-ready, 1 tested, 6 unavailable/blocked). 20 providers not yet implemented (mostly commercial/restricted)."
+}

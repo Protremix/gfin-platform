@@ -20,6 +20,10 @@ env:
 
 jobs:
   # ─── Build Docker Images ───
+  # Only builds services that have an actual Dockerfile present.
+  # Future services (identity, entity, evidence, ai-gateway, police-api) are
+  # PENDING — their Dockerfiles and service implementations do not yet exist.
+  # They will be added to the matrix as each service is implemented.
   build:
     name: Build Container Images
     runs-on: ubuntu-latest
@@ -27,11 +31,6 @@ jobs:
       matrix:
         service:
           - api-gateway
-          - identity
-          - entity
-          - evidence
-          - ai-gateway
-          - police-api
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -52,6 +51,15 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.service }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  # ─── Pending Services ───
+  # The following services are planned but not yet implemented:
+  #   - identity       → Module 02 (Security & Identity) service extraction
+  #   - entity         → Module 04 (Entity Resolution) service extraction
+  #   - evidence       → Module 06 (Evidence Vault) service extraction
+  #   - ai-gateway     → Module 19/20 (Model Gateway / OpenAI) service extraction
+  #   - police-api     → Module 23 (Police API) service extraction
+  # Each will be added to the build matrix once its Dockerfile is created.
 
   # ─── Deploy to Kubernetes ───
   # REQUIRES EXTERNAL INFRASTRUCTURE — Kubernetes cluster must be provisioned

@@ -1,0 +1,69 @@
+{
+  "verification_date": "2026-08-26T11:23:00+02:00",
+  "verifier": "GPT Luna (GFIN-CEA)",
+  "directive": "Final Build Verification Directive \u00a735",
+  "total_tests": 2011,
+  "passing": 2011,
+  "failing": 0,
+  "coverage_pct": 93.6,
+  "total_statements": 10914,
+  "covered_statements": 10215,
+  "test_files": 47,
+  "test_categories": {
+    "unit": 42,
+    "integration": 2,
+    "e2e": 1,
+    "security": 2
+  },
+  "lint": "PASS (ruff)",
+  "typecheck": "PASS (mypy, known module alias warning excluded)",
+  "modules_verified": {
+    "00_governance": "IMPLEMENTED + TESTED",
+    "01_security_auth": "IMPLEMENTED + TESTED",
+    "02_schemas": "IMPLEMENTED + TESTED",
+    "03_database": "IMPLEMENTED + TESTED",
+    "04_entity_resolution": "IMPLEMENTED + TESTED",
+    "05_event_bus": "IMPLEMENTED + TESTED",
+    "06_graph": "IMPLEMENTED + TESTED",
+    "07_evidence_vault": "IMPLEMENTED + TESTED",
+    "08_fraud_reporting": "IMPLEMENTED + TESTED",
+    "09_citizen_platform": "IMPLEMENTED + TESTED",
+    "10_cross_border": "IMPLEMENTED + TESTED",
+    "11_discovery": "IMPLEMENTED + TESTED",
+    "12_ai_model_gateway": "IMPLEMENTED + TESTED",
+    "13_search": "IMPLEMENTED + TESTED",
+    "14_storage": "IMPLEMENTED + TESTED",
+    "15_cache": "IMPLEMENTED + TESTED",
+    "16_compliance": "IMPLEMENTED + TESTED",
+    "17_stix_taxii": "IMPLEMENTED + TESTED (Layer A only)",
+    "18_federation": "IMPLEMENTED + TESTED (Layer A only)",
+    "19_continuous_monitoring": "IMPLEMENTED + TESTED (Layer A only)",
+    "20_production": "REQUIRES EXTERNAL INFRASTRUCTURE"
+  },
+  "new_test_suites_added": {
+    "e2e_data_flows": {
+      "tests": 17,
+      "scope": "End-to-end citizen, police, discovery, cross-border, pipeline, autonomous loop, evidence flows",
+      "directive_ref": "\u00a710",
+      "status": "PASS"
+    },
+    "adversarial_security": {
+      "tests": 27,
+      "scope": "Auth bypass, authz bypass, tenant isolation, prompt injection, adversarial inputs, rate limit, classification bypass, jurisdiction bypass, secret exposure, graph explosion, data leakage",
+      "directive_ref": "\u00a78, \u00a79",
+      "status": "PASS"
+    },
+    "resilience": {
+      "tests": 22,
+      "scope": "Database, graph, event bus, cache, search, storage, AI provider, external source failure resilience",
+      "directive_ref": "\u00a728",
+      "status": "PASS"
+    }
+  },
+  "blocked_items": [
+    "External OSINT integrations (MISP, OpenCTI, SpiderFoot, Cortex) \u2014 REQUIRES EXTERNAL INFRASTRUCTURE",
+    "Production Kafka, Neo4j, OpenSearch, Redis, S3 \u2014 REQUIRES EXTERNAL INFRASTRUCTURE",
+    "Legal/governance (MLAT, GDPR DPA, Interpol/Europol federation) \u2014 REQUIRES LEGAL REVIEW",
+    "Load testing, AI evaluation test suites \u2014 empty (not in scope this session)"
+  ]
+}

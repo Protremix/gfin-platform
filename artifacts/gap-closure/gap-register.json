@@ -1,0 +1,155 @@
+{
+  "total_gaps": 18,
+  "gaps": [
+    {
+      "id": "G01",
+      "gap": "COURTS_LEGAL_NOT_IMPLEMENTED",
+      "class": "COURTS_LEGAL",
+      "status": "CLOSED",
+      "connector": "BAILIIConnector + UKTribunalConnector",
+      "test_result": "PASS"
+    },
+    {
+      "id": "G02",
+      "gap": "SOCIAL_MESSAGING_NOT_IMPLEMENTED",
+      "class": "SOCIAL_MESSAGING",
+      "status": "PARTIALLY_CLOSED",
+      "connector": "GitHubConnector (live), LinkedIn/Facebook (AUTH_REQUIRED), Telegram (NOT_AVAILABLE)",
+      "test_result": "PARTIAL"
+    },
+    {
+      "id": "G03",
+      "gap": "ADVERTISING_NOT_IMPLEMENTED",
+      "class": "ADVERTISING",
+      "status": "BLOCKED",
+      "connector": "FacebookAdLibraryConnector (implemented, AUTH_REQUIRED)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G04",
+      "gap": "THREAT_INTELLIGENCE_NOT_IMPLEMENTED",
+      "class": "THREAT_INTELLIGENCE",
+      "status": "BLOCKED",
+      "connector": "SafeBrowsingConnector + VirusTotalConnector + AbuseIPDBConnector (implemented, AUTH_REQUIRED)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G05",
+      "gap": "GEOINT_NOT_IMPLEMENTED",
+      "class": "GEOINT",
+      "status": "CLOSED",
+      "connector": "NominatimConnector (OpenStreetMap, live, no auth)",
+      "test_result": "PASS"
+    },
+    {
+      "id": "G06",
+      "gap": "LICENSED_INTELLIGENCE_NOT_IMPLEMENTED",
+      "class": "LICENSED_INTELLIGENCE",
+      "status": "BLOCKED",
+      "connector": "OpenSanctionsConnector (implemented, AUTH_REQUIRED)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G07",
+      "gap": "FINANCIAL_INTELLIGENCE",
+      "class": "FINANCIAL",
+      "status": "BLOCKED",
+      "connector": "PaymentIntelligenceConnector (implemented, AUTH_REQUIRED)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G08",
+      "gap": "PAYMENT_INTELLIGENCE",
+      "class": "PAYMENT",
+      "status": "BLOCKED",
+      "connector": "PaymentIntelligenceConnector (implemented, AUTH_REQUIRED)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G09",
+      "gap": "PHONE_TELECOM_INTELLIGENCE",
+      "class": "PHONE_TELECOM",
+      "status": "BLOCKED",
+      "connector": "NumverifyConnector (implemented, AUTH_REQUIRED)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G10",
+      "gap": "IDENTITY_ENTITY_RESOLUTION",
+      "class": "IDENTITY",
+      "status": "CLOSED",
+      "connector": "EntityResolutionConnector (implemented, tested)",
+      "test_result": "PASS"
+    },
+    {
+      "id": "G11",
+      "gap": "HISTORICAL_INTELLIGENCE",
+      "class": "HISTORICAL",
+      "status": "PARTIALLY_CLOSED",
+      "connector": "Wayback CDX (existing) + CTLogConnector (implemented, crt.sh unavailable) + DNSHistoryConnector (AUTH_REQUIRED)",
+      "test_result": "PARTIAL"
+    },
+    {
+      "id": "G12",
+      "gap": "CRYPTO_EXCHANGE_INTELLIGENCE",
+      "class": "CRYPTO",
+      "status": "CLOSED",
+      "connector": "EtherscanConnector + BlockchainInfoConnector (both live)",
+      "test_result": "PASS"
+    },
+    {
+      "id": "G13",
+      "gap": "COMPANIES_HOUSE_API_AUTH",
+      "class": "CORPORATE",
+      "status": "BLOCKED",
+      "connector": "CompaniesHouseConnector (implemented, API key required)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G14",
+      "gap": "OPENCORPORATES_AUTH",
+      "class": "CORPORATE",
+      "status": "BLOCKED",
+      "connector": "OpenCorporatesConnector (implemented, API token required)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G15",
+      "gap": "FCA_REGISTER_ACCESS",
+      "class": "REGULATORY",
+      "status": "BLOCKED",
+      "connector": "No connector (403 Forbidden)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G16",
+      "gap": "OPEN_OWNERSHIP_ACCESS",
+      "class": "BENEFICIAL_OWNERSHIP",
+      "status": "BLOCKED",
+      "connector": "No connector (403 Forbidden)",
+      "test_result": "BLOCKED"
+    },
+    {
+      "id": "G17",
+      "gap": "CRT_SH_UNAVAILABLE",
+      "class": "CERTIFICATE_TRANSPARENCY",
+      "status": "NOT_AVAILABLE",
+      "connector": "CTLogConnector implemented (Google CT 404, crt.sh 502)",
+      "test_result": "UNAVAILABLE"
+    },
+    {
+      "id": "G18",
+      "gap": "UK_INSOLVENCY_GAZETTE",
+      "class": "GOVERNMENT",
+      "status": "NOT_AVAILABLE",
+      "connector": "No API found (both 404)",
+      "test_result": "UNAVAILABLE"
+    }
+  ],
+  "summary": {
+    "CLOSED": 4,
+    "PARTIALLY_CLOSED": 2,
+    "BLOCKED": 9,
+    "NOT_AVAILABLE": 3
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "case_id": "CASE-SUPER-001",
+  "timestamp": "2026-08-26T14:02:10.992585+00:00",
+  "pipeline_steps": 14,
+  "all_verified": true,
+  "geoint": "BLOCKED",
+  "status": "PASS (SYNTHETIC)",
+  "limitations": [
+    "All data synthetic",
+    "GEOINT blocked",
+    "No real federation"
+  ]
+}

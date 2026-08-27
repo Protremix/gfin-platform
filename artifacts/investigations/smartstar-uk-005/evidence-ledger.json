@@ -1,0 +1,203 @@
+{
+  "total_evidence": 28,
+  "evidence_from_baseline": 8,
+  "evidence_from_non_google": 20,
+  "ledger": [
+    {
+      "id": "EV001",
+      "source_type": "BASELINE (Google)",
+      "source": "Companies House web (via Google)",
+      "finding": "Company 14511663 exists, dissolved",
+      "provenance": "find-and-update.company-information.service.gov.uk"
+    },
+    {
+      "id": "EV002",
+      "source_type": "NON-GOOGLE",
+      "source": "Companies House web (direct)",
+      "finding": "Company status, type, incorporation date confirmed without search",
+      "provenance": "Direct URL access to find-and-update.company-information.service.gov.uk/company/14511663"
+    },
+    {
+      "id": "EV003",
+      "source_type": "NON-GOOGLE",
+      "source": "Companies House officers page (direct)",
+      "finding": "Director: Rojs Gordons, Latvian, April 1988, appointed 29 Nov 2022",
+      "provenance": "Direct URL access to officers page"
+    },
+    {
+      "id": "EV004",
+      "source_type": "NON-GOOGLE",
+      "source": "Google DoH (8.8.8.8)",
+      "finding": "smartstar.co.uk resolves to 76.223.54.146 + 13.248.169.48 (parked)",
+      "provenance": "8.8.8.8/resolve?name=smartstar.co.uk&type=A"
+    },
+    {
+      "id": "EV005",
+      "source_type": "NON-GOOGLE",
+      "source": "Cloudflare DoH (1.1.1.1)",
+      "finding": "Confirms smartstar.co.uk DNS resolution",
+      "provenance": "1.1.1.1/dns-query?name=smartstar.co.uk&type=A"
+    },
+    {
+      "id": "EV006",
+      "source_type": "NON-GOOGLE",
+      "source": "RDAP (rdap.org)",
+      "finding": "smartstar.co.uk registered 2022-10-16, registrar: sitekart, NS: afternic.com",
+      "provenance": "rdap.org/domain/smartstar.co.uk"
+    },
+    {
+      "id": "EV007",
+      "source_type": "NON-GOOGLE",
+      "source": "Verisign RDAP",
+      "finding": "smartstartechnology.com registered 2013-04-15, NS: ns1/ns2.dns.ne.jp (Japan)",
+      "provenance": "rdap.verisign.com/com/v1/domain/smartstartechnology.com"
+    },
+    {
+      "id": "EV008",
+      "source_type": "NON-GOOGLE",
+      "source": "Google DoH",
+      "finding": "smartstar.uk resolves to 72.60.233.61 (Hostinger), TXT: google-site-verification",
+      "provenance": "8.8.8.8/resolve?name=smartstar.uk&type=TXT"
+    },
+    {
+      "id": "EV009",
+      "source_type": "NON-GOOGLE",
+      "source": "Google DoH",
+      "finding": "smartjobs.co.uk resolves to 3.33.224.147 (Aftermarket/parked)",
+      "provenance": "8.8.8.8/resolve?name=smartjobs.co.uk"
+    },
+    {
+      "id": "EV010",
+      "source_type": "NON-GOOGLE",
+      "source": "Google DoH",
+      "finding": "smartstartechnology.com resolves to 49.212.180.142 (Sakura Internet, Japan)",
+      "provenance": "8.8.8.8/resolve?name=smartstartechnology.com&type=A"
+    },
+    {
+      "id": "EV011",
+      "source_type": "NON-GOOGLE",
+      "source": "Wayback Machine CDX API",
+      "finding": "smartstar.co.uk: 10 captures from 2017-04-20 to 2024-07-27",
+      "provenance": "web.archive.org/cdx/search/cdx?url=smartstar.co.uk&output=json"
+    },
+    {
+      "id": "EV012",
+      "source_type": "NON-GOOGLE",
+      "source": "GitHub API",
+      "finding": "Protremix account: 4 repos, email: info@protremix.com, created 2026-08-07",
+      "provenance": "api.github.com/users/Protremix"
+    },
+    {
+      "id": "EV013",
+      "source_type": "NON-GOOGLE",
+      "source": "GitHub API",
+      "finding": "EvolvixOS: self-hosted AI platform, 44 tools, 81 models, 35K APIs",
+      "provenance": "api.github.com/repos/Protremix/EvolvixOS"
+    },
+    {
+      "id": "EV014",
+      "source_type": "NON-GOOGLE",
+      "source": "GitHub API",
+      "finding": "Grovim: Physical Intelligence OS, autonomous agents, robotics",
+      "provenance": "api.github.com/repos/Protremix/Grovim"
+    },
+    {
+      "id": "EV015",
+      "source_type": "NON-GOOGLE",
+      "source": "GitHub API",
+      "finding": "Anerium: JavaScript repo, 35.7MB, created 2026-08-23",
+      "provenance": "api.github.com/repos/Protremix/Anerium-"
+    },
+    {
+      "id": "EV016",
+      "source_type": "NON-GOOGLE",
+      "source": "Apple iTunes Search API",
+      "finding": "Smartjobs App: seller SmartStar Technology Ltd, bundle nz.smartstar.smartjobs.app, v4.2.8, free",
+      "provenance": "itunes.apple.com/search?term=smartjobs"
+    },
+    {
+      "id": "EV017",
+      "source_type": "NON-GOOGLE",
+      "source": "Apple iTunes Lookup API",
+      "finding": "Smartjobs App full details: seller URL smartjobs.io, description, genres",
+      "provenance": "itunes.apple.com/lookup?bundleId=nz.smartstar.smartjobs.app"
+    },
+    {
+      "id": "EV018",
+      "source_type": "NON-GOOGLE",
+      "source": "Apple iTunes Search API",
+      "finding": "SmartJobs Reception: bundle org.reactjs.native.example.SJReceptionApp, released 2026-01-06",
+      "provenance": "itunes.apple.com/search"
+    },
+    {
+      "id": "EV019",
+      "source_type": "NON-GOOGLE",
+      "source": "Apple iTunes Search API",
+      "finding": "Smartjobs Arcade: bundle com.smartjobs.arcade, released 2026-04-15",
+      "provenance": "itunes.apple.com/search"
+    },
+    {
+      "id": "EV020",
+      "source_type": "NON-GOOGLE",
+      "source": "Etherscan API",
+      "finding": "API accessible, no Verdis Chain wallet (testnet only)",
+      "provenance": "api.etherscan.io/api"
+    },
+    {
+      "id": "EV021",
+      "source_type": "NON-GOOGLE",
+      "source": "Companies House API attempt",
+      "finding": "AUTH_REQUIRED (401) \u2014 API key required for structured data access",
+      "provenance": "api.company-information.service.gov.uk/company/14511663"
+    },
+    {
+      "id": "EV022",
+      "source_type": "NON-GOOGLE",
+      "source": "Open Corporates API attempt",
+      "finding": "AUTH_REQUIRED (401) \u2014 API token required",
+      "provenance": "api.opencorporates.com/v0.4/companies/search"
+    },
+    {
+      "id": "EV023",
+      "source_type": "NON-GOOGLE",
+      "source": "FCA Register attempt",
+      "finding": "403 FORBIDDEN \u2014 access restricted",
+      "provenance": "register.fca.org.uk"
+    },
+    {
+      "id": "EV024",
+      "source_type": "NON-GOOGLE",
+      "source": "Open Ownership Register attempt",
+      "finding": "403 FORBIDDEN \u2014 access restricted",
+      "provenance": "register.openownership.org"
+    },
+    {
+      "id": "EV025",
+      "source_type": "NON-GOOGLE",
+      "source": "crt.sh attempt",
+      "finding": "502 Bad Gateway \u2014 service unavailable during test",
+      "provenance": "crt.sh"
+    },
+    {
+      "id": "EV026",
+      "source_type": "BASELINE (Google)",
+      "source": "North Data (via Google)",
+      "finding": "Rojs Gordons company relations graph",
+      "provenance": "northdata.com"
+    },
+    {
+      "id": "EV027",
+      "source_type": "BASELINE (Google)",
+      "source": "Verdis Chain website (via Google)",
+      "finding": "Rojs Gordons = Founder & Lead Developer",
+      "provenance": "verdischain.com/team"
+    },
+    {
+      "id": "EV028",
+      "source_type": "NON-GOOGLE",
+      "source": "Google DoH",
+      "finding": "6 domains returned NXDOMAIN (not registered): smartstartechnology.co.uk, smartstar-technology.co.uk, sst-technology.co.uk, smartstar-tech.co.uk, smartstartech.co.uk, smartstartechnology.uk",
+      "provenance": "8.8.8.8/resolve (multiple queries)"
+    }
+  ]
+}

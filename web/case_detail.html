@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GFIN Investigation — Case Detail</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #003366;
+  --navy-dark: #001a33;
+  --navy-light: #1a3a5c;
+  --gold: #c5a55a;
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --text: #1a1a2e;
+  --text-muted: #6b7280;
+  --border: #e5e7eb;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #3b82f6;
+}
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+.hidden { display: none !important; }
+
+/* SIDEBAR */
+#sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+  background: var(--navy-dark); color: #fff; padding: 0; z-index: 100;
+  display: flex; flex-direction: column; overflow-y: auto;
+}
+#sidebar .logo { padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+#sidebar .logo h2 { font-size: 20px; color: var(--gold); }
+#sidebar .logo p { font-size: 12px; opacity: 0.6; }
+.nav-section { padding: 10px 0; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 20px; cursor: pointer; transition: background 0.2s;
+  font-size: 14px; color: rgba(255,255,255,0.7);
+}
+.nav-item:hover { background: rgba(255,255,255,0.05); color: #fff; }
+.nav-item.active { background: var(--navy-light); color: #fff; border-left: 3px solid var(--gold); }
+.nav-badge {
+  margin-left: auto; background: var(--danger); color: #fff;
+  font-size: 11px; padding: 2px 6px; border-radius: 10px; min-width: 20px; text-align: center;
+}
+#sidebar .user-info {
+  margin-top: auto; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex; align-items: center; gap: 10px;
+}
+#sidebar .user-info .avatar {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--navy-light);
+  display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gold);
+}
+
+/* MAIN */
+#main { margin-left: 240px; min-height: 100vh; }
+#header {
+  background: var(--card); border-bottom: 1px solid var(--border);
+  padding: 12px 24px; display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+#header .restricted-tag {
+  background: #fef3c7; color: #92400e; padding: 4px 12px;
+  border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+}
+#header .status-dot {
+  display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--success); margin-right: 6px;
+}
+.content { padding: 24px; max-width: 1400px; margin: 0 auto; }
+
+/* CASE HEADER */
+.case-header {
+  background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.case-header .case-id { font-size: 13px; color: var(--info); font-weight: 600; }
+.case-header h1 { font-size: 24px; margin: 6px 0; }
+.case-header .case-meta { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 12px; }
+.case-header .meta-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg); padding: 6px 12px; border-radius: 6px; font-size: 13px;
+}
+.case-header .meta-pill .label { color: var(--text-muted); font-size: 11px; }
+.priority-badge {
+  padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase;
+}
+.priority-CRITICAL { background: #fee2e2; color: #991b1b; }
+.priority-HIGH { background: #fef3c7; color: #92400e; }
+.priority-MEDIUM { background: #dbeafe; color: #1e40af; }
+.priority-LOW { background: #d1fae5; color: #065f46; }
+.phase-badge {
+  padding: 4px 12px; border-radius: 4px; font-size: 12px; font-weight: 600;
+  background: var(--navy); color: #fff; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* PHASE TIMELINE */
+.phase-timeline {
+  background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.phase-timeline h2 { font-size: 16px; margin-bottom: 20px; }
+.phase-track {
+  display: flex; align-items: center; gap: 2px; overflow-x: auto; padding-bottom: 8px;
+}
+.phase-node {
+  flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  cursor: pointer; min-width: 140px;
+}
+.phase-circle {
+  width: 40px; height: 40px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 14px; font-weight: 700;
+  border: 3px solid var(--border); background: var(--card); transition: all 0.2s;
+}
+.phase-circle.completed { background: var(--success); border-color: var(--success); color: #fff; }
+.phase-circle.active { background: var(--navy); border-color: var(--navy); color: #fff; box-shadow: 0 0 0 4px rgba(0,51,102,0.2); }
+.phase-circle.pending { border-color: var(--border); color: var(--text-muted); }
+.phase-label { font-size: 11px; text-align: center; color: var(--text-muted); font-weight: 500; line-height: 1.3; }
+.phase-node.active .phase-label { color: var(--navy); font-weight: 600; }
+.phase-node.completed .phase-label { color: var(--success); }
+.phase-connector {
+  flex-shrink: 0; width: 30px; height: 3px; background: var(--border); margin-bottom: 20px;
+}
+.phase-connector.completed { background: var(--success); }
+
+/* PHASE DETAIL */
+.phase-detail {
+  background: var(--card); border-radius: 12px; padding: 24px; margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.phase-detail h2 { font-size: 16px; margin-bottom: 4px; }
+.phase-detail .phase-desc { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; }
+.phase-progress-bar {
+  height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 20px; overflow: hidden;
+}
+.phase-progress-bar .fill { height: 100%; background: var(--navy); transition: width 0.3s; }
+
+/* STEPS */
+.step-list { display: flex; flex-direction: column; gap: 8px; }
+.step-item {
+  display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border);
+  border-radius: 8px; transition: all 0.2s;
+}
+.step-item:hover { border-color: var(--navy-light); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.step-icon {
+  width: 28px; height: 28px; border-radius: 50%; display: flex;
+  align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
+}
+.step-icon.COMPLETED { background: #d1fae5; color: #065f46; }
+.step-icon.IN_PROGRESS { background: #dbeafe; color: #1e40af; }
+.step-icon.PENDING { background: #f3f4f6; color: #9ca3af; }
+.step-icon.BLOCKED { background: #fee2e2; color: #991b1b; }
+.step-icon.SKIPPED { background: #e5e7eb; color: #6b7280; }
+.step-name { flex: 1; font-size: 14px; }
+.step-type {
+  font-size: 10px; padding: 2px 8px; border-radius: 4px;
+  background: var(--bg); color: var(--text-muted); font-weight: 600;
+}
+.step-type.AUTO { background: #e0f2fe; color: #0369a1; }
+.step-type.MANUAL { background: #fef3c7; color: #92400e; }
+.step-status {
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  color: var(--text-muted);
+}
+.step-status.COMPLETED { color: var(--success); }
+.step-status.IN_PROGRESS { color: var(--info); }
+.step-status.PENDING { color: var(--text-muted); }
+.step-status.BLOCKED { color: var(--danger); }
+
+/* TABS */
+.tab-bar {
+  display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.tab {
+  padding: 10px 16px; border-radius: 8px 8px 0 0; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--text-muted);
+  background: var(--card); border: 1px solid var(--border); border-bottom: none;
+  transition: all 0.2s;
+}
+.tab:hover { color: var(--navy); }
+.tab.active { color: var(--navy); background: var(--card); border-bottom: 2px solid var(--gold); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ENTITIES */
+.entity-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.entity-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+  transition: all 0.2s;
+}
+.entity-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.entity-type {
+  font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;
+}
+.entity-value { font-size: 15px; font-weight: 600; margin: 4px 0; }
+.entity-meta { font-size: 12px; color: var(--text-muted); }
+.entity-confidence {
+  display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
+}
+.confidence-HIGH { background: #d1fae5; color: #065f46; }
+.confidence-MEDIUM { background: #fef3c7; color: #92400e; }
+.confidence-LOW { background: #f3f4f6; color: #6b7280; }
+.confidence-CONFIRMED { background: #dbeafe; color: #1e40af; }
+
+/* CORRELATION BADGE */
+.correlation-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #fef3c7; color: #92400e; padding: 2px 8px; border-radius: 4px;
+  font-size: 10px; font-weight: 600; margin-left: 6px;
+}
+
+/* TIMELINE */
+.timeline-item {
+  display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.timeline-item:last-child { border-bottom: none; }
+.timeline-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+  background: var(--navy);
+}
+.timeline-content { flex: 1; }
+.timeline-title { font-size: 14px; font-weight: 600; }
+.timeline-desc { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+.timeline-time { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+.timeline-officer { font-size: 11px; color: var(--info); }
+
+/* ACTIONS */
+.action-card {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+  margin-bottom: 12px;
+}
+.action-type {
+  display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.action-type.TAKEDOWN_REQUEST { background: #fee2e2; color: #991b1b; }
+.action-type.LEA_REFERRAL { background: #dbeafe; color: #1e40af; }
+.action-type.PUBLIC_ALERT { background: #fef3c7; color: #92400e; }
+.action-type.VICTIM_NOTIFICATION { background: #d1fae5; color: #065f46; }
+.action-type.PROSECUTION_PACKAGE { background: #ede9fe; color: #5b21b6; }
+.action-status {
+  float: right; padding: 3px 10px; border-radius: 4px; font-size: 11px; font-weight: 600;
+}
+.action-status.PENDING { background: #f3f4f6; color: #6b7280; }
+.action-status.SENT { background: #dbeafe; color: #1e40af; }
+.action-status.ACKNOWLEDGED { background: #d1fae5; color: #065f46; }
+.action-status.COMPLETED { background: #d1fae5; color: #065f46; }
+.action-status.FAILED { background: #fee2e2; color: #991b1b; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+.empty-state .icon { font-size: 32px; margin-bottom: 12px; }
+
+/* BUTTONS */
+.btn {
+  padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; transition: all 0.2s;
+}
+.btn-primary { background: var(--navy); color: #fff; }
+.btn-primary:hover { background: var(--navy-light); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+.btn-action {
+  background: var(--gold); color: var(--navy-dark); font-weight: 700;
+}
+
+/* RISK ASSESSMENT */
+.risk-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.risk-tile {
+  background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px;
+  text-align: center;
+}
+.risk-tile .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+.risk-tile .value { font-size: 24px; font-weight: 700; margin-top: 4px; }
+.risk-tile .sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  #sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+  #sidebar.open { transform: translateX(0); }
+  #main { margin-left: 0; }
+  .phase-track { padding-bottom: 12px; }
+  .risk-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div class="logo">
+    <h2>GFIN</h2>
+    <p>Investigator Workbench</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-item" onclick="window.location.href='/'">Dashboard</div>
+    <div class="nav-item" onclick="window.location.href='/'">Cases</div>
+    <div class="nav-item" onclick="window.location.href='/'">Intel Feed</div>
+    <div class="nav-item" onclick="window.location.href='/'">Evidence Vault</div>
+    <div class="nav-item" onclick="window.location.href='/'">Telegram</div>
+    <div class="nav-item" onclick="window.location.href='/'">Hunter</div>
+    <div class="nav-item" onclick="window.location.href='/'">Tracked Domains</div>
+    <div class="nav-item" onclick="window.location.href='/'">Search</div>
+  </div>
+  <div class="user-info">
+    <div class="avatar">G</div>
+    <div>
+      <div style="font-size:13px;font-weight:600;">GFIN Central</div>
+      <div style="font-size:11px;opacity:0.6;">ADMIN</div>
+    </div>
+  </div>
+</div>
+
+<div id="main">
+  <div id="header">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="btn btn-outline" onclick="window.location.href='/'">← Back</button>
+      <span class="restricted-tag">RESTRICTED — LAW ENFORCEMENT USE ONLY</span>
+    </div>
+    <div><span class="status-dot"></span> SYSTEM LIVE — GFIN PLATFORM</div>
+  </div>
+  <div class="content" id="case-content">
+    <div class="empty-state"><div class="icon">⏳</div>Loading investigation...</div>
+  </div>
+</div>
+
+<script>
+const API = '/api/lifecycle';
+const CASE_ID = new URLSearchParams(window.location.search).get('case_id');
+let caseData = null;
+let activeTab = 'overview';
+
+if (!CASE_ID) {
+  document.getElementById('case-content').innerHTML = '<div class="empty-state"><div class="icon">⚠️</div>No case_id specified. Use ?case_id=GFIN-CASE-001</div>';
+} else {
+  loadCase();
+}
+
+async function loadCase() {
+  try {
+    const res = await fetch(`${API}/case/${CASE_ID}`);
+    caseData = await res.json();
+    renderCase();
+  } catch(e) {
+    document.getElementById('case-content').innerHTML = `<div class="empty-state"><div class="icon">❌</div>Error loading case: ${e.message}</div>`;
+  }
+}
+
+function renderCase() {
+  const c = caseData.case;
+  const phases = caseData.phases;
+  const progress = caseData.phase_progress;
+  const currentPhase = caseData.current_phase;
+
+  // Find current phase index
+  let currentIdx = phases.findIndex(p => p.id === currentPhase);
+  if (currentIdx < 0) currentIdx = 0;
+
+  // Phase timeline
+  let phaseHTML = '<div class="phase-timeline"><h2>Investigation Lifecycle</h2><div class="phase-track">';
+  phases.forEach((p, i) => {
+    const pStatus = progress[p.id] || {};
+    let circleClass = 'pending';
+    if (p.id === currentPhase) circleClass = 'active';
+    else if (pStatus.status === 'COMPLETED') circleClass = 'completed';
+    else if (i < currentIdx) circleClass = 'completed';
+
+    phaseHTML += `
+      <div class="phase-node ${circleClass}" onclick="selectPhase('${p.id}')">
+        <div class="phase-circle ${circleClass}">${i + 1}</div>
+        <div class="phase-label">${p.label}</div>
+      </div>`;
+    if (i < phases.length - 1) {
+      const connectorClass = (i < currentIdx) ? 'completed' : '';
+      phaseHTML += `<div class="phase-connector ${connectorClass}"></div>`;
+    }
+  });
+  phaseHTML += '</div></div>';
+
+  // Case header
+  const headerHTML = `
+    <div class="case-header">
+      <div style="display:flex;justify-content:space-between;align-items:start;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div class="case-id">${c.case_id}</div>
+          <h1>${c.target || 'Unknown target'}</h1>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:4px;">
+            ${c.summary || c.target_type || ''}
+          </div>
+          <div class="case-meta">
+            <div class="meta-pill"><span class="label">Confidence:</span> ${Math.round((c.confidence || 0) * 100)}%</div>
+            <div class="meta-pill"><span class="label">Victims:</span> ${c.victim_count || 0}</div>
+            <div class="meta-pill"><span class="label">Loss:</span> ${c.victim_loss || '$0'}</div>
+            <div class="meta-pill"><span class="label">Created:</span> ${new Date(c.created_date).toLocaleDateString()}</div>
+          </div>
+          ${c.scam_patterns && c.scam_patterns.length ? '<div style="margin-top:8px;">' + c.scam_patterns.map(p => `<span style="background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:4px;font-size:11px;font-weight:600;margin-right:4px;">${p}</span>`).join('') + '</div>' : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:end;">
+          <span class="priority-badge priority-${c.priority || 'MEDIUM'}">${c.priority || 'MEDIUM'}</span>
+          <span class="phase-badge">${currentPhase.replace(/_/g, ' ')}</span>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-outline" onclick="changePriority()">Set Priority</button>
+            <button class="btn btn-primary" onclick="advancePhase()">Advance Phase</button>
+            <button class="btn btn-outline" style="border-color:#3b82f6;color:#3b82f6;" onclick="runProxyPiercer()">🔍 Pierce Proxy</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Current phase detail
+  const currentPhaseData = phases[currentIdx];
+  const phaseSteps = caseData.steps_by_phase[currentPhase] || [];
+  const phaseProgress = progress[currentPhase] || {completed: 0, total: 0, percentage: 0};
+  
+  let stepsHTML = phaseSteps.length ? '<div class="step-list">' + phaseSteps.map(s => `
+    <div class="step-item">
+      <div class="step-icon ${s.status}">${s.status === 'COMPLETED' ? '✓' : s.status === 'BLOCKED' ? '!' : s.status === 'IN_PROGRESS' ? '◐' : '○'}</div>
+      <div class="step-name">${s.step_name}</div>
+      <span class="step-type ${s.step_type}">${s.step_type}</span>
+      <span class="step-status ${s.status}">${s.status}</span>
+      ${s.status !== 'COMPLETED' ? `<button class="btn btn-outline" style="padding:4px 10px;font-size:11px;" onclick="completeStep(${s.id})">Complete</button>` : ''}
+    </div>`).join('') + '</div>' : '<div class="empty-state">No steps in this phase</div>';
+
+  const phaseDetailHTML = `
+    <div class="phase-detail">
+      <h2>${currentPhaseData.label}</h2>
+      <p class="phase-desc">${currentPhaseData.description}</p>
+      <div class="phase-progress-bar"><div class="fill" style="width:${phaseProgress.percentage}%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
+        <span style="font-size:13px;color:var(--text-muted);">${phaseProgress.completed} of ${phaseProgress.total} steps completed (${phaseProgress.percentage}%)</span>
+        <button class="btn btn-outline" style="padding:4px 12px;font-size:12px;" onclick="addStep()">+ Add Step</button>
+      </div>
+      ${stepsHTML}
+    </div>`;
+
+  // Tabs
+  const tabsHTML = `
+    <div class="tab-bar">
+      <div class="tab ${activeTab === 'overview' ? 'active' : ''}" onclick="switchTab('overview')">Overview</div>
+      <div class="tab ${activeTab === 'piercer' ? 'active' : ''}" onclick="switchTab('piercer')">Proxy Piercer</div>
+      <div class="tab ${activeTab === 'evidence' ? 'active' : ''}" onclick="switchTab('evidence')">Evidence (${caseData.evidence ? caseData.evidence.length : 0})</div>
+      <div class="tab ${activeTab === 'entities' ? 'active' : ''}" onclick="switchTab('entities')">Entities (${caseData.entities.length})</div>
+      <div class="tab ${activeTab === 'correlations' ? 'active' : ''}" onclick="switchTab('correlations')">Correlations (${caseData.entity_links.length})</div>
+      <div class="tab ${activeTab === 'timeline' ? 'active' : ''}" onclick="switchTab('timeline')">Timeline (${caseData.timeline.length})</div>
+      <div class="tab ${activeTab === 'actions' ? 'active' : ''}" onclick="switchTab('actions')">Actions (${caseData.actions.length})</div>
+      <div class="tab ${activeTab === 'risk' ? 'active' : ''}" onclick="switchTab('risk')">Risk Assessment</div>
+      <div class="tab ${activeTab === 'attribution' ? 'active' : ''}" onclick="switchTab('attribution')">Attribution</div>
+      <div class="tab ${activeTab === 'notes' ? 'active' : ''}" onclick="switchTab('notes')">Notes (${caseData.notes.length})</div>
+    </div>`;
+
+  document.getElementById('case-content').innerHTML = headerHTML + phaseHTML + phaseDetailHTML + tabsHTML + renderTabContent();
+}
+
+function renderTabContent() {
+  let html = '<div>';
+  
+  if (activeTab === 'overview') {
+    const c = caseData.case;
+    html += `<div class="phase-detail">
+      <h2>Case Overview</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+        <div class="risk-tile"><div class="label">Case ID</div><div class="value" style="font-size:16px;">${c.case_id}</div></div>
+        <div class="risk-tile"><div class="label">Target</div><div class="value" style="font-size:16px;">${c.target || 'N/A'}</div></div>
+        <div class="risk-tile"><div class="label">Target Type</div><div class="value" style="font-size:16px;">${c.target_type || 'N/A'}</div></div>
+        <div class="risk-tile"><div class="label">Trigger</div><div class="value" style="font-size:16px;">${c.trigger || 'N/A'}</div></div>
+        <div class="risk-tile"><div class="label">Confidence</div><div class="value">${Math.round((c.confidence || 0) * 100)}%</div></div>
+        <div class="risk-tile"><div class="label">Victims</div><div class="value">${c.victim_count || 0}</div></div>
+        <div class="risk-tile"><div class="label">Reported Loss</div><div class="value" style="font-size:18px;">${c.victim_loss || '$0'}</div></div>
+        <div class="risk-tile"><div class="label">Assigned To</div><div class="value" style="font-size:14px;">${c.assigned_to_officer || 'Unassigned'}</div></div>
+      </div>
+      <div style="margin-top:16px;">
+        <h3 style="font-size:14px;margin-bottom:8px;">Summary</h3>
+        <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">${c.summary || 'No summary available.'}</p>
+      </div>
+      ${c.affected_countries && c.affected_countries.length ? `<div style="margin-top:12px;"><strong>Affected Countries:</strong> ${c.affected_countries.join(', ')}</div>` : ''}
+      ${c.routed_to_countries && c.routed_to_countries.length ? `<div style="margin-top:8px;"><strong>Routed To:</strong> ${c.routed_to_countries.join(', ')}</div>` : ''}
+    </div>`;
+  }
+  
+  else if (activeTab === 'piercer') {
+    if (piercerResults) {
+      const r = piercerResults;
+      html += '<div class="phase-detail"><h2>Proxy & Privacy Piercing Results</h2>';
+      html += '<p class="phase-desc">' + (r.summary || 'No summary') + '</p>';
+      
+      // Detection status badges
+      html += '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">';
+      if (r.privacy_detected) {
+        html += '<span class="tag" style="background:#fef3c7;color:#92400e;">🔒 WHOIS Privacy Detected</span>';
+      } else {
+        html += '<span class="tag" style="background:#d1fae5;color:#065f46;">✓ No WHOIS Privacy</span>';
+      }
+      if (r.cdn_detected) {
+        html += '<span class="tag" style="background:#fee2e2;color:#991b1b;">🛡️ CDN Detected: ' + (r.cdn_provider || '?') + '</span>';
+      } else {
+        html += '<span class="tag" style="background:#d1fae5;color:#065f46;">✓ No CDN</span>';
+      }
+      if (r.origin_ip) {
+        html += '<span class="tag" style="background:#dbeafe;color:#1e40af;">📍 Origin IP: ' + r.origin_ip + '</span>';
+      }
+      if (r.physical_location) {
+        const loc = r.physical_location;
+        html += '<span class="tag" style="background:#dbeafe;color:#1e40af;">📌 ' + (loc.city || '?') + ', ' + (loc.country || '?') + '</span>';
+      }
+      if (r.real_identity) {
+        const id = r.real_identity;
+        if (id.name) html += '<span class="tag" style="background:#f3e8ff;color:#6b21a8;">👤 ' + id.name + '</span>';
+        if (id.email) html += '<span class="tag" style="background:#f3e8ff;color:#6b21a8;">✉️ ' + id.email + '</span>';
+      }
+      html += '<span class="tag" style="background:' + (r.confidence === 'HIGH' ? '#d1fae5' : r.confidence === 'MEDIUM' ? '#fef3c7' : '#f3f4f6') + ';color:' + (r.confidence === 'HIGH' ? '#065f46' : r.confidence === 'MEDIUM' ? '#92400e' : '#6b7280') + ';">Confidence: ' + r.confidence + '</span>';
+      html += '</div>';
+      
+      // Evidence list
+      if (r.evidence && r.evidence.length > 0) {
+        html += '<h3>Evidence (' + r.evidence.length + ')</h3>';
+        html += '<div class="step-list">';
+        r.evidence.forEach(e => {
+          const confColor = e.confidence === 'HIGH' ? '#d1fae5' : e.confidence === 'MEDIUM' ? '#fef3c7' : '#f3f4f6';
+          const confText = e.confidence === 'HIGH' ? '#065f46' : e.confidence === 'MEDIUM' ? '#92400e' : '#6b7280';
+          html += '<div class="step-item" style="flex-direction:column;align-items:stretch;">';
+          html += '<div style="display:flex;align-items:center;gap:12px;">';
+          html += '<div class="step-icon COMPLETED">🔍</div>';
+          html += '<div class="step-name">' + e.finding + '</div>';
+          html += '<span style="background:' + confColor + ';color:' + confText + ';padding:2px 8px;border-radius:4px;font-size:11px;">' + e.confidence + '</span>';
+          html += '</div>';
+          html += '<div style="margin-top:6px;padding-left:40px;font-size:12px;color:var(--text-muted);">';
+          html += '<strong>Method:</strong> ' + e.method;
+          if (e.data) {
+            const dataStr = Object.entries(e.data).map(([k,v]) => k + ': ' + v).join(' · ');
+            if (dataStr) html += '<br><strong>Data:</strong> ' + dataStr;
+          }
+          html += '</div>';
+          html += '</div>';
+        });
+        html += '</div>';
+      }
+      
+      // Methods tried
+      if (r.methods_tried && r.methods_tried.length > 0) {
+        const uniqueMethods = [...new Set(r.methods_tried)];
+        html += '<h3 style="margin-top:16px;">Methods Used (' + uniqueMethods.length + ')</h3>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;">';
+        uniqueMethods.forEach(m => {
+          html += '<span style="background:var(--bg-card);border:1px solid var(--border);padding:4px 10px;border-radius:4px;font-size:12px;">' + m + '</span>';
+        });
+        html += '</div>';
+      }
+      
+      // Correlations
+      if (r.correlations && r.correlations.length > 0) {
+        html += '<h3>Cross-Case Correlations</h3>';
+        r.correlations.forEach(c => {
+          html += '<div style="background:#fef3c7;padding:8px 12px;border-radius:4px;margin-bottom:4px;font-size:13px;">';
+          html += '<strong>' + c.entity_type + ':</strong> ' + c.entity_value + ' — found in ' + c.source;
+          html += '</div>';
+        });
+      }
+      
+      html += '</div>';
+    } else {
+      html += '<div class="empty-state"><div class="icon">🔍</div>';
+      html += '<h3>Proxy & Privacy Piercing</h3>';
+      html += '<p>Detect WHOIS privacy services, CDN proxies, and trace the real scammer behind them.</p>';
+      html += '<p style="color:var(--text-muted);font-size:13px;max-width:500px;margin:0 auto;">';
+      html += 'This will attempt to:<br>';
+      html += '• Detect if the domain uses WHOIS privacy protection<br>';
+      html += '• Check if the domain is behind a CDN (Cloudflare, Sucuri, etc.)<br>';
+      html += '• Find the real origin IP hidden behind the CDN<br>';
+      html += '• Trace the physical location of the hosting server<br>';
+      html += '• Look up historical WHOIS records for the real registrant<br>';
+      html += '• Find other domains sharing the same SSL certificate<br>';
+      html += '• Correlate emails/phones with other cases';
+      html += '</p><br>';
+      html += '<button class="btn btn-primary" onclick="runProxyPiercer()">🔍 Run Proxy Piercer</button>';
+      html += '</div>';
+    }
+  }
+  else if (activeTab === 'evidence') {
+    const evidence = caseData.evidence || [];
+    if (evidence.length === 0) {
+      html += `<div class="empty-state"><div class="icon">📁</div>No evidence recorded yet<br><br>
+        <button class="btn btn-primary" onclick="addEvidence()">+ Add Evidence</button></div>`;
+    } else {
+      html += '<div class="phase-detail"><h2>Evidence Chain</h2><p class="phase-desc">All evidence linked to this case. Each entry shows who added it and when.</p>';
+      html += '<button class="btn btn-primary" style="margin-bottom:16px;" onclick="addEvidence()">+ Add Evidence</button>';
+      html += '<div class="step-list">';
+      evidence.forEach(e => {
+        const officerName = e.added_by_officer || 'SYSTEM';
+        const officerAgency = e.officer_agency || '';
+        const officerCountry = e.officer_country || '';
+        const addedDate = e.added_date || e.created_date;
+        const dateStr = addedDate ? new Date(addedDate).toLocaleString() : '';
+        const officerInfo = officerAgency ? `${officerName} (${officerAgency}${officerCountry ? ', ' + officerCountry : ''})` : officerName;
+        const confClass = e.confidence === 'HIGH' ? 'confidence-HIGH' : e.confidence === 'MEDIUM' ? 'confidence-MEDIUM' : 'confidence-LOW';
+        
+        html += `<div class="step-item" style="flex-direction:column;align-items:stretch;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="step-icon COMPLETED">📁</div>
+            <div class="step-name">${e.evidence_id}: ${e.finding || 'No description'}</div>
+            <span class="step-type ${e.source_type === 'INVESTIGATOR' ? 'MANUAL' : 'AUTO'}">${e.source_type || 'AUTO'}</span>
+            <span class="entity-confidence ${confClass}">${e.confidence || 'MEDIUM'}</span>
+          </div>
+          <div style="margin-top:8px;padding-left:40px;font-size:12px;color:var(--text-muted);">
+            <div><strong>Added by:</strong> ${officerInfo} <span style="color:var(--text-muted);">· ${dateStr}</span></div>
+            ${e.source_provider ? `<div><strong>Source:</strong> ${e.source_provider}</div>` : ''}
+            ${e.source_url ? `<div><strong>URL:</strong> <a href="${e.source_url}" target="_blank" style="color:var(--info);">${e.source_url}</a></div>` : ''}
+            ${e.phase ? `<div><strong>Phase:</strong> ${e.phase}</div>` : ''}
+          </div>
+        </div>`;
+      });
+      html += '</div></div>';
+    }
+  }
+  else if (activeTab === 'entities') {
+    const entities = caseData.entities;
+    if (entities.length === 0) {
+      html += '<div class="empty-state"><div class="icon">📋</div>No entities tracked yet</div>';
+    } else {
+      // Group by type
+      const byType = {};
+      entities.forEach(e => { 
+        if (!byType[e.entity_type]) byType[e.entity_type] = [];
+        byType[e.entity_type].push(e);
+      });
+      
+      Object.keys(byType).forEach(type => {
+        html += `<h3 style="font-size:14px;margin:16px 0 8px;color:var(--navy);">${type} (${byType[type].length})</h3><div class="entity-grid">`;
+        byType[type].forEach(e => {
+          const officerName = e.added_by_officer || 'SYSTEM';
+          const officerAgency = e.officer_agency || '';
+          const officerInfo = officerAgency ? `${officerName} (${officerAgency})` : officerName;
+          html += `<div class="entity-card">
+            <div class="entity-type">${e.entity_type}</div>
+            <div class="entity-value">${e.entity_value}</div>
+            <div class="entity-meta">Source: ${e.source || 'AUTO'}</div>
+            <div style="margin-top:6px;">
+              <span class="entity-confidence confidence-${e.confidence}">${e.confidence}</span>
+              <span style="font-size:11px;color:var(--text-muted);margin-left:8px;">${e.status}</span>
+            </div>
+            <div style="margin-top:6px;font-size:11px;color:var(--info);">
+              Added by: ${officerInfo} · ${new Date(e.created_date).toLocaleDateString()}
+            </div>
+          </div>`;
+        });
+        html += '</div>';
+      });
+    }
+  }
+  
+  else if (activeTab === 'correlations') {
+    const links = caseData.entity_links;
+    if (links.length === 0) {
+      html += '<div class="empty-state"><div class="icon">🔗</div>No cross-case correlations found yet.<br>Correlations appear when the same entity (domain, wallet, phone) appears in multiple cases.</div>';
+    } else {
+      html += '<div class="entity-grid">';
+      links.forEach(l => {
+        html += `<div class="entity-card">
+          <div class="entity-type">${l.entity_type}</div>
+          <div class="entity-value">${l.entity_value}</div>
+          <div class="entity-meta">Appears in ${l.case_ids.length} cases · ${l.mention_count} mentions</div>
+          <div style="margin-top:8px;">${l.case_ids.map(cid => `<span class="correlation-badge">🔗 ${cid}</span>`).join('')}</div>
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+  
+  else if (activeTab === 'timeline') {
+    const events = caseData.timeline;
+    if (events.length === 0) {
+      html += '<div class="empty-state"><div class="icon">📅</div>No events recorded</div>';
+    } else {
+      html += '<div class="phase-detail">';
+      events.forEach(e => {
+        html += `<div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">${e.event_title}</div>
+            ${e.event_description ? `<div class="timeline-desc">${e.event_description}</div>` : ''}
+            <div class="timeline-time">${new Date(e.created_date).toLocaleString()} <span class="timeline-officer">· ${e.officer_name}</span></div>
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+  
+  else if (activeTab === 'actions') {
+    const actions = caseData.actions;
+    if (actions.length === 0) {
+      html += `<div class="empty-state"><div class="icon">⚡</div>No actions taken yet<br><br>
+        <button class="btn btn-action" onclick="createAction()">Create Action</button></div>`;
+    } else {
+      html += '<div class="phase-detail">';
+      actions.forEach(a => {
+        html += `<div class="action-card">
+          <span class="action-type ${a.action_type}">${a.action_type.replace(/_/g, ' ')}</span>
+          <span class="action-status ${a.action_status}">${a.action_status}</span>
+          <div style="margin-top:8px;"><strong>Agency:</strong> ${a.target_agency || 'N/A'}</div>
+          ${a.target_contact ? `<div style="font-size:13px;color:var(--text-muted);">Contact: ${a.target_contact}</div>` : ''}
+          ${a.response_notes ? `<div style="margin-top:8px;font-size:13px;"><strong>Response:</strong> ${a.response_notes}</div>` : ''}
+          <div style="font-size:11px;color:var(--text-muted);margin-top:6px;">Created: ${new Date(a.created_date).toLocaleString()} by ${a.officer_name}</div>
+        </div>`;
+      });
+      html += `<button class="btn btn-action" style="margin-top:12px;" onclick="createAction()">+ Create Action</button></div>`;
+    }
+  }
+  
+  else if (activeTab === 'risk') {
+    const risk = caseData.risk_assessment || {};
+    const c = caseData.case;
+    html += `<div class="phase-detail">
+      <h2>Risk Assessment</h2>
+      <p class="phase-desc">Victim impact, financial loss, severity, and urgency classification.</p>
+      <div class="risk-grid">
+        <div class="risk-tile"><div class="label">Victims</div><div class="value">${c.victim_count || 0}</div><div class="sub">confirmed victims</div></div>
+        <div class="risk-tile"><div class="label">Reported Loss</div><div class="value">$${(c.total_loss_usd || 0).toLocaleString()}</div><div class="sub">${c.victim_loss || ''}</div></div>
+        <div class="risk-tile"><div class="label">Confidence</div><div class="value">${Math.round((c.confidence || 0) * 100)}%</div><div class="sub">evidence confidence</div></div>
+        <div class="risk-tile"><div class="label">Priority</div><div class="value" style="font-size:16px;">${c.priority || 'MEDIUM'}</div><div class="sub">investigation priority</div></div>
+      </div>
+      ${risk.severity ? `<div style="margin-top:16px;"><strong>Severity:</strong> ${risk.severity}</div>` : ''}
+      ${risk.urgency ? `<div style="margin-top:8px;"><strong>Urgency:</strong> ${risk.urgency}</div>` : ''}
+      ${risk.notes ? `<div style="margin-top:12px;font-size:13px;color:var(--text-muted);">${risk.notes}</div>` : ''}
+    </div>`;
+  }
+  
+  else if (activeTab === 'attribution') {
+    const attr = caseData.attribution || {};
+    if (Object.keys(attr).length === 0) {
+      html += '<div class="empty-state"><div class="icon">🎯</div>No attribution data yet.<br>Attribution identifies who is behind the scam, their location, and methods.</div>';
+    } else {
+      html += `<div class="phase-detail"><h2>Attribution Data</h2><pre style="font-size:13px;white-space:pre-wrap;">${JSON.stringify(attr, null, 2)}</pre></div>`;
+    }
+  }
+  
+  else if (activeTab === 'notes') {
+    const notes = caseData.notes;
+    if (notes.length === 0) {
+      html += '<div class="empty-state"><div class="icon">📝</div>No notes yet</div>';
+    } else {
+      html += '<div class="phase-detail">';
+      notes.forEach(n => {
+        html += `<div class="timeline-item">
+          <div class="timeline-dot" style="background:${n.note_type === 'ACTION' ? 'var(--warning)' : n.note_type === 'INTELLIGENCE' ? 'var(--info)' : 'var(--navy)'};"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">${n.note_text}</div>
+            <div class="timeline-time">${new Date(n.created_date).toLocaleString()} · ${n.officer_name} (${n.officer_agency}, ${n.officer_country}) · ${n.note_type}</div>
+          </div>
+        </div>`;
+      });
+      html += '</div>';
+    }
+  }
+  
+  html += '</div>';
+  return html;
+}
+
+// ACTIONS
+function switchTab(tab) { activeTab = tab; renderCase(); }
+function selectPhase(phase) { activeTab = 'overview'; renderCase(); }
+
+async function advancePhase() {
+  const phases = caseData.phases;
+  const currentPhase = caseData.current_phase;
+  const currentIdx = phases.findIndex(p => p.id === currentPhase);
+  const nextPhase = phases[currentIdx + 1];
+  if (!nextPhase) return alert('Already at final phase');
+  if (!confirm(`Advance from ${currentPhase} to ${nextPhase.id}?`)) return;
+  const res = await fetch(`${API}/case/${CASE_ID}/phase`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({phase: nextPhase.id, officer_name: 'GFIN Admin'})
+  });
+  if (res.ok) loadCase();
+}
+
+async function completeStep(stepId) {
+  const res = await fetch(`${API}/case/${CASE_ID}/step/${stepId}`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({status: 'COMPLETED', officer_name: 'GFIN Admin'})
+  });
+  if (res.ok) loadCase();
+}
+
+function changePriority() {
+  const priorities = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
+  const current = caseData.case.priority || 'MEDIUM';
+  const idx = priorities.indexOf(current);
+  const next = priorities[(idx + 1) % priorities.length];
+  if (!confirm(`Change priority to ${next}?`)) return;
+  fetch(`${API}/case/${CASE_ID}/priority`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({priority: next, officer_name: 'GFIN Admin'})
+  }).then(() => loadCase());
+}
+
+let piercerResults = null;
+
+function runProxyPiercer() {
+  if (!confirm('Run proxy & privacy piercing investigation on ' + (caseData.case.target || CASE_ID) + '?\\n\\nThis will check for WHOIS privacy, CDN proxies, and try to find the real scammer identity and location.')) return;
+  
+  // Show loading
+  piercerResults = { loading: true, summary: 'Running proxy piercing investigation...' };
+  switchTab('piercer');
+  
+  fetch(`${API}/piercer/investigate-case/${CASE_ID}`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      officer_name: 'GFIN Admin',
+      officer_id: 1
+    })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.result) {
+      piercerResults = data.result;
+    } else {
+      piercerResults = data;
+    }
+    switchTab('piercer');
+    // Also reload case to show new evidence
+    loadCase();
+  })
+  .catch(err => {
+    piercerResults = { summary: 'Error: ' + err.message, evidence: [], confidence: 'LOW' };
+    switchTab('piercer');
+  });
+}
+
+function addEvidence() {
+  const finding = prompt('Evidence finding (what did you discover?):', '');
+  if (!finding) return;
+  const phase = prompt('Investigation phase:', caseData.current_phase);
+  const source = prompt('Source (e.g. WHOIS Lookup, Blockchain Explorer, Manual Review):', 'Manual Review');
+  const confidence = prompt('Confidence (LOW, MEDIUM, HIGH):', 'HIGH');
+  fetch(`${API}/case/${CASE_ID}/evidence`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      finding: finding,
+      phase: phase,
+      source_provider: source,
+      source_type: 'INVESTIGATOR',
+      confidence: confidence,
+      officer_name: 'GFIN Admin',
+      officer_id: 1
+    })
+  }).then(r => r.json()).then(() => loadCase());
+}
+
+function createAction() {
+  const type = prompt('Action type (TAKEDOWN_REQUEST, LEA_REFERRAL, PUBLIC_ALERT, VICTIM_NOTIFICATION, PROSECUTION_PACKAGE):', 'LEA_REFERRAL');
+  if (!type) return;
+  const agency = prompt('Target agency:', '');
+  const contact = prompt('Contact (email/URL):', '');
+  fetch(`${API}/case/${CASE_ID}/action`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({action_type: type, target_agency: agency, target_contact: contact, officer_name: 'GFIN Admin'})
+  }).then(() => loadCase());
+}
+
+function addStep() {
+  const name = prompt('Step name:', '');
+  if (!name) return;
+  fetch(`${API}/case/${CASE_ID}/step`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({step_name: name, phase: caseData.current_phase, officer_name: 'GFIN Admin'})
+  }).then(() => loadCase());
+}
+</script>
+</body>
+</html>

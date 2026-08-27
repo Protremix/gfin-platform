@@ -1,0 +1,38 @@
+{
+  "financial_data_access": "AUTHORIZATION_REQUIRED",
+  "gap_analysis": [
+    {
+      "data_needed": "Bank account details and transaction records for UK company 14511663",
+      "data_holder": "Unknown UK bank (no charges registered, suggesting no bank loans)",
+      "official_channel": "UK bank account information requires: court order, police warrant, or regulatory demand under Proceeds of Crime Act 2002",
+      "legal_authority": "POCA 2002 s.363 (production orders), or Police and Criminal Evidence Act 1984 s.9 (search warrants)",
+      "jurisdiction": "United Kingdom (England and Wales)",
+      "request_type": "Production order or information notice",
+      "expected_evidence": "Bank statements, transaction history, payment recipients, source of funds",
+      "current_blocker": "No law enforcement authority or court order available for this investigation"
+    },
+    {
+      "data_needed": "Payment processor accounts (e.g., Stripe, PayPal, Worldpay)",
+      "data_holder": "Unknown \u2014 no payment processor identified for UK entity",
+      "official_channel": "Payment processor data requires: subpoena, court order, or regulatory request",
+      "legal_authority": "Payment Services Regulations 2017, or POCA 2002",
+      "jurisdiction": "United Kingdom",
+      "request_type": "Subpoena or production order",
+      "expected_evidence": "Payment volumes, customer transactions, refund patterns, chargeback rates",
+      "current_blocker": "No payment processor identified. No legal authority available."
+    },
+    {
+      "data_needed": "Credit reference agency data",
+      "data_holder": "Experian, Equifax, TransUnion (UK)",
+      "official_channel": "Requires authorized investigation or company consent",
+      "legal_authority": "Data Protection Act 2018, Consumer Credit Act 1974",
+      "jurisdiction": "United Kingdom",
+      "request_type": "Subject access request or authorized investigation access",
+      "expected_evidence": "Credit history, payment behavior, financial associations",
+      "current_blocker": "Company consent not possible (dissolved). No investigation authority."
+    }
+  ],
+  "total_gaps": 3,
+  "all_blocked": true,
+  "blocker_summary": "All financial data requires law enforcement authority, court order, or regulatory demand. None available in current investigation scope."
+}

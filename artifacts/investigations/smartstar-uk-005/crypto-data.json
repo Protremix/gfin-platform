@@ -1,0 +1,31 @@
+{
+  "smartstar_entities_crypto": {
+    "uk": "NO_CRYPTO_INDICATOR_FOUND \u2014 no blockchain wallets, transactions, or exchange references found for UK SmartStar Technology Ltd",
+    "nz": "NO_CRYPTO_INDICATOR_FOUND",
+    "sg": "NO_CRYPTO_INDICATOR_FOUND"
+  },
+  "rojs_gordons_crypto": {
+    "verdis_chain": {
+      "type": "Blockchain project (eco blockchain, Substrate-based)",
+      "phase": "TESTNET (not mainnet, not investor-ready)",
+      "github_repo": "Protremix/Verdischain-",
+      "github_created": "2026-08-07",
+      "role": "Founder & Lead Developer",
+      "mainnet_wallet": "UNKNOWN \u2014 testnet only, no mainnet token or contract address found",
+      "etherscan_check": "Etherscan API accessible but no wallet address to query",
+      "source": "GitHub API + Etherscan API + Verdis Chain website (all non-Google)"
+    }
+  },
+  "blockchain_apis_checked": [
+    {
+      "api": "Etherscan API",
+      "status": "ACCESSIBLE",
+      "result": "No data \u2014 no wallet address available for Verdis Chain (testnet only)"
+    },
+    {
+      "api": "Blockchain.info",
+      "status": "NOT_CHECKED \u2014 no Bitcoin wallet address found"
+    }
+  ],
+  "conclusion": "No crypto indicators for any SmartStar entity. Verdis Chain is a blockchain project by Rojs Gordons but is in testnet phase only \u2014 no mainnet wallet, no token contract, no transactions to analyze. All checks performed via non-Google APIs."
+}

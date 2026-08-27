@@ -1,0 +1,2635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>GFIN — Investigator Workbench</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js">
+// === OSINT ENGINE FUNCTIONS ===
+
+async function loadOsintEngines() {
+  try {
+    const data = await apiGet('/api/osint/engines');
+    const grid = document.getElementById('osintEnginesGrid');
+    if (!grid) return;
+    grid.innerHTML = data.engines.map(e => `
+      <div class="chart-container" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+          <h4 style="font-size:15px;font-weight:600">${e.name}</h4>
+          <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--bg-accent);color:var(--text-muted)">${e.version}</span>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">${e.description}</p>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">
+          <span><i class="fa-solid fa-cube"></i> ${e.modules} modules</span>
+          <span><i class="fa-solid fa-key"></i> ${e.requires_api_key ? 'API Key' : 'Free'}</span>
+          <span><i class="fa-solid fa-scale-balanced"></i> ${e.license}</span>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { console.error('OSINT engines load error:', e); }
+}
+
+async function runOsintFull() {
+  const target = document.getElementById('osintTarget').value.trim();
+  const type = document.getElementById('osintType').value;
+  if (!target) return alert('Enter a target domain or IP');
+  
+  const el = document.getElementById('osintResults');
+  el.innerHTML = '<div style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="font-size:32px;color:var(--primary)"></i><p style="margin-top:12px;color:var(--text-muted)">Running 5+ OSINT engines in parallel...</p></div>';
+  
+  try {
+    const data = await apiPost('/api/osint/full', { target, target_type: type });
+    let html = '<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
+    html += '<div><h4 style="font-size:16px;font-weight:600">Scan ' + data.scan_id + '</h4>';
+    html += '<p style="font-size:13px;color:var(--text-muted)">' + data.summary + '</p></div>';
+    const confColor = data.confidence === 'HIGH' ? '#10b981' : data.confidence === 'MEDIUM' ? '#f59e0b' : '#6b7280';
+    html += '<span style="padding:4px 12px;border-radius:6px;background:' + confColor + ';color:white;font-size:12px;font-weight:600">' + data.confidence + '</span>';
+    html += '</div>';
+    
+    // Correlations
+    if (data.correlations && data.correlations.length > 0) {
+      html += '<h5 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-link"></i> Intelligence Correlations (' + data.correlations.length + ')</h5>';
+      for (const c of data.correlations) {
+        const sevColor = c.severity === 'HIGH' ? '#ef4444' : c.severity === 'MEDIUM' ? '#f59e0b' : '#6b7280';
+        html += '<div style="padding:8px 12px;border-left:3px solid ' + sevColor + ';background:var(--bg-accent);border-radius:4px;margin-bottom:6px">';
+        html += '<span style="font-size:11px;font-weight:600;color:' + sevColor + '">[' + c.severity + '] ' + c.type + '</span>';
+        html += '<p style="font-size:13px;margin-top:2px">' + c.description + '</p></div>';
+      }
+    }
+    
+    // Engine results
+    html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-microchip"></i> Engine Results (' + Object.keys(data.engines).length + ')</h5>';
+    html += '<table class="data-table"><thead><tr><th>Engine</th><th>Findings</th><th>Errors</th></tr></thead><tbody>';
+    for (const [name, result] of Object.entries(data.engines)) {
+      const hasF = result.findings ? (Array.isArray(result.findings) ? result.findings.length : Object.keys(result.findings).length) : 0;
+      const errs = result.errors ? result.errors.length : 0;
+      html += '<tr><td style="font-weight:600">' + name + '</td><td>' + hasF + '</td><td>' + (errs > 0 ? '<span style="color:#ef4444">' + errs + '</span>' : '0') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+    
+    // WHOIS details
+    if (data.engines.whois && data.engines.whois.findings && data.engines.whois.findings.registrar) {
+      const w = data.engines.whois.findings;
+      html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-id-card"></i> WHOIS Details</h5>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">';
+      html += '<div><strong>Registrar:</strong> ' + (w.registrar || '-') + '</div>';
+      html += '<div><strong>Created:</strong> ' + (w.creation_date || '-') + '</div>';
+      html += '<div><strong>Country:</strong> ' + (w.country || '-') + '</div>';
+      html += '<div><strong>Privacy:</strong> ' + (w.privacy_protected ? '<span style="color:#f59e0b">YES</span>' : 'No') + '</div>';
+      html += '<div><strong>Registrant:</strong> ' + (w.registrant_name || '-') + '</div>';
+      html += '<div><strong>Org:</strong> ' + (w.registrant_org || '-') + '</div>';
+      html += '</div>';
+    }
+    
+    // DNSTwist lookalikes
+    if (data.engines.dnstwist && data.engines.dnstwist.findings && data.engines.dnstwist.findings.length > 0) {
+      html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-clone"></i> Lookalike Domains (' + data.engines.dnstwist.findings.length + ')</h5>';
+      html += '<table class="data-table"><thead><tr><th>Domain</th><th>Fuzzer</th><th>DNS A</th></tr></thead><tbody>';
+      for (const f of data.engines.dnstwist.findings.slice(0, 10)) {
+        html += '<tr><td style="font-family:monospace">' + (f.domain || '-') + '</td><td>' + (f.fuzzer || '-') + '</td><td>' + (f.dns_a && f.dns_a.length ? f.dns_a.join(', ') : '-') + '</td></tr>';
+      }
+      html += '</tbody></table>';
+    }
+    
+    // Shodan
+    if (data.engines.shodan && data.engines.shodan.findings && data.engines.shodan.findings.org) {
+      const s = data.engines.shodan.findings;
+      html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-server"></i> Shodan/IP Info</h5>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">';
+      html += '<div><strong>Org:</strong> ' + (s.org || '-') + '</div>';
+      html += '<div><strong>City:</strong> ' + (s.city || '-') + '</div>';
+      html += '<div><strong>Country:</strong> ' + (s.country || '-') + '</div>';
+      html += '<div><strong>Location:</strong> ' + (s.location || '-') + '</div>';
+      html += '</div>';
+    }
+    
+    html += '</div>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<div style="color:#ef4444;padding:16px">Error: ' + e.message + '</div>';
+  }
+}
+
+async function runOsintHunt() {
+  const target = document.getElementById('osintTarget').value.trim();
+  if (!target) return alert('Enter a target domain');
+  
+  const el = document.getElementById('osintResults');
+  el.innerHTML = '<div style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="font-size:32px;color:var(--primary)"></i><p style="margin-top:12px;color:var(--text-muted)">Running OSINT hunt and creating case...</p></div>';
+  
+  try {
+    const data = await apiPost('/api/osint/hunt', { target });
+    let html = '<div style="background:#ecfdf5;border:1px solid #10b981;border-radius:8px;padding:16px;margin-bottom:16px">';
+    html += '<h4 style="font-size:16px;font-weight:600;color:#065f46"><i class="fa-solid fa-check-circle"></i> Case Created: ' + data.case_id + '</h4>';
+    html += '<p style="font-size:13px;color:#064e3b;margin-top:4px">' + data.summary + '</p>';
+    html += '<p style="font-size:13px;margin-top:8px">Confidence: <strong>' + data.confidence + '</strong> | Correlations: ' + data.correlations.length + '</p>';
+    html += '<button class="btn btn-primary" style="margin-top:8px" onclick="openCase(\'' + data.case_id + '\')">Open Case</button>';
+    html += '</div>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<div style="color:#ef4444;padding:16px">Error: ' + e.message + '</div>';
+  }
+}
+
+async function runSpiderfoot() {
+  const target = document.getElementById('sfTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('sfResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Running SpiderFoot (200+ modules)...</p>';
+  try {
+    const data = await apiPost('/api/osint/spiderfoot', { target });
+    el.innerHTML = '<p style="font-size:12px;color:var(--text-muted)">Findings: ' + data.summary.total_findings + ' | Errors: ' + data.summary.errors + '</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runDnstwist() {
+  const target = document.getElementById('dtTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('dtResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Scanning for lookalikes...</p>';
+  try {
+    const data = await apiPost('/api/osint/dnstwist', { domain: target });
+    const count = data.summary.total_lookalikes;
+    el.innerHTML = '<p style="font-size:12px">' + count + ' lookalike domains found. ' + data.summary.with_dns_records + ' with active DNS.</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runShodan() {
+  const target = document.getElementById('shTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('shResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Looking up IP...</p>';
+  try {
+    const data = await apiPost('/api/osint/shodan', { ip: target });
+    const f = data.findings;
+    el.innerHTML = '<div style="font-size:12px"><strong>Org:</strong> ' + (f.org||'-') + ' | <strong>City:</strong> ' + (f.city||'-') + ' | <strong>Country:</strong> ' + (f.country||'-') + '</div>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runWafw00f() {
+  const target = document.getElementById('wafTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('wafResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Checking WAF...</p>';
+  try {
+    const data = await apiPost('/api/osint/wafw00f', { domain: target });
+    const f = data.findings;
+    el.innerHTML = '<p style="font-size:12px">WAF: ' + (f.waf_detected ? '<span style="color:#f59e0b">' + f.waf_name + '</span>' : '<span style="color:#10b981">None detected</span>') + '</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runDnsrecon() {
+  const target = document.getElementById('drTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('drResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Enumerating DNS...</p>';
+  try {
+    const data = await apiPost('/api/osint/dnsrecon', { domain: target });
+    el.innerHTML = '<p style="font-size:12px">Records: ' + data.summary.total_records + ' | Subdomains: ' + data.summary.subdomains_found + '</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runWhois() {
+  const target = document.getElementById('whoisTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('whoisResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Looking up WHOIS...</p>';
+  try {
+    const data = await apiPost('/api/osint/whois', { domain: target });
+    const f = data.findings;
+    el.innerHTML = '<div style="font-size:12px"><strong>Registrar:</strong> ' + (f.registrar||'-') + ' | <strong>Privacy:</strong> ' + (f.privacy_protected ? 'YES' : 'No') + ' | <strong>Created:</strong> ' + (f.creation_date||'-').substring(0,10) + '</div>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+</script>
+<style>
+:root {
+  --navy: #003366;
+  --navy-dark: #002244;
+  --navy-light: #1a5276;
+  --gold: #c5a55a;
+  --gold-light: #d4b56e;
+  --bg: #f0f2f5;
+  --card: #ffffff;
+  --border: #e1e8ed;
+  --text: #1a1a2e;
+  --text-muted: #6b7280;
+  --green: #16a34a;
+  --green-bg: #dcfce7;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --amber: #d97706;
+  --amber-bg: #fef3c7;
+  --blue: #2563eb;
+  --blue-bg: #dbeafe;
+  --radius: 8px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+.app { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.sidebar { width: 240px; background: var(--navy-dark); color: white; position: fixed; top: 0; left: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; }
+.sidebar-header { padding: 20px 16px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar-header h1 { font-size: 20px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+.sidebar-header h1 .shield { width: 32px; height: 32px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.sidebar-header h1 .shield i { color: var(--navy-dark); font-size: 16px; }
+.sidebar-header p { font-size: 11px; opacity: 0.6; margin-top: 4px; }
+.sidebar-nav { flex: 1; overflow-y: auto; padding: 12px 8px; }
+.nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: var(--radius); cursor: pointer; color: rgba(255,255,255,0.7); font-size: 14px; font-weight: 500; transition: all 0.15s; margin-bottom: 2px; }
+.nav-item:hover { background: rgba(255,255,255,0.08); color: white; }
+.nav-item.active { background: var(--navy); color: white; }
+.nav-item i { width: 20px; text-align: center; font-size: 15px; }
+.nav-section-label { font-size: 10px; font-weight: 800; color: rgba(255,255,255,0.35); letter-spacing: 1.5px; padding: 16px 14px 6px; text-transform: uppercase; }
+.nav-item .badge { margin-left: auto; background: var(--gold); color: var(--navy-dark); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+.sidebar-footer { padding: 16px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 12px; }
+.sidebar-footer .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--navy-light); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; }
+.sidebar-footer .info p { font-size: 13px; font-weight: 600; }
+.sidebar-footer .info span { font-size: 11px; opacity: 0.5; }
+
+/* MAIN */
+.main { flex: 1; margin-left: 240px; }
+.topbar { background: var(--navy); color: white; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; }
+.topbar .alert-bar { background: var(--amber); color: var(--navy-dark); padding: 3px 12px; border-radius: 4px; font-weight: 600; font-size: 11px; }
+.topbar .status { display: flex; align-items: center; gap: 8px; }
+.topbar .status .dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+.content { padding: 24px; max-width: 1400px; }
+
+/* HEADINGS */
+.page-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.page-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; }
+
+/* STAT CARDS */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.stat-card { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); position: relative; overflow: hidden; }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--navy); }
+.stat-card.green::before { background: var(--green); }
+.stat-card.red::before { background: var(--red); }
+.stat-card.amber::before { background: var(--amber); }
+.stat-card.blue::before { background: var(--blue); }
+.stat-card.gold::before { background: var(--gold); }
+.stat-card .label { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.stat-card .value { font-size: 28px; font-weight: 800; margin-top: 6px; }
+.stat-card .sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.stat-card .icon { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.stat-card .icon.blue { background: var(--blue-bg); color: var(--blue); }
+.stat-card .icon.green { background: var(--green-bg); color: var(--green); }
+.stat-card .icon.red { background: var(--red-bg); color: var(--red); }
+.stat-card .icon.amber { background: var(--amber-bg); color: var(--amber); }
+.stat-card .icon.navy { background: #dbeafe; color: var(--navy); }
+
+/* CASE CARDS */
+.case-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 16px; }
+.case-card { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; }
+.case-card:hover { border-color: var(--navy-light); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.case-card .case-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px; }
+.case-card .case-id { font-size: 12px; font-weight: 700; color: var(--navy); font-family: monospace; }
+.case-card .status-badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 12px; text-transform: uppercase; }
+.status-badge.investigating { background: var(--blue-bg); color: var(--blue); }
+.status-badge.new { background: var(--amber-bg); color: var(--amber); }
+.status-badge.closed { background: var(--green-bg); color: var(--green); }
+.status-badge.escalated { background: var(--red-bg); color: var(--red); }
+.status-badge.forwarded { background: #e0e7ff; color: #4338ca; }
+.case-card .target { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.case-card .meta { display: flex; gap: 16px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.case-card .meta span i { margin-right: 4px; }
+.progress-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.progress-bar .fill { height: 100%; background: var(--navy); border-radius: 3px; transition: width 0.3s; }
+.case-card .progress-label { font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; }
+.case-card .patterns { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+.case-card .pattern-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: #f3f4f6; color: #374151; font-weight: 500; }
+.case-card .pattern-tag { font-size: 10px; padding: 2px 8px; border-radius: 10px; background: #f3f4f6; color: #374151; font-weight: 500; }
+.case-card .fav-btn { position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; font-size: 20px; color: #d1d5db; transition: all 0.2s; padding: 4px; z-index: 5; }
+.case-card .fav-btn:hover { color: #fbbf24; transform: scale(1.2); }
+.case-card .fav-btn.active { color: #fbbf24; }
+.case-card { position: relative; }
+.fav-filter { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; background: var(--card); border: 1px solid var(--border); cursor: pointer; font-size: 13px; font-weight: 500; color: var(--text-muted); transition: all 0.2s; }
+.fav-filter:hover { border-color: #fbbf24; color: #f59e0b; }
+.fav-filter.active { background: #fef3c7; border-color: #fbbf24; color: #92400e; }
+.fav-filter i { font-size: 14px; }
+
+/* TABLES */
+.data-table { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+.data-table th { text-align: left; padding: 12px 16px; background: #f8fafc; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.data-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid var(--border); }
+.data-table tr:hover { background: #f8fafc; }
+.data-table tr:last-child td { border-bottom: none; }
+
+/* RISK BADGES */
+.risk-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.risk-badge.critical { background: var(--red-bg); color: var(--red); }
+.risk-badge.high { background: var(--amber-bg); color: var(--amber); }
+.risk-badge.medium { background: #fef9c3; color: #854d0e; }
+.risk-badge.low { background: #f1f5f9; color: #475569; }
+.confidence-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+.confidence-high { background: #dbeafe; color: #1e40af; }
+.confidence-medium { background: #fef3c7; color: #92400e; }
+.confidence-low { background: #f1f5f9; color: #475569; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block !important; }
+
+/* CASE DETAIL */
+.case-detail-header { background: var(--card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); margin-bottom: 16px; }
+.case-detail-header .top-row { display: flex; justify-content: space-between; align-items: start; margin-bottom: 16px; }
+.case-detail-header h2 { font-size: 24px; font-weight: 700; }
+.case-detail-header .info-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; margin-top: 16px; }
+.case-detail-header .info-item .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+.case-detail-header .info-item .value { font-size: 15px; font-weight: 600; margin-top: 4px; }
+.tab-bar { display: flex; gap: 2px; margin-bottom: 16px; border-bottom: 2px solid var(--border); }
+.tab-btn { padding: 10px 20px; font-size: 14px; font-weight: 600; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+.tab-btn:hover { color: var(--navy); }
+.tab-btn.active { color: var(--navy); border-bottom-color: var(--navy); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* EVIDENCE */
+.evidence-phase { background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); margin-bottom: 12px; }
+.evidence-phase .phase-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.evidence-phase .phase-header h4 { font-size: 14px; font-weight: 700; }
+.evidence-phase .phase-header .count { font-size: 12px; color: var(--text-muted); background: #f3f4f6; padding: 2px 8px; border-radius: 10px; }
+.evidence-item { padding: 10px 12px; border-left: 3px solid var(--navy); background: #f8fafc; border-radius: 4px; margin-bottom: 8px; }
+.evidence-item .finding { font-size: 13px; line-height: 1.5; }
+.evidence-item .meta { display: flex; gap: 12px; font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 24px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 20px; }
+.timeline-item::before { content: ''; position: absolute; left: -20px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--navy); border: 2px solid var(--card); }
+.timeline-item.completed::before { background: var(--green); }
+.timeline-item .time { font-size: 11px; color: var(--text-muted); }
+.timeline-item .title { font-size: 14px; font-weight: 600; margin: 4px 0; }
+.timeline-item .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+/* INTEL FEED */
+.intel-item { background: var(--card); border-radius: var(--radius); padding: 14px; border: 1px solid var(--border); margin-bottom: 8px; display: flex; gap: 12px; }
+.intel-item .source-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.intel-item .source-icon.telegram { background: #dbeafe; color: #2563eb; }
+.intel-item .source-icon.hunter { background: #fef3c7; color: #d97706; }
+.intel-item .source-icon.domain { background: #e0e7ff; color: #4338ca; }
+.intel-item .content { flex: 1; }
+.intel-item .header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.intel-item .header .source-name { font-size: 12px; font-weight: 600; }
+.intel-item .header .timestamp { font-size: 11px; color: var(--text-muted); }
+.intel-item .body { font-size: 13px; line-height: 1.4; }
+.intel-item .entities { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.entity-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+.entity-tag.wallet { background: #fef3c7; color: #92400e; }
+.entity-tag.domain { background: #dbeafe; color: #1e40af; }
+.entity-tag.phone { background: #d1fae5; color: #065f46; }
+.entity-tag.username { background: #f3e8ff; color: #6b21a8; }
+
+/* TELEGRAM GROUPS */
+.group-card { background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); margin-bottom: 8px; }
+.group-card .group-header { display: flex; justify-content: space-between; align-items: center; }
+.group-card .group-name { font-size: 15px; font-weight: 600; }
+.group-card .group-stats { display: flex; gap: 16px; font-size: 12px; color: var(--text-muted); margin-top: 8px; }
+.group-card .group-stats span i { margin-right: 4px; }
+
+/* SEARCH */
+.search-bar { position: relative; margin-bottom: 20px; }
+.search-bar input { width: 100%; padding: 12px 16px 12px 44px; border: 2px solid var(--border); border-radius: var(--radius); font-size: 15px; font-family: inherit; }
+.search-bar input:focus { outline: none; border-color: var(--navy); }
+.search-bar i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 16px; }
+
+/* BUTTONS */
+.btn { padding: 8px 16px; border-radius: var(--radius); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+.btn-primary { background: var(--navy); color: white; }
+.btn-primary:hover { background: var(--navy-light); }
+.btn-gold { background: var(--gold); color: var(--navy-dark); }
+.btn-gold:hover { background: var(--gold-light); }
+.btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+.btn-danger { background: var(--red-bg); color: var(--red); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 48px; color: var(--text-muted); }
+.empty-state i { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+.empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+
+/* LOGIN */
+.login-overlay { position: fixed; inset: 0; background: linear-gradient(135deg, var(--navy-dark), var(--navy)); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.login-card { background: white; border-radius: 12px; padding: 36px; max-width: 420px; width: 90%; }
+.login-card h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.login-card .sub { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+.login-card .seal { width: 64px; height: 64px; background: var(--navy); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; border: 3px solid var(--gold); }
+.login-card .seal i { color: var(--gold); font-size: 28px; }
+.login-card h1 { text-align: center; color: var(--navy); font-size: 22px; margin-bottom: 4px; }
+.login-card .center-sub { text-align: center; font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+.login-card .form-group { margin-bottom: 16px; }
+.login-card label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.login-card input { width: 100%; padding: 12px; border: 2px solid var(--border); border-radius: var(--radius); font-size: 15px; }
+.login-card input:focus { outline: none; border-color: var(--navy); }
+.login-card .btn-login { width: 100%; background: var(--navy); color: white; padding: 14px; border-radius: var(--radius); font-size: 15px; font-weight: 700; cursor: pointer; border: none; }
+.login-card .btn-login:hover { background: var(--navy-light); }
+.login-alert { padding: 10px 14px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px; display: none; }
+.login-alert.error { display: block; background: var(--red-bg); color: var(--red); border-left: 4px solid var(--red); }
+
+/* CHARTS */
+.chart-container { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); margin-bottom: 16px; }
+.chart-container h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.chart-wrapper { position: relative; height: 240px; }
+
+/* TWO COLUMN */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* FILTERS */
+.filters { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+.filter-btn { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--card); color: var(--text-muted); }
+.filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .stat-grid { grid-template-columns: 1fr 1fr; }
+  .case-grid { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .menu-toggle { display: flex !important; }
+  .content { padding: 16px; }
+}
+.menu-toggle { display: none; position: fixed; top: 12px; left: 12px; z-index: 200; width: 40px; height: 40px; background: var(--navy); border-radius: 8px; align-items: center; justify-content: center; color: white; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="debugInfo" style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;font-family:monospace;font-size:12px;display:none"></div>
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-card">
+    <div class="seal"><i class="fa-solid fa-shield-halved"></i></div>
+    <h1>GFIN</h1>
+    <p class="center-sub">Global Fraud Intelligence Network</p>
+    <h2>Investigator Access</h2>
+    <p class="sub">Authorized law enforcement only. All access logged.</p>
+    <div id="loginAlert" class="login-alert"></div>
+    <form id="loginForm">
+      <div class="form-group">
+        <label>Officer Email</label>
+        <input type="email" id="loginEmail" placeholder="officer@police.gov" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter password" required>
+      </div>
+      <button type="submit" class="btn-login" id="loginBtn">Sign In</button>
+    </form>
+    <div style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-muted)">
+      🔒 Encrypted • JWT Authenticated • Audit Logged
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" style="display:none">
+<div class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')"><i class="fa-solid fa-bars"></i></div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h1><span class="shield"><i class="fa-solid fa-shield-halved"></i></span> GFIN</h1>
+      <p>Investigator Workbench</p>
+    </div>
+    <div class="sidebar-nav" id="sidebarNav">
+      <div class="nav-item active" onclick="switchView('dashboard')"><i class="fa-solid fa-gauge-high"></i> Dashboard</div>
+      
+      <div class="nav-section-label">INVESTIGATIONS</div>
+      <div class="nav-item" onclick="switchView('cases')"><i class="fa-solid fa-folder-open"></i> Cases <span class="badge" id="casesBadge">0</span></div>
+      <div class="nav-item" onclick="switchView('evidence')"><i class="fa-solid fa-vault"></i> Evidence Vault <span class="badge" id="evidenceBadge">0</span></div>
+      <div class="nav-item" onclick="switchView('laundering')"><i class="fa-solid fa-money-bill-transfer"></i> Laundering <span class="badge" id="launderingBadge">0</span></div>
+      <div class="nav-item" onclick="switchView('operators')"><i class="fa-solid fa-share-nodes"></i> Operators</div>
+      <div class="nav-item" onclick="switchView('outreach')"><i class="fa-solid fa-bullhorn"></i> Outreach</div>
+      
+      <div class="nav-section-label">RAW INTELLIGENCE</div>
+      <div class="nav-item" onclick="switchView('telegram')"><i class="fa-brands fa-telegram"></i> Telegram <span class="badge" id="tgBadge">0</span></div>
+      <div class="nav-item" onclick="switchView('intel')"><i class="fa-solid fa-radar"></i> Intel Feed <span class="badge" id="intelBadge">0</span></div>
+      <div class="nav-item" onclick="switchView('wallets')"><i class="fa-solid fa-wallet"></i> Wallet Flow</div>
+      <div class="nav-item" onclick="switchView('osint')"><i class="fa-solid fa-satellite-dish"></i> OSINT Engines</div>
+      <div class="nav-item" onclick="switchView('aiEngines')"><i class="fa-solid fa-brain"></i> AI Engines</div>
+      
+      <div class="nav-section-label">TOOLS</div>
+      <div class="nav-item" onclick="switchView('search')"><i class="fa-solid fa-magnifying-glass"></i> Search</div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="avatar" id="officerAvatar">GA</div>
+      <div class="info">
+        <p id="officerName">Officer</p>
+        <span id="officerRole">—</span>
+      </div>
+      <button onclick="logout()" style="margin-left:auto;background:rgba(255,255,255,0.1);border:none;color:white;padding:8px 10px;border-radius:6px;cursor:pointer"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div><span class="alert-bar">RESTRICTED — LAW ENFORCEMENT USE ONLY</span></div>
+      <div class="status"><span class="dot"></span> SYSTEM LIVE — GFIN PLATFORM</div>
+    </div>
+
+    <div class="content">
+      <!-- DASHBOARD VIEW -->
+      <div id="view-dashboard" class="view active">
+        <h2 class="page-title">Investigation Dashboard</h2>
+        <p class="page-subtitle">Overview of active cases, intelligence, and evidence</p>
+
+        <div class="stat-grid" id="statGrid"></div>
+
+        <div class="two-col">
+          <div class="chart-container">
+            <h3>Investigation Progress</h3>
+            <div class="chart-wrapper"><canvas id="progressChart"></canvas></div>
+          </div>
+          <div class="chart-container">
+            <h3>Intelligence Sources</h3>
+            <div class="chart-wrapper"><canvas id="sourceChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="chart-container">
+          <h3>Recent Activity Feed</h3>
+          <div id="recentActivity"></div>
+        </div>
+      </div>
+
+      <!-- CASES VIEW -->
+      <div id="view-cases" class="view">
+        <h2 class="page-title">Active Investigations</h2>
+        <p class="page-subtitle">Real cases with verified evidence — no raw intelligence or feed data</p>
+
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+          <i class="fa-solid fa-circle-info" style="color:#2563eb;font-size:18px;"></i>
+          <div style="font-size:13px;color:#1e40af;">
+            <strong>Only evidence-based cases are shown here.</strong> Raw Telegram intelligence, feed discoveries, and unverified domains are stored separately and are NOT promoted to cases.
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <h2 class="page-title">Active Cases</h2>
+          <button class="fav-filter" id="favFilterBtn" onclick="toggleFavoritesFilter()">
+            <i class="fa-solid fa-star"></i> My Favorites
+          </button>
+        </div>
+        <div class="case-grid" id="caseGrid">
+          <div class="empty-state"><i class="fa-solid fa-folder-open"></i><h3>Loading cases...</h3></div>
+        </div>
+      </div>
+
+      <!-- CASE DETAIL VIEW -->
+      <div id="view-case-detail" class="view">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+          <button class="btn btn-outline" onclick="switchView('cases')"><i class="fa-solid fa-arrow-left"></i> Back</button>
+          <h2 class="page-title" style="margin:0">Case Detail</h2>
+        </div>
+        <div id="caseDetailContent"></div>
+      </div>
+
+      <!-- INTEL FEED VIEW -->
+      <div id="view-intel" class="view">
+        <h2 class="page-title">Intelligence Feed</h2>
+        <p class="page-subtitle">Unified stream from Telegram spy, Hunter, and domain monitoring</p>
+        <div class="filters">
+          <div class="filter-btn active" onclick="filterIntel('all', this)">All Sources</div>
+          <div class="filter-btn" onclick="filterIntel('telegram', this)">Telegram</div>
+          <div class="filter-btn" onclick="filterIntel('hunter', this)">Hunter</div>
+          <div class="filter-btn" onclick="filterIntel('domains', this)">Domains</div>
+        </div>
+        <div id="intelFeed"></div>
+      </div>
+
+      <!-- EVIDENCE VAULT VIEW -->
+      <div id="view-evidence" class="view">
+        <h2 class="page-title">Evidence Vault</h2>
+        <p class="page-subtitle">All collected evidence across all cases</p>
+        <div class="filters">
+          <div class="filter-btn active" onclick="filterEvidence(null, this)">All Phases</div>
+          <div class="filter-btn" onclick="filterEvidence('SCAM_DETECTION', this)">Scam Detection</div>
+          <div class="filter-btn" onclick="filterEvidence('ENTITY_EXTRACTION', this)">Entity Extraction</div>
+          <div class="filter-btn" onclick="filterEvidence('CONNECTOR_SEARCH', this)">Connectors</div>
+          <div class="filter-btn" onclick="filterEvidence('COUNTRY_ROUTING', this)">Country Routing</div>
+          <div class="filter-btn" onclick="filterEvidence('FAVICON_FINGERPRINT', this)">Favicon</div>
+          <div class="filter-btn" onclick="filterEvidence('TECH_STACK', this)">Tech Stack</div>
+          <div class="filter-btn" onclick="filterEvidence('MANUAL', this)">Manual</div>
+        </div>
+        <table class="data-table" id="evidenceTable">
+          <thead><tr><th>Evidence ID</th><th>Case</th><th>Phase</th><th>Finding</th><th>Source</th><th>Confidence</th><th>Date</th></tr></thead>
+          <tbody id="evidenceTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- TELEGRAM VIEW -->
+      <div id="view-telegram" class="view">
+        <h2 class="page-title">Telegram Intelligence</h2>
+        <p class="page-subtitle">Monitoring scam groups with automated entity extraction</p>
+        <div class="two-col">
+          <div>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Monitored Groups</h3>
+            <div id="telegramGroups"></div>
+          </div>
+          <div>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Recent Intelligence</h3>
+            <div class="filters">
+              <div class="filter-btn active" onclick="filterTgRisk('all', this)">All Risk</div>
+              <div class="filter-btn" onclick="filterTgRisk('critical', this)">Critical</div>
+              <div class="filter-btn" onclick="filterTgRisk('high', this)">High</div>
+            </div>
+            <div id="telegramIntel"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUNTER VIEW -->
+      <div id="view-hunter" class="view">
+        <h2 class="page-title">Hunter Control</h2>
+        <p class="page-subtitle">Automated evidence collection and investigation pipeline</p>
+        <div class="chart-container">
+          <h3>Trigger New Investigation</h3>
+          <div style="display:flex;gap:12px;align-items:center">
+            <input type="text" id="hunterTarget" placeholder="Enter domain, URL, or wallet address" style="flex:1;padding:12px;border:2px solid var(--border);border-radius:var(--radius);font-size:14px">
+            <button class="btn btn-gold" onclick="triggerHunter()"><i class="fa-solid fa-crosshairs"></i> Run Hunter</button>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:8px">Hunter will run all 16 intelligence modules: favicon fingerprinting, analytics ID extraction, redirect chains, tech stack, form detection, domain age, typo-squatting, page metadata, wallet analysis, and more.</p>
+        </div>
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Recent Hunter Investigations</h3>
+        <div id="hunterActivity"></div>
+      </div>
+
+      <!-- DOMAINS VIEW -->
+      <div id="view-osint" class="view">
+        <h2 class="page-title">OSINT Intelligence Engines</h2>
+        <p class="page-subtitle">Open-source intelligence tools integrated from GitHub — 200+ modules across 6 engines</p>
+        
+        <!-- Engine cards -->
+        <div id="osintEnginesGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-bottom:24px"></div>
+        
+        <!-- Full scan interface -->
+        <div class="chart-container" style="margin-bottom:24px">
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:12px"><i class="fa-solid fa-radar"></i> Full OSINT Scan</h3>
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px">Runs all engines in parallel against a target. Results are correlated and can be saved as a case.</p>
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <input type="text" id="osintTarget" placeholder="Enter domain (e.g. example.com) or IP address" style="flex:1;padding:12px;border:2px solid var(--border);border-radius:var(--radius);font-size:14px">
+            <select id="osintType" style="padding:12px;border:2px solid var(--border);border-radius:var(--radius);font-size:14px">
+              <option value="domain">Domain</option>
+              <option value="ip">IP Address</option>
+            </select>
+            <button class="btn btn-primary" onclick="runOsintFull()"><i class="fa-solid fa-satellite-dish"></i> Run Full Scan</button>
+            <button class="btn btn-gold" onclick="runOsintHunt()"><i class="fa-solid fa-gavel"></i> Hunt & Save Case</button>
+          </div>
+          <div id="osintResults" style="margin-top:16px"></div>
+        </div>
+        
+        <!-- Individual engine tools -->
+        <div class="chart-container" style="margin-bottom:24px">
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:12px"><i class="fa-solid fa-toolbox"></i> Individual Engine Tools</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px">
+            
+            <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-search"></i> SpiderFoot Scan</h4>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">200+ OSINT modules — WHOIS, DNS, subdomains, SSL, blocklists</p>
+              <input type="text" id="sfTarget" placeholder="domain or IP" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:13px;margin-bottom:8px">
+              <button class="btn btn-primary" style="width:100%" onclick="runSpiderfoot()">Run SpiderFoot</button>
+              <div id="sfResults" style="margin-top:8px"></div>
+            </div>
+            
+            <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-clone"></i> DNSTwist</h4>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Typo-squatting & lookalike domain detection</p>
+              <input type="text" id="dtTarget" placeholder="domain" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:13px;margin-bottom:8px">
+              <button class="btn btn-primary" style="width:100%" onclick="runDnstwist()">Find Lookalikes</button>
+              <div id="dtResults" style="margin-top:8px"></div>
+            </div>
+            
+            <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-server"></i> Shodan Lookup</h4>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Ports, services, vulnerabilities for an IP</p>
+              <input type="text" id="shTarget" placeholder="IP address" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:13px;margin-bottom:8px">
+              <button class="btn btn-primary" style="width:100%" onclick="runShodan()">Lookup IP</button>
+              <div id="shResults" style="margin-top:8px"></div>
+            </div>
+            
+            <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-shield-halved"></i> WAFW00F</h4>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Detect Web Application Firewalls</p>
+              <input type="text" id="wafTarget" placeholder="domain" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:13px;margin-bottom:8px">
+              <button class="btn btn-primary" style="width:100%" onclick="runWafw00f()">Check WAF</button>
+              <div id="wafResults" style="margin-top:8px"></div>
+            </div>
+            
+            <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-network-wired"></i> DNSRecon</h4>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">DNS enumeration & subdomain discovery</p>
+              <input type="text" id="drTarget" placeholder="domain" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:13px;margin-bottom:8px">
+              <button class="btn btn-primary" style="width:100%" onclick="runDnsrecon()">Enumerate DNS</button>
+              <div id="drResults" style="margin-top:8px"></div>
+            </div>
+            
+            <div style="border:1px solid var(--border);border-radius:8px;padding:12px">
+              <h4 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-id-card"></i> WHOIS Lookup</h4>
+              <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Full WHOIS record with privacy detection</p>
+              <input type="text" id="whoisTarget" placeholder="domain" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;font-size:13px;margin-bottom:8px">
+              <button class="btn btn-primary" style="width:100%" onclick="runWhois()">Lookup WHOIS</button>
+              <div id="whoisResults" style="margin-top:8px"></div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div id="view-domains" class="view">
+        <h2 class="page-title">Tracked Domains</h2>
+        <p class="page-subtitle">Domain intelligence database — promote to case when evidence is strong</p>
+        <table class="data-table" id="domainsTable">
+          <thead><tr><th>Domain</th><th>Source</th><th>Risk</th><th>Confidence</th><th>Patterns</th><th>Status</th><th>First Seen</th><th>Action</th></tr></thead>
+          <tbody id="domainsTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- SEARCH VIEW -->
+      <div id="view-search" class="view">
+        <h2 class="page-title">Search Evidence</h2>
+        <p class="page-subtitle">Search across cases, evidence, telegram intel, and tracked domains</p>
+        <div class="search-bar">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Search for domains, wallets, patterns, case IDs..." oninput="debounceSearch(this.value)">
+        </div>
+        <div id="searchResults"></div>
+      </div>
+
+    <!-- LAUNDERING VIEW -->
+    <div id="view-laundering" class="view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 class="page-title"><i class="fa-solid fa-money-bill-transfer"></i> Money Laundering Detection</h2>
+        <button class="btn btn-outline" onclick="loadLaundering()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="launderingStats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;"></div>
+      <div id="launderingOps" style="margin-top:16px;"></div>
+    </div>
+
+    <!-- WALLETS VIEW -->
+    <div id="view-wallets" class="view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 class="page-title"><i class="fa-solid fa-wallet"></i> Wallet Flow Analysis</h2>
+        <div>
+          <select id="walletChainFilter" onchange="loadWallets()" style="padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--bg-card);color:var(--text);">
+            <option value="">All Chains</option>
+            <option value="BTC">Bitcoin</option>
+            <option value="ETH">Ethereum</option>
+            <option value="TRX">Tron</option>
+            <option value="SOL">Solana</option>
+            <option value="TON">TON</option>
+          </select>
+          <button class="btn btn-outline" onclick="loadWallets()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+        </div>
+      </div>
+      <div id="walletStats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;"></div>
+      <div id="walletTable" style="margin-top:16px;"></div>
+    </div>
+
+    <!-- OPERATORS VIEW -->
+    <div id="view-operators" class="view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 class="page-title"><i class="fa-solid fa-share-nodes"></i> Operator Intelligence</h2>
+        <button class="btn btn-outline" onclick="loadOperators()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+        <i class="fa-solid fa-triangle-exclamation" style="color:#d97706;font-size:18px;"></i>
+        <div style="font-size:13px;color:#92400e;">
+          <strong>Operators</strong> are Telegram users active across multiple scam groups. Click any operator to generate a full intelligence dossier.
+        </div>
+      </div>
+      <div id="operatorStats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;"></div>
+      <div id="operatorMap" style="margin-top:16px;"></div>
+      <div id="dossierPanel" style="margin-top:16px;"></div>
+
+      <div style="margin-top:24px;">
+        <h3 style="margin:0 0 12px;font-size:16px;"><i class="fa-solid fa-diagram-project"></i> Entity Correlation Graph</h3>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Shared domains, phones, and wallets linking different operators</p>
+        <div id="entityGraphPanel"></div>
+      </div>
+
+      <div style="margin-top:24px;">
+        <h3 style="margin:0 0 12px;font-size:16px;"><i class="fa-solid fa-user-injured"></i> Identified Potential Victims</h3>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:12px;">Telegram users showing victim indicators in scam groups</p>
+        <div id="victimsPanel"></div>
+      </div>
+    </div>
+
+    <!-- OUTREACH VIEW -->
+    <div id="view-outreach" class="view">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <h2 class="page-title"><i class="fa-solid fa-bullhorn"></i> Outreach Tracking</h2>
+        <button class="btn btn-outline" onclick="loadOutreach()"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="outreachStats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-bottom:20px;"></div>
+      <div id="outreachList" style="margin-top:16px;"></div>
+    </div>
+
+    </div>
+  <div class="view" id="view-aiEngines">
+      <div class="page-header">
+        <h1><i class="fa-solid fa-brain" style="color:var(--gold);"></i> AI Intelligence Engines</h1>
+        <p style="color:var(--text-muted);font-size:14px;margin-top:4px;">Advanced anomaly detection, real-time graph analysis &amp; threat intelligence sharing</p>
+      </div>
+
+      <!-- Engine Status Cards -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:24px;">
+        <div class="stat-card" style="padding:18px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <i class="fa-solid fa-chart-simple" style="font-size:22px;color:var(--navy);"></i>
+            <div>
+              <div style="font-weight:700;color:var(--navy);font-size:14px;">PyOD Anomaly Detection</div>
+              <div style="font-size:11px;color:var(--text-muted);">Isolation Forest + KNN ensemble</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);" id="pyodStatus">Checking status...</div>
+        </div>
+        <div class="stat-card" style="padding:18px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <i class="fa-solid fa-diagram-project" style="font-size:22px;color:var(--navy);"></i>
+            <div>
+              <div style="font-weight:700;color:var(--navy);font-size:14px;">MIDAS Graph Detection</div>
+              <div style="font-size:11px;color:var(--text-muted);">Count-Min Sketch streaming</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);" id="midasStatus">Checking status...</div>
+        </div>
+        <div class="stat-card" style="padding:18px;">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <i class="fa-solid fa-share-nodes" style="font-size:22px;color:var(--navy);"></i>
+            <div>
+              <div style="font-weight:700;color:var(--navy);font-size:14px;">MISP Threat Sharing</div>
+              <div style="font-size:11px;color:var(--text-muted);">STIX 2.1 export &amp; inter-agency</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--text-muted);" id="mispStatus">Checking status...</div>
+        </div>
+      </div>
+
+      <!-- PyOD Anomaly Cases Panel -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="margin:0;font-size:16px;"><i class="fa-solid fa-chart-simple" style="color:var(--gold);margin-right:8px;"></i>Anomalous Cases</h2>
+          <button class="btn btn-primary" onclick="loadAnomalyCases()" style="font-size:12px;padding:6px 14px;">
+            <i class="fa-solid fa-rotate"></i> Run Detection
+          </button>
+        </div>
+        <div id="anomalyCasesResults" style="padding:16px;font-size:13px;color:var(--text-muted);">
+          Click "Run Detection" to analyze all cases for anomalies using Isolation Forest + KNN ensemble.
+        </div>
+      </div>
+
+      <!-- Wallet Anomaly Panel -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="margin:0;font-size:16px;"><i class="fa-solid fa-wallet" style="color:var(--gold);margin-right:8px;"></i>Wallet Anomaly Detection</h2>
+          <button class="btn btn-primary" onclick="loadAnomalyWallets()" style="font-size:12px;padding:6px 14px;">
+            <i class="fa-solid fa-rotate"></i> Scan Wallets
+          </button>
+        </div>
+        <div id="anomalyWalletsResults" style="padding:16px;font-size:13px;color:var(--text-muted);">
+          Click "Scan Wallets" to detect anomalous wallet transaction patterns from Telegram intelligence.
+        </div>
+      </div>
+
+      <!-- MIDAS Panel -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="margin:0;font-size:16px;"><i class="fa-solid fa-diagram-project" style="color:var(--gold);margin-right:8px;"></i>MIDAS Real-time Graph Anomaly Detection</h2>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" onclick="midasProcessTelegram()" style="font-size:12px;padding:6px 14px;">
+              <i class="fa-solid fa-satellite"></i> Process Telegram
+            </button>
+            <button class="btn btn-primary" onclick="midasProcessEvidence()" style="font-size:12px;padding:6px 14px;">
+              <i class="fa-solid fa-folder-open"></i> Process Evidence
+            </button>
+          </div>
+        </div>
+        <div id="midasResults" style="padding:16px;font-size:13px;color:var(--text-muted);">
+          Click "Process Telegram" or "Process Evidence" to stream intelligence through MIDAS for real-time anomaly detection.
+        </div>
+      </div>
+
+      <!-- MISP/STIX Panel -->
+      <div class="card" style="margin-bottom:20px;">
+        <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="margin:0;font-size:16px;"><i class="fa-solid fa-share-nodes" style="color:var(--gold);margin-right:8px;"></i>Threat Intelligence Sharing (MISP / STIX)</h2>
+          <button class="btn btn-primary" onclick="loadMispStatus()" style="font-size:12px;padding:6px 14px;">
+            <i class="fa-solid fa-rotate"></i> Refresh
+          </button>
+        </div>
+        <div id="mispResults" style="padding:16px;font-size:13px;color:var(--text-muted);">
+          Click "Refresh" to check MISP integration and export STIX bundles.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+// === STATE ===
+let authToken = localStorage.getItem('gfin_token') || '';
+let casesCache = [];
+let officerInfo = null;
+let currentCaseId = null;
+let intelFilter = 'all';
+let evidenceFilter = null;
+let tgRiskFilter = 'all';
+let searchTimeout = null;
+let charts = {};
+
+// === AUTH ===
+function checkAuth() {
+  // Check cookie (set by /police/login)
+  if (!authToken) {
+    const cookieMatch = document.cookie.match(/gfin_police_token=([^;]+)/);
+    if (cookieMatch) {
+      authToken = cookieMatch[1];
+      localStorage.setItem('gfin_token', authToken);
+    }
+  }
+  if (!authToken) {
+    document.getElementById('loginOverlay').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    return;
+  }
+  // Verify token
+  try {
+    const payload = JSON.parse(atob(authToken.split('.')[0]));
+    officerInfo = payload;
+    showApp();
+  } catch {
+    document.getElementById('loginOverlay').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+  }
+}
+
+function showApp() {
+  document.getElementById('loginOverlay').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  if (officerInfo) {
+    const initials = (officerInfo.agency || 'GA').substring(0, 2).toUpperCase();
+    document.getElementById('officerAvatar').textContent = initials;
+    document.getElementById('officerName').textContent = officerInfo.agency || 'Officer';
+    document.getElementById('officerRole').textContent = (officerInfo.role || 'investigator').toUpperCase();
+  }
+  loadDashboard();
+}
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  const alert = document.getElementById('loginAlert');
+  btn.disabled = true;
+  btn.textContent = 'Authenticating...';
+  alert.className = 'login-alert';
+  try {
+    const res = await fetch('/api/police/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: document.getElementById('loginEmail').value, password: document.getElementById('loginPassword').value })
+    });
+    const data = await res.json();
+    if (res.ok && data.token) {
+      localStorage.setItem('gfin_token', data.token);
+      authToken = data.token;
+      document.cookie = 'gfin_police_token=' + data.token + '; path=/; max-age=604800; SameSite=Lax; Secure';
+      try { officerInfo = JSON.parse(atob(data.token.split('.')[0])); } catch { officerInfo = { agency: (data.officer || {}).agency, role: (data.officer || {}).role }; }
+      showApp();
+    } else {
+      alert.className = 'login-alert error';
+      alert.textContent = data.detail || 'Invalid credentials';
+      btn.disabled = false;
+      btn.textContent = 'Sign In';
+    }
+  } catch (err) {
+    alert.className = 'login-alert error';
+    alert.textContent = 'Network error';
+    btn.disabled = false;
+    btn.textContent = 'Sign In';
+  }
+});
+
+function logout() {
+  localStorage.removeItem('gfin_token');
+  authToken = '';
+  document.getElementById('loginOverlay').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+// === API HELPER ===
+async function apiGet(endpoint) {
+  const res = await fetch(endpoint, { headers: { 'Authorization': 'Bearer ' + authToken } });
+  if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+  return res.json();
+}
+
+async function apiPost(endpoint, body) {
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+    body: JSON.stringify(body)
+  });
+  if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+  return res.json();
+}
+
+async function apiDelete(url) {
+  const token = localStorage.getItem('gfin_token');
+  const res = await fetch(url, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+  if (!res.ok) throw new Error('API error: ' + res.status);
+  return res.json();
+}
+
+
+async function apiPatch(endpoint, body) {
+  const res = await fetch(endpoint, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + authToken },
+    body: JSON.stringify(body)
+  });
+  if (res.status === 401) { logout(); throw new Error('Unauthorized'); }
+  return res.json();
+}
+
+// === VIEW SWITCHING ===
+function switchView(view) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const viewEl = document.getElementById('view-' + view);
+  if (viewEl) viewEl.classList.add('active');
+  // Highlight nav
+  const navItems = document.querySelectorAll('.nav-item');
+  const navMap = { dashboard: 0, cases: 1, intel: 2, evidence: 3, telegram: 4, hunter: 5, osint: 6, domains: 7, search: 8 };
+  if (navMap[view] !== undefined && navItems[navMap[view]]) navItems[navMap[view]].classList.add('active');
+
+  // Load data for view
+  if (view === 'dashboard') loadDashboard();
+  if (view === 'operators') { loadOperators(); loadEntityGraph(); loadVictims(); }
+  else if (view === 'cases') loadCases();
+  else if (view === 'intel') loadIntelFeed();
+  else if (view === 'evidence') loadEvidence();
+  else if (view === 'telegram') loadTelegram();
+  else if (view === 'hunter') loadHunter();
+  else if (view === 'domains') loadDomains();
+  else if (view === 'laundering') loadLaundering();
+  else if (view === 'wallets') loadWallets();
+  else if (view === 'operators') { loadOperators(); loadEntityGraph(); loadVictims(); }
+  else if (view === 'outreach') loadOutreach();
+  else if (view === 'aiEngines') loadAiEngines();
+
+  // Close mobile sidebar
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+// === DASHBOARD ===
+async function loadDashboard() {
+  try {
+    const data = await apiGet('/api/inv/overview');
+    
+    // Stat cards
+    // INVESTIGATION stats (top row — real cases only)
+    const invStats = [
+      { label: 'Active Cases', value: data.cases.active, sub: data.cases.total + ' total investigations', icon: 'folder-open', color: 'navy' },
+      { label: 'Critical Priority', value: data.cases.critical, sub: 'CRITICAL risk level', icon: 'fire', color: 'red' },
+      { label: 'Evidence Items', value: data.evidence.total, sub: 'Across all cases', icon: 'vault', color: 'blue' },
+      { label: 'Officers', value: data.officers, sub: 'Active investigators', icon: 'shield-halved', color: 'navy' }
+    ];
+    
+    // RAW INTELLIGENCE stats (bottom row — not cases, just data)
+    const intelStats = [
+      { label: 'Telegram Intel', value: data.telegram.intel_items.toLocaleString(), sub: data.telegram.groups_monitored + ' groups monitored', icon: 'telegram', color: 'amber' },
+      { label: 'Victims', value: data.victims.total, sub: data.victims.complaints + ' complaints filed', icon: 'user', color: 'green' },
+      { label: 'TG Domains', value: data.telegram.domains_tracked, sub: 'Raw intelligence', icon: 'globe', color: 'gold' },
+      { label: 'TG Wallets', value: data.telegram.wallets_tracked, sub: 'Tracked addresses', icon: 'wallet', color: 'amber' }
+    ];
+    
+    document.getElementById('statGrid').innerHTML = 
+      '<div style="grid-column:1/-1;font-size:11px;font-weight:800;color:var(--navy);letter-spacing:1px;text-transform:uppercase;margin-bottom:-8px;padding-left:4px;">INVESTIGATIONS</div>' +
+      invStats.map(s => `
+        <div class="stat-card ${s.color}">
+          <div class="icon ${s.color}"><i class="fa-solid fa-${s.icon}"></i></div>
+          <div class="label">${s.label}</div>
+          <div class="value">${s.value}</div>
+          <div class="sub">${s.sub}</div>
+        </div>
+      `).join('') +
+      '<div style="grid-column:1/-1;font-size:11px;font-weight:800;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin:8px 0 -8px;padding-left:4px;">RAW INTELLIGENCE (not cases)</div>' +
+      intelStats.map(s => `
+        <div class="stat-card ${s.color}" style="opacity:0.85">
+          <div class="icon ${s.color}"><i class="fa-solid fa-${s.icon}"></i></div>
+          <div class="label">${s.label}</div>
+          <div class="value">${s.value}</div>
+          <div class="sub">${s.sub}</div>
+        </div>
+      `).join('');
+    
+    // Update badges
+    document.getElementById('casesBadge').textContent = data.cases.active;
+    document.getElementById('evidenceBadge').textContent = data.evidence.total;
+    document.getElementById('intelBadge').textContent = data.telegram.intel_items.toLocaleString();
+    document.getElementById('tgBadge').textContent = data.telegram.intel_items.toLocaleString();
+    if (document.getElementById('launderingBadge')) {
+      document.getElementById('launderingBadge').textContent = '7';
+    }
+    
+    // Charts
+    loadCharts(data);
+    
+    // Recent activity
+    loadRecentActivity();
+  } catch (e) {
+    console.error('Dashboard error:', e);
+  }
+}
+
+function loadCharts(data) {
+  // Progress chart
+  const pctx = document.getElementById('progressChart');
+  if (pctx) {
+    if (charts.progress) charts.progress.destroy();
+    charts.progress = new Chart(pctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Active', 'Critical', 'Resolved'],
+        datasets: [{
+          data: [data.cases.active, data.cases.critical, data.cases.resolved],
+          backgroundColor: ['#2563eb', '#dc2626', '#16a34a'],
+          borderWidth: 0
+        }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+    });
+  }
+  
+  // Source chart
+  const sctx = document.getElementById('sourceChart');
+  if (sctx) {
+    if (charts.source) charts.source.destroy();
+    charts.source = new Chart(sctx, {
+      type: 'bar',
+      data: {
+        labels: ['Telegram Intel', 'Tracked Domains', 'Wallets', 'TG Domains', 'Evidence'],
+        datasets: [{
+          data: [data.telegram.intel_items, data.domains.tracked, data.telegram.wallets_tracked, data.telegram.domains_tracked, data.evidence.total],
+          backgroundColor: '#003366',
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  }
+}
+
+async function loadRecentActivity() {
+  try {
+    const data = await apiGet('/api/inv/intel-feed?limit=15');
+    document.getElementById('recentActivity').innerHTML = data.items.map(item => {
+      const source = item.source || 'unknown';
+      const iconClass = source === 'telegram' ? 'telegram' : source === 'hunter' ? 'hunter' : 'domain';
+      const iconIcon = source === 'telegram' ? 'telegram' : source === 'hunter' ? 'crosshairs' : 'globe';
+      const sourceName = source === 'telegram' ? (item.group_name || 'Telegram') : source === 'hunter' ? 'Hunter' : 'Domain';
+      const time = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+      let body = '';
+      if (item.message_text) body = item.message_text.substring(0, 150) + '...';
+      else if (item.finding) body = item.finding.substring(0, 150);
+      else if (item.evidence_summary) body = item.evidence_summary.substring(0, 150);
+      else if (item.domain) body = `Domain: ${item.domain} — Risk: ${item.risk_level || 'unknown'}`;
+      
+      let entities = '';
+      if (item.domains && Array.isArray(item.domains) && item.domains.length) {
+        entities += item.domains.map(d => `<span class="entity-tag domain">${d}</span>`).join('');
+      }
+      if (item.wallets && Array.isArray(item.wallets) && item.wallets.length) {
+        entities += item.wallets.map(w => `<span class="entity-tag wallet">${w.substring(0,12)}...</span>`).join('');
+      }
+      
+      return `<div class="intel-item">
+        <div class="source-icon ${iconClass}"><i class="fa-${source === 'telegram' ? 'brands' : 'solid'} fa-${iconIcon}"></i></div>
+        <div class="content">
+          <div class="header"><span class="source-name">${sourceName}</span><span class="timestamp">${time}</span></div>
+          <div class="body">${body}</div>
+          <div class="entities">${entities}</div>
+        </div>
+      </div>`;
+    }).join('') || '<div class="empty-state"><i class="fa-solid fa-clock"></i><h3>No recent activity</h3></div>';
+  } catch(e) { console.error(e); }
+}
+
+// === CASES ===
+async function loadCases() {
+  try {
+    const data = await apiGet('/api/inv/board');
+    casesCache = data.cases || [];
+    const grid = document.getElementById('caseGrid');
+    if (!data.cases || data.cases.length === 0) {
+      grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-folder-open"></i><h3>No cases yet</h3><p>Cases will appear here when evidence is strong enough for investigation</p></div>';
+      return;
+    }
+    grid.innerHTML = data.cases.map(c => {
+      const statusClass = (c.status || 'NEW').toLowerCase();
+      const patterns = (c.scam_patterns || []).slice(0, 4).map(p => `<span class="pattern-tag">${p}</span>`).join('');
+      const lastActivity = c.last_evidence_date ? new Date(c.last_evidence_date).toLocaleDateString() : '—';
+      return `<div class="case-card" onclick="openCase('${c.case_id}')">
+        <button class="fav-btn" onclick="event.stopPropagation();toggleFavorite('${c.case_id}', this)" data-case="${c.case_id}">
+          <i class="fa-${c.is_favorite ? 'solid' : 'regular'} fa-star ${c.is_favorite ? 'active' : ''}"></i>
+        </button>
+        <div class="case-header">
+          <span class="case-id">${c.case_id}</span>
+          <span class="status-badge ${statusClass}">${c.status || 'NEW'}</span>
+        </div>
+        <div class="target">${c.target || 'Unknown target'}</div>
+        <div class="meta">
+          <span><i class="fa-solid fa-vault"></i> ${c.evidence_count || 0} evidence</span>
+          <span><i class="fa-solid fa-users"></i> ${c.victim_count || 0} victims</span>
+          <span><i class="fa-solid fa-clock"></i> ${lastActivity}</span>
+        </div>
+        <div class="progress-bar"><div class="fill" style="width:${c.progress || 0}%"></div></div>
+        <div class="progress-label"><span>Investigation progress</span><span>${c.progress || 0}%</span></div>
+        <div class="patterns">${patterns}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    console.error('Cases error:', e);
+    document.getElementById('caseGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Error loading cases</h3></div>';
+  }
+}
+
+// === FAVORITES ===
+let showFavoritesOnly = false;
+let favoritedCases = new Set();
+
+async function loadFavorites() {
+  try {
+    const data = await apiGet('/api/cases/favorites');
+    favoritedCases = new Set((data.favorites || []).map(f => f.case_id));
+  } catch(e) { console.error('Favorites load error:', e); }
+}
+
+async function toggleFavorite(caseId, btnEl) {
+  try {
+    const isFav = favoritedCases.has(caseId);
+    if (isFav) {
+      await apiDelete('/api/cases/' + caseId + '/favorite');
+      favoritedCases.delete(caseId);
+    } else {
+      await apiPost('/api/cases/' + caseId + '/favorite');
+      favoritedCases.add(caseId);
+    }
+    // Update the button
+    if (btnEl) {
+      const icon = btnEl.querySelector('i');
+      if (favoritedCases.has(caseId)) {
+        icon.className = 'fa-solid fa-star active';
+        btnEl.classList.add('active');
+      } else {
+        icon.className = 'fa-regular fa-star';
+        btnEl.classList.remove('active');
+      }
+    }
+    // Reload cases if filter is active
+    if (showFavoritesOnly) loadCasesFiltered();
+  } catch(e) { console.error('Toggle favorite error:', e); }
+}
+
+function toggleFavoritesFilter() {
+  showFavoritesOnly = !showFavoritesOnly;
+  const btn = document.getElementById('favFilterBtn');
+  if (showFavoritesOnly) {
+    btn.classList.add('active');
+    loadCasesFiltered();
+  } else {
+    btn.classList.remove('active');
+    loadCases();
+  }
+}
+
+async function loadCasesFiltered() {
+  await loadFavorites();
+  try {
+    const data = await apiGet('/api/inv/board');
+    const grid = document.getElementById('caseGrid');
+    const favCases = (data.cases || []).filter(c => favoritedCases.has(c.case_id));
+    if (favCases.length === 0) {
+      grid.innerHTML = '<div class="empty-state"><i class="fa-solid fa-star" style="color:#fbbf24;"></i><h3>No favorites yet</h3><p>Click the star icon on any case to add it to your favorites</p></div>';
+      return;
+    }
+    renderCases(favCases, grid);
+  } catch(e) {
+    document.getElementById('caseGrid').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Error loading favorites</h3></div>';
+  }
+}
+
+// Also mark favorites when loading regular cases
+const _originalLoadCases = loadCases;
+loadCases = async function() {
+  await loadFavorites();
+  await _originalLoadCases();
+  // Update star states
+  document.querySelectorAll('.fav-btn').forEach(btn => {
+    const caseId = btn.dataset.case;
+    if (favoritedCases.has(caseId)) {
+      btn.querySelector('i').className = 'fa-solid fa-star active';
+      btn.classList.add('active');
+    }
+  });
+};
+
+// === CASE DETAIL ===
+async function openCase(caseId) {
+  currentCaseId = caseId;
+  switchView('case-detail');
+  try {
+    const data = await apiGet(`/api/inv/case/${caseId}`);
+    const c = data.case;
+    let html = `
+      <div class="case-detail-header">
+        <div class="top-row">
+          <div>
+            <h2>${c.target || 'Unknown'}</h2>
+            <div style="margin-top:4px"><span class="case-id" style="font-family:monospace;font-size:13px;color:var(--navy);font-weight:700">${c.case_id}</span></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <span class="status-badge ${(c.status||'NEW').toLowerCase()}">${c.status || 'NEW'}</span>
+            <select onchange="updateCaseStatus('${c.case_id}', this.value)" style="padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:13px">
+              <option value="">Change status...</option>
+              <option value="NEW">New</option>
+              <option value="INVESTIGATING">Investigating</option>
+              <option value="ESCALATED">Escalated</option>
+              <option value="FORWARDED">Forwarded</option>
+              <option value="CLOSED">Closed</option>
+            </select>
+          </div>
+        </div>
+        <div class="info-grid">
+          <div class="info-item"><div class="label">Target Type</div><div class="value">${c.target_type || '—'}</div></div>
+          <div class="info-item"><div class="label">Confidence</div><div class="value">${Math.round((c.confidence || 0) * 100)}%</div></div>
+          <div class="info-item"><div class="label">Victims</div><div class="value">${c.victim_count || 0}</div></div>
+          <div class="info-item"><div class="label">Losses</div><div class="value">${c.victim_loss || '—'}</div></div>
+          <div class="info-item"><div class="label">Trigger</div><div class="value">${c.trigger || '—'}</div></div>
+          <div class="info-item"><div class="label">Created</div><div class="value">${c.created_date ? new Date(c.created_date).toLocaleDateString() : '—'}</div></div>
+        </div>
+        ${c.subject_reason ? `<p style="margin-top:16px;font-size:14px;color:var(--text-muted);line-height:1.5">${c.subject_reason}</p>` : ''}
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab-btn active" onclick="switchTab('evidence', this)">Evidence (${data.evidence.total})</div>
+        <div class="tab-btn" onclick="switchTab('steps', this)">Investigation Steps</div>
+        <div class="tab-btn" onclick="switchTab('timeline', this)">Timeline</div>
+        <div class="tab-btn" onclick="switchTab('telegram', this)">Telegram (${data.telegram_intel.length})</div>
+        <div class="tab-btn" onclick="switchTab('entities', this)">Entities</div>
+        <div class="tab-btn" onclick="switchTab('notes', this)">Notes (${data.notes.length})</div>
+        <div class="tab-btn" onclick="switchTab('complaints', this)">Complaints (${data.complaints.length})</div>
+      </div>
+
+      <div id="tab-evidence" class="tab-content active">
+        ${renderEvidence(data.evidence)}
+      </div>
+      <div id="tab-steps" class="tab-content">
+        ${renderSteps(data.investigation_steps)}
+      </div>
+      <div id="tab-timeline" class="tab-content">
+        ${renderTimeline(data.evidence.timeline)}
+      </div>
+      <div id="tab-telegram" class="tab-content">
+        ${renderTelegramIntel(data.telegram_intel)}
+      </div>
+      <div id="tab-entities" class="tab-content">
+        ${renderEntities(c)}
+      </div>
+      <div id="tab-notes" class="tab-content">
+        ${renderNotes(data.notes)}
+      </div>
+      <div id="tab-complaints" class="tab-content">
+        ${renderComplaints(data.complaints)}
+      </div>
+    `;
+    document.getElementById('caseDetailContent').innerHTML = html;
+  } catch(e) {
+    console.error('Case detail error:', e);
+    document.getElementById('caseDetailContent').innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><h3>Error loading case</h3></div>';
+  }
+}
+
+function renderEvidence(evidence) {
+  if (evidence.total === 0) return '<div class="empty-state"><i class="fa-solid fa-vault"></i><h3>No evidence yet</h3></div>';
+  let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">';
+  html += `<p style="font-size:14px;color:var(--text-muted)">${evidence.total} evidence items across ${Object.keys(evidence.by_phase).length} phases</p>`;
+  html += '<button class="btn btn-primary" onclick="showAddEvidence()"><i class="fa-solid fa-plus"></i> Add Evidence</button></div>';
+  
+  const phases = Object.entries(evidence.by_phase).sort((a, b) => b[1].length - a[1].length);
+  for (const [phase, items] of phases) {
+    html += `<div class="evidence-phase">
+      <div class="phase-header"><h4>${phase.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}</h4><span class="count">${items.length}</span></div>
+      ${items.map(e => `
+        <div class="evidence-item">
+          <div class="finding">${e.finding || '—'}</div>
+          <div class="meta">
+            <span><i class="fa-solid fa-server"></i> ${e.source_provider || '—'}</span>
+            <span><i class="fa-solid fa-tag"></i> ${e.source_type || '—'}</span>
+            <span><i class="fa-solid fa-gauge"></i> ${e.confidence || 'MEDIUM'}</span>
+            <span><i class="fa-solid fa-user-shield"></i> ${e.added_by_officer || 'SYSTEM'}</span>
+            <span><i class="fa-solid fa-clock"></i> ${e.created_date ? new Date(e.created_date).toLocaleString() : '—'}</span>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  return html;
+}
+
+function renderSteps(steps) {
+  if (!steps || steps.length === 0) return '<div class="empty-state"><i class="fa-solid fa-list-check"></i><h3>No investigation steps</h3><p>Steps are auto-generated from evidence phases</p></div>';
+  return `<div class="timeline">${steps.map(s => `
+    <div class="timeline-item completed">
+      <div class="time">${s.timestamp ? new Date(s.timestamp).toLocaleString() : ''}</div>
+      <div class="title">${s.label}</div>
+      <div class="desc">${s.finding || 'Completed'}</div>
+    </div>
+  `).join('')}</div>`;
+}
+
+function renderTimeline(timeline) {
+  if (!timeline || timeline.length === 0) return '<div class="empty-state"><i class="fa-solid fa-clock"></i><h3>No timeline data</h3></div>';
+  return `<div class="timeline">${timeline.map(t => `
+    <div class="timeline-item completed">
+      <div class="time">${t.timestamp ? new Date(t.timestamp).toLocaleString() : ''}</div>
+      <div class="title">${t.phase}</div>
+      <div class="desc">${t.finding ? t.finding.substring(0, 200) : '—'}</div>
+    </div>
+  `).join('')}</div>`;
+}
+
+function renderTelegramIntel(intel) {
+  if (!intel || intel.length === 0) return '<div class="empty-state"><i class="fa-brands fa-telegram"></i><h3>No linked Telegram intel</h3><p>Telegram messages mentioning this case target will appear here</p></div>';
+  return intel.map(t => {
+    const wallets = Array.isArray(t.wallets) ? t.wallets : [];
+    const domains = Array.isArray(t.domains) ? t.domains : [];
+    let entities = '';
+    entities += wallets.map(w => `<span class="entity-tag wallet">${w}</span>`).join('');
+    entities += domains.map(d => `<span class="entity-tag domain">${d}</span>`).join('');
+    return `<div class="intel-item">
+      <div class="source-icon telegram"><i class="fa-brands fa-telegram"></i></div>
+      <div class="content">
+        <div class="header"><span class="source-name">${t.group_name || 'Telegram'}</span><span class="timestamp">${t.created_at ? new Date(t.created_at).toLocaleString() : ''}</span></div>
+        <div class="body">${(t.message_text || '').substring(0, 300)}</div>
+        <div class="entities">${entities}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderEntities(c) {
+  const locations = Array.isArray(c.physical_locations) ? c.physical_locations : [];
+  const financials = Array.isArray(c.financial_indicators) ? c.financial_indicators : [];
+  const digitals = Array.isArray(c.digital_identifiers) ? c.digital_identifiers : [];
+  
+  return `<div class="two-col">
+    <div class="chart-container">
+      <h3>Physical Locations (${locations.length})</h3>
+      ${locations.length ? locations.map(l => `<div class="evidence-item"><div class="finding">${JSON.stringify(l)}</div></div>`).join('') : '<p style="color:var(--text-muted);font-size:13px">No location data</p>'}
+    </div>
+    <div class="chart-container">
+      <h3>Financial Indicators (${financials.length})</h3>
+      ${financials.length ? financials.map(f => `<div class="evidence-item"><div class="finding">${JSON.stringify(f)}</div></div>`).join('') : '<p style="color:var(--text-muted);font-size:13px">No financial data</p>'}
+    </div>
+  </div>
+  <div class="chart-container">
+    <h3>Digital Identifiers (${digitals.length})</h3>
+    ${digitals.length ? digitals.map(d => `<div class="evidence-item"><div class="finding"><strong>${d.type || '—'}:</strong> ${d.value || JSON.stringify(d)}</div></div>`).join('') : '<p style="color:var(--text-muted);font-size:13px">No digital identifiers</p>'}
+  </div>`;
+}
+
+function renderNotes(notes) {
+  let html = '<div style="margin-bottom:16px"><textarea id="newNote" placeholder="Add investigation note..." style="width:100%;padding:12px;border:2px solid var(--border);border-radius:var(--radius);font-size:14px;min-height:80px;font-family:inherit"></textarea><button class="btn btn-primary" style="margin-top:8px" onclick="addNote()"><i class="fa-solid fa-note"></i> Add Note</button></div>';
+  if (!notes || notes.length === 0) return html + '<div class="empty-state"><i class="fa-solid fa-note-sticky"></i><h3>No notes yet</h3></div>';
+  return html + notes.map(n => `
+    <div class="evidence-item">
+      <div class="finding">${n.note || '—'}</div>
+      <div class="meta"><span><i class="fa-solid fa-user"></i> ${n.officer_name || n.officer_email || 'Officer'}</span><span><i class="fa-solid fa-clock"></i> ${n.created_date ? new Date(n.created_date).toLocaleString() : ''}</span></div>
+    </div>
+  `).join('');
+}
+
+function renderComplaints(complaints) {
+  if (!complaints || complaints.length === 0) return '<div class="empty-state"><i class="fa-solid fa-file-lines"></i><h3>No linked complaints</h3></div>';
+  return `<table class="data-table"><thead><tr><th>Ref</th><th>Victim</th><th>Country</th><th>Scam Type</th><th>Date</th></tr></thead><tbody>
+    ${complaints.map(c => `<tr><td style="font-family:monospace">${c.reference_number || '—'}</td><td>${c.victim_name || 'Anonymous'}</td><td>${c.victim_country || '—'}</td><td>${c.scam_type || '—'}</td><td>${c.created_date ? new Date(c.created_date).toLocaleDateString() : '—'}</td></tr>`).join('')}
+  </tbody></table>`;
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showAddEvidence() {
+  const html = `<div style="background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px">
+    <h4 style="margin-bottom:12px">Add Manual Evidence</h4>
+    <select id="evPhase" style="width:100%;padding:10px;border:2px solid var(--border);border-radius:6px;margin-bottom:10px">
+      <option value="MANUAL">Manual</option>
+      <option value="OFFICER_OBSERVATION">Officer Observation</option>
+      <option value="WITNESS_STATEMENT">Witness Statement</option>
+      <option value="FOREIGN_REQUEST">Foreign Request</option>
+      <option value="FINANCIAL_TRACE">Financial Trace</option>
+      <option value="SOCIAL_MEDIA">Social Media</option>
+      <option value="TECHNICAL_ANALYSIS">Technical Analysis</option>
+    </select>
+    <textarea id="evFinding" placeholder="Describe the evidence..." style="width:100%;padding:12px;border:2px solid var(--border);border-radius:6px;font-size:14px;min-height:100px;font-family:inherit;margin-bottom:10px"></textarea>
+    <select id="evConfidence" style="padding:10px;border:2px solid var(--border);border-radius:6px;margin-bottom:10px">
+      <option value="HIGH">High Confidence</option>
+      <option value="MEDIUM">Medium Confidence</option>
+      <option value="LOW">Low Confidence</option>
+    </select>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="submitEvidence()">Save Evidence</button><button class="btn btn-outline" onclick="switchTab('evidence', document.querySelector('.tab-btn'))">Cancel</button></div>
+  </div>`;
+  document.getElementById('tab-evidence').insertAdjacentHTML('afterbegin', html);
+}
+
+async function submitEvidence() {
+  const phase = document.getElementById('evPhase').value;
+  const finding = document.getElementById('evFinding').value;
+  const confidence = document.getElementById('evConfidence').value;
+  if (!finding) return;
+  try {
+    await apiPost(`/api/evidence/${currentCaseId}`, { phase, finding, confidence, source_provider: 'OFFICER', source_type: 'MANUAL' });
+    openCase(currentCaseId);
+  } catch(e) { alert('Error adding evidence'); }
+}
+
+async function addNote() {
+  const note = document.getElementById('newNote').value;
+  if (!note) return;
+  try {
+    await apiPost(`/api/cases/${currentCaseId}/notes`, { note_text: note, note_type: 'INFO' });
+    openCase(currentCaseId);
+  } catch(e) { alert('Error adding note'); }
+}
+
+async function updateCaseStatus(caseId, status) {
+  if (!status) return;
+  try {
+    await apiPatch(`/api/inv/case/${caseId}/status`, { status });
+    openCase(caseId);
+  } catch(e) { alert('Error updating status'); }
+}
+
+// === INTEL FEED ===
+async function loadIntelFeed() {
+  try {
+    const data = await apiGet(`/api/inv/intel-feed?limit=50&source=${intelFilter}`);
+    const container = document.getElementById('intelFeed');
+    if (!data.items || data.items.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-radar"></i><h3>No intel yet</h3></div>';
+      return;
+    }
+    container.innerHTML = data.items.map(item => {
+      const source = item.source || 'unknown';
+      const iconClass = source === 'telegram' ? 'telegram' : source === 'hunter' ? 'hunter' : 'domain';
+      const iconIcon = source === 'telegram' ? 'telegram' : source === 'hunter' ? 'crosshairs' : 'globe';
+      const sourceName = source === 'telegram' ? (item.group_name || 'Telegram') : source === 'hunter' ? 'Hunter' : 'Domain Monitor';
+      const time = item.timestamp ? new Date(item.timestamp).toLocaleString() : '';
+      let body = '';
+      if (item.message_text) body = item.message_text.substring(0, 300);
+      else if (item.finding) body = item.finding.substring(0, 300);
+      else if (item.evidence_summary) body = item.evidence_summary.substring(0, 300);
+      else if (item.domain) body = `Domain: ${item.domain} — Risk: ${item.risk_level || '—'}`;
+      
+      let entities = '';
+      if (item.domains && Array.isArray(item.domains) && item.domains.length) {
+        entities += item.domains.map(d => `<span class="entity-tag domain">${d}</span>`).join('');
+      }
+      if (item.wallets && Array.isArray(item.wallets) && item.wallets.length) {
+        entities += item.wallets.map(w => `<span class="entity-tag wallet">${w.substring(0,16)}...</span>`).join('');
+      }
+      if (item.phones && Array.isArray(item.phones) && item.phones.length) {
+        entities += item.phones.map(p => `<span class="entity-tag phone">${p}</span>`).join('');
+      }
+      
+      const riskBadge = item.risk_level ? `<span class="risk-badge ${item.risk_level.toLowerCase()}">${item.risk_level}</span>` : '';
+      
+      return `<div class="intel-item">
+        <div class="source-icon ${iconClass}"><i class="fa-${source === 'telegram' ? 'brands' : 'solid'} fa-${iconIcon}"></i></div>
+        <div class="content">
+          <div class="header"><span class="source-name">${sourceName}</span><span class="timestamp">${time} ${riskBadge}</span></div>
+          <div class="body">${body}</div>
+          <div class="entities">${entities}</div>
+        </div>
+      </div>`;
+    }).join('');
+  } catch(e) { console.error(e); }
+}
+
+function filterIntel(source, btn) {
+  intelFilter = source;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadIntelFeed();
+}
+
+// === EVIDENCE ===
+async function loadEvidence() {
+  try {
+    const url = evidenceFilter ? `/api/inv/evidence?phase=${evidenceFilter}&limit=100` : `/api/inv/evidence?limit=100`;
+    const data = await apiGet(url);
+    const tbody = document.getElementById('evidenceTableBody');
+    if (!data.items || data.items.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted)">No evidence found</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.items.map(e => `
+      <tr>
+        <td style="font-family:monospace;font-size:12px">${e.evidence_id || '—'}</td>
+        <td style="font-size:12px">${e.case_id || '—'}</td>
+        <td><span class="pattern-tag">${e.phase || '—'}</span></td>
+        <td style="max-width:400px">${(e.finding || '').substring(0, 100)}${e.finding && e.finding.length > 100 ? '...' : ''}</td>
+        <td style="font-size:12px">${e.source_provider || '—'}</td>
+        <td><span class="confidence-badge confidence-${(e.confidence || 'medium').toLowerCase()}">${e.confidence || 'MEDIUM'}</span></td>
+        <td style="font-size:12px">${e.created_date ? new Date(e.created_date).toLocaleDateString() : '—'}</td>
+      </tr>
+    `).join('');
+  } catch(e) { console.error(e); }
+}
+
+function filterEvidence(phase, btn) {
+  evidenceFilter = phase;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadEvidence();
+}
+
+// === TELEGRAM ===
+async function loadTelegram() {
+  try {
+    const [groups, intel] = await Promise.all([
+      apiGet('/api/inv/telegram/groups'),
+      apiGet(`/api/inv/telegram/intel?limit=50&risk=${tgRiskFilter}`)
+    ]);
+    
+    // Groups
+    const groupsEl = document.getElementById('telegramGroups');
+    if (groups.groups && groups.groups.length > 0) {
+      groupsEl.innerHTML = groups.groups.map(g => `
+        <div class="group-card">
+          <div class="group-header">
+            <span class="group-name">${g.group_name || 'Unknown'}</span>
+            <span class="risk-badge ${g.critical_count > 0 ? 'critical' : g.high_count > 0 ? 'high' : 'low'}">${g.critical_count + g.high_count} alerts</span>
+          </div>
+          <div class="group-stats">
+            <span><i class="fa-solid fa-users"></i> ${(g.member_count || 0).toLocaleString()}</span>
+            <span><i class="fa-solid fa-database"></i> ${g.intel_count || 0} intel</span>
+            <span><i class="fa-solid fa-clock"></i> ${g.last_intel ? new Date(g.last_intel).toLocaleDateString() : '—'}</span>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      groupsEl.innerHTML = '<div class="empty-state"><i class="fa-brands fa-telegram"></i><h3>No groups monitored</h3></div>';
+    }
+    
+    // Intel
+    const intelEl = document.getElementById('telegramIntel');
+    if (intel.items && intel.items.length > 0) {
+      intelEl.innerHTML = intel.items.map(t => {
+        const wallets = Array.isArray(t.wallets) ? t.wallets : [];
+        const domains = Array.isArray(t.domains) ? t.domains : [];
+        const phones = Array.isArray(t.phones) ? t.phones : [];
+        let entities = '';
+        entities += wallets.map(w => `<span class="entity-tag wallet">${w.substring(0,20)}...</span>`).join('');
+        entities += domains.map(d => `<span class="entity-tag domain">${d}</span>`).join('');
+        entities += phones.map(p => `<span class="entity-tag phone">${p}</span>`).join('');
+        return `<div class="intel-item">
+          <div class="source-icon telegram"><i class="fa-brands fa-telegram"></i></div>
+          <div class="content">
+            <div class="header"><span class="source-name">${t.group_name || 'Telegram'} — ${t.sender_name || t.sender_username || 'Unknown'}</span><span class="timestamp">${t.created_at ? new Date(t.created_at).toLocaleString() : ''} <span class="risk-badge ${(t.risk_level||'low').toLowerCase()}">${t.risk_level || 'LOW'}</span></span></div>
+            <div class="body">${(t.message_text || '').substring(0, 250)}</div>
+            <div class="entities">${entities}</div>
+          </div>
+        </div>`;
+      }).join('');
+    } else {
+      intelEl.innerHTML = '<div class="empty-state"><i class="fa-brands fa-telegram"></i><h3>No intel items</h3></div>';
+    }
+  } catch(e) { console.error(e); }
+}
+
+function filterTgRisk(risk, btn) {
+  tgRiskFilter = risk;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadTelegram();
+}
+
+// === HUNTER ===
+async function loadHunter() {
+  try {
+    const data = await apiGet('/api/inv/hunter/activity?limit=30');
+    const container = document.getElementById('hunterActivity');
+    
+    let html = '';
+    if (data.case_investigations && data.case_investigations.length > 0) {
+      html += '<h4 style="margin-bottom:8px;font-size:14px">Active Case Investigations</h4>';
+      html += data.case_investigations.map(c => `
+        <div class="case-card" onclick="openCase('${c.case_id}')">
+          <div class="case-header"><span class="case-id">${c.case_id}</span><span class="status-badge ${(c.status||'').toLowerCase()}">${c.status || '—'}</span></div>
+          <div class="target">${c.target || '—'}</div>
+          <div class="meta">
+            <span><i class="fa-solid fa-vault"></i> ${c.evidence_count} evidence</span>
+            <span><i class="fa-solid fa-list"></i> ${c.phases || '—'}</span>
+            <span><i class="fa-solid fa-clock"></i> ${c.started_at ? new Date(c.started_at).toLocaleDateString() : '—'}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    if (data.auto_investigations && data.auto_investigations.length > 0) {
+      html += '<h4 style="margin:16px 0 8px;font-size:14px">Auto-Investigations (Hunter)</h4>';
+      html += data.auto_investigations.slice(0, 10).map(a => `
+        <div class="intel-item">
+          <div class="source-icon hunter"><i class="fa-solid fa-crosshairs"></i></div>
+          <div class="content">
+            <div class="header"><span class="source-name">${a.case_id}</span><span class="timestamp">${a.started_at ? new Date(a.started_at).toLocaleString() : ''}</span></div>
+            <div class="body"><strong>${a.evidence_count} evidence steps</strong> — ${a.phases || 'multiple phases'}</div>
+            <div class="body" style="margin-top:4px;font-size:12px;color:var(--text-muted)">${a.latest_finding ? a.latest_finding.substring(0, 150) : ''}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    if (!html) html = '<div class="empty-state"><i class="fa-solid fa-crosshairs"></i><h3>No hunter activity</h3><p>Trigger an investigation above to start collecting evidence</p></div>';
+    
+    container.innerHTML = html;
+  } catch(e) { console.error(e); }
+}
+
+async function triggerHunter() {
+  const target = document.getElementById('hunterTarget').value.trim();
+  if (!target) return;
+  try {
+    const result = await apiPost('/api/inv/hunter/run', { target, target_type: 'DOMAIN', trigger_reason: 'OFFICER_TRIGGERED' });
+    if (result.status === 'completed') {
+      alert(`Hunter completed: ${result.evidence_steps} evidence steps, confidence: ${Math.round(result.confidence * 100)}%`);
+      loadHunter();
+    } else if (result.status === 'already_investigating') {
+      alert(`Already investigating: ${result.case_id}`);
+    } else {
+      alert(`Hunter status: ${result.status}`);
+    }
+  } catch(e) { alert('Hunter error: ' + e.message); }
+}
+
+// === DOMAINS ===
+async function loadDomains() {
+  try {
+    const data = await apiGet('/api/domains?limit=100');
+    const tbody = document.getElementById('domainsTableBody');
+    if (!data.domains || data.domains.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted)">No tracked domains</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.domains.map(d => `
+      <tr>
+        <td style="font-weight:600">${d.domain}</td>
+        <td style="font-size:12px">${d.source || '—'}</td>
+        <td><span class="risk-badge ${(d.risk_level||'low').toLowerCase()}">${d.risk_level || 'LOW'}</span></td>
+        <td>${d.confidence ? Math.round(d.confidence * 100) + '%' : '—'}</td>
+        <td style="font-size:11px">${(d.patterns || []).join(', ') || '—'}</td>
+        <td><span class="status-badge ${(d.status||'tracked').toLowerCase()}">${d.status || 'TRACKED'}</span></td>
+        <td style="font-size:12px">${d.first_seen ? new Date(d.first_seen).toLocaleDateString() : '—'}</td>
+        <td>${d.status !== 'PROMOTED' ? `<button class="btn btn-sm btn-gold" onclick="promoteDomain('${d.domain}')">Promote</button>` : '<span style="color:var(--green);font-size:12px">✓ Promoted</span>'}</td>
+      </tr>
+    `).join('');
+  } catch(e) { console.error(e); }
+}
+
+async function promoteDomain(domain) {
+  if (!confirm(`Promote ${domain} to a full case?`)) return;
+  try {
+    const result = await apiPost('/api/inv/promote', { domain });
+    if (result.status === 'created') {
+      alert(`Case created: ${result.case_id}`);
+      loadDomains();
+    } else if (result.status === 'exists') {
+      alert(`Case already exists: ${result.case_id}`);
+    }
+  } catch(e) { alert('Error promoting domain'); }
+}
+
+// === SEARCH ===
+function debounceSearch(q) {
+  clearTimeout(searchTimeout);
+  searchTimeout = () => doSearch(q);
+  setTimeout(searchTimeout, 300);
+}
+
+async function doSearch(q) {
+  if (q.length < 2) {
+    document.getElementById('searchResults').innerHTML = '<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><h3>Start typing to search</h3></div>';
+    return;
+  }
+  try {
+    const data = await apiGet(`/api/inv/search?q=${encodeURIComponent(q)}&limit=20`);
+    let html = '';
+    if (data.cases && data.cases.length) {
+      html += `<h4 style="margin-bottom:8px;font-size:14px">Cases (${data.cases.length})</h4>`;
+      html += data.cases.map(c => `<div class="case-card" onclick="openCase('${c.case_id}')"><div class="case-header"><span class="case-id">${c.case_id}</span><span class="status-badge ${(c.status||'').toLowerCase()}">${c.status}</span></div><div class="target">${c.target}</div></div>`).join('');
+    }
+    if (data.evidence && data.evidence.length) {
+      html += `<h4 style="margin:16px 0 8px;font-size:14px">Evidence (${data.evidence.length})</h4>`;
+      html += `<table class="data-table"><tbody>${data.evidence.map(e => `<tr><td style="font-size:12px">${e.case_id}</td><td>${e.phase}</td><td style="max-width:400px">${(e.finding||'').substring(0,150)}</td></tr>`).join('')}</tbody></table>`;
+    }
+    if (data.telegram && data.telegram.length) {
+      html += `<h4 style="margin:16px 0 8px;font-size:14px">Telegram (${data.telegram.length})</h4>`;
+      html += data.telegram.map(t => `<div class="intel-item"><div class="source-icon telegram"><i class="fa-brands fa-telegram"></i></div><div class="content"><div class="header"><span class="source-name">${t.group_name}</span><span class="timestamp">${t.created_at ? new Date(t.created_at).toLocaleString() : ''}</span></div><div class="body">${(t.message_text||'').substring(0,200)}</div></div></div>`).join('');
+    }
+    if (data.domains && data.domains.length) {
+      html += `<h4 style="margin:16px 0 8px;font-size:14px">Domains (${data.domains.length})</h4>`;
+      html += `<table class="data-table"><tbody>${data.domains.map(d => `<tr><td style="font-weight:600">${d.domain}</td><td><span class="risk-badge ${(d.risk_level||'low').toLowerCase()}">${d.risk_level}</span></td><td>${d.source}</td></tr>`).join('')}</tbody></table>`;
+    }
+    if (!html) html = '<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><h3>No results</h3></div>';
+    document.getElementById('searchResults').innerHTML = html;
+  } catch(e) { console.error(e); }
+}
+
+// === INIT ===
+try {
+  const dbg = document.getElementById('debugInfo');
+  if (dbg) {
+    dbg.textContent = 'authToken=' + (authToken ? authToken.substring(0,30)+'...' : 'EMPTY') + ' len=' + (authToken?authToken.length:0);
+    dbg.style.display = 'block';
+  }
+} catch(e) {}
+checkAuth();
+
+// ==================== LAUNDERING VIEW ====================
+async function loadLaundering() {
+  try {
+    const [opsData, alertsData] = await Promise.all([
+      apiGet('/api/laundering/operations'),
+      apiGet('/api/laundering/alerts').catch(() => ({ alerts: [] }))
+    ]);
+
+    const ops = opsData.operations || [];
+    const alerts = alertsData.alerts || [];
+
+    // Update badge
+    const badge = document.getElementById('launderingBadge');
+    if (badge) badge.textContent = ops.length;
+
+    // Stats
+    const countries = new Set();
+    ops.forEach(o => { if (o.country) countries.add(o.country); if (o.countries) o.countries.forEach(c => countries.add(c)); });
+
+    const stats = [
+      { label: 'Active Operations', value: ops.length, sub: 'Laundering networks', icon: 'money-bill-transfer', color: 'red' },
+      { label: 'Countries Involved', value: countries.size, sub: 'Cross-border', icon: 'globe', color: 'navy' },
+      { label: 'Alerts (7d)', value: alerts.length, sub: 'Recent detections', icon: 'bell', color: 'amber' },
+      { label: 'Primary Operators', value: new Set(ops.map(o => o.operator || o.username)).size, sub: ' Identified', icon: 'user-secret', color: 'blue' }
+    ];
+    document.getElementById('launderingStats').innerHTML = stats.map(s => statCard(s)).join('');
+
+    // Operations table
+    let html = '<div style="background:var(--bg-card);border-radius:8px;border:1px solid var(--border);overflow:hidden;">';
+    html += '<table style="width:100%;border-collapse:collapse;"><thead><tr style="background:var(--bg-hover);text-align:left;">';
+    html += '<th style="padding:12px;">Operator</th><th style="padding:12px;">Type</th><th style="padding:12px;">Countries</th><th style="padding:12px;">Risk</th><th style="padding:12px;">Messages</th></tr></thead><tbody>';
+    ops.forEach(o => {
+      const riskColor = o.risk_level === 'CRITICAL' ? '#fee2e2' : o.risk_level === 'HIGH' ? '#fef3c7' : '#dbeafe';
+      const riskText = o.risk_level === 'CRITICAL' ? '#991b1b' : o.risk_level === 'HIGH' ? '#92400e' : '#1e40af';
+      html += '<tr style="border-top:1px solid var(--border);">';
+      html += '<td style="padding:12px;font-weight:600;">' + (o.operator || o.username || 'Unknown') + '</td>';
+      html += '<td style="padding:12px;">' + (o.laundering_type || 'Crypto') + '</td>';
+      html += '<td style="padding:12px;">' + (o.country || (o.countries ? o.countries.join(', ') : '') || '-') + '</td>';
+      html += '<td style="padding:12px;"><span style="background:' + riskColor + ';color:' + riskText + ';padding:2px 8px;border-radius:4px;font-size:11px;">' + (o.risk_level || 'MEDIUM') + '</span></td>';
+      html += '<td style="padding:12px;font-size:12px;">' + (o.group_name || o.group_username || '-').substring(0, 40) + '</td>';
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    document.getElementById('launderingOps').innerHTML = html;
+  } catch (e) {
+    document.getElementById('launderingOps').innerHTML = '<div class="empty-state"><p>Unable to load laundering data: ' + e.message + '</p></div>';
+  }
+}
+
+// ==================== WALLETS VIEW ====================
+async function loadWallets() {
+  try {
+    const chain = document.getElementById('walletChainFilter') ? document.getElementById('walletChainFilter').value : '';
+    const url = chain ? '/api/dashboard/wallets?chain=' + chain : '/api/dashboard/wallets';
+    const data = await apiGet(url);
+
+    const wallets = data.wallets || [];
+    const byChain = data.by_chain || {};
+    const byRisk = data.by_risk || {};
+
+    // Stats
+    const stats = [
+      { label: 'Total Wallets', value: data.total || 0, sub: 'Tracked addresses', icon: 'wallet', color: 'blue' },
+      { label: 'Chains', value: Object.keys(byChain).length, sub: 'Multi-chain', icon: 'link', color: 'navy' },
+      { label: 'High Risk', value: byRisk.HIGH || 0, sub: 'Flagged wallets', icon: 'flag', color: 'red' },
+      { label: 'Linked Cases', value: wallets.filter(w => w.linked_case).length, sub: 'Active investigations', icon: 'folder-open', color: 'amber' }
+    ];
+    document.getElementById('walletStats').innerHTML = stats.map(s => statCard(s)).join('');
+
+    // Wallet table
+    let html = '<div style="background:var(--bg-card);border-radius:8px;border:1px solid var(--border);overflow:hidden;">';
+    if (wallets.length === 0) {
+      html += '<div class="empty-state" style="padding:40px;"><i class="fa-solid fa-wallet" style="font-size:48px;opacity:0.3;"></i><h3>No Wallets Tracked Yet</h3><p>Wallets from Telegram intelligence and case investigations will appear here.</p></div>';
+    } else {
+      html += '<table style="width:100%;border-collapse:collapse;"><thead><tr style="background:var(--bg-hover);text-align:left;">';
+      html += '<th style="padding:12px;">Address</th><th style="padding:12px;">Chain</th><th style="padding:12px;">Risk</th><th style="padding:12px;">Source</th><th style="padding:12px;">Linked Case</th></tr></thead><tbody>';
+      wallets.forEach(w => {
+        const riskColor = w.risk_level === 'HIGH' ? '#fee2e2' : w.risk_level === 'MEDIUM' ? '#fef3c7' : '#d1fae5';
+        const riskText = w.risk_level === 'HIGH' ? '#991b1b' : w.risk_level === 'MEDIUM' ? '#92400e' : '#065f46';
+        html += '<tr style="border-top:1px solid var(--border);">';
+        html += '<td style="padding:12px;font-family:monospace;">' + (w.address || '').substring(0, 20) + '...</td>';
+        html += '<td style="padding:12px;"><span class="entity-tag wallet">' + (w.chain || '?') + '</span></td>';
+        html += '<td style="padding:12px;"><span style="background:' + riskColor + ';color:' + riskText + ';padding:2px 8px;border-radius:4px;font-size:11px;">' + (w.risk_level || 'LOW') + '</span></td>';
+        html += '<td style="padding:12px;">' + (w.source || 'Telegram') + '</td>';
+        html += '<td style="padding:12px;">' + (w.linked_case || '-') + '</td>';
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+    }
+    html += '</div>';
+    document.getElementById('walletTable').innerHTML = html;
+  } catch (e) {
+    document.getElementById('walletTable').innerHTML = '<div class="empty-state"><p>Unable to load wallet data: ' + e.message + '</p></div>';
+  }
+}
+
+// ==================== OPERATORS VIEW ====================
+async function loadOperators() {
+  try {
+    const ops = await apiGet('/api/tg-intel/operators');
+    const operators = ops || [];
+
+    // Stats
+    const stats = [
+      { label: 'Total Operators', value: operators.length, sub: 'Telegram users', icon: 'users', color: 'navy' },
+      { label: 'Cross-Group', value: operators.filter(o => o.groups > 1).length, sub: 'In 2+ groups', icon: 'layer-group', color: 'amber' },
+      { label: 'Critical Risk', value: operators.filter(o => o.risk_level === 'CRITICAL').length, sub: 'High-priority', icon: 'triangle-exclamation', color: 'red' },
+      { label: 'Linked Cases', value: operators.filter(o => o.linked_case).length, sub: 'Active investigations', icon: 'folder-open', color: 'blue' }
+    ];
+    document.getElementById('operatorStats').innerHTML = stats.map(s => statCard(s)).join('');
+
+    // Operator list
+    let html = '<div style="background:var(--bg-card);border-radius:8px;border:1px solid var(--border);padding:20px;">';
+    if (operators.length === 0) {
+      html += '<div class="empty-state"><i class="fa-solid fa-share-nodes" style="font-size:48px;opacity:0.3;"></i><h3>No Operators Found</h3><p>Telegram operators will appear here once intelligence is gathered.</p></div>';
+    } else {
+      html += '<h3 style="margin-bottom:16px;">Cross-Group Operators (Ranked by Risk)</h3>';
+      operators.slice(0, 30).forEach(o => {
+        const riskColor = o.risk_level === 'CRITICAL' ? '#fee2e2' : o.risk_level === 'HIGH' ? '#fef3c7' : o.risk_level === 'MEDIUM' ? '#dbeafe' : '#f3f4f6';
+        const riskText = o.risk_level === 'CRITICAL' ? '#991b1b' : o.risk_level === 'HIGH' ? '#92400e' : o.risk_level === 'MEDIUM' ? '#1e40af' : '#6b7280';
+        const opName = (o.name || 'Unknown').replace(/'/g, "\'");
+        html += '<div style="display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;cursor:pointer;" onclick="loadDossier(\'' + opName + '\')">';
+        html += '<div style="width:40px;height:40px;border-radius:50%;background:var(--bg-hover);display:flex;align-items:center;justify-content:center;font-size:18px;"><i class="fa-solid fa-user-secret"></i></div>';
+        html += '<div style="flex:1;"><div style="font-weight:600;">' + (o.name || 'Unknown') + '</div>';
+        html += '<div style="font-size:12px;color:var(--text-muted);">@' + (o.username || 'no-username') + ' · ' + o.groups + ' groups · ' + o.messages + ' msgs</div></div>';
+        if (o.linked_case) html += '<span style="background:#dbeafe;color:#1e40af;padding:4px 10px;border-radius:4px;font-size:12px;">' + o.linked_case + '</span>';
+        html += '<span style="background:' + riskColor + ';color:' + riskText + ';padding:4px 10px;border-radius:4px;font-size:12px;font-weight:600;">' + o.risk_level + '</span>';
+        html += '</div>';
+      });
+    }
+    html += '</div>';
+
+    document.getElementById('operatorMap').innerHTML = html;
+  } catch (e) {
+    document.getElementById('operatorMap').innerHTML = '<div class="empty-state"><p>Unable to load operator data: ' + e.message + '</p></div>';
+  }
+}
+
+async function loadDossier(name) {
+  if (!name) return;
+  const panel = document.getElementById('dossierPanel');
+  panel.innerHTML = '<div style="background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:24px;text-align:center;"><i class="fa-solid fa-spinner fa-spin" style="font-size:24px;"></i><p style="margin-top:8px;">Generating dossier...</p></div>';
+
+  try {
+    const d = await apiGet('/api/tg-intel/dossier?sender_name=' + encodeURIComponent(name));
+    if (d.error) {
+      panel.innerHTML = '<div style="background:#fee2e2;border-radius:8px;padding:16px;color:#991b1b;">Operator not found: ' + name + '</div>';
+      return;
+    }
+
+    const riskColor = d.risk_level === 'CRITICAL' ? '#fee2e2' : d.risk_level === 'HIGH' ? '#fef3c7' : '#dbeafe';
+    const riskText = d.risk_level === 'CRITICAL' ? '#991b1b' : d.risk_level === 'HIGH' ? '#92400e' : '#1e40af';
+
+    let html = '<div style="background:var(--bg-card);border:2px solid var(--border);border-radius:12px;padding:24px;margin-top:16px;">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px;">';
+    html += '<div><h3 style="margin:0;font-size:20px;">' + (d.operator_name || 'Unknown') + '</h3>';
+    html += '<p style="margin:4px 0;font-size:14px;color:var(--text-muted);">@' + (d.operator_username || 'no-username') + ' · Telegram ID: ' + ((d.sender_ids || []).join(', ')) + '</p></div>';
+    html += '<span style="background:' + riskColor + ';color:' + riskText + ';font-size:13px;padding:5px 14px;border-radius:16px;font-weight:700;">' + d.risk_level + '</span>';
+    html += '</div>';
+
+    // Stats grid
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:16px;">';
+    html += '<div style="background:var(--bg);border-radius:8px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Messages</div><div style="font-size:24px;font-weight:800;">' + d.total_messages + '</div></div>';
+    html += '<div style="background:var(--bg);border-radius:8px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Groups</div><div style="font-size:24px;font-weight:800;">' + d.group_count + '</div></div>';
+    html += '<div style="background:var(--bg);border-radius:8px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Domains</div><div style="font-size:24px;font-weight:800;">' + (d.domains_found || []).length + '</div></div>';
+    html += '<div style="background:var(--bg);border-radius:8px;padding:12px;"><div style="font-size:11px;color:var(--text-muted);text-transform:uppercase;font-weight:600;">Phones</div><div style="font-size:24px;font-weight:800;">' + (d.phones_found || []).length + '</div></div>';
+    html += '</div>';
+
+    if (d.linked_case) {
+      html += '<div style="background:#dbeafe;border-radius:8px;padding:10px;margin-bottom:12px;"><i class="fa-solid fa-link"></i> <strong>Linked case:</strong> ' + d.linked_case + ' [' + (d.linked_case_priority || '') + ']</div>';
+    }
+
+    if ((d.groups_active_in || []).length > 0) {
+      html += '<div style="margin-bottom:12px;"><strong>Groups active in:</strong><ul style="margin:4px 0 0 20px;">';
+      d.groups_active_in.forEach(g => { html += '<li style="font-size:13px;">' + g + '</li>'; });
+      html += '</ul></div>';
+    }
+
+    if ((d.domains_found || []).length > 0) {
+      html += '<div style="margin-bottom:12px;"><strong>Domains found:</strong> ';
+      d.domains_found.forEach(d2 => { html += '<span style="background:var(--bg);padding:2px 8px;border-radius:4px;font-size:12px;margin:2px;display:inline-block;">' + d2 + '</span>'; });
+      html += '</div>';
+    }
+
+    if ((d.phones_found || []).length > 0) {
+      html += '<div style="margin-bottom:12px;"><strong>Phones found:</strong> ';
+      d.phones_found.forEach(p => { html += '<span style="background:var(--bg);padding:2px 8px;border-radius:4px;font-size:12px;margin:2px;display:inline-block;">' + p + '</span>'; });
+      html += '</div>';
+    }
+
+    if ((d.sample_messages || []).length > 0) {
+      html += '<div><strong>Sample messages:</strong>';
+      d.sample_messages.forEach(m => {
+        html += '<div style="background:var(--bg);border-radius:6px;padding:10px;margin-top:8px;font-size:12px;">';
+        html += '<div style="color:var(--text-muted);margin-bottom:4px;">' + (m.group || '') + '</div>';
+        html += (m.text || '').substring(0, 200);
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    html += '</div>';
+    panel.innerHTML = html;
+  } catch (e) {
+    panel.innerHTML = '<div style="color:var(--red);">Error loading dossier: ' + e.message + '</div>';
+  }
+}
+
+// ==================== ENTITY CORRELATION GRAPH ====================
+async function loadEntityGraph() {
+  try {
+    const g = await apiGet('/api/tg-intel/graph');
+    const container = document.getElementById('entityGraphPanel');
+    if (!container) return;
+
+    let html = '<div style="display:flex;gap:16px;margin-bottom:16px;">';
+    html += '<div class="stat-card" style="flex:1;padding:14px;"><div class="label">Operators</div><div class="value">' + g.total_operators + '</div></div>';
+    html += '<div class="stat-card" style="flex:1;padding:14px;"><div class="label">Correlations</div><div class="value">' + g.total_correlations + '</div></div>';
+    html += '</div>';
+
+    if ((g.correlations || []).length > 0) {
+      html += '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;">';
+      g.correlations.forEach(c => {
+        html += '<div style="padding:12px;border:1px solid var(--border);border-radius:8px;margin-bottom:8px;">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+        html += '<div><span style="background:#f3f4f6;padding:2px 10px;border-radius:4px;font-size:12px;font-weight:600;">' + c.entity_type + '</span> <code style="font-size:13px;">' + c.entity_value + '</code></div>';
+        html += '<span style="font-size:11px;color:var(--text-muted);">' + c.correlation_type + '</span>';
+        html += '</div>';
+        html += '<div style="margin-top:8px;font-size:13px;">Operators sharing: ';
+        c.operators.forEach(o => {
+          html += '<span style="background:#fef3c7;padding:2px 8px;border-radius:4px;margin:2px;display:inline-block;">' + o + '</span>';
+        });
+        html += '</div></div>';
+      });
+      html += '</div>';
+    } else {
+      html += '<div class="empty-state"><i class="fa-solid fa-share-nodes" style="font-size:36px;opacity:0.3;"></i><h3>No correlations found</h3></div>';
+    }
+
+    container.innerHTML = html;
+  } catch (e) {
+    console.error('Entity graph error:', e);
+    const container = document.getElementById('entityGraphPanel');
+    if (container) container.innerHTML = '<div class="empty-state"><p>Error loading graph: ' + e.message + '</p></div>';
+  }
+}
+
+// ==================== VICTIMS PANEL ====================
+async function loadVictims() {
+  try {
+    const victims = await apiGet('/api/tg-intel/victims');
+    const container = document.getElementById('victimsPanel');
+    if (!container) return;
+
+    if (!victims || victims.length === 0) {
+      container.innerHTML = '<div class="empty-state"><i class="fa-solid fa-user-injured" style="font-size:36px;opacity:0.3;"></i><h3>No victims identified</h3></div>';
+      return;
+    }
+
+    let html = '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:16px;">';
+    html += '<div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">';
+    html += '<div class="stat-card" style="padding:10px;flex:1;min-width:120px;"><div class="label">Total Victims</div><div class="value">' + victims.length + '</div></div>';
+    html += '<div class="stat-card" style="padding:10px;flex:1;min-width:120px;"><div class="label">With Scam Type</div><div class="value">' + victims.filter(v => v.scam_types && v.scam_types !== 'unknown').length + '</div></div>';
+    html += '</div>';
+
+    victims.slice(0, 20).forEach(v => {
+      html += '<div style="padding:10px;border:1px solid var(--border);border-radius:6px;margin-bottom:6px;">';
+      html += '<div style="display:flex;justify-content:space-between;align-items:start;">';
+      html += '<div><strong>@' + (v.username || 'unknown') + '</strong>';
+      html += '<div style="font-size:12px;color:var(--text-muted);">' + v.victim_messages + ' victim messages \u00b7 ' + (v.scam_types || 'unknown') + '</div></div>';
+      html += '<span style="font-size:11px;color:var(--text-muted);">First: ' + (v.first_seen || '').toString().split('T')[0] + '</span>';
+      html += '</div>';
+      if (v.sample_message) {
+        html += '<div style="margin-top:6px;font-size:12px;color:var(--text-muted);background:var(--bg);padding:8px;border-radius:4px;">' + v.sample_message.substring(0, 150) + '</div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+
+    container.innerHTML = html;
+  } catch (e) {
+    console.error('Victims error:', e);
+    const container = document.getElementById('victimsPanel');
+    if (container) container.innerHTML = '<div class="empty-state"><p>Error loading victims: ' + e.message + '</p></div>';
+  }
+}
+
+// ==================== OUTREACH VIEW ====================
+async function loadOutreach() {
+  try {
+    const data = await apiGet('/api/dashboard/outreach');
+    const groups = data.groups_posted || data.groups || [];
+    const blocked = data.blocked_groups || [];
+    const dms = data.dms_sent || data.dm_sent || [];
+
+    // Stats
+    const stats = [
+      { label: 'Groups Posted', value: groups.length, sub: 'Awareness broadcasts', icon: 'bullhorn', color: 'green' },
+      { label: 'Groups Blocked', value: blocked.length, sub: 'Removed/banned', icon: 'ban', color: 'red' },
+      { label: 'DMs Sent', value: dms.length, sub: 'Direct victim contact', icon: 'envelope', color: 'blue' },
+      { label: 'Victims Reached', value: data.victims_reached || 0, sub: 'Total reach', icon: 'users', color: 'amber' }
+    ];
+    document.getElementById('outreachStats').innerHTML = stats.map(s => statCard(s)).join('');
+
+    // Outreach list
+    let html = '<div style="background:var(--bg-card);border-radius:8px;border:1px solid var(--border);padding:20px;">';
+    if (groups.length === 0 && blocked.length === 0 && dms.length === 0) {
+      html += '<div class="empty-state"><i class="fa-solid fa-bullhorn" style="font-size:48px;opacity:0.3;"></i><h3>No Outreach Activity Yet</h3><p>When GFIN posts awareness messages to Telegram groups or contacts victims, the activity will appear here.</p></div>';
+    } else {
+      if (groups.length > 0) {
+        html += '<h3 style="margin-bottom:12px;">Posted Groups (' + groups.length + ')</h3>';
+        groups.forEach(g => {
+          html += '<div style="display:flex;align-items:center;gap:12px;padding:8px;border-bottom:1px solid var(--border);">';
+          html += '<i class="fa-solid fa-check-circle" style="color:#10b981;"></i>';
+          html += '<div style="flex:1;"><strong>' + (g.group_name || g.username || 'Unknown') + '</strong>';
+          html += ' <span style="color:var(--text-muted);font-size:13px;">' + (g.member_count || 0) + ' members</span></div>';
+          html += '<span style="font-size:12px;color:var(--text-muted);">' + (g.posted_at || '') + '</span>';
+          html += '</div>';
+        });
+      }
+      if (blocked.length > 0) {
+        html += '<h3 style="margin-top:16px;margin-bottom:12px;">Blocked Groups (' + blocked.length + ')</h3>';
+        blocked.forEach(g => {
+          html += '<div style="display:flex;align-items:center;gap:12px;padding:8px;border-bottom:1px solid var(--border);">';
+          html += '<i class="fa-solid fa-ban" style="color:#ef4444;"></i>';
+          html += '<div style="flex:1;"><strong>' + (g.group_name || g.username || 'Unknown') + '</strong>';
+          html += ' <span style="color:var(--text-muted);font-size:13px;">' + (g.reason || 'Blocked') + '</span></div>';
+          html += '</div>';
+        });
+      }
+      if (dms.length > 0) {
+        html += '<h3 style="margin-top:16px;margin-bottom:12px;">Direct Messages (' + dms.length + ')</h3>';
+        dms.forEach(d => {
+          html += '<div style="display:flex;align-items:center;gap:12px;padding:8px;border-bottom:1px solid var(--border);">';
+          html += '<i class="fa-solid fa-envelope" style="color:#3b82f6;"></i>';
+          html += '<div style="flex:1;"><strong>' + (d.recipient || 'Unknown') + '</strong>';
+          html += ' <span style="color:var(--text-muted);font-size:13px;">' + (d.recipient_name || d.type || 'Victim notification') + '</span></div>';
+          html += '</div>';
+        });
+      }
+    }
+    html += '</div>';
+    document.getElementById('outreachList').innerHTML = html;
+  } catch (e) {
+    document.getElementById('outreachList').innerHTML = '<div class="empty-state"><p>Unable to load outreach data: ' + e.message + '</p></div>';
+  }
+}
+
+// Helper function for stat cards
+function statCard(s) {
+  return '<div class="stat-card ' + (s.color || 'navy') + '"><div class="icon ' + (s.color || 'navy') + '"><i class="fa-solid fa-' + s.icon + '"></i></div><div class="label">' + s.label + '</div><div class="value">' + s.value + '</div><div class="sub">' + s.sub + '</div></div>';
+}
+
+
+// === OSINT ENGINE FUNCTIONS ===
+
+async function loadOsintEngines() {
+  try {
+    const data = await apiGet('/api/osint/engines');
+    const grid = document.getElementById('osintEnginesGrid');
+    if (!grid) return;
+    grid.innerHTML = data.engines.map(e => `
+      <div class="chart-container" style="padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+          <h4 style="font-size:15px;font-weight:600">${e.name}</h4>
+          <span style="font-size:11px;padding:2px 8px;border-radius:4px;background:var(--bg-accent);color:var(--text-muted)">${e.version}</span>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:8px">${e.description}</p>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted)">
+          <span><i class="fa-solid fa-cube"></i> ${e.modules} modules</span>
+          <span><i class="fa-solid fa-key"></i> ${e.requires_api_key ? 'API Key' : 'Free'}</span>
+          <span><i class="fa-solid fa-scale-balanced"></i> ${e.license}</span>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) { console.error('OSINT engines load error:', e); }
+}
+
+async function runOsintFull() {
+  const target = document.getElementById('osintTarget').value.trim();
+  const type = document.getElementById('osintType').value;
+  if (!target) return alert('Enter a target domain or IP');
+  
+  const el = document.getElementById('osintResults');
+  el.innerHTML = '<div style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="font-size:32px;color:var(--primary)"></i><p style="margin-top:12px;color:var(--text-muted)">Running 5+ OSINT engines in parallel...</p></div>';
+  
+  try {
+    const data = await apiPost('/api/osint/full', { target, target_type: type });
+    let html = '<div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
+    html += '<div><h4 style="font-size:16px;font-weight:600">Scan ' + data.scan_id + '</h4>';
+    html += '<p style="font-size:13px;color:var(--text-muted)">' + data.summary + '</p></div>';
+    const confColor = data.confidence === 'HIGH' ? '#10b981' : data.confidence === 'MEDIUM' ? '#f59e0b' : '#6b7280';
+    html += '<span style="padding:4px 12px;border-radius:6px;background:' + confColor + ';color:white;font-size:12px;font-weight:600">' + data.confidence + '</span>';
+    html += '</div>';
+    
+    // Correlations
+    if (data.correlations && data.correlations.length > 0) {
+      html += '<h5 style="font-size:14px;font-weight:600;margin-bottom:8px"><i class="fa-solid fa-link"></i> Intelligence Correlations (' + data.correlations.length + ')</h5>';
+      for (const c of data.correlations) {
+        const sevColor = c.severity === 'HIGH' ? '#ef4444' : c.severity === 'MEDIUM' ? '#f59e0b' : '#6b7280';
+        html += '<div style="padding:8px 12px;border-left:3px solid ' + sevColor + ';background:var(--bg-accent);border-radius:4px;margin-bottom:6px">';
+        html += '<span style="font-size:11px;font-weight:600;color:' + sevColor + '">[' + c.severity + '] ' + c.type + '</span>';
+        html += '<p style="font-size:13px;margin-top:2px">' + c.description + '</p></div>';
+      }
+    }
+    
+    // Engine results
+    html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-microchip"></i> Engine Results (' + Object.keys(data.engines).length + ')</h5>';
+    html += '<table class="data-table"><thead><tr><th>Engine</th><th>Findings</th><th>Errors</th></tr></thead><tbody>';
+    for (const [name, result] of Object.entries(data.engines)) {
+      const hasF = result.findings ? (Array.isArray(result.findings) ? result.findings.length : Object.keys(result.findings).length) : 0;
+      const errs = result.errors ? result.errors.length : 0;
+      html += '<tr><td style="font-weight:600">' + name + '</td><td>' + hasF + '</td><td>' + (errs > 0 ? '<span style="color:#ef4444">' + errs + '</span>' : '0') + '</td></tr>';
+    }
+    html += '</tbody></table>';
+    
+    // WHOIS details
+    if (data.engines.whois && data.engines.whois.findings && data.engines.whois.findings.registrar) {
+      const w = data.engines.whois.findings;
+      html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-id-card"></i> WHOIS Details</h5>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">';
+      html += '<div><strong>Registrar:</strong> ' + (w.registrar || '-') + '</div>';
+      html += '<div><strong>Created:</strong> ' + (w.creation_date || '-') + '</div>';
+      html += '<div><strong>Country:</strong> ' + (w.country || '-') + '</div>';
+      html += '<div><strong>Privacy:</strong> ' + (w.privacy_protected ? '<span style="color:#f59e0b">YES</span>' : 'No') + '</div>';
+      html += '<div><strong>Registrant:</strong> ' + (w.registrant_name || '-') + '</div>';
+      html += '<div><strong>Org:</strong> ' + (w.registrant_org || '-') + '</div>';
+      html += '</div>';
+    }
+    
+    // DNSTwist lookalikes
+    if (data.engines.dnstwist && data.engines.dnstwist.findings && data.engines.dnstwist.findings.length > 0) {
+      html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-clone"></i> Lookalike Domains (' + data.engines.dnstwist.findings.length + ')</h5>';
+      html += '<table class="data-table"><thead><tr><th>Domain</th><th>Fuzzer</th><th>DNS A</th></tr></thead><tbody>';
+      for (const f of data.engines.dnstwist.findings.slice(0, 10)) {
+        html += '<tr><td style="font-family:monospace">' + (f.domain || '-') + '</td><td>' + (f.fuzzer || '-') + '</td><td>' + (f.dns_a && f.dns_a.length ? f.dns_a.join(', ') : '-') + '</td></tr>';
+      }
+      html += '</tbody></table>';
+    }
+    
+    // Shodan
+    if (data.engines.shodan && data.engines.shodan.findings && data.engines.shodan.findings.org) {
+      const s = data.engines.shodan.findings;
+      html += '<h5 style="font-size:14px;font-weight:600;margin:16px 0 8px"><i class="fa-solid fa-server"></i> Shodan/IP Info</h5>';
+      html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">';
+      html += '<div><strong>Org:</strong> ' + (s.org || '-') + '</div>';
+      html += '<div><strong>City:</strong> ' + (s.city || '-') + '</div>';
+      html += '<div><strong>Country:</strong> ' + (s.country || '-') + '</div>';
+      html += '<div><strong>Location:</strong> ' + (s.location || '-') + '</div>';
+      html += '</div>';
+    }
+    
+    html += '</div>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<div style="color:#ef4444;padding:16px">Error: ' + e.message + '</div>';
+  }
+}
+
+async function runOsintHunt() {
+  const target = document.getElementById('osintTarget').value.trim();
+  if (!target) return alert('Enter a target domain');
+  
+  const el = document.getElementById('osintResults');
+  el.innerHTML = '<div style="text-align:center;padding:40px"><i class="fa-solid fa-spinner fa-spin" style="font-size:32px;color:var(--primary)"></i><p style="margin-top:12px;color:var(--text-muted)">Running OSINT hunt and creating case...</p></div>';
+  
+  try {
+    const data = await apiPost('/api/osint/hunt', { target });
+    let html = '<div style="background:#ecfdf5;border:1px solid #10b981;border-radius:8px;padding:16px;margin-bottom:16px">';
+    html += '<h4 style="font-size:16px;font-weight:600;color:#065f46"><i class="fa-solid fa-check-circle"></i> Case Created: ' + data.case_id + '</h4>';
+    html += '<p style="font-size:13px;color:#064e3b;margin-top:4px">' + data.summary + '</p>';
+    html += '<p style="font-size:13px;margin-top:8px">Confidence: <strong>' + data.confidence + '</strong> | Correlations: ' + data.correlations.length + '</p>';
+    html += '<button class="btn btn-primary" style="margin-top:8px" onclick="openCase(\'' + data.case_id + '\')">Open Case</button>';
+    html += '</div>';
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = '<div style="color:#ef4444;padding:16px">Error: ' + e.message + '</div>';
+  }
+}
+
+async function runSpiderfoot() {
+  const target = document.getElementById('sfTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('sfResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Running SpiderFoot (200+ modules)...</p>';
+  try {
+    const data = await apiPost('/api/osint/spiderfoot', { target });
+    el.innerHTML = '<p style="font-size:12px;color:var(--text-muted)">Findings: ' + data.summary.total_findings + ' | Errors: ' + data.summary.errors + '</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runDnstwist() {
+  const target = document.getElementById('dtTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('dtResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Scanning for lookalikes...</p>';
+  try {
+    const data = await apiPost('/api/osint/dnstwist', { domain: target });
+    const count = data.summary.total_lookalikes;
+    el.innerHTML = '<p style="font-size:12px">' + count + ' lookalike domains found. ' + data.summary.with_dns_records + ' with active DNS.</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runShodan() {
+  const target = document.getElementById('shTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('shResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Looking up IP...</p>';
+  try {
+    const data = await apiPost('/api/osint/shodan', { ip: target });
+    const f = data.findings;
+    el.innerHTML = '<div style="font-size:12px"><strong>Org:</strong> ' + (f.org||'-') + ' | <strong>City:</strong> ' + (f.city||'-') + ' | <strong>Country:</strong> ' + (f.country||'-') + '</div>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runWafw00f() {
+  const target = document.getElementById('wafTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('wafResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Checking WAF...</p>';
+  try {
+    const data = await apiPost('/api/osint/wafw00f', { domain: target });
+    const f = data.findings;
+    el.innerHTML = '<p style="font-size:12px">WAF: ' + (f.waf_detected ? '<span style="color:#f59e0b">' + f.waf_name + '</span>' : '<span style="color:#10b981">None detected</span>') + '</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runDnsrecon() {
+  const target = document.getElementById('drTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('drResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Enumerating DNS...</p>';
+  try {
+    const data = await apiPost('/api/osint/dnsrecon', { domain: target });
+    el.innerHTML = '<p style="font-size:12px">Records: ' + data.summary.total_records + ' | Subdomains: ' + data.summary.subdomains_found + '</p>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+async function runWhois() {
+  const target = document.getElementById('whoisTarget').value.trim();
+  if (!target) return;
+  const el = document.getElementById('whoisResults');
+  el.innerHTML = '<p style="color:var(--text-muted);font-size:12px"><i class="fa-solid fa-spinner fa-spin"></i> Looking up WHOIS...</p>';
+  try {
+    const data = await apiPost('/api/osint/whois', { domain: target });
+    const f = data.findings;
+    el.innerHTML = '<div style="font-size:12px"><strong>Registrar:</strong> ' + (f.registrar||'-') + ' | <strong>Privacy:</strong> ' + (f.privacy_protected ? 'YES' : 'No') + ' | <strong>Created:</strong> ' + (f.creation_date||'-').substring(0,10) + '</div>';
+  } catch(e) { el.innerHTML = '<p style="color:#ef4444;font-size:12px">Error: ' + e.message + '</p>'; }
+}
+
+
+    // === AI ENGINES ===
+    async function loadAiEngines() {
+      loadAnomalyStatus();
+      loadMidasStatus();
+      loadMispStatus();
+      loadAnomalyCases();  // Auto-load PyOD results
+    }
+
+    async function loadAnomalyStatus() {
+      try {
+        const data = await apiGet('/api/anomaly/status');
+        document.getElementById('pyodStatus').innerHTML = '<span style="color:#22c55e;font-weight:600;">● Operational</span> — ' + data.algorithms.join(' + ');
+      } catch(e) {
+        document.getElementById('pyodStatus').innerHTML = '<span style="color:#ef4444;">● Error</span>';
+      }
+    }
+
+    async function loadMidasStatus() {
+      try {
+        const data = await apiGet('/api/midas/status');
+        const stats = data.stats || {};
+        document.getElementById('midasStatus').innerHTML = '<span style="color:#22c55e;font-weight:600;">● Active</span> — ' + (stats.edges_processed || 0) + ' edges, ' + (stats.anomalies_detected || 0) + ' anomalies';
+        // Also update MIDAS results with live top anomalies
+        const el = document.getElementById('midasResults');
+        const tops = stats.top_anomalies || [];
+        if (tops.length === 0) {
+          el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);font-size:13px;">No anomalies detected yet. The spy feeds edges in real-time.</div>';
+          return;
+        }
+        let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">';
+        html += '<div style="background:#f0f4f8;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:var(--navy);">' + (stats.edges_processed || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Edges Processed</div></div>';
+        html += '<div style="background:#fef3f2;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:#ef4444;">' + (stats.anomalies_detected || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Anomalies</div></div>';
+        html += '<div style="background:#f0fdf4;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:#22c55e;">' + (stats.recent_anomalies || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Recent (window)</div></div>';
+        html += '</div>';
+        html += '<div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px;">Top Live Anomalies (auto-refreshed):</div>';
+        html += '<div style="display:flex;flex-direction:column;gap:6px;">';
+        tops.slice(0, 10).forEach(a => {
+          const scoreColor = (a.score || 0) > 100 ? '#ef4444' : (a.score || 0) > 10 ? '#f59e0b' : '#6b7280';
+          html += '<div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px;display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;"><span style="font-weight:600;color:var(--navy);">' + (a.src || '').substring(0, 25) + '</span> &rarr; <span style="color:var(--text-muted);">' + (a.dst || '').substring(0, 30) + '</span><div style="font-size:10px;color:var(--text-muted);margin-top:2px;">' + (a.reason || '') + '</div></div><span style="background:' + scoreColor + ';color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">' + (a.score || 0).toFixed(1) + '</span></div>';
+        });
+        html += '</div>';
+        el.innerHTML = html;
+      } catch(e) {
+        document.getElementById('midasStatus').innerHTML = '<span style="color:#ef4444;">● Error</span>';
+      }
+    }
+
+    async function loadMispStatus() {
+      try {
+        const data = await apiGet('/api/misp/status');
+        const stixBadge = data.stix_export ? '<span style="color:#22c55e;font-weight:600;">STIX 2.1 Ready</span>' : '<span style="color:#ef4444;">STIX Unavailable</span>';
+        const mispBadge = data.misp_sharing ? '<span style="color:#22c55e;font-weight:600;">MISP Connected</span>' : '<span style="color:#f59e0b;font-weight:600;">MISP Not Configured</span>';
+        document.getElementById('mispStatus').innerHTML = stixBadge + ' · ' + mispBadge;
+      } catch(e) {
+        document.getElementById('mispStatus').innerHTML = '<span style="color:#ef4444;">● Error</span>';
+      }
+    }
+
+    async function loadAnomalyCases() {
+      const el = document.getElementById('anomalyCasesResults');
+      el.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:20px;color:var(--navy);"></i><br><span style="font-size:12px;margin-top:8px;display:inline-block;">Running Isolation Forest + KNN ensemble...</span></div>';
+      try {
+        const data = await apiGet('/api/anomaly/cases');
+        if (!data.anomalies || data.anomalies.length === 0) {
+          el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);">No anomalies detected among ' + (data.total_cases || 0) + ' cases.</div>';
+          return;
+        }
+        let html = '<div style="margin-bottom:10px;font-size:12px;color:var(--text-muted);">' + data.anomaly_count + ' anomalies found among ' + data.total_cases + ' cases</div>';
+        html += '<table style="width:100%;border-collapse:collapse;font-size:12px;"><thead><tr style="border-bottom:2px solid var(--navy);"><th style="text-align:left;padding:8px;">Score</th><th style="text-align:left;padding:8px;">Case ID</th><th style="text-align:left;padding:8px;">Reason</th><th style="text-align:left;padding:8px;">Flagged By</th></tr></thead><tbody>';
+        data.anomalies.forEach(a => {
+          const scoreColor = a.anomaly_score > 4 ? '#ef4444' : a.anomaly_score > 2 ? '#f59e0b' : '#6b7280';
+          html += '<tr style="border-bottom:1px solid #eee;"><td style="padding:8px;"><span style="background:' + scoreColor + ';color:#fff;padding:2px 8px;border-radius:4px;font-weight:600;font-size:11px;">' + a.anomaly_score.toFixed(1) + '</span></td><td style="padding:8px;font-weight:600;color:var(--navy);">' + a.case_id + '</td><td style="padding:8px;color:var(--text-muted);">' + a.reason + '</td><td style="padding:8px;"><span style="font-size:10px;background:#e0e7ff;padding:2px 6px;border-radius:3px;">' + a.flagged_by + '</span></td></tr>';
+        });
+        html += '</tbody></table>';
+        el.innerHTML = html;
+      } catch(e) {
+        el.innerHTML = '<div style="color:#ef4444;padding:12px;">Error: ' + e.message + '</div>';
+      }
+    }
+
+    async function loadAnomalyWallets() {
+      const el = document.getElementById('anomalyWalletsResults');
+      el.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:20px;color:var(--navy);"></i><br><span style="font-size:12px;margin-top:8px;display:inline-block;">Scanning wallet patterns...</span></div>';
+      try {
+        const data = await apiGet('/api/anomaly/wallets');
+        if (!data.anomalies || data.anomalies.length === 0) {
+          el.innerHTML = '<div style="text-align:center;padding:16px;color:var(--text-muted);">No anomalous wallets detected among ' + (data.total_wallets || 0) + ' tracked wallets.</div>';
+          return;
+        }
+        let html = '<div style="margin-bottom:10px;font-size:12px;color:var(--text-muted);">' + data.anomaly_count + ' anomalous wallets out of ' + data.total_wallets + '</div>';
+        html += '<div style="display:flex;flex-direction:column;gap:8px;">';
+        data.anomalies.forEach(a => {
+          html += '<div style="border:1px solid #e5e7eb;border-radius:6px;padding:12px;display:flex;justify-content:space-between;align-items:center;"><div><div style="font-weight:600;font-size:13px;color:var(--navy);">' + a.wallet.substring(0, 20) + '...</div><div style="font-size:11px;color:var(--text-muted);margin-top:2px;">' + a.reason + '</div></div><div style="text-align:right;"><span style="background:#ef4444;color:#fff;padding:3px 10px;border-radius:4px;font-weight:600;font-size:11px;">Score: ' + a.anomaly_score.toFixed(1) + '</span></div></div>';
+        });
+        html += '</div>';
+        el.innerHTML = html;
+      } catch(e) {
+        el.innerHTML = '<div style="color:#ef4444;padding:12px;">Error: ' + e.message + '</div>';
+      }
+    }
+
+    async function midasProcessTelegram() {
+      const el = document.getElementById('midasResults');
+      el.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:20px;color:var(--navy);"></i><br><span style="font-size:12px;margin-top:8px;display:inline-block;">Streaming Telegram intelligence through MIDAS...</span></div>';
+      try {
+        const data = await apiPost('/api/midas/process/telegram', {});
+        let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">';
+        html += '<div style="background:#f0f4f8;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:var(--navy);">' + (data.processed || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Edges Processed</div></div>';
+        html += '<div style="background:#fef3f2;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:#ef4444;">' + (data.anomalies || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Anomalies</div></div>';
+        html += '<div style="background:#f0fdf4;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:#22c55e;">' + ((data.anomaly_rate * 100) || 0).toFixed(1) + '%</div><div style="font-size:11px;color:var(--text-muted);">Anomaly Rate</div></div>';
+        html += '</div>';
+        const tops = (data.stats && data.stats.top_anomalies) || [];
+        if (tops.length > 0) {
+          html += '<div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px;">Top Anomalies:</div><div style="display:flex;flex-direction:column;gap:6px;">';
+          tops.slice(0, 10).forEach(a => {
+            html += '<div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px;display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;"><span style="font-weight:600;color:var(--navy);">' + (a.src || '').substring(0, 25) + '</span> &rarr; <span style="color:var(--text-muted);">' + (a.dst || '').substring(0, 30) + '</span></div><span style="background:#ef4444;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">' + (a.score || 0).toFixed(1) + '</span></div>';
+          });
+          html += '</div>';
+        }
+        el.innerHTML = html;
+        loadMidasStatus();
+      } catch(e) {
+        el.innerHTML = '<div style="color:#ef4444;padding:12px;">Error: ' + e.message + '</div>';
+      }
+    }
+
+    async function midasProcessEvidence() {
+      const el = document.getElementById('midasResults');
+      el.innerHTML = '<div style="text-align:center;padding:20px;"><i class="fa-solid fa-spinner fa-spin" style="font-size:20px;color:var(--navy);"></i><br><span style="font-size:12px;margin-top:8px;display:inline-block;">Streaming case evidence through MIDAS...</span></div>';
+      try {
+        const data = await apiPost('/api/midas/process/evidence', {});
+        let html = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;">';
+        html += '<div style="background:#f0f4f8;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:var(--navy);">' + (data.processed || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Edges Processed</div></div>';
+        html += '<div style="background:#fef3f2;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:#ef4444;">' + (data.anomalies || 0) + '</div><div style="font-size:11px;color:var(--text-muted);">Anomalies</div></div>';
+        html += '<div style="background:#f0fdf4;padding:12px;border-radius:6px;text-align:center;"><div style="font-size:24px;font-weight:700;color:#22c55e;">' + ((data.anomaly_rate * 100) || 0).toFixed(1) + '%</div><div style="font-size:11px;color:var(--text-muted);">Anomaly Rate</div></div>';
+        html += '</div>';
+        const tops = (data.stats && data.stats.top_anomalies) || [];
+        if (tops.length > 0) {
+          html += '<div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:8px;">Top Anomalies:</div><div style="display:flex;flex-direction:column;gap:6px;">';
+          tops.slice(0, 10).forEach(a => {
+            html += '<div style="border:1px solid #e5e7eb;border-radius:6px;padding:10px;display:flex;justify-content:space-between;align-items:center;"><div style="font-size:12px;"><span style="font-weight:600;color:var(--navy);">' + (a.src || '').substring(0, 25) + '</span> &rarr; <span style="color:var(--text-muted);">' + (a.dst || '').substring(0, 30) + '</span></div><span style="background:#ef4444;color:#fff;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;">' + (a.score || 0).toFixed(1) + '</span></div>';
+          });
+          html += '</div>';
+        }
+        el.innerHTML = html;
+        loadMidasStatus();
+      } catch(e) {
+        el.innerHTML = '<div style="color:#ef4444;padding:12px;">Error: ' + e.message + '</div>';
+      }
+    }
+
+    async function loadMispStatus() {
+      // Update status card
+      try {
+        const statusData = await apiGet('/api/misp/status');
+        const stixBadge = statusData.stix_export ? '<span style="color:#22c55e;font-weight:600;">STIX 2.1 Ready</span>' : '<span style="color:#ef4444;">STIX Unavailable</span>';
+        const mispBadge = statusData.misp_sharing ? '<span style="color:#22c55e;font-weight:600;">MISP Connected</span>' : '<span style="color:#f59e0b;font-weight:600;">MISP Not Configured</span>';
+        document.getElementById('mispStatus').innerHTML = stixBadge + ' &middot; ' + mispBadge;
+      } catch(e) {
+        document.getElementById('mispStatus').innerHTML = '<span style="color:#ef4444;">● Error</span>';
+      }
+      // Update results panel
+      const el = document.getElementById('mispResults');
+      try {
+        const data = await apiGet('/api/misp/status');
+        let html = '<div style="margin-bottom:16px;">';
+        html += '<div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;">';
+        html += '<div style="background:' + (data.stix_export ? '#f0fdf4' : '#fef3f2') + ';padding:8px 16px;border-radius:6px;font-size:13px;"><i class="fa-solid fa-' + (data.stix_export ? 'check' : 'xmark') + '" style="color:' + (data.stix_export ? '#22c55e' : '#ef4444') + ';"></i> STIX 2.1 Export: ' + (data.stix_export ? 'Available' : 'Unavailable') + '</div>';
+        html += '<div style="background:' + (data.misp_sharing ? '#f0fdf4' : '#fffbeb') + ';padding:8px 16px;border-radius:6px;font-size:13px;"><i class="fa-solid fa-' + (data.misp_sharing ? 'check' : 'circle-info') + '" style="color:' + (data.misp_sharing ? '#22c55e' : '#f59e0b') + ';"></i> MISP Instance: ' + (data.misp_sharing ? 'Connected' : 'Not configured (STIX export still works)') + '</div>';
+        html += '</div>';
+        html += '<div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:8px;">Export STIX Bundle for a Case:</div>';
+        html += '<div style="display:flex;gap:8px;flex-wrap:wrap;">';
+        if (casesCache && casesCache.length > 0) {
+          casesCache.slice(0, 10).forEach(c => {
+            html += '<button onclick="exportStix(\'' + c.case_id + '\')" class="btn btn-outline" style="font-size:11px;padding:4px 12px;">' + c.case_id + '</button>';
+          });
+          if (state.cases.length > 10) {
+            html += '<span style="font-size:11px;color:var(--text-muted);padding:6px;">+' + (casesCache.length - 10) + ' more...</span>';
+          }
+        } else {
+          html += '<span style="font-size:12px;color:var(--text-muted);">No cases loaded. Go to Cases tab first.</span>';
+        }
+        html += '</div></div>';
+        el.innerHTML = html;
+      } catch(e) {
+        el.innerHTML = '<div style="color:#ef4444;padding:12px;">Error: ' + e.message + '</div>';
+      }
+    }
+
+    async function exportStix(caseId) {
+      try {
+        const data = await apiPost('/api/misp/export-stix/' + caseId, {});
+        const objects = data.objects || [];
+        const indicators = objects.filter(o => o.type === 'indicator');
+        const reports = objects.filter(o => o.type === 'report');
+        const observed = objects.filter(o => o.type === 'observed-data');
+        alert('STIX 2.1 Bundle Exported\n\nCase: ' + caseId + '\nTotal Objects: ' + objects.length + '\n  - Indicators (IOCs): ' + indicators.length + '\n  - Reports: ' + reports.length + '\n  - Observed Data: ' + observed.length + '\n\nBundle ID: ' + (data.id || 'N/A') + '\n\nThe STIX bundle is ready for inter-agency sharing via MISP or any STIX-compatible platform.');
+      } catch(e) {
+        alert('STIX export failed: ' + e.message);
+      }
+    }
+
+
+</script>
+</body>
+</html>

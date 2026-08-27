@@ -1,0 +1,28 @@
+{
+  "previous_conclusions_from_CASE_002": [
+    {
+      "conclusion": "UK entity had no web presence",
+      "challenge_via_non_google": "smartstar.co.uk was registered 6 weeks before company incorporation (RDAP: 2022-10-16). However, the domain was never used as a live website \u2014 it was parked. This MODIFIES the conclusion: a domain was registered but never developed into a web presence.",
+      "status": "MODIFIED"
+    },
+    {
+      "conclusion": "No connection between UK and NZ entities",
+      "challenge_via_non_google": "Apple iTunes API confirms SmartStar Technology Ltd (NZ) has 3 apps with seller URL smartjobs.io. UK entity had no apps. DNS confirms no shared infrastructure. GitHub confirms Rojs Gordons has no connection to Rex Huang. NOT_CONNECTED confirmed.",
+      "status": "CONFIRMED"
+    },
+    {
+      "conclusion": "\u00a310M was nominal declared capital only",
+      "challenge_via_non_google": "Companies House direct access confirms share capital structure. No contradiction found.",
+      "status": "CONFIRMED"
+    },
+    {
+      "conclusion": "Rojs Gordons is a software developer (Protremix CEO)",
+      "challenge_via_non_google": "GitHub API CONFIRMS: Protremix account with 4 repos including AI platforms (EvolvixOS, Grovim) and blockchain (Verdis Chain). Email: info@protremix.com. Account created 2026-08-07. This STRENGTHENS the conclusion with primary API evidence.",
+      "status": "CONFIRMED_AND_STRENGTHENED"
+    }
+  ],
+  "new_contradictions": 1,
+  "modifications": 1,
+  "confirmations": 2,
+  "note": "The only modification is the discovery that smartstar.co.uk was registered 6 weeks before the company, but was never developed. This is a minor finding \u2014 the domain was registered but parked, not used as a business website."
+}

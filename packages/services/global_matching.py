@@ -13,7 +13,7 @@ Layer B: Distributed OpenSearch, Kafka streaming, ML fuzzy matching (REQUIRES EX
 
 import contextlib
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -21,13 +21,13 @@ from pydantic import BaseModel, Field
 # ─── Enums ───
 
 
-class MatchConfidence(str, Enum):
+class MatchConfidence(StrEnum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
 
 
-class NotificationStatus(str, Enum):
+class NotificationStatus(StrEnum):
     PENDING = "PENDING"
     SENT = "SENT"
     ACKNOWLEDGED = "ACKNOWLEDGED"

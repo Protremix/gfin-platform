@@ -1,0 +1,11 @@
+{
+  "transactions_found": 0,
+  "blockchain_apis_used": [
+    "Etherscan"
+  ],
+  "result": "NO_TRANSACTIONS_FOUND",
+  "classification": "No on-chain transactions can be evidenced because no wallet address has been discovered. Verdis Chain is testnet only.",
+  "on_chain_facts": 0,
+  "inferences": 0,
+  "note": "No transactions can be evidenced without a wallet address. The evidence DOES NOT ESTABLISH any crypto transactions by SmartStar Technology Ltd or Rojs Gordons."
+}

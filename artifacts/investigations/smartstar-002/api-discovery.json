@@ -1,0 +1,123 @@
+{
+  "sources_used": [
+    {
+      "provider": "Companies House UK",
+      "api": "find-and-update.company-information.service.gov.uk",
+      "capability": "UK company filings, officers, PSC, charges",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "Primary source for UK company data"
+    },
+    {
+      "provider": "NZ Companies Office",
+      "api": "companyhub.nz / nzlbusiness.com",
+      "capability": "NZ company details, directors, shareholders",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "Primary source for NZ company data"
+    },
+    {
+      "provider": "ACRA Singapore",
+      "api": "companieshouse.sg / sgpbusiness.com",
+      "capability": "Singapore company registry",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "Primary source for SG company data"
+    },
+    {
+      "provider": "Polish KRS",
+      "api": "rejestr.io",
+      "capability": "Polish company registry",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "Rojs Gordons Poland company"
+    },
+    {
+      "provider": "French INPI",
+      "api": "pappers.fr / societe.com",
+      "capability": "French company registry",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "Rojs Gordons France company"
+    },
+    {
+      "provider": "Czech Business Registry",
+      "api": "kurzy.cz / ov.gov.cz",
+      "capability": "Czech company registry",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "Rojs Gordons Czech company"
+    },
+    {
+      "provider": "Spanish BORME",
+      "api": "northdata.com",
+      "capability": "Spanish company registry",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "MEDIUM",
+      "reason": "Rojs Gordons Spain company"
+    },
+    {
+      "provider": "Estonian Commercial Register",
+      "api": "ssb.ee",
+      "capability": "Estonian company registry",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "MEDIUM",
+      "reason": "Rojs Gordons Estonia company"
+    },
+    {
+      "provider": "IPinfo",
+      "api": "ipinfo.io",
+      "capability": "IP geolocation, ASN, hosting provider",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "DNS/infrastructure analysis"
+    },
+    {
+      "provider": "Wayback Machine",
+      "api": "web.archive.org/cdx",
+      "capability": "Historical web snapshots",
+      "authorization": "PUBLIC",
+      "availability": "PARTIAL (timeouts)",
+      "quality": "MEDIUM",
+      "reason": "Historical web presence"
+    },
+    {
+      "provider": "Verdis Chain Website",
+      "api": "verdischain.com",
+      "capability": "Team verification, project details",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "MEDIUM",
+      "reason": "Rojs Gordons blockchain project"
+    },
+    {
+      "provider": "Google Play Store",
+      "api": "play.google.com",
+      "capability": "App download counts, ratings",
+      "authorization": "PUBLIC",
+      "availability": "AVAILABLE",
+      "quality": "HIGH",
+      "reason": "SmartJobs app verification"
+    }
+  ],
+  "new_apis_discovered": 5,
+  "rejected_sources": [
+    {
+      "provider": "LinkedIn API",
+      "reason": "REJECTED \u2014 requires OAuth and does not provide investigative data"
+    },
+    {
+      "provider": "Facebook Graph API",
+      "reason": "REJECTED \u2014 requires app review and user permissions"
+    }
+  ]
+}

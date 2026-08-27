@@ -1,0 +1,103 @@
+{
+  "task": "TASK 17 \u2014 Provider Quality & Fallback",
+  "generated": "2026-08-26T16:38:25Z",
+  "matrix": [
+    {
+      "data_type": "corporate_registry_UK",
+      "primary": "Companies House",
+      "secondary": "OpenCorporates",
+      "fallback": "ICIJ Offshore Leaks",
+      "quality_score": 0.95,
+      "freshness": "Daily",
+      "legal_usability": "High (official government source)"
+    },
+    {
+      "data_type": "corporate_registry_global",
+      "primary": "OpenCorporates",
+      "secondary": "Companies House (UK)",
+      "fallback": "SEC EDGAR (US)",
+      "quality_score": 0.85,
+      "freshness": "Varies",
+      "legal_usability": "Medium"
+    },
+    {
+      "data_type": "domain_registration",
+      "primary": "ICANN RDAP",
+      "secondary": "DomainTools",
+      "fallback": "SecurityTrails",
+      "quality_score": 0.9,
+      "freshness": "Real-time",
+      "legal_usability": "High (official registry)"
+    },
+    {
+      "data_type": "threat_reputation",
+      "primary": "VirusTotal",
+      "secondary": "URLScan.io",
+      "fallback": "AbuseIPDB",
+      "quality_score": 0.85,
+      "freshness": "Real-time",
+      "legal_usability": "High"
+    },
+    {
+      "data_type": "blockchain_ethereum",
+      "primary": "Etherscan",
+      "secondary": "Blockchair",
+      "fallback": "Blockchain.com (BTC only)",
+      "quality_score": 0.95,
+      "freshness": "Real-time",
+      "legal_usability": "High (public blockchain)"
+    },
+    {
+      "data_type": "geocoding",
+      "primary": "OpenStreetMap Nominatim",
+      "secondary": "Mapbox",
+      "fallback": "N/A",
+      "quality_score": 0.9,
+      "freshness": "Daily",
+      "legal_usability": "High (open data)"
+    },
+    {
+      "data_type": "social_messaging",
+      "primary": "Telegram Public",
+      "secondary": "Mastodon",
+      "fallback": "Reddit (with auth)",
+      "quality_score": 0.75,
+      "freshness": "Real-time",
+      "legal_usability": "Medium (platform ToS)"
+    },
+    {
+      "data_type": "sanctions_screening",
+      "primary": "OpenSanctions",
+      "secondary": "OFAC SDN",
+      "fallback": "N/A",
+      "quality_score": 0.9,
+      "freshness": "Daily",
+      "legal_usability": "High (government + open data)"
+    },
+    {
+      "data_type": "breach_intelligence",
+      "primary": "HaveIBeenPwned",
+      "secondary": "N/A",
+      "fallback": "N/A",
+      "quality_score": 0.95,
+      "freshness": "Continuous",
+      "legal_usability": "High"
+    },
+    {
+      "data_type": "historical_web",
+      "primary": "Wayback Machine CDX",
+      "secondary": "URLScan.io",
+      "fallback": "N/A",
+      "quality_score": 0.9,
+      "freshness": "Varies",
+      "legal_usability": "High (Internet Archive)"
+    }
+  ],
+  "fallback_behavior": "primary fails \u2192 retry(2) \u2192 alternative \u2192 unavailable (never fabricate)",
+  "summary": {
+    "data_types_covered": 10,
+    "with_primary": 10,
+    "with_secondary": 9,
+    "with_fallback": 6
+  }
+}

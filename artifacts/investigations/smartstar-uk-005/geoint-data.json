@@ -1,0 +1,35 @@
+{
+  "status": "NOT_IMPLEMENTED",
+  "geoint_apis_checked": [
+    {
+      "api": "Google Maps API",
+      "status": "NOT_IMPLEMENTED \u2014 no API connector available"
+    },
+    {
+      "api": "OpenStreetMap API",
+      "status": "NOT_CHECKED \u2014 low priority"
+    },
+    {
+      "api": "Satellite imagery providers",
+      "status": "NOT_IMPLEMENTED \u2014 no connector available"
+    }
+  ],
+  "address_analysis": {
+    "uk": {
+      "address": "27 Old Gloucester Street, London, WC1N 3AX",
+      "type": "Virtual office (British Monomarks)",
+      "geoint_value": "LOW \u2014 thousands of companies use this address. No physical operations here."
+    },
+    "nz": {
+      "address": "365b Papanui Road, Christchurch",
+      "type": "Commercial address",
+      "geoint_value": "MEDIUM \u2014 legitimate business address"
+    },
+    "sg": {
+      "address": "one-north, Singapore",
+      "type": "Tech hub",
+      "geoint_value": "LOW \u2014 co-working space"
+    }
+  },
+  "justification": "GEOINT APIs are not implemented in GFIN. Address analysis was performed using corporate registry data (non-GEOINT). No satellite imagery or geospatial datasets were queried."
+}

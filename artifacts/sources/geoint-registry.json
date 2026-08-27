@@ -1,0 +1,65 @@
+{
+  "task": "TASK 09 \u2014 GEOINT",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "OpenStreetMap Nominatim",
+      "auth": "NONE",
+      "status": "LIVE_TESTED",
+      "coverage": "Global geocoding",
+      "resolution": "Address-level",
+      "license": "ODbL",
+      "test_evidence": "27 Old Gloucester St \u2192 51.5223\u00b0N, 0.1225\u00b0W"
+    },
+    {
+      "provider": "Mapbox",
+      "auth": "API_KEY (free 50K/mo)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Global geocoding + maps",
+      "resolution": "Address-level",
+      "license": "Freemium"
+    },
+    {
+      "provider": "Planet Labs",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Satellite imagery",
+      "license": "Commercial"
+    },
+    {
+      "provider": "Maxar",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "High-res satellite imagery",
+      "license": "Commercial"
+    },
+    {
+      "provider": "EU Copernicus/Sentinel",
+      "auth": "ACCOUNT (free)",
+      "status": "CONNECTOR_DESIGNED",
+      "coverage": "EU earth observation",
+      "license": "Free (EU program)"
+    },
+    {
+      "provider": "NASA Earthdata",
+      "auth": "ACCOUNT (free)",
+      "status": "CONNECTOR_DESIGNED",
+      "coverage": "Public earth observation",
+      "license": "Free"
+    },
+    {
+      "provider": "HERE Technologies",
+      "auth": "API_KEY (freemium)",
+      "status": "NOT_IMPLEMENTED",
+      "coverage": "Geocoding + routing",
+      "license": "Freemium"
+    }
+  ],
+  "summary": {
+    "live_tested": 1,
+    "auth_required": 1,
+    "blocked": 2,
+    "designed": 2,
+    "not_implemented": 1
+  }
+}

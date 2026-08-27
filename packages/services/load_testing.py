@@ -9,13 +9,13 @@ Layer B: k6/JMeter integration, real load generation (REQUIRES EXTERNAL INFRASTR
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel
 
 
-class LoadTestStatus(str, Enum):
+class LoadTestStatus(StrEnum):
     PENDING = "PENDING"
     RUNNING = "RUNNING"
     PASSED = "PASSED"

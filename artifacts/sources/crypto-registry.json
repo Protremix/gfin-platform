@@ -1,0 +1,67 @@
+{
+  "task": "TASK 12 \u2014 Crypto / Exchange Intelligence",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "Etherscan",
+      "auth": "OPTIONAL (free)",
+      "status": "IMPLEMENTED_LIVE_TESTED",
+      "coverage": "Ethereum addresses, transactions, contracts, tokens"
+    },
+    {
+      "provider": "Blockchain.com",
+      "auth": "NONE",
+      "status": "IMPLEMENTED_LIVE_TESTED",
+      "coverage": "Bitcoin addresses, transactions"
+    },
+    {
+      "provider": "Blockchair",
+      "auth": "NONE (freemium)",
+      "status": "IMPLEMENTED_TESTED",
+      "coverage": "Multi-chain explorer (BTC, ETH, BCH, LTC, etc.)"
+    },
+    {
+      "provider": "Chainalysis",
+      "auth": "COMMERCIAL (LE/enterprise)",
+      "status": "BLOCKED",
+      "coverage": "Wallet attribution, transaction tracing"
+    },
+    {
+      "provider": "TRM Labs",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Wallet screening, transaction tracing, sanctions"
+    },
+    {
+      "provider": "Elliptic",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Blockchain analytics, wallet intelligence"
+    },
+    {
+      "provider": "Crystal Intelligence",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Transaction tracing, risk scoring"
+    },
+    {
+      "provider": "Merkle Science",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Wallet monitoring, transaction intelligence"
+    },
+    {
+      "provider": "Coin Metrics",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Network data, market data"
+    }
+  ],
+  "support_chain": "wallet \u2192 transaction \u2192 counterparty \u2192 service \u2192 exchange \u2192 cluster \u2192 evidence",
+  "identity_rule": "Never turn a provider label or cluster into an identity without supporting evidence",
+  "summary": {
+    "live_tested": 2,
+    "tested": 1,
+    "blocked": 6
+  }
+}

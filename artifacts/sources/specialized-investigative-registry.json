@@ -1,0 +1,88 @@
+{
+  "task": "TASK 14 \u2014 Specialized Investigative Platforms",
+  "generated": "2026-08-26T16:38:25Z",
+  "platforms": [
+    {
+      "platform": "Maltego",
+      "capability": "Link analysis + OSINT transforms",
+      "api": "REST (CE)",
+      "license": "Commercial (CE free)",
+      "status": "BLOCKED",
+      "reason": "Desktop application \u2014 no standard API for integration"
+    },
+    {
+      "platform": "Babel Street",
+      "capability": "OSINT platform",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED",
+      "reason": "Enterprise sales required"
+    },
+    {
+      "platform": "Palantir",
+      "capability": "Data integration + analysis",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED",
+      "reason": "Enterprise/government sales"
+    },
+    {
+      "platform": "Sayari",
+      "capability": "Global corporate networks",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED"
+    },
+    {
+      "platform": "Quantexa",
+      "capability": "Entity resolution + network analytics",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED"
+    },
+    {
+      "platform": "DataWalk",
+      "capability": "Link analysis",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED"
+    },
+    {
+      "platform": "IBM i2",
+      "capability": "Investigative analysis",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED"
+    },
+    {
+      "platform": "Cellebrite",
+      "capability": "Digital forensics",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED",
+      "authority": "REQUIRES LAWFUL AUTHORITY OVER DEVICE"
+    },
+    {
+      "platform": "Magnet Forensics",
+      "capability": "Digital forensics",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED",
+      "authority": "REQUIRES LAWFUL AUTHORITY"
+    },
+    {
+      "platform": "MSAB",
+      "capability": "Mobile forensics",
+      "api": "Commercial",
+      "license": "Commercial",
+      "status": "BLOCKED",
+      "authority": "REQUIRES LAWFUL AUTHORITY"
+    }
+  ],
+  "summary": {
+    "total": 10,
+    "blocked_commercial": 8,
+    "blocked_authority": 2,
+    "note": "All specialized platforms require commercial licenses. Digital forensics tools additionally require lawful authority over the target device."
+  }
+}

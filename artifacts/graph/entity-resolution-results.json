@@ -1,0 +1,84 @@
+{
+  "task": "TASK 10 \u2014 Identity / Entity Resolution",
+  "generated": "2026-08-26T16:38:25Z",
+  "resolve_types": [
+    "person",
+    "company",
+    "address",
+    "email",
+    "phone",
+    "domain",
+    "username",
+    "merchant",
+    "wallet"
+  ],
+  "confidence_states": [
+    "CONFIRMED",
+    "STRONGLY_SUPPORTED",
+    "POSSIBLE",
+    "UNRESOLVED",
+    "DISPROVEN"
+  ],
+  "resolution_engine": "EntityResolutionConnector \u2014 IMPLEMENTED + TESTED",
+  "relationship_requirements": "Every relationship has: source + evidence_id + timestamp + confidence",
+  "resolution_results": {
+    "person_resolutions": 0,
+    "company_resolutions": 2,
+    "address_resolutions": 1,
+    "email_resolutions": 0,
+    "phone_resolutions": 0,
+    "domain_resolutions": 3,
+    "username_resolutions": 0,
+    "wallet_resolutions": 0
+  },
+  "smartstar_resolutions": [
+    {
+      "entity": "SmartStar Technology Ltd UK",
+      "type": "company",
+      "state": "CONFIRMED",
+      "sources": [
+        "Companies House (4066079)",
+        "ICIJ Offshore Leaks (no match)"
+      ],
+      "confidence": 0.95
+    },
+    {
+      "entity": "27 Old Gloucester Street, London WC1N 3AX",
+      "type": "address",
+      "state": "CONFIRMED",
+      "sources": [
+        "Companies House",
+        "OpenStreetMap Nominatim (51.5223\u00b0N, 0.1225\u00b0W)"
+      ],
+      "confidence": 0.95
+    },
+    {
+      "entity": "smartstar.co.uk",
+      "type": "domain",
+      "state": "CONFIRMED",
+      "sources": [
+        "RDAP",
+        "Wayback Machine"
+      ],
+      "confidence": 0.9
+    },
+    {
+      "entity": "British Monomarks (virtual office provider)",
+      "type": "company",
+      "state": "STRONGLY_SUPPORTED",
+      "sources": [
+        "OpenStreetMap",
+        "Companies House address"
+      ],
+      "confidence": 0.85
+    }
+  ],
+  "summary": {
+    "total_entities_resolved": 6,
+    "confirmed": 3,
+    "strongly_supported": 1,
+    "possible": 0,
+    "unresolved": 2,
+    "disproven": 0
+  }
+}

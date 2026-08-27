@@ -1,0 +1,139 @@
+{
+  "case_id": "CASE-REAL-001",
+  "entities": [
+    {
+      "id": "ENT-001",
+      "type": "ORGANIZATION",
+      "name": "CNC Intelligence Inc.",
+      "description": "Legitimate cryptocurrency investigation and forensic intelligence company",
+      "status": "LEGITIMATE",
+      "verified": true
+    },
+    {
+      "id": "ENT-002",
+      "type": "DOMAIN",
+      "name": "cncintel.com",
+      "description": "Official website of CNC Intelligence Inc.",
+      "dns": "A=172.66.42.247/172.66.41.9, NS=Cloudflare, MX=Zoho",
+      "registrar": "Cloudflare",
+      "status": "LEGITIMATE",
+      "verified": true
+    },
+    {
+      "id": "ENT-003",
+      "type": "DOMAIN",
+      "name": "cncintelinfo.com",
+      "description": "Impersonation domain \u2014 no website, configured for email via ProtonMail only",
+      "dns": "NS=registrar-servers.com, MX=ProtonMail, no A record",
+      "registrar": "NameCheap, Inc.",
+      "registered": "2026-02-26",
+      "expires": "2027-02-26",
+      "status": "SUSPECTED FRAUDULENT",
+      "verified": true
+    },
+    {
+      "id": "ENT-004",
+      "type": "DOMAIN",
+      "name": "cncintelltd.com",
+      "description": "Impersonation domain \u2014 currently parked on SEDO GmbH (domain parking)",
+      "dns": "A=91.195.240.123, NS=dnsowl.com",
+      "registrar": "NameSilo, LLC",
+      "registered": "2025-12-10",
+      "expires": "2026-12-10",
+      "status": "SUSPECTED FRAUDULENT (previously active, now parked)",
+      "verified": true
+    },
+    {
+      "id": "ENT-005",
+      "type": "DOMAIN",
+      "name": "cnc-intel.com",
+      "description": "Impersonation domain \u2014 expired, in redemption period",
+      "registrar": "NameCheap, Inc.",
+      "registered": "2024-06-20",
+      "expired": "2026-06-20",
+      "status": "EXPIRED (was fraudulent)",
+      "verified": true
+    },
+    {
+      "id": "ENT-006",
+      "type": "DOMAIN",
+      "name": "cncintell.online",
+      "description": "Impersonation domain \u2014 expired/unregistered",
+      "status": "EXPIRED/UNREGISTERED",
+      "verified": true
+    },
+    {
+      "id": "ENT-007",
+      "type": "DOMAIN",
+      "name": "payback.ltd",
+      "description": "Connected recovery scam \u2014 FBI seized website",
+      "status": "SEIZED BY FBI",
+      "verified": true
+    },
+    {
+      "id": "ENT-008",
+      "type": "DOMAIN",
+      "name": "cyber-forensics.net",
+      "description": "Connected recovery scam \u2014 listed on CryptoLegal and LegalByte scam trackers",
+      "status": "REPORTED AS SCAM",
+      "verified": true
+    },
+    {
+      "id": "ENT-009",
+      "type": "ORGANIZATION",
+      "name": "SEDO GmbH",
+      "description": "Domain parking company hosting cncintelltd.com (AS47846, Munich, Germany)",
+      "status": "INFRASTRUCTURE PROVIDER (not fraudulent)",
+      "verified": true
+    },
+    {
+      "id": "ENT-010",
+      "type": "EMAIL_PROVIDER",
+      "name": "ProtonMail",
+      "description": "Email service used by cncintelinfo.com for sending/receiving fraudulent emails",
+      "status": "EMAIL SERVICE (not fraudulent, but exploited)",
+      "verified": true
+    },
+    {
+      "id": "ENT-011",
+      "type": "REGISTRAR",
+      "name": "NameCheap, Inc.",
+      "description": "Domain registrar used for cncintelinfo.com and cnc-intel.com",
+      "status": "REGISTRAR (not fraudulent, but exploited)",
+      "verified": true
+    },
+    {
+      "id": "ENT-012",
+      "type": "REGISTRAR",
+      "name": "NameSilo, LLC",
+      "description": "Domain registrar used for cncintelltd.com",
+      "status": "REGISTRAR (not fraudulent, but exploited)",
+      "verified": true
+    },
+    {
+      "id": "ENT-013",
+      "type": "ORGANIZATION",
+      "name": "Rapid Digital Recovery",
+      "description": "Connected recovery scam service \u2014 spam posted in obituary guestbooks",
+      "status": "REPORTED AS SCAM",
+      "verified": false
+    },
+    {
+      "id": "ENT-014",
+      "type": "ORGANIZATION",
+      "name": "MyChargeBack",
+      "description": "Connected recovery scam \u2014 FBI seized website",
+      "status": "SEIZED BY FBI",
+      "verified": true
+    },
+    {
+      "id": "ENT-015",
+      "type": "ORGANIZATION",
+      "name": "Claim Justice",
+      "description": "Connected recovery scam \u2014 FBI seized website",
+      "status": "SEIZED BY FBI",
+      "verified": true
+    }
+  ],
+  "total_entities": 15
+}

@@ -27,7 +27,7 @@ from abc import ABC, abstractmethod
 from collections import defaultdict
 from collections.abc import Awaitable, Callable
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
@@ -203,7 +203,7 @@ def list_topics() -> list[str]:
 # ═══════════════════════════════════════════════
 
 
-class ClassificationLevel(str, Enum):
+class ClassificationLevel(StrEnum):
     """Classification level for event data."""
 
     PUBLIC = "PUBLIC"
@@ -365,7 +365,7 @@ class RetryPolicy(BaseModel):
 # ═══════════════════════════════════════════════
 
 # Handler can be sync or async
-EventHandler = Callable[[Event], None | Awaitable[None]]
+EventHandler = Callable[[Event], Awaitable[None] | None]
 
 
 class EventBus(ABC):

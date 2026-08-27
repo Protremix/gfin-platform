@@ -1,0 +1,19 @@
+{
+  "status": "NOT_APPLICABLE",
+  "smartjobs": {
+    "paid_ads": "NONE FOUND",
+    "organic_listings": [
+      "Google Play Store",
+      "Apple App Store",
+      "G2"
+    ],
+    "social_media_ads": "NONE FOUND"
+  },
+  "uk_entity": {
+    "advertising": "NONE \u2014 no web presence, no domains, no marketing materials found"
+  },
+  "smartstar_sg": {
+    "advertising": "NONE FOUND in public sources"
+  },
+  "justification": "No advertising infrastructure exists for any SmartStar entity. SmartJobs relies on organic app store presence and G2 listings. The UK entity had no web presence at all. Paid advertising channels (Google Ads, Facebook Ads) are not publicly searchable without platform access. NOT_APPLICABLE."
+}

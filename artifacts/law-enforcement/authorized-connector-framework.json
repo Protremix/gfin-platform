@@ -1,0 +1,73 @@
+{
+  "task": "TASK 15 \u2014 Law Enforcement Connector Framework",
+  "generated": "2026-08-26T16:38:25Z",
+  "design": "Generic case-scoped interfaces for restricted systems",
+  "required_fields": [
+    "agency",
+    "case_id",
+    "jurisdiction",
+    "authority",
+    "scope"
+  ],
+  "connector_interface": {
+    "class": "AuthorizedLawEnforcementConnector",
+    "required_context": {
+      "agency": "string \u2014 requesting law enforcement agency",
+      "case_id": "string \u2014 official case reference",
+      "jurisdiction": "string \u2014 legal jurisdiction",
+      "authority": "enum \u2014 COURT_ORDER / STATUTORY_AUTHORITY / MUTUAL_LEGAL_ASSISTANCE / ADMINISTRATIVE_REQUEST",
+      "scope": "enum \u2014 TELECOM / FINANCIAL / IMMIGRATION / CRIMINAL_RECORDS / VEHICLE / PROPERTY / IDENTIFICATION"
+    },
+    "methods": [
+      "query_telecom(phone, case_context)",
+      "query_financial(account, case_context)",
+      "query_criminal_records(person, case_context)",
+      "query_vehicle(registration, case_context)",
+      "query_property(address, case_context)"
+    ],
+    "access_control": "No unrestricted access. Every query requires case-scoped authorization context."
+  },
+  "target_systems": [
+    {
+      "system": "INTERPOL I-24/7",
+      "connector": "AuthorizedLawEnforcementConnector",
+      "status": "FRAMEWORK_READY",
+      "authority_required": "National central bureau authorization"
+    },
+    {
+      "system": "Europol",
+      "connector": "AuthorizedLawEnforcementConnector",
+      "status": "FRAMEWORK_READY",
+      "authority_required": "Europol National Unit authorization"
+    },
+    {
+      "system": "National Police Systems",
+      "connector": "AuthorizedLawEnforcementConnector",
+      "status": "FRAMEWORK_READY",
+      "authority_required": "National police authorization"
+    },
+    {
+      "system": "Financial Intelligence Units",
+      "connector": "AuthorizedLawEnforcementConnector",
+      "status": "FRAMEWORK_READY",
+      "authority_required": "FIU authorization (e.g., UK FIU/NCA)"
+    },
+    {
+      "system": "Telecommunications Intelligence",
+      "connector": "AuthorizedLawEnforcementConnector",
+      "status": "FRAMEWORK_READY",
+      "authority_required": "Court order or statutory authority"
+    }
+  ],
+  "security": {
+    "unrestricted_access": false,
+    "audit_every_query": true,
+    "case_scoped": true,
+    "jurisdiction_validated": true
+  },
+  "summary": {
+    "framework_ready": true,
+    "connectors_implemented": 0,
+    "note": "Framework is designed and ready. Implementation requires actual law enforcement agency credentials and authorization \u2014 cannot be tested without legitimate access."
+  }
+}

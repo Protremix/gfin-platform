@@ -41,8 +41,11 @@ class TestWalletProfile:
 class TestCryptoTransaction:
     def test_add_risk_indicator(self):
         tx = CryptoTransaction(
-            id="T1", tx_hash="0x123", blockchain="ETH",
-            from_address="A", to_address="B",
+            id="T1",
+            tx_hash="0x123",
+            blockchain="ETH",
+            from_address="A",
+            to_address="B",
         )
         tx.add_risk_indicator("MIXER")
         assert "MIXER" in tx.risk_indicators

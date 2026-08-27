@@ -1,0 +1,144 @@
+{
+  "timeline": [
+    {
+      "date": "2007-03-25",
+      "event": "SmartStar Technology Limited incorporated in New Zealand (Rex Huang)",
+      "source": "NZ Companies Office",
+      "type": "CORPORATE"
+    },
+    {
+      "date": "2013-11-13",
+      "event": "DEPILS LIMITED incorporated in UK",
+      "source": "Companies House",
+      "type": "CORPORATE"
+    },
+    {
+      "date": "2016-06-20",
+      "event": "Rojs Gordons appointed director of DEPILS LIMITED",
+      "source": "Companies House",
+      "type": "APPOINTMENT"
+    },
+    {
+      "date": "2017-04-20",
+      "event": "smartstar.co.uk first Wayback Machine capture",
+      "source": "Wayback Machine CDX",
+      "type": "WEB_HISTORY"
+    },
+    {
+      "date": "2017-11-14",
+      "event": "Rojs Gordons registers Golan Europe SL in Spain",
+      "source": "Spanish BORME",
+      "type": "CROSS_BORDER"
+    },
+    {
+      "date": "2018-12-11",
+      "event": "DEPILS LIMITED dissolved in UK",
+      "source": "Companies House",
+      "type": "DISSOLUTION"
+    },
+    {
+      "date": "2020-02-17",
+      "event": "Rojs Gordons terminates from GGPWORLD O\u00dc (Estonia)",
+      "source": "Estonian registry",
+      "type": "CROSS_BORDER"
+    },
+    {
+      "date": "2021-07-08",
+      "event": "VIP RENT LTD incorporated (Rojs Gordons)",
+      "source": "Companies House",
+      "type": "CORPORATE"
+    },
+    {
+      "date": "2022-10-16",
+      "event": "smartstar.co.uk domain registered (RDAP)",
+      "source": "RDAP",
+      "type": "DOMAIN"
+    },
+    {
+      "date": "2022-11-15",
+      "event": "REALM WONDERLAND s.r.o. incorporated in Czech Republic (Rojs Gordons)",
+      "source": "Czech registry",
+      "type": "CROSS_BORDER"
+    },
+    {
+      "date": "2022-11-29",
+      "event": "SMARTSTAR TECHNOLOGY LTD incorporated in UK + SMART TRADE in France (same day)",
+      "source": "Companies House + French INPI",
+      "type": "CORPORATE"
+    },
+    {
+      "date": "2023-02-11",
+      "event": "First secretary appointed (Ola Alkaddour)",
+      "source": "Companies House",
+      "type": "APPOINTMENT"
+    },
+    {
+      "date": "2023-05-17",
+      "event": "Second secretary appointed (Nidal Ahmad)",
+      "source": "Companies House",
+      "type": "APPOINTMENT"
+    },
+    {
+      "date": "2024-03-01",
+      "event": "Both secretaries resign",
+      "source": "Companies House",
+      "type": "RESIGNATION"
+    },
+    {
+      "date": "2024-05-02",
+      "event": "smartstar.co.uk redirected (301) \u2014 domain put up for sale",
+      "source": "Wayback Machine CDX",
+      "type": "WEB_HISTORY"
+    },
+    {
+      "date": "2024-05-02",
+      "event": "UK SmartStar files micro-entity accounts (8 employees, \u00a3263K)",
+      "source": "Companies House",
+      "type": "FILING"
+    },
+    {
+      "date": "2025-07-22",
+      "event": "First Gazette notice for compulsory strike-off",
+      "source": "Companies House",
+      "type": "DISSOLUTION"
+    },
+    {
+      "date": "2025-10-07",
+      "event": "UK SmartStar Technology Ltd dissolved",
+      "source": "Companies House",
+      "type": "DISSOLUTION"
+    },
+    {
+      "date": "2026-01-06",
+      "event": "SmartJobs Reception app released (NZ entity)",
+      "source": "Apple iTunes API",
+      "type": "APP"
+    },
+    {
+      "date": "2026-02-23",
+      "event": "Smartjobs App v4.2.8 released (NZ entity)",
+      "source": "Apple iTunes API",
+      "type": "APP"
+    },
+    {
+      "date": "2026-04-15",
+      "event": "Smartjobs Arcade app released (NZ entity)",
+      "source": "Apple iTunes API",
+      "type": "APP"
+    },
+    {
+      "date": "2026-08-07",
+      "event": "Protremix GitHub account created (Rojs Gordons)",
+      "source": "GitHub API",
+      "type": "SOCIAL"
+    },
+    {
+      "date": "2026-08-23",
+      "event": "Anerium repo created on GitHub (Protremix)",
+      "source": "GitHub API",
+      "type": "CODE"
+    }
+  ],
+  "total_events": 23,
+  "source_per_event": "Each event has a documented source. No event without a source."
+}

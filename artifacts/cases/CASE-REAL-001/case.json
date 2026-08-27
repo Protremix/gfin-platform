@@ -1,0 +1,15 @@
+{
+  "case_id": "CASE-REAL-001",
+  "title": "CNC Intelligence Brand Impersonation \u2014 Recovery Scam Network",
+  "fraud_category": "Advance-Fee Recovery Scam / Brand Impersonation",
+  "status": "ACTIVE INVESTIGATION \u2014 PUBLIC-SOURCE SCOPE COMPLETED",
+  "created": "2026-08-26T14:26:02.787821+00:00",
+  "investigator": "GPT Luna (GFIN-CEA)",
+  "target": "cncintelinfo.com (primary), cncintelltd.com (secondary), connected network of 50+ domains",
+  "target_type": "Domain infrastructure impersonating legitimate cryptocurrency investigation firm",
+  "initial_source": "Public report page at https://cncintel.com/report-cnc-intelligence-impostor-scams/",
+  "discovery_timestamp": "2026-08-26T14:26:02.787821+00:00",
+  "why_selected": "Publicly documented fraud campaign with 50+ domains, active DNS infrastructure, multiple victim reports, and FBI law enforcement action against connected entities (Payback LTD). Provides sufficient public data for real investigation without requiring private access.",
+  "public_accessibility": "All sources are publicly accessible web pages, public DNS records, public WHOIS/RDAP data, and public scam reporting databases.",
+  "source_use_legal_status": "All sources accessed are public web pages with no authentication bypass. CNC Intelligence's report page is publicly accessible. DNS/RDAP queries use public APIs (Google DNS-over-HTTPS, Verisign RDAP). Scam tracker databases are public."
+}

@@ -1,0 +1,301 @@
+{
+  "case_id": "CASE-REAL-001",
+  "items": [
+    {
+      "id": "E-001",
+      "type": "web_search_result",
+      "source": "Google Search",
+      "url": "google_search: 'reported scam phishing domain 2026'",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Search results showing CNC Intelligence impostor report",
+      "reliability": "MEDIUM",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintel.com"
+      ],
+      "related_findings": [
+        "F-001"
+      ]
+    },
+    {
+      "id": "E-002",
+      "type": "web_search_result",
+      "source": "Google Search",
+      "url": "google_search: 'crypto scam address reported fraud 2026'",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Search results showing DFPI and Chainabuse scam trackers",
+      "reliability": "MEDIUM",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [],
+      "related_findings": [
+        "F-001"
+      ]
+    },
+    {
+      "id": "E-003",
+      "type": "web_page",
+      "source": "CNC Intelligence Inc.",
+      "url": "https://cncintel.com/report-cnc-intelligence-impostor-scams/",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Official public report documenting 50+ fraudulent domains, email addresses, and social media profiles impersonating CNC Intelligence",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC \u2014 company's own report page",
+      "related_entities": [
+        "cncintel.com",
+        "cncintelinfo.com",
+        "cncintelltd.com",
+        "cnc-intel.com",
+        "cncintell.online"
+      ],
+      "related_findings": [
+        "F-001",
+        "F-002",
+        "F-003"
+      ]
+    },
+    {
+      "id": "E-004",
+      "type": "dns_record",
+      "source": "Google DNS-over-HTTPS",
+      "url": "https://dns.google/resolve",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "DNS queries for 14 domains from CNC report \u2014 2 active (cncintelinfo.com, cncintelltd.com), 12 expired/taken down",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC \u2014 DNS protocol query",
+      "related_entities": [
+        "cncintelinfo.com",
+        "cncintelltd.com"
+      ],
+      "related_findings": [
+        "F-004"
+      ]
+    },
+    {
+      "id": "E-005",
+      "type": "dns_record",
+      "source": "Google DNS-over-HTTPS",
+      "url": "https://dns.google/resolve?name=cncintelinfo.com",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Detailed DNS for cncintelinfo.com: no A record, NS=registrar-servers.com (Namecheap), MX=ProtonMail, TXT=ProtonMail verification + SPF. Domain configured for email operations, not web hosting.",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintelinfo.com",
+        "ProtonMail"
+      ],
+      "related_findings": [
+        "F-004",
+        "F-005"
+      ]
+    },
+    {
+      "id": "E-006",
+      "type": "dns_record",
+      "source": "Google DNS-over-HTTPS",
+      "url": "https://dns.google/resolve?name=cncintelltd.com",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Detailed DNS for cncintelltd.com: A=91.195.240.123, NS=dnsowl.com (NameSilo), no MX/TXT. Domain resolves to parking server.",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintelltd.com"
+      ],
+      "related_findings": [
+        "F-004"
+      ]
+    },
+    {
+      "id": "E-007",
+      "type": "ip_intelligence",
+      "source": "ipinfo.io",
+      "url": "https://ipinfo.io/91.195.240.123/json",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "IP 91.195.240.123: AS47846 SEDO GmbH, Munich, Bavaria, Germany. SEDO is a domain parking/monetization company.",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintelltd.com",
+        "SEDO GmbH"
+      ],
+      "related_findings": [
+        "F-004"
+      ]
+    },
+    {
+      "id": "E-008",
+      "type": "reverse_ip",
+      "source": "HackerTarget API",
+      "url": "https://api.hackertarget.com/reverseiplookup/?q=91.195.240.123",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Reverse IP lookup shows thousands of domains on SEDO parking IP \u2014 cncintelltd.com is parked, not actively hosting. AUTONOMOUS DISCOVERY: identified that cncintelltd.com was moved to parking after being used for fraud.",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintelltd.com",
+        "SEDO GmbH"
+      ],
+      "related_findings": [
+        "F-004",
+        "F-010"
+      ]
+    },
+    {
+      "id": "E-009",
+      "type": "dns_record",
+      "source": "Google DNS-over-HTTPS",
+      "url": "https://dns.google/resolve?name=cncintel.com",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Legitimate cncintel.com: A=172.66.42.247/172.66.41.9 (Cloudflare), NS=Cloudflare, MX=Zoho, TXT=Google/OpenAI/Zoho verification. Uses enterprise infrastructure \u2014 distinctly different from fraudulent domains.",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintel.com",
+        "Cloudflare",
+        "Zoho"
+      ],
+      "related_findings": [
+        "F-003"
+      ]
+    },
+    {
+      "id": "E-010",
+      "type": "rdap_record",
+      "source": "Verisign RDAP",
+      "url": "https://rdap.verisign.com/com/v1/domain/cncintelinfo.com",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "RDAP/WHOIS data: cncintelinfo.com registered 2026-02-26 via NameCheap; cncintelltd.com registered 2025-12-10 via NameSilo; cnc-intel.com registered 2024-06-20 via NameCheap, expired 2026-06-20 (redemption period); cncintell.online expired/unregistered",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC \u2014 RDAP is the modern WHOIS standard",
+      "related_entities": [
+        "cncintelinfo.com",
+        "cncintelltd.com",
+        "cnc-intel.com",
+        "cncintell.online"
+      ],
+      "related_findings": [
+        "F-002",
+        "F-006"
+      ]
+    },
+    {
+      "id": "E-011",
+      "type": "web_search_result",
+      "source": "Google Search",
+      "url": "google_search: CNC Intelligence impersonation scam victim report",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Found Reddit r/Scams post, Reddit r/CryptoScams warning, Facebook public warning, LinkedIn warning \u2014 multiple independent victim reports",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintel.com"
+      ],
+      "related_findings": [
+        "F-007"
+      ]
+    },
+    {
+      "id": "E-012",
+      "type": "web_search_result",
+      "source": "Google Search",
+      "url": "google_search: PAYBACK LTD CYBER-FORENSICS.NET scam",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Found cryptolegal.uk scam listing, legalbyte.io scam tracker, FBI San Diego seizure notice, Trustpilot reviews \u2014 connected recovery scam network",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "payback.ltd",
+        "cyber-forensics.net",
+        "cncintel.com"
+      ],
+      "related_findings": [
+        "F-008"
+      ]
+    },
+    {
+      "id": "E-013",
+      "type": "web_search_result",
+      "source": "Google Search",
+      "url": "google_search: rapid digital recovery scam",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Rapid Digital Recovery spam found in obituary guestbooks \u2014 known SEO/spam tactic. Connected to CNC Intelligence impersonation via Reddit victim reports.",
+      "reliability": "MEDIUM",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "Rapid Digital Recovery"
+      ],
+      "related_findings": [
+        "F-008"
+      ]
+    },
+    {
+      "id": "E-014",
+      "type": "web_page",
+      "source": "CryptoLegal UK",
+      "url": "https://www.cryptolegal.uk/list-of-reported-scam-companies-part-2/",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Independent scam tracker lists cyber-forensics.net and payback.ltd as recovery scams \u2014 corroborates CNC Intelligence report",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cyber-forensics.net",
+        "payback.ltd"
+      ],
+      "related_findings": [
+        "F-008"
+      ]
+    },
+    {
+      "id": "E-015",
+      "type": "web_search_result",
+      "source": "Google/Reddit",
+      "url": "reddit: r/CryptoScams warning CNCINTEL PAYBACK LTD",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "Victim on Reddit reported being told to send crypto to a 'Regulator's wallet address' provided by scammers impersonating CNC Intelligence",
+      "reliability": "MEDIUM",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC",
+      "related_entities": [
+        "cncintel.com",
+        "payback.ltd"
+      ],
+      "related_findings": [
+        "F-009"
+      ]
+    },
+    {
+      "id": "E-016",
+      "type": "web_search_result",
+      "source": "Google/FBI",
+      "url": "fbi.gov: FBI San Diego Seizes Cryptocurrency Recovery Websites",
+      "retrieval_time": "2026-08-26T14:26:02.787821+00:00",
+      "description": "FBI seized websites of MyChargeBack, Payback LTD, and Claim Justice \u2014 these are connected recovery scam services in the same network as CNC Intelligence impersonators",
+      "reliability": "HIGH",
+      "classification": "PUBLIC",
+      "source_use_status": "PUBLIC \u2014 FBI press release",
+      "related_entities": [
+        "payback.ltd",
+        "MyChargeBack",
+        "Claim Justice"
+      ],
+      "related_findings": [
+        "F-008",
+        "F-011"
+      ]
+    }
+  ],
+  "total_items": 16
+}

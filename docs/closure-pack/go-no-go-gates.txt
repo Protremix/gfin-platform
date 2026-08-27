@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+collecting ... collected 6 items
+
+tests/production/test_go_no_go_gates.py::test_gate_definitions_exist PASSED [ 16%]
+tests/production/test_go_no_go_gates.py::test_gate_attributes PASSED     [ 33%]
+tests/production/test_go_no_go_gates.py::test_evaluate_all_returns_blocked PASSED [ 50%]
+tests/production/test_go_no_go_gates.py::test_individual_gate_evaluation_returns_not_ready PASSED [ 66%]
+tests/production/test_go_no_go_gates.py::test_gate_json_serialization PASSED [ 83%]
+tests/production/test_go_no_go_gates.py::test_custom_evaluator PASSED    [100%]
+
+============================== 6 passed in 0.09s ===============================

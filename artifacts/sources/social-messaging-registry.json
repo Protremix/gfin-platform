@@ -1,0 +1,116 @@
+{
+  "task": "TASK 06 \u2014 Social & Messaging",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "Telegram (Public)",
+      "auth": "NONE",
+      "connector": "TelegramPublicConnector",
+      "status": "LIVE_TESTED",
+      "coverage": "Public channel messages, channel info",
+      "evidence": "19 messages extracted from @durov"
+    },
+    {
+      "provider": "Telegram Bot API",
+      "auth": "BOT_TOKEN (free)",
+      "connector": "TelegramBotConnector",
+      "status": "AUTH_REQUIRED",
+      "coverage": "getChat, getChatAdministrators, getChatMember"
+    },
+    {
+      "provider": "Reddit",
+      "auth": "OAUTH (free)",
+      "connector": "RedditConnector",
+      "status": "AUTH_REQUIRED",
+      "coverage": "Posts, comments, user history, subreddit search"
+    },
+    {
+      "provider": "Mastodon",
+      "auth": "NONE",
+      "connector": "MastodonConnector",
+      "status": "LIVE_TESTED",
+      "coverage": "Account search, federated posts",
+      "evidence": "10 accounts found for 'fraud'"
+    },
+    {
+      "provider": "VKontakte (VK)",
+      "auth": "API_KEY (free)",
+      "connector": "VKConnector",
+      "status": "AUTH_REQUIRED",
+      "coverage": "Users, groups, posts \u2014 critical for CIS investigations"
+    },
+    {
+      "provider": "Discord",
+      "auth": "BOT_TOKEN (free)",
+      "connector": "DiscordConnector",
+      "status": "AUTH_REQUIRED",
+      "coverage": "Server info, user profiles, channel messages"
+    },
+    {
+      "provider": "Facebook/Meta",
+      "auth": "OAUTH (app review)",
+      "connector": "FacebookConnector",
+      "status": "AUTH_REQUIRED",
+      "coverage": "Public pages, posts, Ad Library"
+    },
+    {
+      "provider": "X (Twitter)",
+      "auth": "BEARER_TOKEN ($100/mo)",
+      "connector": "TwitterConnector",
+      "status": "AUTH_REQUIRED",
+      "coverage": "Tweets, user profiles, timelines"
+    },
+    {
+      "provider": "GitHub",
+      "auth": "OPTIONAL (free)",
+      "connector": "GitHubConnector",
+      "status": "LIVE_TESTED",
+      "coverage": "Repos, users, commits, releases"
+    },
+    {
+      "provider": "GitLab",
+      "auth": "OPTIONAL (free)",
+      "connector": "GitLabConnector",
+      "status": "TESTED",
+      "coverage": "Projects, users, groups, packages"
+    },
+    {
+      "provider": "WhatsApp",
+      "auth": "NONE (LIMITED)",
+      "connector": "WhatsAppConnector",
+      "status": "LIMITED",
+      "coverage": "Invite link verification only \u2014 E2E encrypted, no public search API"
+    },
+    {
+      "provider": "LinkedIn",
+      "auth": "OAUTH (commercial)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Professional profiles",
+      "reason": "Commercial API access required"
+    },
+    {
+      "provider": "YouTube",
+      "auth": "API_KEY (free)",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "CONNECTOR_DESIGNED",
+      "coverage": "Video search, channel info",
+      "note": "YouTube Data API v3 \u2014 free with Google Cloud project"
+    },
+    {
+      "provider": "TikTok",
+      "auth": "COMMERCIAL",
+      "connector": "NOT_IMPLEMENTED",
+      "status": "BLOCKED",
+      "coverage": "Video search, user data",
+      "reason": "TikTok Research API requires academic affiliation"
+    }
+  ],
+  "summary": {
+    "live_tested": 3,
+    "auth_required": 7,
+    "limited": 1,
+    "blocked": 2,
+    "designed": 1
+  }
+}

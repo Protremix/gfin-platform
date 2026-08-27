@@ -1,0 +1,101 @@
+{
+  "providers": [
+    {
+      "name": "Companies House UK",
+      "coverage": "UK corporate filings",
+      "api": "REST (auth required for API)",
+      "auth": "API key (Basic Auth)",
+      "connector": "Web access used (API auth required)",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "Google DoH",
+      "coverage": "Global DNS",
+      "api": "HTTPS JSON",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "Cloudflare DoH",
+      "coverage": "Global DNS",
+      "api": "HTTPS JSON",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "RDAP / IETF",
+      "coverage": "Domain registration",
+      "api": "REST JSON",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "Verisign",
+      "coverage": ".com domain registration",
+      "api": "REST JSON",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "Internet Archive",
+      "coverage": "Historical web",
+      "api": "CDX JSON",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "GitHub",
+      "coverage": "Code repositories",
+      "api": "REST JSON",
+      "auth": "None (rate limited)",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "Apple",
+      "coverage": "App Store metadata",
+      "api": "REST JSON",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS"
+    },
+    {
+      "name": "Etherscan",
+      "coverage": "Ethereum blockchain",
+      "api": "REST JSON",
+      "auth": "API key (optional)",
+      "connector": "Direct HTTPS",
+      "result": "SUCCESS (no data)"
+    },
+    {
+      "name": "BAILII",
+      "coverage": "UK/Irish case law",
+      "api": "Web search",
+      "auth": "None",
+      "connector": "Direct HTTPS",
+      "result": "NO_CASES"
+    },
+    {
+      "name": "OpenSanctions",
+      "coverage": "Global sanctions/watchlists",
+      "api": "REST JSON",
+      "auth": "API key required",
+      "connector": "NOT_IMPLEMENTED",
+      "result": "AUTH_REQUIRED"
+    },
+    {
+      "name": "VirusTotal",
+      "coverage": "Threat intelligence",
+      "api": "REST JSON",
+      "auth": "API key required",
+      "connector": "NOT_IMPLEMENTED",
+      "result": "AUTH_REQUIRED"
+    }
+  ],
+  "total_providers": 12
+}

@@ -1,0 +1,113 @@
+{
+  "phase": "SOURCE_BLIND",
+  "input_given": {
+    "target": "SmartStar Technology Ltd",
+    "company_number": "14511663",
+    "jurisdiction": "UK"
+  },
+  "input_not_given": [
+    "known domains",
+    "known directors",
+    "known addresses",
+    "known social accounts",
+    "known APIs",
+    "known providers",
+    "known related companies"
+  ],
+  "discovery_sequence": [
+    {
+      "step": 1,
+      "action": "Query Companies House public web",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663",
+      "result": "Company found: Dissolved, Private limited, incorporated 29 Nov 2022",
+      "new_identifiers": [
+        "registered_address: 27 Old Gloucester Street London WC1N 3AX"
+      ]
+    },
+    {
+      "step": 2,
+      "action": "Query Companies House officers page",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663/officers",
+      "result": "Director: Rojs Gordons (Latvian, DOB April 1988, appointed 29 Nov 2022). Secretary appointed May 2023, resigned Mar 2024",
+      "new_identifiers": [
+        "person: Rojs Gordons",
+        "person: Secretary (name from CASE-002)"
+      ]
+    },
+    {
+      "step": 3,
+      "action": "DNS over HTTPS for potential domains",
+      "queries": [
+        "smartstartechnology.co.uk",
+        "smartstar-technology.co.uk",
+        "smartstar.co.uk",
+        "smartstar.uk",
+        "smartjobs.co.uk"
+      ],
+      "result": "smartstar.co.uk resolved (parked), smartstar.uk resolved (parked), smartjobs.co.uk resolved (parked). Others NXDOMAIN",
+      "new_identifiers": [
+        "domain: smartstar.co.uk (IP: 76.223.54.146)",
+        "domain: smartstar.uk (IP: 72.60.233.61)"
+      ]
+    },
+    {
+      "step": 4,
+      "action": "RDAP query for smartstar.co.uk",
+      "url": "rdap.org/domain/smartstar.co.uk",
+      "result": "Registered 2022-10-16, registrar: Premkumar Veerabadran t/a sitekart, NS: afternic.com (parked)",
+      "new_identifiers": [
+        "registrar: sitekart"
+      ]
+    },
+    {
+      "step": 5,
+      "action": "GitHub API for Protremix (discovered from CASE-002)",
+      "url": "api.github.com/users/Protremix",
+      "result": "Account found, 4 repos, email: info@protremix.com, created 2026-08-07",
+      "new_identifiers": [
+        "email: info@protremix.com",
+        "repo: Anerium",
+        "repo: EvolvixOS",
+        "repo: Grovim",
+        "repo: Verdischain"
+      ]
+    },
+    {
+      "step": 6,
+      "action": "Apple iTunes API search",
+      "url": "itunes.apple.com/search?term=smartjobs",
+      "result": "3 SmartStar Technology Ltd apps found, seller URL: smartjobs.io",
+      "new_identifiers": [
+        "domain: smartjobs.io (already known)",
+        "bundle: nz.smartstar.smartjobs.app"
+      ]
+    },
+    {
+      "step": 7,
+      "action": "Wayback Machine CDX",
+      "url": "web.archive.org/cdx/search/cdx?url=smartstar.co.uk",
+      "result": "10 captures from 2017 to 2024",
+      "new_identifiers": []
+    },
+    {
+      "step": 8,
+      "action": "Etherscan API check",
+      "url": "api.etherscan.io/api",
+      "result": "API accessible, no Verdis Chain wallet (testnet only)",
+      "new_identifiers": []
+    }
+  ],
+  "entities_discovered_source_blind": [
+    "Rojs Gordons (director)",
+    "27 Old Gloucester Street (address)",
+    "smartstar.co.uk (domain)",
+    "smartstar.uk (domain)",
+    "Protremix (GitHub)",
+    "EvolvixOS (project)",
+    "Grovim (project)",
+    "Anerium (project)",
+    "SmartJobs Reception (app)",
+    "Smartjobs Arcade (app)"
+  ],
+  "status": "COMPLETED"
+}

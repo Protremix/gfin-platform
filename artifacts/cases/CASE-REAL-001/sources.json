@@ -1,0 +1,116 @@
+{
+  "case_id": "CASE-REAL-001",
+  "sources": [
+    {
+      "id": "S-001",
+      "provider": "CNC Intelligence Inc.",
+      "url": "https://cncintel.com/report-cnc-intelligence-impostor-scams/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Public corporate report page",
+      "public_authorized": "PUBLIC",
+      "terms_license": "Public web page, no restrictions on viewing",
+      "reliability": "HIGH \u2014 official company report"
+    },
+    {
+      "id": "S-002",
+      "provider": "Google DNS-over-HTTPS",
+      "url": "https://dns.google/resolve",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "DNS protocol query",
+      "public_authorized": "PUBLIC \u2014 public DNS API",
+      "terms_license": "Google Public DNS terms",
+      "reliability": "HIGH \u2014 authoritative DNS data"
+    },
+    {
+      "id": "S-003",
+      "provider": "Verisign RDAP",
+      "url": "https://rdap.verisign.com/com/v1/domain/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "RDAP/WHOIS query",
+      "public_authorized": "PUBLIC \u2014 RDAP standard",
+      "terms_license": "Public registry data",
+      "reliability": "HIGH \u2014 authoritative registry data"
+    },
+    {
+      "id": "S-004",
+      "provider": "ipinfo.io",
+      "url": "https://ipinfo.io/91.195.240.123/json",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "IP geolocation/ASN",
+      "public_authorized": "PUBLIC \u2014 free tier API",
+      "terms_license": "ipinfo.io terms of service",
+      "reliability": "HIGH"
+    },
+    {
+      "id": "S-005",
+      "provider": "HackerTarget",
+      "url": "https://api.hackertarget.com/reverseiplookup/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Reverse IP lookup",
+      "public_authorized": "PUBLIC \u2014 free API",
+      "terms_license": "HackerTarget terms",
+      "reliability": "MEDIUM"
+    },
+    {
+      "id": "S-006",
+      "provider": "Reddit",
+      "url": "https://www.reddit.com/r/Scams/comments/1hx1bq9/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Public forum post",
+      "public_authorized": "PUBLIC \u2014 public subreddit",
+      "terms_license": "Reddit public content",
+      "reliability": "MEDIUM \u2014 user-generated, unverified"
+    },
+    {
+      "id": "S-007",
+      "provider": "Reddit",
+      "url": "https://www.reddit.com/r/CryptoScams/comments/14j9v0w/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Public forum post",
+      "public_authorized": "PUBLIC",
+      "terms_license": "Reddit public content",
+      "reliability": "MEDIUM \u2014 user-generated, unverified"
+    },
+    {
+      "id": "S-008",
+      "provider": "CryptoLegal UK",
+      "url": "https://www.cryptolegal.uk/list-of-reported-scam-companies-part-2/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Scam tracker database",
+      "public_authorized": "PUBLIC",
+      "terms_license": "Public web page",
+      "reliability": "MEDIUM-HIGH \u2014 independent tracker"
+    },
+    {
+      "id": "S-009",
+      "provider": "LegalByte",
+      "url": "https://legalbyte.io/scam-tracker/",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Scam tracker database",
+      "public_authorized": "PUBLIC",
+      "terms_license": "Public web page",
+      "reliability": "MEDIUM-HIGH \u2014 independent tracker"
+    },
+    {
+      "id": "S-010",
+      "provider": "FBI",
+      "url": "https://www.fbi.gov/contact-us/field-offices/sandiego/news/fbi-san-diego-seizes-cryptocurrency-recovery-websites",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Law enforcement press release",
+      "public_authorized": "PUBLIC \u2014 government press release",
+      "terms_license": "Public domain (US government)",
+      "reliability": "HIGH \u2014 law enforcement"
+    },
+    {
+      "id": "S-011",
+      "provider": "Trustpilot",
+      "url": "https://www.trustpilot.com/review/cyber-forensics.net",
+      "access_timestamp": "2026-08-26T14:26:02.787821+00:00",
+      "type": "Consumer review platform",
+      "public_authorized": "PUBLIC",
+      "terms_license": "Trustpilot public reviews",
+      "reliability": "MEDIUM \u2014 user-generated"
+    }
+  ],
+  "total_sources": 11
+}

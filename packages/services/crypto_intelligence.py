@@ -8,26 +8,26 @@ Layer B: Real blockchain API integration, exchange data feeds (REQUIRES EXTERNAL
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class WalletRiskLevel(str, Enum):
+class WalletRiskLevel(StrEnum):
     LOW = "LOW"
     MEDIUM = "MEDIUM"
     HIGH = "HIGH"
     CRITICAL = "CRITICAL"
 
 
-class TransactionType(str, Enum):
+class TransactionType(StrEnum):
     INCOMING = "INCOMING"
     OUTGOING = "OUTGOING"
     INTERNAL = "INTERNAL"
 
 
-class BlockchainType(str, Enum):
+class BlockchainType(StrEnum):
     BITCOIN = "BITCOIN"
     ETHEREUM = "ETHEREUM"
     TRON = "TRON"
@@ -242,13 +242,15 @@ class CryptoIntelligenceService:
             wallet = self._wallets.get(addr)
             txs = self.get_transactions_by_address(addr)
 
-            path.append({
-                "address": addr,
-                "depth": current_depth,
-                "wallet": wallet.label if wallet else "Unknown",
-                "risk_level": wallet.risk_level if wallet else "UNKNOWN",
-                "transaction_count": len(txs),
-            })
+            path.append(
+                {
+                    "address": addr,
+                    "depth": current_depth,
+                    "wallet": wallet.label if wallet else "Unknown",
+                    "risk_level": wallet.risk_level if wallet else "UNKNOWN",
+                    "transaction_count": len(txs),
+                }
+            )
 
             for tx in txs:
                 next_addr = tx.to_address if tx.from_address == addr else tx.from_address

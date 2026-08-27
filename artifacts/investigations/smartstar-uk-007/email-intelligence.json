@@ -1,0 +1,49 @@
+{
+  "emails": [
+    {
+      "email": "info@protremix.com",
+      "source": "GitHub API (public profile)",
+      "domain": "protremix.com",
+      "associated_person": "Rojs Gordons",
+      "associated_entity": "Protremix",
+      "first_seen": "2026-08-07 (GitHub account creation)",
+      "public_references": [
+        "GitHub profile",
+        "Protremix website"
+      ],
+      "classification": "INTELLIGENCE",
+      "mailbox_access": "NEVER_ATTEMPTED"
+    },
+    {
+      "email": "info@smartstar.co.nz",
+      "source": "NZ Companies Office / domain registration",
+      "domain": "smartstar.co.nz",
+      "associated_person": "Rex Huang",
+      "associated_entity": "SmartStar Technology Limited (NZ)",
+      "classification": "INTELLIGENCE",
+      "mailbox_access": "NEVER_ATTEMPTED"
+    }
+  ],
+  "email_domains": [
+    {
+      "domain": "protremix.com",
+      "status": "ACTIVE (Protremix website)",
+      "owner": "Rojs Gordons / Protremix",
+      "source": "GitHub API + web"
+    },
+    {
+      "domain": "smartstar.co.nz",
+      "status": "ACTIVE (NZ entity)",
+      "owner": "Rex Huang / SmartStar NZ",
+      "source": "DNS"
+    },
+    {
+      "domain": "smartstar.co.uk",
+      "status": "PARKED (Afternic)",
+      "owner": "PRIVACY_PROTECTED",
+      "source": "RDAP"
+    }
+  ],
+  "shared_email_domains": 0,
+  "note": "No shared email domains between UK and NZ entities. UK entity had no public email. Rojs Gordons uses info@protremix.com (discovered via GitHub API, non-Google source)."
+}

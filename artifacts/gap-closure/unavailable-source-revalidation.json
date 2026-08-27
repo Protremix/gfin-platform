@@ -1,0 +1,58 @@
+{
+  "sources": [
+    {
+      "source": "crt.sh",
+      "previous_status": "502 Bad Gateway",
+      "revalidation": "Attempted via CTLogConnector \u2014 Google CT returned 404, crt.sh still 502",
+      "new_status": "STILL_UNAVAILABLE",
+      "alternative": "Google CT logs API endpoint may have changed. SecurityTrails offers CT data via API (AUTH_REQUIRED).",
+      "next_action": "Register SecurityTrails API key for CT data access"
+    },
+    {
+      "source": "UK Insolvency Service",
+      "previous_status": "404 Not Found",
+      "revalidation": "Original URL (insolvencydirect.bis.gov.uk) still returns 404. Service has been migrated to gov.uk",
+      "new_status": "MIGRATED",
+      "alternative": "Insolvency data now available via Companies House API (insolvency endpoint)",
+      "next_action": "Companies House API key would provide insolvency data"
+    },
+    {
+      "source": "UK Gazette",
+      "previous_status": "404 Not Found (API)",
+      "revalidation": "Direct search API not found. Gazette is still searchable via web interface at thegazette.co.uk",
+      "new_status": "WEB_ONLY",
+      "alternative": "No structured API found. Gazette notices also available via Companies House filing history (GAZ1/GAZ2)",
+      "next_action": "No API to implement \u2014 data available via Companies House API with key"
+    },
+    {
+      "source": "FCA Register",
+      "previous_status": "403 Forbidden",
+      "revalidation": "Still 403. FCA register is accessible via web at register.fca.org.uk but blocks programmatic access",
+      "new_status": "BLOCKED",
+      "alternative": "No API found. Web-only access.",
+      "next_action": "Contact FCA for API access or use web interface manually"
+    },
+    {
+      "source": "Open Ownership Register",
+      "previous_status": "403 Forbidden",
+      "revalidation": "Still 403. Register exists at register.openownership.org but blocks direct access",
+      "new_status": "BLOCKED",
+      "alternative": "Beneficial ownership data available via Companies House API (PSC endpoint)",
+      "next_action": "Companies House API key would provide PSC data"
+    },
+    {
+      "source": "Nominet WHOIS",
+      "previous_status": "403 Forbidden",
+      "revalidation": "Nominet blocks WHOIS API access. RDAP (rdap.org) provides equivalent data without auth",
+      "new_status": "ALTERNATIVE_FOUND",
+      "alternative": "RDAP (rdap.org) already implemented and working for .uk domains",
+      "next_action": "No action needed \u2014 RDAP provides the same data"
+    }
+  ],
+  "total_revalidated": 6,
+  "still_unavailable": 1,
+  "migrated": 1,
+  "web_only": 1,
+  "blocked": 2,
+  "alternative_found": 1
+}

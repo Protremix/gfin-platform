@@ -8,7 +8,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -21,7 +21,7 @@ from schemas.enums import DataClassification
 # ═══════════════════════════════════════════════
 
 
-class SearchType(str, Enum):
+class SearchType(StrEnum):
     EXACT = "exact"
     NORMALIZED = "normalized"
     FUZZY = "fuzzy"
@@ -502,7 +502,7 @@ class EnhancedSearchService:
                     if getattr(entity, "raw_values", [])
                     else "",
                     score=score,
-                    explanation=explanation if query.explain else explanation,
+                    explanation=explanation,
                     related_entities=explanation.get("related_entities", []),
                     metadata={"access_reason": reason},
                 )
@@ -642,7 +642,7 @@ class EnhancedSearchService:
                     import asyncio
 
                     loop = asyncio.new_event_loop()
-                    neighbors, edges = loop.run_until_complete(
+                    neighbors, _edges = loop.run_until_complete(
                         self._graph.get_neighbors(eid, max_depth=query.graph_depth)
                     )
                     loop.close()

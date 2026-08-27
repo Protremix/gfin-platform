@@ -1,0 +1,201 @@
+{
+  "total_evidence_items": 28,
+  "evidence": [
+    {
+      "id": "EV001",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "UK company 14511663 incorporation document",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663"
+    },
+    {
+      "id": "EV002",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "UK company micro-entity accounts (30 Nov 2023)",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663/filing-history"
+    },
+    {
+      "id": "EV003",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "PSC register for Rojs Gordons (100% ownership)",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663/persons-with-significant-control"
+    },
+    {
+      "id": "EV004",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "Rojs Gordons officer appointments (6 UK companies)",
+      "url": "find-and-update.company-information.service.gov.uk/officers/wcCA00p3FMlUdY3fV0HrYNNXFzs/appointments"
+    },
+    {
+      "id": "EV005",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "Dissolution notice (GAZ1 + GAZ2)",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663/filing-history"
+    },
+    {
+      "id": "EV006",
+      "type": "PRIMARY",
+      "source": "NZ Companies Office",
+      "description": "NZ company 1925143 registration details",
+      "url": "companyhub.nz/companyDetails.cfm?nzbn=9429033507606"
+    },
+    {
+      "id": "EV007",
+      "type": "PRIMARY",
+      "source": "LinkedIn",
+      "description": "Rojs Gordons LinkedIn profile (Protremix CEO)",
+      "url": "uk.linkedin.com/in/rojs-gordons-986928421"
+    },
+    {
+      "id": "EV008",
+      "type": "PRIMARY",
+      "source": "LinkedIn",
+      "description": "Rex Huang LinkedIn profile (SmartStar NZ MD)",
+      "url": "nz.linkedin.com/in/rex-huang-a9a87351"
+    },
+    {
+      "id": "EV009",
+      "type": "PRIMARY",
+      "source": "Verdis Chain",
+      "description": "Team verification page (Rojs Gordons = Founder)",
+      "url": "verdischain.com/team/"
+    },
+    {
+      "id": "EV010",
+      "type": "PRIMARY",
+      "source": "GitHub",
+      "description": "Protremix GitHub with Verdischain repo",
+      "url": "github.com/Protremix/Verdischain-"
+    },
+    {
+      "id": "EV011",
+      "type": "PRIMARY",
+      "source": "IPinfo",
+      "description": "IP 35.190.29.89 = Google Cloud (smartjobs.io + smartjobs.co.nz)",
+      "url": "ipinfo.io/35.190.29.89"
+    },
+    {
+      "id": "EV012",
+      "type": "PRIMARY",
+      "source": "IPinfo",
+      "description": "IP 43.245.53.194 = Dreamscape/Freeparking (smartstar.co.nz)",
+      "url": "ipinfo.io/43.245.53.194"
+    },
+    {
+      "id": "EV013",
+      "type": "PRIMARY",
+      "source": "IPinfo",
+      "description": "IP 8.218.170.242 = Alibaba Cloud (smartstar.sg)",
+      "url": "ipinfo.io/8.218.170.242"
+    },
+    {
+      "id": "EV014",
+      "type": "PRIMARY",
+      "source": "Google Play Store",
+      "description": "SmartJobs app listing (530 downloads, 0 ratings)",
+      "url": "play.google.com/store/apps/details?id=com.smartjobsapp"
+    },
+    {
+      "id": "EV015",
+      "type": "SECONDARY",
+      "source": "G2",
+      "description": "SmartJobs reviews (~4/5 rating)",
+      "url": "g2.com/products/smartjobs/reviews"
+    },
+    {
+      "id": "EV016",
+      "type": "PRIMARY",
+      "source": "Polish KRS",
+      "description": "TANSWA Sp. z o.o. (Rojs Gordons, President)",
+      "url": "rejestr.io/krs/1001825/tanswa"
+    },
+    {
+      "id": "EV017",
+      "type": "PRIMARY",
+      "source": "French INPI",
+      "description": "SMART TRADE France (Rojs Gordons, President)",
+      "url": "pappers.fr/dirigeant/rojs_gordons_1988-04"
+    },
+    {
+      "id": "EV018",
+      "type": "PRIMARY",
+      "source": "Czech Registry",
+      "description": "REALM WONDERLAND s.r.o. (Rojs Gordons, Director)",
+      "url": "kurzy.cz/14065169/realm-wonderland-sro/"
+    },
+    {
+      "id": "EV019",
+      "type": "PRIMARY",
+      "source": "Spanish BORME",
+      "description": "Golan Europe SL (Rojs Gordons, Director)",
+      "url": "northdata.com/Golan Europe SL"
+    },
+    {
+      "id": "EV020",
+      "type": "PRIMARY",
+      "source": "Estonian Registry",
+      "description": "GGPWORLD O\u00dc (Rojs Gordons, former board member)",
+      "url": "ssb.ee/en/12627738-GGPWORLD-OU"
+    },
+    {
+      "id": "EV021",
+      "type": "PRIMARY",
+      "source": "Singapore ACRA",
+      "description": "SmartStar Technology Pte. Ltd. (Abin Han, CEO)",
+      "url": "companieshouse.sg/smartstar-technology-pte-ltd-202409677D"
+    },
+    {
+      "id": "EV022",
+      "type": "SECONDARY",
+      "source": "Web search",
+      "description": "27 Old Gloucester Street = virtual office (4,296+ companies)",
+      "url": "Multiple sources"
+    },
+    {
+      "id": "EV023",
+      "type": "PRIMARY",
+      "source": "Wayback Machine",
+      "description": "smartstar.sg first capture (2024-07-25)",
+      "url": "web.archive.org"
+    },
+    {
+      "id": "EV024",
+      "type": "PRIMARY",
+      "source": "Protremix website",
+      "description": "Protremix = digital product engineering studio",
+      "url": "protremix.com"
+    },
+    {
+      "id": "EV025",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "UK SmartStar share capital: 1M shares at \u00a310, 100% unpaid",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663"
+    },
+    {
+      "id": "EV026",
+      "type": "PRIMARY",
+      "source": "Facebook",
+      "description": "Rex Huang Facebook profile (Digital Creator, Christchurch)",
+      "url": "facebook.com/rexhuang221"
+    },
+    {
+      "id": "EV027",
+      "type": "PRIMARY",
+      "source": "Companies House UK",
+      "description": "UK SmartStar had 0 registered charges/mortgages",
+      "url": "find-and-update.company-information.service.gov.uk/company/14511663/charges"
+    },
+    {
+      "id": "EV028",
+      "type": "PRIMARY",
+      "source": "eBOSS NZ",
+      "description": "Rex Huang media appearance discussing SmartJobs site protocols",
+      "url": "eboss.co.nz"
+    }
+  ]
+}

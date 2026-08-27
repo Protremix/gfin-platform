@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>Scam Awareness | GFIN — Global Fraud Intelligence Network</title>
+    <meta name="description" content="Learn to recognize and avoid 12 types of online scams: Recovery Scams, Romance Scams, Investment Fraud, Phishing, Impersonation, Crypto Fraud, Tech Support, Advance Fee, Lottery, Wire Fraud, Social Media Hack, and Job Scams.">
+    <meta name="keywords" content="scam awareness, fraud prevention, how to avoid scams, romance scam, phishing, crypto fraud, investment fraud, tech support scam, scam red flags, scam protection">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GFIN — Global Fraud Intelligence Network">
+    <meta property="og:title" content="Scam Awareness — 12 Scam Types Explained | GFIN">
+    <meta property="og:description" content="Learn how 12 types of online scams work, recognize red flags, and protect yourself from fraud.">
+    <link rel="icon" href="/favicon.ico">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "GFIN Scam Awareness",
+        "description": "Educational resources covering 12 scam types to help the public recognize and avoid fraud.",
+        "url": "https://gfin-system.com/awareness"
+    }
+    </script>
+    <style>
+        :root {
+            --gov-blue: #003366;
+            --gov-blue-dark: #0d365d;
+            --gov-blue-light: #1a4a7a;
+            --gov-gold: #c5a55a;
+            --gov-gold-light: #d9b96e;
+            --gov-text: #1e293b;
+            --gov-dark-gray: #64748b;
+            --gov-mid-gray: #cbd5e1;
+            --gov-light-gray: #f1f5f9;
+            --gov-red: #dc2626;
+            --gov-red-light: #fef2f2;
+            --gov-green: #16a34a;
+            --gov-green-light: #f0fdf4;
+            --gov-radius: 8px;
+            --gov-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --gov-shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Segoe UI', Roboto, Arial, sans-serif; color: var(--gov-text); background: #f8fafc; line-height: 1.6; }
+        a { color: var(--gov-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+
+        .top-bar { background: var(--gov-blue-dark); color: rgba(255,255,255,0.8); font-size: 12px; padding: 6px 0; }
+        .top-bar .container { display: flex; justify-content: space-between; align-items: center; }
+        .top-bar a { color: rgba(255,255,255,0.8); padding: 2px 8px; }
+
+        .header { background: white; border-bottom: 1px solid var(--gov-mid-gray); position: relative; }
+        .header .container { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; }
+        .logo-block { display: flex; align-items: center; gap: 14px; }
+        .logo-seal { width: 52px; height: 52px; background: var(--gov-blue); border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--gov-gold); flex-shrink: 0; }
+        .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--gov-blue); letter-spacing: -0.3px; }
+        .logo-text p { font-size: 11px; color: var(--gov-dark-gray); letter-spacing: 1px; text-transform: uppercase; }
+        .nav { display: flex; gap: 2px; align-items: center; }
+        .nav a { color: var(--gov-dark-gray); text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 14px; border-radius: 4px; transition: all 0.2s; }
+        .nav a:hover, .nav a.active { background: var(--gov-light-gray); color: var(--gov-blue); }
+        .nav .btn-report { background: var(--gov-blue); color: white !important; padding: 8px 18px; border-radius: 4px; font-weight: 600; margin-left: 10px; }
+        .mobile-menu-btn { display: none; background: none; border: none; font-size: 22px; cursor: pointer; color: var(--gov-blue); }
+
+        .hero { background: linear-gradient(135deg, var(--gov-blue-dark) 0%, var(--gov-blue) 50%, var(--gov-blue-light) 100%); color: white; padding: 50px 0; text-align: center; }
+        .hero .container { max-width: 800px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 500; margin-bottom: 16px; }
+        .hero h2 { font-size: 34px; font-weight: 800; margin-bottom: 12px; }
+        .hero h2 .gold { color: var(--gov-gold-light); }
+        .hero p { font-size: 16px; opacity: 0.9; max-width: 580px; margin: 0 auto; line-height: 1.7; }
+
+        section { padding: 50px 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-header { text-align: center; margin-bottom: 35px; }
+        .section-header .eyebrow { color: var(--gov-blue); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 6px; }
+        .section-header h3 { font-size: 26px; font-weight: 700; color: var(--gov-text); }
+        .section-header p { color: var(--gov-dark-gray); margin-top: 6px; max-width: 580px; margin-left: auto; margin-right: auto; }
+
+        .scam-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
+        .scam-card { background: white; border: 1px solid var(--gov-mid-gray); border-radius: var(--gov-radius); overflow: hidden; transition: all 0.2s; cursor: pointer; }
+        .scam-card:hover { border-color: var(--gov-blue); box-shadow: var(--gov-shadow-lg); transform: translateY(-2px); }
+        .scam-card-header { padding: 18px 20px; background: var(--gov-light-gray); border-bottom: 1px solid var(--gov-mid-gray); display: flex; align-items: center; gap: 12px; }
+        .scam-icon { font-size: 28px; }
+        .scam-card-header h4 { font-size: 16px; font-weight: 700; color: var(--gov-blue); }
+        .scam-card-body { padding: 18px 20px; }
+        .scam-card-body .how { font-size: 13px; color: var(--gov-dark-gray); margin-bottom: 12px; }
+        .scam-card-body .red-flags { font-size: 13px; }
+        .scam-card-body .red-flags-title { font-size: 12px; font-weight: 700; color: var(--gov-red); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+        .scam-card-body ul { list-style: none; padding: 0; }
+        .scam-card-body li { font-size: 13px; color: var(--gov-dark-gray); padding: 3px 0; padding-left: 18px; position: relative; }
+        .scam-card-body li::before { content: "\\26A0"; position: absolute; left: 0; font-size: 11px; }
+
+        .cta-section { background: var(--gov-blue-dark); color: white; padding: 50px 0; text-align: center; }
+        .cta-section h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+        .cta-section p { font-size: 15px; opacity: 0.8; margin-bottom: 24px; }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+        .cta-buttons a { padding: 12px 28px; border-radius: 6px; font-size: 15px; font-weight: 600; text-decoration: none; }
+        .cta-buttons .primary { background: var(--gov-gold); color: var(--gov-blue-dark); }
+        .cta-buttons .secondary { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); }
+
+        .footer { background: var(--gov-blue-dark); color: rgba(255,255,255,0.7); padding: 40px 0 0; }
+        .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 30px; margin-bottom: 25px; }
+        .footer-brand h4 { color: white; font-size: 16px; margin-bottom: 8px; }
+        .footer-brand p { font-size: 13px; line-height: 1.6; }
+        .footer-col h5 { color: white; font-size: 13px; font-weight: 600; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .footer-col a { display: block; color: rgba(255,255,255,0.6); font-size: 13px; padding: 4px 0; text-decoration: none; }
+        .footer-col a:hover { color: var(--gov-gold-light); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding: 18px 0; display: flex; justify-content: space-between; align-items: center; font-size: 12px; }
+
+        @media (max-width: 768px) {
+            .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 10px; box-shadow: var(--gov-shadow-lg); z-index: 100; }
+            .nav.open { display: flex; }
+            .nav a { padding: 12px 16px; font-size: 15px; }
+            .mobile-menu-btn { display: block; }
+            .hero { padding: 36px 0; }
+            .hero h2 { font-size: 26px; }
+            .hero p { font-size: 14px; }
+            section { padding: 36px 0; }
+            .container { padding: 0 16px; }
+            .section-header h3 { font-size: 20px; }
+            .scam-grid { grid-template-columns: 1fr; gap: 16px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 18px; }
+            .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero { padding: 28px 0; }
+            .hero h2 { font-size: 22px; }
+            section { padding: 28px 0; }
+            .container { padding: 0 14px; }
+            .section-header h3 { font-size: 18px; }
+            .top-bar { font-size: 11px; }
+            .top-bar .container { justify-content: center; flex-wrap: wrap; gap: 4px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 18px; }
+            .cta-buttons { flex-direction: column; gap: 10px; }
+            .cta-buttons a { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div>&#128737; Official Government-Grade Fraud Intelligence Platform</div>
+            <div>
+                <a href="/victim">Report a Scam</a>
+                <a href="/scam-sites">Check a Website</a>
+                <a href="/police/login">Police Access</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container">
+            <div class="logo-block">
+                <div class="logo-seal">
+                    <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z" stroke="#c5a55a" stroke-width="2" fill="none"/><path d="M9 12l2 2 4-4" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="logo-text">
+                    <h1>GFIN</h1>
+                    <p>Global Fraud Intelligence Network</p>
+                </div>
+            </div>
+            <nav class="nav" id="mainNav">
+                <a href="/">Home</a>
+                <a href="/victim">Report a Scam</a>
+                <a href="/scam-sites">Scam Database</a>
+                <a href="/awareness" class="active">Awareness</a>
+                <a href="/about">About</a>
+                <a href="/police/login" class="btn-report">Police Login</a>
+            </nav>
+            <button class="mobile-menu-btn" onclick="document.getElementById('mainNav').classList.toggle('open'); event.stopPropagation();">&#9776;</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-badge">&#128218; 12 Scam Types Covered</div>
+            <h2 data-i18n="awareness_title">Scam <span class="gold">Awareness</span></h2>
+            <p data-i18n="awareness_desc">Knowledge is your first line of defense. Learn how scammers operate, recognize the red flags, and protect yourself and your loved ones from fraud.</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="eyebrow" data-i18n="awareness_eyebrow">Know the Signs</div>
+                <h3>12 Common Scam Types</h3>
+                <p>GFIN's Telegram bot broadcasts awareness messages every 6 hours, cycling through all 12 types. Here's what you need to watch for.</p>
+            </div>
+            <div class="scam-grid">
+                <!-- Recovery Scams -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128176;</div><h4 data-i18n="awareness_recovery">Recovery Scams</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Scammers contact victims who already lost money, claiming they can recover stolen funds for a fee.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Unsolicited "recovery" offers</li><li>Upfront fees required</li><li>Claims of inside connections</li><li>Guaranteed recovery promises</li></ul>
+                    </div>
+                </div>
+                <!-- Romance Scams -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128150;</div><h4 data-i18n="awareness_romance">Romance Scams</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Scammers build emotional relationships online, then fabricate emergencies requiring money transfers.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Refuses video calls</li><li>Quick profession of love</li><li>Overseas "emergency" requests</li><li>Asks for crypto or gift cards</li></ul>
+                    </div>
+                </div>
+                <!-- Investment Fraud -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128200;</div><h4 data-i18n="awareness_investment">Investment Fraud</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Fake trading platforms promise high returns with low risk. Initial small returns build trust before the big steal.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Guaranteed high returns</li><li>Pressure to invest quickly</li><li>Unregulated platforms</li><li>Can't withdraw funds</li></ul>
+                    </div>
+                </div>
+                <!-- Phishing -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128233;</div><h4 data-i18n="awareness_phishing">Phishing</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Fake emails, SMS, or websites impersonate trusted brands to steal login credentials and payment data.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Mismatched sender addresses</li><li>Urgent account threats</li><li>Suspicious links</li><li>Requests for passwords</li></ul>
+                    </div>
+                </div>
+                <!-- Impersonation -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#129488;</div><h4 data-i18n="awareness_impersonation">Impersonation</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Criminals pose as police, government officials, or bank staff to extract money or personal information.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Unexpected official contact</li><li>Demands for immediate payment</li><li>Threats of arrest</li><li>Asks to stay on the phone</li></ul>
+                    </div>
+                </div>
+                <!-- Crypto Fraud -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#129309;</div><h4 data-i18n="awareness_crypto">Crypto Fraud</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Fake ICOs, wallet drainers, airdrop scams, and rug pulls target cryptocurrency users.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Unsolicited token offers</li><li>"Connect wallet" prompts</li><li>No audited smart contract</li><li>Anonymous development team</li></ul>
+                    </div>
+                </div>
+                <!-- Tech Support -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128187;</div><h4 data-i18n="awareness_tech">Tech Support Scams</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Fake pop-ups claim your computer is infected. "Support agents" request remote access to steal data or install malware.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Unsolicited tech support calls</li><li>Pop-up virus warnings</li><li>Requests for remote access</li><li>Payment in gift cards</li></ul>
+                    </div>
+                </div>
+                <!-- Advance Fee -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128181;</div><h4 data-i18n="awareness_advance">Advance Fee Scams</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Victims pay upfront for loans, prizes, or services that never materialize. The fee keeps growing.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Upfront payment required</li><li>Loan without credit check</li><li>Fees on top of fees</li><li>Wire transfer requested</li></ul>
+                    </div>
+                </div>
+                <!-- Lottery Scams -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#127942;</div><h4>Lottery Scams</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Notifications claim you've won a lottery you never entered. Taxes or fees must be paid to "release" winnings.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>You didn't enter any lottery</li><li>Upfront tax/fee requests</li><li>Foreign lottery notifications</li><li>Requests for bank details</li></ul>
+                    </div>
+                </div>
+                <!-- Wire Fraud -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128230;</div><h4>Wire Fraud</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Business Email Compromise (BEC) attacks redirect wire transfers by impersonating executives or suppliers.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Last-minute payment changes</li><li>New bank account details</li><li>Urgent wire requests</li><li>Email address mismatches</li></ul>
+                    </div>
+                </div>
+                <!-- Social Media Hack -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128241;</div><h4>Social Media Hack</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Compromised accounts send malicious links to contacts, or scammers create fake profiles to defraud friends.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Unexpected links from friends</li><li>Requests for money/codes</li><li>Account "verification" scams</li><li>2FA bypass requests</li></ul>
+                    </div>
+                </div>
+                <!-- Job Scams -->
+                <div class="scam-card">
+                    <div class="scam-card-header"><div class="scam-icon">&#128188;</div><h4>Job Scams</h4></div>
+                    <div class="scam-card-body">
+                        <div class="how">Fake job listings require upfront payment for training, equipment, or background checks. Money laundering "work" is also common.</div>
+                        <div class="red-flags-title">Red Flags</div>
+                        <ul><li>Upfront payment required</li><li>No interview conducted</li><li>Receive/forward money requests</li><li>Too-good-to-be-true salary</li></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h3>Been Targeted? Report It.</h3>
+            <p>Every report helps GFIN route intelligence to the right authorities across 189 countries.</p>
+            <div class="cta-buttons">
+                <a href="/victim" class="primary">Report a Scam &#8594;</a>
+                <a href="/scam-sites" class="secondary">Check a Website</a>
+                <a href="https://t.me/GFINofficialbot" target="_blank" class="secondary">Telegram Bot</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <h4>&#128737; GFIN</h4>
+                    <p>Global Fraud Intelligence Network — connecting law enforcement across 189 countries to detect, investigate, and prevent financial fraud.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Platform</h5>
+                    <a href="/">Home</a>
+                    <a href="/victim">Report a Scam</a>
+                    <a href="/scam-sites">Scam Database</a>
+                    <a href="/awareness">Awareness</a>
+                    <a href="/about">About</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Legal</h5>
+                    <a href="/privacy">Privacy Policy</a>
+                    <a href="/terms">Terms of Use</a>
+                    <a href="/contact">Contact</a>
+                </div>
+                <div class="footer-col">
+                    <h5>Tools</h5>
+                    <a href="https://t.me/GFINofficialbot" target="_blank">Telegram Bot</a>
+                    <a href="/scam-sites">Check a Website</a>
+                    <a href="/police/login">Police Access</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div>&copy; 2026 Global Fraud Intelligence Network (GFIN). All rights reserved.</div>
+                <div>gfin-system.com</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    document.querySelectorAll('.nav a').forEach(a => a.addEventListener('click', () => document.getElementById('mainNav').classList.remove('open')));
+    </script>
+    <script src="/gfin-i18n.js"></script>
+</body>
+</html>

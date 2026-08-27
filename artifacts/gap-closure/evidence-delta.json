@@ -1,0 +1,32 @@
+{
+  "previous_evidence_count": 35,
+  "current_evidence_count": 37,
+  "delta": 2,
+  "new_evidence": [
+    {
+      "id": "EV036",
+      "source": "Nominatim (OpenStreetMap)",
+      "class": "GEOINT",
+      "finding": "27 Old Gloucester Street, London WC1N 3AX resolves to 51.5223\u00b0N, 0.1225\u00b0W \u2014 real building in Bloomsbury, London. British Monomarks virtual office confirmed via independent geospatial API.",
+      "provenance": "nominatim.openstreetmap.org/search?q=27+Old+Gloucester+Street+London",
+      "timestamp": "2026-08-26T16:23:45Z"
+    },
+    {
+      "id": "EV037",
+      "source": "Blockchain.info",
+      "class": "CRYPTO",
+      "finding": "Blockchain.info API accessible and functional. Genesis block address query successful. No SmartStar or Verdis Chain wallet addresses found via independent blockchain explorer \u2014 confirms previous Etherscan finding.",
+      "provenance": "blockchain.info/rawaddr/1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+      "timestamp": "2026-08-26T16:23:45Z"
+    }
+  ],
+  "corroborated_evidence": [
+    {
+      "id": "EV019",
+      "corroboration": "Etherscan finding (no Verdis wallet) now independently confirmed by Blockchain.info",
+      "note": "Two independent blockchain explorers agree: no wallet address for Verdis Chain"
+    }
+  ],
+  "changed_conclusions": 0,
+  "note": "No previous conclusions changed. GEOINT confirms the virtual office address is real (not fabricated). Blockchain cross-verification confirms no crypto wallet exists."
+}

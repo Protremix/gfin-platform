@@ -1,0 +1,48 @@
+{
+  "task": "TASK 11 \u2014 Financial / Payment Intelligence",
+  "generated": "2026-08-26T16:38:25Z",
+  "sources": [
+    {
+      "provider": "OpenSanctions",
+      "auth": "API_KEY (free)",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Sanctions, PEP, adverse entities"
+    },
+    {
+      "provider": "OFAC (US Treasury)",
+      "auth": "NONE",
+      "status": "IMPLEMENTED_TESTED",
+      "coverage": "SDN sanctions list"
+    },
+    {
+      "provider": "ComplyAdvantage",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "AML/sanctions/PEP/adverse media"
+    },
+    {
+      "provider": "Dow Jones R&C",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Sanctions, PEP, adverse media"
+    },
+    {
+      "provider": "LSEG World-Check",
+      "auth": "COMMERCIAL",
+      "status": "BLOCKED",
+      "coverage": "Sanctions, PEP, risk intelligence"
+    },
+    {
+      "provider": "PaymentIntelligenceConnector",
+      "auth": "API_KEY",
+      "status": "IMPLEMENTED_AUTH_REQUIRED",
+      "coverage": "Merchant intelligence, payment-provider intelligence"
+    }
+  ],
+  "private_financial_data": "AUTHORIZATION_GATED \u2014 banking data requires law enforcement authority or court order",
+  "summary": {
+    "implemented": 2,
+    "auth_required": 2,
+    "blocked": 3
+  }
+}

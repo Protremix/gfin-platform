@@ -1,6 +1,6 @@
 # GFIN — Open Issues
 
-**Last Updated:** 2026-08-25
+**Last Updated:** 2026-08-26
 **Status:** ACTIVE — All items explicitly tracked. None hidden.
 
 ---
@@ -354,3 +354,20 @@
 4. No technology is the final choice until evaluation complete
 5. All items remain visible in this document
 6. Development continues on modules that do not depend on unresolved issues
+
+---
+
+## OSINT Stack Evaluation — Open Issues
+
+| # | Issue | Priority | Status | Notes |
+|---|-------|----------|--------|-------|
+| OSINT-1 | MISP AGPL license — formal legal counsel required | HIGH | OPEN | API-use exemption verified from official FAQ, but formal legal opinion needed before production |
+| OSINT-2 | Cortex AGPL license — verify API-use exemption | HIGH | OPEN | Similar to MISP pattern but needs independent verification |
+| OSINT-3 | STIX extension definition — register x_gfin_* namespace | MEDIUM | OPEN | Custom properties need formal STIX 2.1 extension-definition registration |
+| OSINT-4 | TAXII server — select implementation | MEDIUM | OPEN | Options: OpenCTI embedded TAXII, OpenTAXII, or custom |
+| OSINT-5 | SpiderFoot maintenance risk — low activity since Nov 2023 | MEDIUM | OPEN | May need to maintain custom modules as APIs evolve |
+| OSINT-6 | Police federation — TAXII sharing agreements need legal review | HIGH | OPEN | Data sharing agreements with police/CTI organizations |
+| OSINT-7 | Splink AGPL — verify in-process use vs service use | LOW | OPEN | Only relevant if entity resolution library is adopted |
+| OSINT-8 | OpenCTI infrastructure overhead — heavy stack (ES+Redis+RabbitMQ+S3) | MEDIUM | OPEN | Evaluate if value justifies operational cost |
+| OSINT-9 | Source restriction tracking — per-provider API ToS compliance | MEDIUM | OPEN | Each external API has different ToS and rate limits |
+| OSINT-10 | Outbound sharing policy enforcement — classification + jurisdiction checks | HIGH | OPEN | Must never expose restricted police intelligence externally |

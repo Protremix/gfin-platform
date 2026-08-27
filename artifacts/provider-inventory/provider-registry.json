@@ -1,0 +1,1460 @@
+{
+  "version": "1.0",
+  "generated": "2026-08-26T16:28:09Z",
+  "total_providers": 72,
+  "tier_1": 25,
+  "tier_2": 27,
+  "tier_3": 7,
+  "status_breakdown": {
+    "IMPLEMENTED_LIVE_TESTED": 16,
+    "IMPLEMENTED_TESTED": 7,
+    "IMPLEMENTED_AUTH_REQUIRED": 20,
+    "UNAVAILABLE": 1,
+    "NOT_IMPLEMENTED": 26,
+    "BLOCKED": 1
+  },
+  "providers": [
+    {
+      "provider_id": "companies-house-uk",
+      "company": "Companies House",
+      "service": "UK Corporate Registry",
+      "category": "CORPORATE",
+      "jurisdictions": [
+        "UK"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "developer.company-information.service.gov.uk",
+      "api_url": "api.company-information.service.gov.uk",
+      "auth_method": "BASIC_AUTH",
+      "credential_type": "companies_house_api_key",
+      "license": "Free public data",
+      "rate_limit": "600 req/5min",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "opencorporates",
+      "company": "OpenCorporates",
+      "service": "Global Corporate Registry",
+      "category": "CORPORATE",
+      "jurisdictions": [
+        "Global (140+)"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "opencorporates.com",
+      "api_url": "api.opencorporates.com/v0.4",
+      "auth_method": "API_TOKEN",
+      "credential_type": "opencorporates_api_token",
+      "license": "Freemium",
+      "rate_limit": "500 req/month (free)",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "open-ownership",
+      "company": "Open Ownership",
+      "service": "Beneficial Ownership Data (BODS)",
+      "category": "CORPORATE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "register.openownership.org",
+      "api_url": "register.openownership.org",
+      "auth_method": "UNKNOWN",
+      "credential_type": "NONE",
+      "license": "Open data (CC-BY)",
+      "rate_limit": "Unknown",
+      "cost_model": "Free",
+      "connector_status": "BLOCKED_403",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "sec-edgar",
+      "company": "SEC",
+      "service": "EDGAR Filings",
+      "category": "CORPORATE",
+      "jurisdictions": [
+        "USA"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "sec.gov/edgar",
+      "api_url": "data.sec.gov",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Public data",
+      "rate_limit": "10 req/sec",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "eu-bris",
+      "company": "EU e-Justice",
+      "service": "EU Business Registers Interconnection",
+      "category": "CORPORATE",
+      "jurisdictions": [
+        "EU/EEA"
+      ],
+      "authority_level": "RESTRICTED",
+      "official_url": "e-justice.europa.eu",
+      "api_url": "e-justice.europa.eu",
+      "auth_method": "UNKNOWN",
+      "credential_type": "UNKNOWN",
+      "license": "EU public data",
+      "rate_limit": "Unknown",
+      "cost_model": "Free",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "bailii-uk",
+      "company": "BAILII",
+      "service": "UK/Irish Case Law",
+      "category": "COURTS_LEGAL",
+      "jurisdictions": [
+        "UK",
+        "Ireland"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "bailii.org",
+      "api_url": "bailii.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free (charity)",
+      "rate_limit": "Reasonable use",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "uk-tribunals",
+      "company": "UK Judiciary",
+      "service": "Tribunal Decisions",
+      "category": "COURTS_LEGAL",
+      "jurisdictions": [
+        "UK"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "judiciary.uk",
+      "api_url": "judiciary.uk/judgments",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free public",
+      "rate_limit": "None",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "pacer-usa",
+      "company": "US Courts",
+      "service": "PACER Case Locator",
+      "category": "COURTS_LEGAL",
+      "jurisdictions": [
+        "USA"
+      ],
+      "authority_level": "RESTRICTED",
+      "official_url": "pacer.uscourts.gov",
+      "api_url": "pacer.uscourts.gov",
+      "auth_method": "ACCOUNT",
+      "credential_type": "pacer_account",
+      "license": "Paid ($0.10/page)",
+      "rate_limit": "N/A",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "lexisnexis",
+      "company": "LexisNexis Risk Solutions",
+      "service": "Investigative Data + Link Analysis",
+      "category": "COURTS_LEGAL",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "risk.lexisnexis.com",
+      "api_url": "N/A (commercial)",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid (enterprise)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "thomson-reuters",
+      "company": "Thomson Reuters",
+      "service": "Legal/Risk/Fraud APIs",
+      "category": "COURTS_LEGAL",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "thomsonreuters.com",
+      "api_url": "N/A (commercial)",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid (enterprise)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "entity-resolver",
+      "company": "GFIN Internal",
+      "service": "Entity Resolution Engine",
+      "category": "IDENTITY",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "internal",
+      "api_url": "internal",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Internal",
+      "rate_limit": "N/A",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "sayari",
+      "company": "Sayari",
+      "service": "Global Corporate Networks",
+      "category": "IDENTITY",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "sayari.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "moodys-orbis",
+      "company": "Moody's",
+      "service": "Orbis Company Database",
+      "category": "IDENTITY",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "orbis.bvdinfo.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "dun-bradstreet",
+      "company": "Dun & Bradstreet",
+      "service": "Business Identity + Hierarchy",
+      "category": "IDENTITY",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "dnb.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "shodan",
+      "company": "Shodan",
+      "service": "Internet Host Intelligence",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "shodan.io",
+      "api_url": "api.shodan.io",
+      "auth_method": "API_KEY",
+      "credential_type": "shodan_api_key",
+      "license": "Freemium",
+      "rate_limit": "1 req/sec (free)",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "securitytrails",
+      "company": "SecurityTrails",
+      "service": "DNS/IP/WHOIS Intelligence",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "securitytrails.com",
+      "api_url": "api.securitytrails.com",
+      "auth_method": "API_KEY",
+      "credential_type": "dns_history_api_key",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "virustotal",
+      "company": "VirusTotal",
+      "service": "Domain/URL/IP/File Reputation",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "virustotal.com",
+      "api_url": "virustotal.com/api/v3",
+      "auth_method": "API_KEY",
+      "credential_type": "virustotal_api_key",
+      "license": "Freemium",
+      "rate_limit": "4 req/min (free)",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "censys",
+      "company": "Censys",
+      "service": "Host/Certificate Intelligence",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "censys.io",
+      "api_url": "search.censys.io/api/v2",
+      "auth_method": "API_KEY",
+      "credential_type": "censys_api_id",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "domaintools",
+      "company": "DomainTools",
+      "service": "Domain History + WHOIS Intelligence",
+      "category": "DNS_DOMAIN_CERTIFICATE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "domaintools.com",
+      "api_url": "api.domaintools.com",
+      "auth_method": "API_KEY",
+      "credential_type": "domaintools_api_key",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "greynoise",
+      "company": "GreyNoise",
+      "service": "IP Scanner Classification",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "greynoise.io",
+      "api_url": "api.greynoise.io",
+      "auth_method": "API_KEY",
+      "credential_type": "greynoise_api_key",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "recorded-future",
+      "company": "Recorded Future",
+      "service": "Threat Intelligence Feeds",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "recordedfuture.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "etherscan",
+      "company": "Etherscan",
+      "service": "Ethereum Explorer API",
+      "category": "BLOCKCHAIN_CRYPTO",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "etherscan.io",
+      "api_url": "api.etherscan.io",
+      "auth_method": "OPTIONAL_API_KEY",
+      "credential_type": "etherscan_api_key",
+      "license": "Freemium",
+      "rate_limit": "5 req/sec",
+      "cost_model": "Free tier",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "blockchain-info",
+      "company": "Blockchain.com",
+      "service": "Bitcoin Explorer API",
+      "category": "BLOCKCHAIN_CRYPTO",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "blockchain.info",
+      "api_url": "blockchain.info",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "blockchair",
+      "company": "Blockchair",
+      "service": "Multi-chain Explorer API",
+      "category": "BLOCKCHAIN_CRYPTO",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "blockchair.com",
+      "api_url": "api.blockchair.com",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Freemium",
+      "rate_limit": "30 req/min",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "chainalysis",
+      "company": "Chainalysis",
+      "service": "Blockchain Intelligence + Attribution",
+      "category": "BLOCKCHAIN_CRYPTO",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "chainalysis.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid (enterprise)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "trm-labs",
+      "company": "TRM Labs",
+      "service": "Wallet Screening + Transaction Tracing",
+      "category": "BLOCKCHAIN_CRYPTO",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "trmlabs.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "elliptic",
+      "company": "Elliptic",
+      "service": "Blockchain Analytics + Risk",
+      "category": "BLOCKCHAIN_CRYPTO",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "elliptic.co",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "ofac",
+      "company": "US Treasury OFAC",
+      "service": "SDN Sanctions List",
+      "category": "SANCTIONS_AML",
+      "jurisdictions": [
+        "USA"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "ofac.treasury.gov",
+      "api_url": "treasury.gov/ofac/downloads",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Public data",
+      "rate_limit": "N/A (bulk)",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "opensanctions",
+      "company": "OpenSanctions",
+      "service": "Global Sanctions + PEP Screening",
+      "category": "SANCTIONS_AML",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "opensanctions.org",
+      "api_url": "api.opensanctions.org",
+      "auth_method": "API_KEY",
+      "credential_type": "opensanctions_api_key",
+      "license": "Open data (CC-BY)",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "complyadvantage",
+      "company": "ComplyAdvantage",
+      "service": "AML/Sanctions/PEP/Adverse Media",
+      "category": "SANCTIONS_AML",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "complyadvantage.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "dow-jones-risk",
+      "company": "Dow Jones",
+      "service": "Risk & Compliance (PEP/sanctions)",
+      "category": "SANCTIONS_AML",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "dowjones.com/risk",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "lseg-worldcheck",
+      "company": "LSEG",
+      "service": "World-Check Risk Intelligence",
+      "category": "SANCTIONS_AML",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "lseg.com/world-check",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "icij-offshore",
+      "company": "ICIJ",
+      "service": "Offshore Leaks Database",
+      "category": "OFFSHORE_BENEFICIAL_OWNERSHIP",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "offshoreleaks.icij.org",
+      "api_url": "offshoreleaks.icij.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free public",
+      "rate_limit": "Reasonable use",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "osm-nominatim",
+      "company": "OpenStreetMap",
+      "service": "Nominatim Geocoding",
+      "category": "GEOINT",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "nominatim.openstreetmap.org",
+      "api_url": "nominatim.openstreetmap.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "ODbL",
+      "rate_limit": "1 req/sec",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "mapbox",
+      "company": "Mapbox",
+      "service": "Geocoding + Maps + Location",
+      "category": "GEOINT",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "mapbox.com",
+      "api_url": "api.mapbox.com",
+      "auth_method": "API_KEY",
+      "credential_type": "mapbox_access_token",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier (50K req/mo)",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "planet",
+      "company": "Planet Labs",
+      "service": "Satellite Imagery",
+      "category": "GEOINT",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "planet.com",
+      "api_url": "api.planet.com",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "planet_api_key",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "maxar",
+      "company": "Maxar",
+      "service": "High-res Satellite Imagery",
+      "category": "GEOINT",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "maxar.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "N/A",
+      "cost_model": "Paid (enterprise)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "sentinel-copernicus",
+      "company": "EU Copernicus",
+      "service": "Earth Observation Data",
+      "category": "GEOINT",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "copernicus.eu",
+      "api_url": "scihub.copernicus.eu",
+      "auth_method": "ACCOUNT",
+      "credential_type": "copernicus_account",
+      "license": "Free (EU program)",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "github",
+      "company": "GitHub",
+      "service": "Code Repository API",
+      "category": "SOCIAL_PLATFORM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "api.github.com",
+      "api_url": "api.github.com",
+      "auth_method": "OPTIONAL_TOKEN",
+      "credential_type": "github_token",
+      "license": "Freemium",
+      "rate_limit": "60/hr (free), 5000 (auth)",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "gitlab",
+      "company": "GitLab",
+      "service": "Code Repository API",
+      "category": "SOCIAL_PLATFORM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "gitlab.com",
+      "api_url": "gitlab.com/api/v4",
+      "auth_method": "OPTIONAL_TOKEN",
+      "credential_type": "gitlab_token",
+      "license": "Freemium",
+      "rate_limit": "60/min (free)",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "meta",
+      "company": "Meta",
+      "service": "Facebook + Instagram + Ad Library",
+      "category": "SOCIAL_PLATFORM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "developers.facebook.com",
+      "api_url": "graph.facebook.com",
+      "auth_method": "OAUTH",
+      "credential_type": "facebook_access_token",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Free (with app review)",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "twitter-x",
+      "company": "X (Twitter)",
+      "service": "Social Platform API",
+      "category": "SOCIAL_PLATFORM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "developer.x.com",
+      "api_url": "api.x.com",
+      "auth_method": "OAUTH",
+      "credential_type": "twitter_bearer_token",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid (Basic $100/mo+)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "linkedin",
+      "company": "LinkedIn",
+      "service": "Professional Network API",
+      "category": "SOCIAL_PLATFORM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "developer.linkedin.com",
+      "api_url": "api.linkedin.com",
+      "auth_method": "OAUTH",
+      "credential_type": "linkedin_access_token",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Free (limited) + paid",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "apple-itunes",
+      "company": "Apple",
+      "service": "iTunes Search + App Store Lookup",
+      "category": "APP_SOFTWARE_ECOSYSTEM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "apple.com/itunes",
+      "api_url": "itunes.apple.com",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "~20 req/min",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "npm",
+      "company": "npm (GitHub)",
+      "service": "Package Registry",
+      "category": "APP_SOFTWARE_ECOSYSTEM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "npmjs.com",
+      "api_url": "registry.npmjs.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "pypi",
+      "company": "Python Software Foundation",
+      "service": "PyPI Package Registry",
+      "category": "APP_SOFTWARE_ECOSYSTEM",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "pypi.org",
+      "api_url": "pypi.org/pypi",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "icann-rdap",
+      "company": "ICANN",
+      "service": "RDAP Domain Registration",
+      "category": "DNS_DOMAIN_CERTIFICATE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "rdap.org",
+      "api_url": "rdap.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "crt-sh",
+      "company": "Sectigo",
+      "service": "Certificate Transparency Search",
+      "category": "DNS_DOMAIN_CERTIFICATE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "crt.sh",
+      "api_url": "crt.sh",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "UNAVAILABLE_502",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "wayback-cdx",
+      "company": "Internet Archive",
+      "service": "Wayback Machine CDX API",
+      "category": "HISTORICAL",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "web.archive.org",
+      "api_url": "web.archive.org/cdx",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "gdelt",
+      "company": "GDELT Project",
+      "service": "Global Events/News Data",
+      "category": "PUBLIC_DATA_NEWS",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "gdeltproject.org",
+      "api_url": "api.gdeltproject.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free (open access)",
+      "rate_limit": "None documented",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "crossref",
+      "company": "Crossref",
+      "service": "Publication Metadata",
+      "category": "PUBLIC_DATA_NEWS",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "crossref.org",
+      "api_url": "api.crossref.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free",
+      "rate_limit": "50 req/sec",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "openalex",
+      "company": "OpenAlex",
+      "service": "Academic Research Metadata",
+      "category": "PUBLIC_DATA_NEWS",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "openalex.org",
+      "api_url": "api.openalex.org",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Free (CC-BY)",
+      "rate_limit": "100K/day",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "numverify",
+      "company": "Numverify (apilayer)",
+      "service": "Phone Validation + Carrier",
+      "category": "PHONE_EMAIL",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "apilayer.com",
+      "api_url": "api.apilayer.com/number_verification",
+      "auth_method": "API_KEY",
+      "credential_type": "numverify_api_key",
+      "license": "Freemium",
+      "rate_limit": "100 req/month (free)",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "twilio-lookup",
+      "company": "Twilio",
+      "service": "Phone Number Lookup",
+      "category": "PHONE_EMAIL",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "twilio.com",
+      "api_url": "lookups.twilio.com",
+      "auth_method": "API_KEY",
+      "credential_type": "twilio_credentials",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid ($0.005/lookup)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "maltego",
+      "company": "Maltego",
+      "service": "Link Analysis Platform",
+      "category": "SPECIALIZED_INVESTIGATIVE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "maltego.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "N/A",
+      "cost_model": "Paid (CE free, Pro paid)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "babel-street",
+      "company": "Babel Street",
+      "service": "OSINT Platform",
+      "category": "SPECIALIZED_INVESTIGATIVE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "babelstreet.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "N/A",
+      "cost_model": "Paid (enterprise)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "palantir",
+      "company": "Palantir",
+      "service": "Data Integration + Analysis",
+      "category": "SPECIALIZED_INVESTIGATIVE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "palantir.com",
+      "api_url": "N/A",
+      "auth_method": "COMMERCIAL",
+      "credential_type": "commercial_license",
+      "license": "Commercial",
+      "rate_limit": "N/A",
+      "cost_model": "Paid (enterprise)",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "interpol",
+      "company": "INTERPOL",
+      "service": "I-24/7 Criminal Databases",
+      "category": "LAW_ENFORCEMENT",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "RESTRICTED",
+      "official_url": "interpol.int",
+      "api_url": "N/A",
+      "auth_method": "LAW_ENFORCEMENT",
+      "credential_type": "national_le_authority",
+      "license": "Restricted",
+      "rate_limit": "N/A",
+      "cost_model": "N/A",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "europol",
+      "company": "Europol",
+      "service": "Authorized Information Exchange",
+      "category": "LAW_ENFORCEMENT",
+      "jurisdictions": [
+        "EU"
+      ],
+      "authority_level": "RESTRICTED",
+      "official_url": "europol.europa.eu",
+      "api_url": "N/A",
+      "auth_method": "LAW_ENFORCEMENT",
+      "credential_type": "national_le_authority",
+      "license": "Restricted",
+      "rate_limit": "N/A",
+      "cost_model": "N/A",
+      "connector_status": "NOT_IMPLEMENTED",
+      "tier": 3,
+      "last_verified": "2026-08-26T16:28:09Z"
+    },
+    {
+      "provider_id": "telegram-public",
+      "company": "Telegram",
+      "service": "Public Channel Search (t.me)",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "t.me",
+      "api_url": "t.me/s",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "Public content",
+      "rate_limit": "Reasonable use",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "telegram-bot",
+      "company": "Telegram",
+      "service": "Bot API (getChat, etc.)",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "core.telegram.org/bots",
+      "api_url": "api.telegram.org",
+      "auth_method": "BOT_TOKEN",
+      "credential_type": "telegram_bot_token",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "reddit",
+      "company": "Reddit",
+      "service": "Social Platform Search",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "reddit.com",
+      "api_url": "reddit.com",
+      "auth_method": "OAUTH_REQUIRED",
+      "credential_type": "reddit_token",
+      "license": "Free",
+      "rate_limit": "60 req/min",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "mastodon",
+      "company": "Mastodon",
+      "service": "Federated Social Search",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC",
+      "official_url": "joinmastodon.org",
+      "api_url": "mastodon.social/api/v2",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "AGPLv3",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "vk",
+      "company": "VKontakte",
+      "service": "Russian Social Network API",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Russia",
+        "CIS"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "vk.com",
+      "api_url": "api.vk.com",
+      "auth_method": "API_KEY",
+      "credential_type": "vk_access_token",
+      "license": "Free",
+      "rate_limit": "3 req/sec",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "discord",
+      "company": "Discord",
+      "service": "Server + User API",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "discord.com",
+      "api_url": "discord.com/api/v10",
+      "auth_method": "BOT_TOKEN",
+      "credential_type": "discord_bot_token",
+      "license": "Free",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "hibp",
+      "company": "HaveIBeenPwned",
+      "service": "Breach Intelligence",
+      "category": "BREACH_INTELLIGENCE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "haveibeenpwned.com",
+      "api_url": "haveibeenpwned.com/api/v3",
+      "auth_method": "API_KEY",
+      "credential_type": "hibp_api_key",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "urlscan",
+      "company": "urlscan.io",
+      "service": "URL Scanner",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "urlscan.io",
+      "api_url": "urlscan.io/api/v1",
+      "auth_method": "OPTIONAL_API_KEY",
+      "credential_type": "urlscan_api_key",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "threatfox",
+      "company": "abuse.ch",
+      "service": "ThreatFox IOC Database",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "threatfox.abuse.ch",
+      "api_url": "threatfox-api.abuse.ch",
+      "auth_method": "API_KEY",
+      "credential_type": "threatfox_api_key",
+      "license": "Free (CC0)",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "urlhaus",
+      "company": "abuse.ch",
+      "service": "URLHaus Malicious URLs",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "urlhaus.abuse.ch",
+      "api_url": "urlhaus-api.abuse.ch",
+      "auth_method": "API_KEY",
+      "credential_type": "urlhaus_api_key",
+      "license": "Free (CC0)",
+      "rate_limit": "Varies",
+      "cost_model": "Free",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 1,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "pulsedive",
+      "company": "Pulsedive",
+      "service": "Threat Intelligence",
+      "category": "THREAT_INTERNET_INFRASTRUCTURE",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "PUBLIC_API",
+      "official_url": "pulsedive.com",
+      "api_url": "pulsedive.com/api",
+      "auth_method": "OPTIONAL_API_KEY",
+      "credential_type": "pulsedive_api_key",
+      "license": "Freemium",
+      "rate_limit": "Varies",
+      "cost_model": "Free tier + paid",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "whatsapp",
+      "company": "WhatsApp",
+      "service": "Invite Link Verification (LIMITED)",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LIMITED",
+      "official_url": "whatsapp.com",
+      "api_url": "chat.whatsapp.com",
+      "auth_method": "NONE",
+      "credential_type": "NONE",
+      "license": "N/A (E2E encrypted)",
+      "rate_limit": "N/A",
+      "cost_model": "N/A",
+      "connector_status": "IMPLEMENTED_LIMITED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:35:05Z"
+    },
+    {
+      "provider_id": "twitter-x-social",
+      "company": "X (Twitter)",
+      "service": "Tweet/User Search",
+      "category": "SOCIAL_MESSAGING",
+      "jurisdictions": [
+        "Global"
+      ],
+      "authority_level": "LICENSED",
+      "official_url": "x.com",
+      "api_url": "api.twitter.com/2",
+      "auth_method": "BEARER_TOKEN",
+      "credential_type": "twitter_bearer_token",
+      "license": "Commercial",
+      "rate_limit": "Varies",
+      "cost_model": "Paid ($100/mo+)",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "tier": 2,
+      "last_verified": "2026-08-26T16:35:05Z"
+    }
+  ]
+}

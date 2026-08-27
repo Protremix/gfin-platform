@@ -1,0 +1,40 @@
+{
+  "uk_entity_apps": "NONE \u2014 UK SmartStar Technology Ltd has no apps",
+  "nz_entity_apps": [
+    {
+      "app": "Smartjobs App",
+      "platform": "Apple + Google Play",
+      "bundle": "nz.smartstar.smartjobs.app",
+      "seller": "SmartStar Technology Ltd.",
+      "seller_url": "https://smartjobs.io",
+      "version": "4.2.8",
+      "release": "2026-02-23",
+      "price": "Free",
+      "genres": [
+        "Business",
+        "Productivity"
+      ],
+      "downloads_google_play": 530,
+      "ratings": 0,
+      "description": "Manage jobs, sign-in/out, health & safety, time clock",
+      "source": "Apple iTunes API + Google Play (direct)"
+    },
+    {
+      "app": "SmartJobs Reception",
+      "platform": "Apple",
+      "bundle": "org.reactjs.native.example.SJReceptionApp",
+      "seller": "SmartStar Technology Ltd.",
+      "release": "2026-01-06",
+      "source": "Apple iTunes Search API"
+    },
+    {
+      "app": "Smartjobs Arcade",
+      "platform": "Apple",
+      "bundle": "com.smartjobs.arcade",
+      "seller": "SmartStar Technology Ltd.",
+      "release": "2026-04-15",
+      "source": "Apple iTunes Search API"
+    }
+  ],
+  "note": "3 apps published by SmartStar Technology Ltd (NZ entity). UK entity had no apps. Bundle ID prefix 'nz.smartstar' confirms NZ origin. All discovered via non-Google APIs."
+}

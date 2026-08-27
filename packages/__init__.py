@@ -9,3 +9,11 @@ Structure:
     - observability/ — Logging, metrics, tracing interfaces
     - auth/ — Authentication and authorization interfaces
 """
+
+__version__ = "0.1.0"
+
+__all__ = [
+    "auth",
+    "common",
+    "schemas",
+]

@@ -1,0 +1,123 @@
+{
+  "case_id": "CASE-SMARTSTAR-001",
+  "nodes": [
+    {
+      "id": "ENT-001",
+      "type": "company",
+      "label": "SmartStar Technology Ltd (UK)",
+      "status": "DISSOLVED"
+    },
+    {
+      "id": "ENT-002",
+      "type": "company",
+      "label": "SmartStar Technology Limited (NZ)",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "ENT-003",
+      "type": "company",
+      "label": "SmartStar Technology Pte. Ltd. (SG)",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "PER-001",
+      "type": "person",
+      "label": "Rojs Gordons",
+      "role": "Director (UK)"
+    },
+    {
+      "id": "PER-002",
+      "type": "person",
+      "label": "Rex Huang",
+      "role": "Managing Director (NZ)"
+    },
+    {
+      "id": "PER-003",
+      "type": "person",
+      "label": "Nidal Ahmad",
+      "role": "Secretary (UK, resigned)"
+    },
+    {
+      "id": "PER-004",
+      "type": "person",
+      "label": "Ola Saber Alkaddour",
+      "role": "Secretary (UK, resigned)"
+    },
+    {
+      "id": "DOM-001",
+      "type": "domain",
+      "label": "smartjobs.io"
+    },
+    {
+      "id": "DOM-002",
+      "type": "domain",
+      "label": "smartjobs.co.nz"
+    },
+    {
+      "id": "DOM-003",
+      "type": "domain",
+      "label": "smartstar.co.nz"
+    },
+    {
+      "id": "DOM-004",
+      "type": "domain",
+      "label": "smartstar.sg"
+    },
+    {
+      "id": "APP-001",
+      "type": "app",
+      "label": "SmartJobs App (Google Play/Apple)"
+    }
+  ],
+  "edges": [
+    {
+      "from": "PER-001",
+      "to": "ENT-001",
+      "type": "director_of"
+    },
+    {
+      "from": "PER-002",
+      "to": "ENT-002",
+      "type": "managing_director_of"
+    },
+    {
+      "from": "PER-003",
+      "to": "ENT-001",
+      "type": "secretary_of"
+    },
+    {
+      "from": "PER-004",
+      "to": "ENT-001",
+      "type": "secretary_of"
+    },
+    {
+      "from": "ENT-002",
+      "to": "DOM-001",
+      "type": "operates"
+    },
+    {
+      "from": "ENT-002",
+      "to": "DOM-002",
+      "type": "operates"
+    },
+    {
+      "from": "ENT-002",
+      "to": "DOM-003",
+      "type": "owns"
+    },
+    {
+      "from": "ENT-003",
+      "to": "DOM-004",
+      "type": "operates"
+    },
+    {
+      "from": "ENT-002",
+      "to": "APP-001",
+      "type": "developer_of"
+    }
+  ],
+  "relationships_note": "NO relationship found between UK entity (ENT-001) and NZ entity (ENT-002) beyond name similarity. NO relationship found between UK entity and Singapore entity (ENT-003).",
+  "total_nodes": 12,
+  "total_edges": 9,
+  "timestamp": "2026-08-26T15:18:43.772009+00:00"
+}

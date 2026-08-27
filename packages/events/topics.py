@@ -5,10 +5,10 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 
-class EventTopic(str, Enum):
+class EventTopic(StrEnum):
     """Kafka/event bus topics per Master Spec §9."""
 
     ENTITY_CREATED = "entity.created"

@@ -1,0 +1,15 @@
+{
+  "case_id": "CASE-REAL-001",
+  "status": "PARTIALLY VERIFIED",
+  "findings": {
+    "wallet_address": "NOT OBTAINED \u2014 victims reported being asked to send crypto to wallet addresses provided by scammers, but no specific wallet address was found in public sources",
+    "blockchain_analysis": "NOT POSSIBLE without wallet address",
+    "transaction_tracing": "BLOCKED \u2014 no wallet address available",
+    "evidence": "Reddit victim report mentions being told to send crypto to a 'Regulator's wallet address' (E-015)"
+  },
+  "limitations": [
+    "No public blockchain wallet address found for the CNC Intelligence impersonators specifically",
+    "The FBI seized Payback LTD websites, which may have involved wallet addresses, but these are not publicly available",
+    "Without a wallet address, blockchain analysis cannot be performed"
+  ]
+}

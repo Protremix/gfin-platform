@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 
-class DataClassification(str, Enum):
+class DataClassification(StrEnum):
     """Data classification levels per Constitution Article XX."""
 
     PUBLIC = "PUBLIC"
@@ -15,7 +15,7 @@ class DataClassification(str, Enum):
     HIGHLY_RESTRICTED = "HIGHLY_RESTRICTED"
 
 
-class EntityType(str, Enum):
+class EntityType(StrEnum):
     """Core entity types per Master Spec §5."""
 
     PERSON = "PERSON"
@@ -49,7 +49,7 @@ class EntityType(str, Enum):
     COUNTRY = "COUNTRY"
 
 
-class RelationshipType(str, Enum):
+class RelationshipType(StrEnum):
     """Relationship types per Master Spec §6."""
 
     OWNS = "OWNS"
@@ -73,7 +73,7 @@ class RelationshipType(str, Enum):
     MONITORED_BY = "MONITORED_BY"
 
 
-class ReportStatus(str, Enum):
+class ReportStatus(StrEnum):
     """Report states per Master Spec §18."""
 
     UNVERIFIED = "UNVERIFIED"
@@ -85,7 +85,7 @@ class ReportStatus(str, Enum):
     OFFICIALLY_ESTABLISHED = "OFFICIALLY_ESTABLISHED"
 
 
-class RiskLevel(str, Enum):
+class RiskLevel(StrEnum):
     """Risk levels per Master Spec §21."""
 
     UNKNOWN = "UNKNOWN"
@@ -95,7 +95,7 @@ class RiskLevel(str, Enum):
     CRITICAL = "CRITICAL"
 
 
-class AlertPriority(str, Enum):
+class AlertPriority(StrEnum):
     """Alert priorities per Master Spec §24."""
 
     P0_CRITICAL = "P0"
@@ -104,7 +104,7 @@ class AlertPriority(str, Enum):
     P3_INFORMATIONAL = "P3"
 
 
-class ModuleStatus(str, Enum):
+class ModuleStatus(StrEnum):
     """Module states per Constitution Article XLI."""
 
     NOT_STARTED = "NOT_STARTED"
@@ -116,7 +116,7 @@ class ModuleStatus(str, Enum):
     DEPRECATED = "DEPRECATED"
 
 
-class UserRole(str, Enum):
+class UserRole(StrEnum):
     """User roles per Master Spec §3."""
 
     CITIZEN = "CITIZEN"
@@ -125,7 +125,7 @@ class UserRole(str, Enum):
     ADMINISTRATOR = "ADMINISTRATOR"
 
 
-class Confidence(str, Enum):
+class Confidence(StrEnum):
     """Confidence levels for observations and claims."""
 
     LOW = "LOW"
@@ -134,7 +134,7 @@ class Confidence(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
-class SourceReliability(str, Enum):
+class SourceReliability(StrEnum):
     """Source reliability assessment per Source Policy."""
 
     HIGH = "HIGH"

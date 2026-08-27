@@ -9,13 +9,13 @@ Layer B: Automated CI/CD evaluation pipeline (REQUIRES EXTERNAL INFRASTRUCTURE)
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class EvalMetricType(str, Enum):
+class EvalMetricType(StrEnum):
     ACCURACY = "ACCURACY"
     PRECISION = "PRECISION"
     RECALL = "RECALL"
@@ -25,7 +25,7 @@ class EvalMetricType(str, Enum):
     FALSE_POSITIVE_RATE = "FALSE_POSITIVE_RATE"
 
 
-class EvalStatus(str, Enum):
+class EvalStatus(StrEnum):
     PENDING = "PENDING"
     RUNNING = "RUNNING"
     COMPLETED = "COMPLETED"

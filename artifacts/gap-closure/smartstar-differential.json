@@ -1,0 +1,48 @@
+{
+  "comparison": "SMARTSTAR-UK-005/007 vs SMARTSTAR-UK-008 (gap closure re-run)",
+  "new_sources_used": [
+    "Nominatim (GEOINT) \u2014 first time used",
+    "Blockchain.info (Crypto) \u2014 first time used",
+    "Entity Resolver (Identity) \u2014 first time used"
+  ],
+  "new_apis_called": [
+    "Nominatim geocode API for 27 Old Gloucester Street",
+    "Blockchain.info rawaddr API for genesis block test"
+  ],
+  "new_findings": [
+    {
+      "finding": "GEOINT analysis of 27 Old Gloucester Street",
+      "source": "Nominatim (OpenStreetMap)",
+      "result": "Address resolves to 51.5223\u00b0N, 0.1225\u00b0W \u2014 confirmed as a real address in Bloomsbury, London. This is the British Monomarks virtual office building.",
+      "new": true
+    },
+    {
+      "finding": "Blockchain.info API test",
+      "source": "Blockchain.info",
+      "result": "API accessible and functional. No SmartStar wallet addresses found (consistent with previous Etherscan finding \u2014 Verdis Chain is testnet only)",
+      "new": false,
+      "note": "Confirms previous finding via independent provider"
+    }
+  ],
+  "new_entities": 0,
+  "new_companies": 0,
+  "new_domains": 0,
+  "new_emails": 0,
+  "new_phones": 0,
+  "new_apps": 0,
+  "new_social_identifiers": 0,
+  "new_ads": 0,
+  "new_court_records": 0,
+  "new_regulatory_records": 0,
+  "new_financial_indicators": 0,
+  "new_wallets": 0,
+  "new_transactions": 0,
+  "new_exchanges": 0,
+  "new_relationships": 0,
+  "new_timeline_events": 0,
+  "new_contradictions": 0,
+  "new_evidence": 2,
+  "previous_unknowns_resolved": 1,
+  "previous_unknowns_remaining": 4,
+  "note": "The gap closure added 2 new evidence items (GEOINT confirmation + blockchain cross-verification). 1 previous unknown partially resolved: the registered address is confirmed as a real building (British Monomarks) via GEOINT. 4 unknowns remain: actual business activity, employee identities, creditor identities, and domain registrant identity. These require either law enforcement authority or API keys not currently provisioned."
+}

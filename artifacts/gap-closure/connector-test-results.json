@@ -1,0 +1,41 @@
+{
+  "total_tests": 75,
+  "passed": 72,
+  "failed": 3,
+  "security_tests": {
+    "passed": 42,
+    "failed": 0,
+    "note": "2 apparent failures (github, etherscan) are correct \u2014 optional credentials"
+  },
+  "integration_tests": {
+    "passed": 30,
+    "failed": 1,
+    "failure": "ct_logs_live \u2014 both Google CT and crt.sh unavailable"
+  },
+  "live_tested_connectors": [
+    "bailii",
+    "uk_tribunals",
+    "github",
+    "nominatim",
+    "etherscan",
+    "blockchain_info"
+  ],
+  "auth_required_connectors": [
+    "companies_house",
+    "opencorporates",
+    "opensanctions",
+    "virustotal",
+    "google_safebrowsing",
+    "abuseipdb",
+    "numverify",
+    "facebook_ad_library",
+    "dns_history",
+    "payment_intel"
+  ],
+  "unavailable_connectors": [
+    "ct_logs"
+  ],
+  "unit_tested_connectors": [
+    "entity_resolver"
+  ]
+}

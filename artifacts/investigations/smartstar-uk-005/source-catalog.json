@@ -1,0 +1,133 @@
+{
+  "source_classes_available": 14,
+  "source_classes_tested": 14,
+  "catalog": [
+    {
+      "class": "CORPORATE",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "Companies House UK (web)",
+        "Companies House API (auth required)",
+        "Open Corporates (auth required)"
+      ],
+      "result": "SUCCESS via web. AUTH_REQUIRED for API."
+    },
+    {
+      "class": "GOVERNMENT",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "FCA Register (403)",
+        "UK Insolvency Service (404)",
+        "UK Gazette (404)"
+      ],
+      "result": "SOURCE_UNAVAILABLE for most government APIs."
+    },
+    {
+      "class": "COURTS_LEGAL",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no court record API connector available"
+    },
+    {
+      "class": "INFRASTRUCTURE",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "Google DoH",
+        "Cloudflare DoH",
+        "RDAP (rdap.org)",
+        "Verisign RDAP",
+        "crt.sh (unavailable)"
+      ],
+      "result": "SUCCESS \u2014 12 domains tested, 4 resolved, RDAP data retrieved"
+    },
+    {
+      "class": "HISTORICAL",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "Wayback Machine CDX API"
+      ],
+      "result": "SUCCESS \u2014 10 captures for smartstar.co.uk"
+    },
+    {
+      "class": "DIGITAL_IDENTITY",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "DNS TXT records",
+        "RDAP registrant data"
+      ],
+      "result": "PARTIAL \u2014 email/phone intelligence not available without paid providers"
+    },
+    {
+      "class": "SOCIAL_MESSAGING",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no social platform API connectors available"
+    },
+    {
+      "class": "ADVERTISING",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no ad library API connectors available"
+    },
+    {
+      "class": "APPLICATIONS",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "Apple iTunes Search API",
+        "Google Play Store (direct URL)"
+      ],
+      "result": "SUCCESS \u2014 3 SmartStar apps found via iTunes API"
+    },
+    {
+      "class": "SECURITY_THREAT",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no threat intelligence API connectors available"
+    },
+    {
+      "class": "FINANCIAL_PAYMENTS",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no financial API connectors available. AUTHORIZATION_REQUIRED."
+    },
+    {
+      "class": "CRYPTO",
+      "available": true,
+      "tested": true,
+      "providers": [
+        "Etherscan API"
+      ],
+      "result": "SUCCESS (API accessible) but NO_DATA \u2014 Verdis Chain is testnet only"
+    },
+    {
+      "class": "GEOINT",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no GEOINT API connectors available"
+    },
+    {
+      "class": "LICENSED_INTELLIGENCE",
+      "available": false,
+      "tested": false,
+      "providers": [],
+      "result": "NOT_IMPLEMENTED \u2014 no licensed intelligence provider connectors available"
+    }
+  ],
+  "classes_available": 14,
+  "classes_tested": 8,
+  "classes_not_implemented": 6,
+  "classes_auth_required": 2,
+  "classes_unavailable": 2
+}

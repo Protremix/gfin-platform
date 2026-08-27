@@ -209,7 +209,7 @@ class TestToolRegistry:
 class TestInvestigationTool:
     def test_validate_params_success(self):
         tool = DomainLookupTool()
-        valid, msg = tool.validate_params({"domain": "example.com"})
+        valid, _msg = tool.validate_params({"domain": "example.com"})
         assert valid is True
 
     def test_validate_params_missing(self):

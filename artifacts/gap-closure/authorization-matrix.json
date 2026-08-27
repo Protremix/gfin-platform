@@ -1,0 +1,97 @@
+{
+  "matrix": [
+    {
+      "connector": "bailii",
+      "access": "PUBLIC",
+      "status": "LIVE_TESTED"
+    },
+    {
+      "connector": "uk_tribunals",
+      "access": "PUBLIC",
+      "status": "LIVE_TESTED"
+    },
+    {
+      "connector": "github",
+      "access": "PUBLIC (optional token)",
+      "status": "LIVE_TESTED"
+    },
+    {
+      "connector": "nominatim",
+      "access": "PUBLIC",
+      "status": "LIVE_TESTED"
+    },
+    {
+      "connector": "etherscan",
+      "access": "PUBLIC (optional key)",
+      "status": "LIVE_TESTED"
+    },
+    {
+      "connector": "blockchain_info",
+      "access": "PUBLIC",
+      "status": "LIVE_TESTED"
+    },
+    {
+      "connector": "entity_resolver",
+      "access": "PUBLIC",
+      "status": "UNIT_TESTED"
+    },
+    {
+      "connector": "companies_house",
+      "access": "AUTH_REQUIRED (free API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "opencorporates",
+      "access": "AUTH_REQUIRED (free token)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "opensanctions",
+      "access": "AUTH_REQUIRED (API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "virustotal",
+      "access": "AUTH_REQUIRED (API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "google_safebrowsing",
+      "access": "AUTH_REQUIRED (API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "abuseipdb",
+      "access": "AUTH_REQUIRED (API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "numverify",
+      "access": "AUTH_REQUIRED (API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "facebook_ad_library",
+      "access": "AUTH_REQUIRED (OAuth + app review)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "dns_history",
+      "access": "AUTH_REQUIRED (API key)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "payment_intel",
+      "access": "AUTH_REQUIRED (varies)",
+      "status": "CONNECTOR_READY"
+    },
+    {
+      "connector": "ct_logs",
+      "access": "UNAVAILABLE",
+      "status": "UNAVAILABLE"
+    }
+  ],
+  "live_tested": 6,
+  "connector_ready_auth_required": 11,
+  "unavailable": 1
+}

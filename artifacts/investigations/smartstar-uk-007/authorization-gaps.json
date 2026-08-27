@@ -1,0 +1,89 @@
+{
+  "gaps": [
+    {
+      "gap": "Bank account details for UK company 14511663",
+      "holder": "Unknown UK bank",
+      "legal_authority": "POCA 2002 s.363 (production order) or PACE 1984 s.9 (search warrant)",
+      "access_route": "Court order or police warrant",
+      "expected_evidence": "Bank statements, transactions, source of funds",
+      "status": "AUTHORIZATION_REQUIRED"
+    },
+    {
+      "gap": "Payment processor identification",
+      "holder": "Unknown",
+      "legal_authority": "Subpoena or production order",
+      "access_route": "Court order",
+      "expected_evidence": "Payment volumes, customer transactions",
+      "status": "AUTHORIZATION_REQUIRED"
+    },
+    {
+      "gap": "Credit reference data",
+      "holder": "Experian/Equifax/TransUnion",
+      "legal_authority": "DPA 2018 (subject access) or authorized investigation",
+      "access_route": "Company consent (impossible \u2014 dissolved) or investigation authority",
+      "expected_evidence": "Credit history, financial associations",
+      "status": "AUTHORIZATION_REQUIRED"
+    },
+    {
+      "gap": "Sanctions/watchlist screening",
+      "holder": "OpenSanctions",
+      "legal_authority": "N/A (commercial API)",
+      "access_route": "API key registration",
+      "expected_evidence": "Sanctions matches, watchlist entries",
+      "status": "AUTHORIZATION_REQUIRED (API key)"
+    },
+    {
+      "gap": "Threat intelligence for domains",
+      "holder": "VirusTotal",
+      "legal_authority": "N/A (commercial API)",
+      "access_route": "API key registration",
+      "expected_evidence": "Domain reputation, malware associations",
+      "status": "AUTHORIZATION_REQUIRED (API key)"
+    },
+    {
+      "gap": "Certificate transparency for domains",
+      "holder": "crt.sh (Sectigo)",
+      "legal_authority": "N/A (public)",
+      "access_route": "HTTPS API (was 502)",
+      "expected_evidence": "TLS certificates, SANs, subdomains",
+      "status": "SOURCE_UNAVAILABLE"
+    },
+    {
+      "gap": "Fraud reports/complaints",
+      "holder": "Action Fraud UK (City of London Police)",
+      "legal_authority": "Law enforcement access only",
+      "access_route": "Police investigation access",
+      "expected_evidence": "Fraud reports mentioning SmartStar or Rojs Gordons",
+      "status": "AUTHORIZATION_REQUIRED (law enforcement)"
+    },
+    {
+      "gap": "Beneficial ownership verification",
+      "holder": "Open Ownership Register",
+      "legal_authority": "N/A (public register)",
+      "access_route": "Web access (was 403)",
+      "expected_evidence": "Verified beneficial ownership data",
+      "status": "SOURCE_UNAVAILABLE (403)"
+    },
+    {
+      "gap": "FCA regulatory records",
+      "holder": "Financial Conduct Authority",
+      "legal_authority": "N/A (public register)",
+      "access_route": "Web access (was 403)",
+      "expected_evidence": "Financial regulation status, permissions",
+      "status": "SOURCE_UNAVAILABLE (403)"
+    },
+    {
+      "gap": "Court records (full search)",
+      "holder": "HMCTS",
+      "legal_authority": "N/A (public records)",
+      "access_route": "Web search or API (no public API)",
+      "expected_evidence": "Litigation history, judgments",
+      "status": "NOT_IMPLEMENTED"
+    }
+  ],
+  "total_gaps": 10,
+  "authorization_required": 6,
+  "source_unavailable": 2,
+  "not_implemented": 1,
+  "no_api_found": 1
+}

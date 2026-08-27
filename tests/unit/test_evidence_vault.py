@@ -359,7 +359,7 @@ class TestAccessControl:
         )
         stored = vault.create(evidence, b"content")
 
-        can_access, reason = vault.check_access(
+        can_access, _reason = vault.check_access(
             stored.evidence.id, "user1", DataClassification.PUBLIC
         )
         assert can_access
@@ -390,7 +390,7 @@ class TestAccessControl:
         )
         stored = vault.create(evidence, b"content")
 
-        can_access, reason = vault.check_access(
+        can_access, _reason = vault.check_access(
             stored.evidence.id, "user1", DataClassification.RESTRICTED
         )
         assert can_access
@@ -514,12 +514,12 @@ class TestRetentionPolicy:
         )
         stored = vault.create(evidence, b"content")
 
-        should_retain, reason = vault.check_retention(stored.evidence.id)
+        should_retain, _reason = vault.check_retention(stored.evidence.id)
         assert should_retain
 
     def test_retention_nonexistent(self, vault):
         """Checking retention for nonexistent evidence should fail."""
-        should_retain, reason = vault.check_retention("EVD-NONEXIST")
+        should_retain, _reason = vault.check_retention("EVD-NONEXIST")
         assert not should_retain
 
 

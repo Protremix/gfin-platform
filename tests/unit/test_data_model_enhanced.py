@@ -245,7 +245,7 @@ class TestObservation:
             source_type="citizen",
             raw_value="+34 612 345 678",
         )
-        assert type(entity) != type(obs)
+        assert not isinstance(entity, type(obs))
         assert entity.id == obs.entity_id  # Observation references entity
         assert hasattr(obs, "entity_id")  # Only observations have this FK
         assert not hasattr(entity, "entity_id")  # Entities don't have self-FK
@@ -327,7 +327,7 @@ class TestEvidenceLinkage:
             entity_id="ENT-1", source_id="SRC-1", source_type="citizen", raw_value="test"
         )
         evd = BaseEvidence(source_id="SRC-1", content_hash="abc", content_type="image/png")
-        assert type(obs) != type(evd)
+        assert not isinstance(obs, type(evd))
         # Evidence has content_hash, observations have raw_value
         assert hasattr(evd, "content_hash")
         assert hasattr(obs, "raw_value")
@@ -399,7 +399,7 @@ class TestRelationshipCreation:
         rel = create_relationship(
             "RESOLVES_TO", from_entity_id=entity.id, to_entity_id="ENT-2", source_id="SRC-1"
         )
-        assert type(entity) != type(rel)
+        assert not isinstance(entity, type(rel))
         assert hasattr(rel, "from_entity_id")
         assert hasattr(rel, "to_entity_id")
         assert not hasattr(entity, "from_entity_id")

@@ -650,7 +650,7 @@ class TestResolutionService:
         assert entity.normalized_value == "example.com"
 
     async def test_resolve_url(self, service):
-        entity, created = await service.resolve_or_create(
+        _entity, created = await service.resolve_or_create(
             "URL", "https://example.com/path", url="https://example.com/path"
         )
         assert created is True

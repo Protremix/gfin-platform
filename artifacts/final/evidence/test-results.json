@@ -1,0 +1,24 @@
+{
+  "timestamp": "2026-08-26T14:02:10.992585+00:00",
+  "suite": "pytest tests/",
+  "collected": 2743,
+  "executed": 2743,
+  "passed": 2743,
+  "failed": 0,
+  "skipped": 0,
+  "errors": 0,
+  "duration_seconds": 33.14,
+  "coverage_percent": 93.58,
+  "total_statements": 13372,
+  "missing_statements": 858,
+  "categories": {
+    "unit": "~2400",
+    "security": "127",
+    "fault_injection": "80",
+    "contract": "59",
+    "e2e": "19",
+    "legal_compliance": "44",
+    "infrastructure": "45"
+  },
+  "status": "ALL PASSED"
+}

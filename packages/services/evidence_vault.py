@@ -20,7 +20,7 @@ from typing import List
 
 import hashlib
 from datetime import datetime, timedelta
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 from uuid import uuid4
 
@@ -34,7 +34,7 @@ from schemas.enums import DataClassification
 # ═══════════════════════════════════════════════
 
 
-class CustodyAction(str, Enum):
+class CustodyAction(StrEnum):
     """Actions in the chain of custody."""
 
     CREATED = "CREATED"

@@ -14,7 +14,7 @@ import hashlib
 import json
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 import structlog
@@ -22,7 +22,7 @@ import structlog
 logger = structlog.get_logger("gfin.audit")
 
 
-class AuditEventType(str, Enum):
+class AuditEventType(StrEnum):
     """Types of auditable security events."""
 
     AUTH_LOGIN = "auth.login"

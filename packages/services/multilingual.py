@@ -8,13 +8,13 @@ Layer B: Real translation API integration (DeepL, Google Translate) (REQUIRES EX
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class SupportedLanguage(str, Enum):
+class SupportedLanguage(StrEnum):
     EN = "EN"
     DE = "DE"
     FR = "FR"
@@ -46,7 +46,7 @@ class SupportedLanguage(str, Enum):
     UK = "UK"
 
 
-class TranslationStatus(str, Enum):
+class TranslationStatus(StrEnum):
     PENDING = "PENDING"
     TRANSLATED = "TRANSLATED"
     FAILED = "FAILED"

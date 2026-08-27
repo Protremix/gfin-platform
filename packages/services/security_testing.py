@@ -8,13 +8,13 @@ Layer B: Automated security scanning, penetration testing tools (REQUIRES EXTERN
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class SecurityTestType(str, Enum):
+class SecurityTestType(StrEnum):
     VULNERABILITY_SCAN = "VULNERABILITY_SCAN"
     PENETRATION_TEST = "PENETRATION_TEST"
     SECURITY_CHECKLIST = "SECURITY_CHECKLIST"
@@ -22,7 +22,7 @@ class SecurityTestType(str, Enum):
     CODE_AUDIT = "CODE_AUDIT"
 
 
-class SecurityTestStatus(str, Enum):
+class SecurityTestStatus(StrEnum):
     PENDING = "PENDING"
     RUNNING = "RUNNING"
     PASSED = "PASSED"
@@ -30,7 +30,7 @@ class SecurityTestStatus(str, Enum):
     SKIPPED = "SKIPPED"
 
 
-class SeverityLevel(str, Enum):
+class SeverityLevel(StrEnum):
     INFO = "INFO"
     LOW = "LOW"
     MEDIUM = "MEDIUM"

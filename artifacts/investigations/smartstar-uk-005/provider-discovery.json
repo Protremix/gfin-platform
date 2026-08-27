@@ -1,0 +1,108 @@
+{
+  "providers_discovered": [
+    {
+      "provider": "Companies House UK",
+      "discovered_via": "Known official UK corporate registry",
+      "url": "find-and-update.company-information.service.gov.uk",
+      "coverage": "UK company filings, officers, PSC, charges",
+      "authorization": "Public web access; API requires key",
+      "connector_status": "ACCESSIBLE (web), AUTH_REQUIRED (API)",
+      "why_selected": "Primary authoritative source for UK company data",
+      "why_not_alternative": "Open Corporates requires API token; North Data is secondary aggregator"
+    },
+    {
+      "provider": "Google DoH (8.8.8.8)",
+      "discovered_via": "DNS infrastructure knowledge",
+      "url": "8.8.8.8/resolve",
+      "coverage": "All DNS record types",
+      "authorization": "Public",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Free, no auth, JSON response, reliable",
+      "why_not_alternative": "Local dig unavailable in sandbox; Quad9 less documented"
+    },
+    {
+      "provider": "Cloudflare DoH (1.1.1.1)",
+      "discovered_via": "DNS infrastructure knowledge",
+      "url": "1.1.1.1/dns-query",
+      "coverage": "All DNS record types",
+      "authorization": "Public",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Cross-verification with Google DoH",
+      "why_not_alternative": "Same data as Google DoH but independent resolver"
+    },
+    {
+      "provider": "RDAP (rdap.org)",
+      "discovered_via": "Domain registration protocol knowledge",
+      "url": "rdap.org/domain/{domain}",
+      "coverage": "Domain registration dates, registrar, nameservers",
+      "authorization": "Public",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Standard protocol, no auth, JSON response",
+      "why_not_alternative": "Nominet WHOIS returned 403; ICANN WHOIS less structured"
+    },
+    {
+      "provider": "Verisign RDAP",
+      "discovered_via": "Registry-specific RDAP endpoint",
+      "url": "rdap.verisign.com/com/v1/domain/{domain}",
+      "coverage": ".com domain registration",
+      "authorization": "Public",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Direct registry access for .com domains",
+      "why_not_alternative": "rdap.org redirects to this for .com anyway"
+    },
+    {
+      "provider": "Wayback Machine CDX API",
+      "discovered_via": "Historical archive knowledge",
+      "url": "web.archive.org/cdx/search/cdx",
+      "coverage": "Historical web page captures",
+      "authorization": "Public",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Largest public web archive with structured API",
+      "why_not_alternative": "UK Web Archive not accessible via API"
+    },
+    {
+      "provider": "GitHub API",
+      "discovered_via": "Code repository platform knowledge",
+      "url": "api.github.com",
+      "coverage": "User profiles, repositories, commits, languages",
+      "authorization": "Public (rate limited without token)",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Largest code repository, free API, rich metadata",
+      "why_not_alternative": "GitLab API not relevant (Protremix on GitHub)"
+    },
+    {
+      "provider": "Apple iTunes Search API",
+      "discovered_via": "App store platform knowledge",
+      "url": "itunes.apple.com/search",
+      "coverage": "App metadata: name, seller, bundle ID, release date",
+      "authorization": "Public",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Free public JSON API, no auth needed",
+      "why_not_alternative": "Google Play has no public search API"
+    },
+    {
+      "provider": "Etherscan API",
+      "discovered_via": "Blockchain explorer knowledge",
+      "url": "api.etherscan.io/api",
+      "coverage": "Ethereum blockchain transactions and balances",
+      "authorization": "Public (free tier)",
+      "connector_status": "ACCESSIBLE",
+      "why_selected": "Most comprehensive Ethereum explorer",
+      "why_not_alternative": "Blockchair and BlockCypher offer similar data"
+    },
+    {
+      "provider": "crt.sh (Sectigo)",
+      "discovered_via": "Certificate Transparency log knowledge",
+      "url": "crt.sh",
+      "coverage": "All CT logs for TLS certificates",
+      "authorization": "Public",
+      "connector_status": "UNAVAILABLE (502)",
+      "why_selected": "Largest public CT log aggregator",
+      "why_not_alternative": "Google CT log search also available but crt.sh is standard"
+    }
+  ],
+  "total_providers_discovered": 10,
+  "providers_accessible": 8,
+  "providers_auth_required": 1,
+  "providers_unavailable": 1
+}

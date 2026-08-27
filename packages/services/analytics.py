@@ -8,13 +8,13 @@ Layer B: Real OLAP/warehouse integration (REQUIRES EXTERNAL INFRASTRUCTURE)
 """
 
 from datetime import UTC, datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 from pydantic import BaseModel, Field
 
 
-class TimePeriod(str, Enum):
+class TimePeriod(StrEnum):
     HOURLY = "HOURLY"
     DAILY = "DAILY"
     WEEKLY = "WEEKLY"
@@ -22,7 +22,7 @@ class TimePeriod(str, Enum):
     QUARTERLY = "QUARTERLY"
 
 
-class TrendDirection(str, Enum):
+class TrendDirection(StrEnum):
     UP = "UP"
     DOWN = "DOWN"
     STABLE = "STABLE"
@@ -239,10 +239,7 @@ class AnalyticsService:
         for d in self._geo_data:
             by_country[d.country] = by_country.get(d.country, 0) + d.count
         sorted_countries = sorted(by_country.items(), key=lambda x: x[1], reverse=True)[:limit]
-        return [
-            GeographicDataPoint(country=c, count=n)
-            for c, n in sorted_countries
-        ]
+        return [GeographicDataPoint(country=c, count=n) for c, n in sorted_countries]
 
     def get_dashboard(self) -> dict[str, Any]:
         """Get a full analytics dashboard."""

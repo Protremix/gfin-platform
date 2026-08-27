@@ -1,0 +1,86 @@
+{
+  "comparison": {
+    "dns": {
+      "case_001": "PARTIAL",
+      "case_002": "COMPLETE",
+      "improvement": "Resolved all 4 domains with full IP/ASN/hosting analysis. Confirmed NO_SHARED_INFRASTRUCTURE."
+    },
+    "geoint": {
+      "case_001": "PARTIAL",
+      "case_002": "N/A",
+      "improvement": "Properly evaluated and classified as NOT_APPLICABLE with justification."
+    },
+    "banking": {
+      "case_001": "AUTHORIZATION_REQUIRED",
+      "case_002": "AUTHORIZATION_REQUIRED",
+      "improvement": "Added full authorization gap analysis (institution, channel, jurisdiction, authority required)."
+    },
+    "payments": {
+      "case_001": "AUTHORIZATION_REQUIRED",
+      "case_002": "AUTHORIZATION_REQUIRED",
+      "improvement": "Added full authorization gap analysis."
+    },
+    "uk_entity_purpose": {
+      "case_001": "UNRESOLVED",
+      "case_002": "RESOLVED",
+      "improvement": "Identified SIC codes, 8 employees, \u00a3263K assets, 2 secretaries, trading activity evidence."
+    },
+    "capital_analysis": {
+      "case_001": "UNRESOLVED",
+      "case_002": "RESOLVED",
+      "improvement": "Determined \u00a310M = nominal declared capital, 100% unpaid, only \u00a310K called up. Classification: DECLARED_CAPITAL_ONLY."
+    },
+    "uk_nz_relationship": {
+      "case_001": "UNRESOLVED",
+      "case_002": "RESOLVED",
+      "improvement": "Exhaustive search confirmed NOT_CONNECTED. No shared infrastructure, officers, domains, contacts, or social connections."
+    },
+    "rojs_gordons_profile": {
+      "case_001": "MINIMAL",
+      "case_002": "COMPLETE",
+      "improvement": "Discovered 6 UK companies (all dissolved), 5 international companies, Protremix, Verdis Chain, LinkedIn, GitHub."
+    },
+    "rex_huang_profile": {
+      "case_001": "MINIMAL",
+      "case_002": "COMPLETE",
+      "improvement": "Verified LinkedIn, Facebook, GitHub, 2 NZ directorships, career history (Harvey Norman, Kevler Homes)."
+    },
+    "crypto": {
+      "case_001": "NOT_CHECKED",
+      "case_002": "PARTIAL",
+      "improvement": "Discovered Verdis Chain (Rojs Gordons' blockchain project, testnet phase). No crypto for SmartStar entities."
+    },
+    "advertising": {
+      "case_001": "N/A",
+      "case_002": "N/A",
+      "improvement": "Re-evaluated and confirmed NOT_APPLICABLE with justification."
+    },
+    "telegram": {
+      "case_001": "N/A",
+      "case_002": "N/A",
+      "improvement": "Re-evaluated and confirmed NO_RELEVANT_PUBLIC_TELEGRAM_EVIDENCE_FOUND."
+    },
+    "social_professional": {
+      "case_001": "NOT_CHECKED",
+      "case_002": "COMPLETE",
+      "improvement": "Full social/professional analysis for both directors."
+    },
+    "historical_web": {
+      "case_001": "NOT_CHECKED",
+      "case_002": "PARTIAL",
+      "improvement": "Attempted Wayback Machine (timeouts), confirmed SmartJobs app history, built chronological timeline."
+    },
+    "contradiction_search": {
+      "case_001": "NOT_PERFORMED",
+      "case_002": "COMPLETE",
+      "improvement": "Challenged all 5 previous conclusions. Found 2 modifications (UK trading activity, Rojs Gordons profile). Neither changes fraud assessment."
+    }
+  },
+  "new_entities": 6,
+  "new_relationships": 14,
+  "new_evidence": 18,
+  "new_sources": 5,
+  "questions_resolved": 3,
+  "questions_remaining": 0,
+  "coverage_improved": "SIGNIFICANTLY \u2014 from PARTIALLY_VERIFIED to VERIFIED (with authorization gaps properly documented)"
+}

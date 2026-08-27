@@ -1,0 +1,133 @@
+{
+  "rojs_gordons": {
+    "name": "Rojs Gordons",
+    "dob": "April 1988 (2 April 1988 in EU registries)",
+    "nationality": "Latvian",
+    "residence": "United Kingdom (Erith, Greater London)",
+    "addresses": [
+      "27 Old Gloucester Street, London WC1N 3AX (virtual office)",
+      "49 Linton Avenue, Borehamwood WD6 4RB",
+      "1 Linton Avenue, Borehamwood WD6 4RB",
+      "Leopoldauer Stra\u00dfe 131/2 34, 1210 Vienna, Austria",
+      "Calle Capit\u00e1n Salom 2, Palma de Mallorca, Spain"
+    ],
+    "uk_companies": [
+      {
+        "name": "SMARTSTAR TECHNOLOGY LTD",
+        "number": "14511663",
+        "role": "Director",
+        "status": "Dissolved"
+      },
+      {
+        "name": "VIP RENT LTD",
+        "number": "13500336",
+        "role": "Director",
+        "status": "Dissolved"
+      },
+      {
+        "name": "DIK ORMAN UK LTD",
+        "number": "14311904",
+        "role": "Director/PSC (ceased)",
+        "status": "Dissolved"
+      },
+      {
+        "name": "DEPILS LIMITED",
+        "number": "08774027",
+        "role": "Director/PSC",
+        "status": "Dissolved"
+      },
+      {
+        "name": "EUROPEAN DBS LTD",
+        "number": "12428261",
+        "role": "Director/PSC",
+        "status": "Dissolved"
+      },
+      {
+        "name": "GOLAN TRADE UK LTD",
+        "number": "12582734",
+        "role": "Director/PSC",
+        "status": "Dissolved"
+      }
+    ],
+    "international_companies": [
+      {
+        "name": "TANSWA Sp. z o.o.",
+        "country": "Poland",
+        "role": "President/100% shareholder"
+      },
+      {
+        "name": "SMART TRADE",
+        "country": "France",
+        "role": "President (ceased)",
+        "appointed": "2022-11-29"
+      },
+      {
+        "name": "REALM WONDERLAND s.r.o.",
+        "country": "Czech Republic",
+        "role": "Director/50% shareholder"
+      },
+      {
+        "name": "Golan Europe SL",
+        "country": "Spain",
+        "role": "Director/Sole proprietor"
+      },
+      {
+        "name": "GGPWORLD O\u00dc",
+        "country": "Estonia",
+        "role": "Former board member"
+      }
+    ],
+    "professional": {
+      "linkedin": "uk.linkedin.com/in/rojs-gordons-986928421",
+      "title": "Project Manager @ Protremix / Founder & CEO of Protremix",
+      "github": "github.com/Protremix (account created 2026-08-07)",
+      "github_email": "info@protremix.com",
+      "github_bio": "Protremix Software, Blockchain, Platforms",
+      "github_repos": [
+        "Anerium- (JavaScript, 2026-08-23)",
+        "EvolvixOS (Python, 2026-08-07)",
+        "Grovim (Python, 2026-08-20)",
+        "Verdischain- (HTML, 2026-08-07)"
+      ],
+      "whatsapp": "+44 7451 261353",
+      "website": "protremix.com"
+    },
+    "data_sources": [
+      "Companies House UK (web)",
+      "GitHub API",
+      "Verdis Chain website",
+      "EU registries (via CASE-002)"
+    ],
+    "new_from_non_google": [
+      "GitHub account metadata (email, bio, creation date)",
+      "4 repo descriptions (EvolvixOS, Grovim, Anerium)"
+    ]
+  },
+  "rex_huang": {
+    "name": "Rex Huang (Yi-Hsuan Huang)",
+    "location": "Christchurch, Canterbury, New Zealand",
+    "nz_companies": [
+      "SmartStar Technology Limited (1925143) \u2014 Director, 37.5% shareholder",
+      "SmartStar Investments Limited (8159187) \u2014 Director, 80% shareholder"
+    ],
+    "professional": {
+      "linkedin": "nz.linkedin.com/in/rex-huang-a9a87351",
+      "facebook": "facebook.com/rexhuang221",
+      "github": "github.com/RexHuang"
+    },
+    "career": "Harvey Norman Commercial (2012-2019) \u2192 Kevler Homes (2019-present) \u2192 SmartStar Technology (2015-present)",
+    "apple_apps": [
+      "Smartjobs App (nz.smartstar.smartjobs.app, v4.2.8)",
+      "Smartjobs Arcade (com.smartjobs.arcade)",
+      "SmartJobs Reception (org.reactjs.native.example.SJReceptionApp)"
+    ],
+    "data_sources": [
+      "Apple iTunes API (non-Google)",
+      "NZ Companies Office",
+      "LinkedIn (via CASE-002)"
+    ],
+    "new_from_non_google": [
+      "3 Apple App Store apps with bundle IDs and release dates (iTunes API)"
+    ]
+  }
+}

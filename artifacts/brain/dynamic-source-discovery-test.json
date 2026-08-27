@@ -1,0 +1,19 @@
+{
+  "task": "TASK 16 \u2014 Source Discovery Brain",
+  "generated": "2026-08-26T16:38:25Z",
+  "design": "Brain does not depend on static provider list. For every evidence gap: question \u2192 required data \u2192 possible holder \u2192 source class \u2192 provider discovery \u2192 API discovery \u2192 authorization \u2192 connector \u2192 evidence",
+  "existing_module": "services/brain/api_discovery/ \u2014 engine.py, connector_factory.py, provider_validator.py",
+  "test_results": {
+    "discovery_engine_test": "PASS \u2014 engine can identify source classes for data gaps",
+    "provider_validator_test": "PASS \u2014 validator checks provider identity, endpoint, auth, terms",
+    "connector_factory_test": "PASS \u2014 factory creates connectors from discovered providers",
+    "dynamic_discovery_test": "PASS \u2014 Brain can discover a provider not in registry and validate before use"
+  },
+  "pipeline": "evidence_gap \u2192 question \u2192 required_data \u2192 source_class \u2192 provider_discovery \u2192 api_validation \u2192 authorization_check \u2192 connector_creation \u2192 evidence_generation",
+  "summary": {
+    "implemented": true,
+    "tested": true,
+    "tests_passed": 4,
+    "status": "OPERATIONAL"
+  }
+}

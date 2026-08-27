@@ -1,0 +1,51 @@
+{
+  "case_id": "CASE-SMARTSTAR-001",
+  "events": [
+    {
+      "date": "2007-03-25",
+      "event": "SmartStar Technology Limited incorporated in New Zealand",
+      "source": "NZ Companies Office"
+    },
+    {
+      "date": "2022-11-29",
+      "event": "SmartStar Technology Ltd incorporated in UK with 10M GBP declared capital",
+      "source": "UK Companies House"
+    },
+    {
+      "date": "2023-02-11",
+      "event": "Ola Saber Alkaddour appointed as Secretary (UK)",
+      "source": "UK Companies House"
+    },
+    {
+      "date": "2023-05-17",
+      "event": "Nidal Ahmad appointed as Secretary (UK)",
+      "source": "UK Companies House"
+    },
+    {
+      "date": "2024-03-01",
+      "event": "Both secretaries resigned (UK)",
+      "source": "UK Companies House"
+    },
+    {
+      "date": "2024-03-12",
+      "event": "SmartStar Technology Pte. Ltd. incorporated in Singapore",
+      "source": "ACRA Singapore"
+    },
+    {
+      "date": "2024-05-02",
+      "event": "Micro-entity accounts filed (UK)",
+      "source": "UK Companies House"
+    },
+    {
+      "date": "2025-07-22",
+      "event": "First Gazette notice for compulsory strike-off (UK)",
+      "source": "UK Companies House"
+    },
+    {
+      "date": "2025-10-07",
+      "event": "UK company dissolved via compulsory strike-off",
+      "source": "UK Companies House"
+    }
+  ],
+  "timestamp": "2026-08-26T15:18:43.772009+00:00"
+}

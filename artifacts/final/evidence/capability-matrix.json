@@ -1,0 +1,204 @@
+{
+  "timestamp": "2026-08-26T14:02:10.992585+00:00",
+  "capabilities": [
+    {
+      "capability": "Authentication (OIDC/OAuth2)",
+      "tests": "27",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Authorization (RBAC+ABAC)",
+      "tests": "44",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Data Validation & Normalization",
+      "tests": "119",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Entity Resolution",
+      "tests": "13 criteria",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Fraud Graph (Neo4j)",
+      "tests": "40+",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Search Platform (OpenSearch)",
+      "tests": "77",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Evidence & Provenance",
+      "tests": "44",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Event Bus (Kafka)",
+      "tests": "75",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Campaign DNA",
+      "tests": "89",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Pattern Engine",
+      "tests": "42",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Investigation Copilot",
+      "tests": "39",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Early Warning System",
+      "tests": "34",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Alert Engine",
+      "tests": "64",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "AI Model Gateway",
+      "tests": "32",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Citizen Platform",
+      "tests": "56",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Police API",
+      "tests": "96",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Police Connector SDK",
+      "tests": "49",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Federation Protocol",
+      "tests": "34",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Cross-Border Requests",
+      "tests": "44",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Web Discovery",
+      "tests": "54",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Domain Intelligence",
+      "tests": "22",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Infrastructure Intelligence",
+      "tests": "56",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Unknown Fraud Discovery",
+      "tests": "96",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Continuous Monitoring",
+      "tests": "62",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Multilingual Support",
+      "tests": "22",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Disaster Recovery",
+      "tests": "26",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Legal Compliance Engine",
+      "tests": "44",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Compliance",
+      "tests": "30",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Observability",
+      "tests": "47",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Analytics",
+      "tests": "22",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Pilot Framework",
+      "tests": "29",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Investigation Orchestrator",
+      "tests": "57",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "GEOINT",
+      "tests": "0",
+      "status": "BLOCKED - EXTERNAL PROVIDER"
+    },
+    {
+      "capability": "Crypto/Financial",
+      "tests": "38",
+      "status": "VERIFIED (synthetic)"
+    },
+    {
+      "capability": "STIX Adapter",
+      "tests": "15",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Data Flows (E2E)",
+      "tests": "19",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Contract Tests",
+      "tests": "59",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Fault Injection",
+      "tests": "80",
+      "status": "VERIFIED"
+    },
+    {
+      "capability": "Infrastructure Tests",
+      "tests": "45",
+      "status": "VERIFIED"
+    }
+  ],
+  "total": 40,
+  "verified": 39,
+  "blocked": 1,
+  "not_implemented": 0
+}

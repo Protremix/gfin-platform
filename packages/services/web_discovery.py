@@ -21,7 +21,7 @@ from __future__ import annotations
 import hashlib
 import re
 from datetime import datetime, timedelta
-from enum import Enum
+from enum import Enum, StrEnum
 from typing import Any
 from urllib.parse import urljoin, urlparse
 from uuid import uuid4
@@ -35,7 +35,7 @@ from schemas.base import BaseObservation, Provenance, utc_now
 # ═══════════════════════════════════════════════
 
 
-class CrawlStatus(str, Enum):
+class CrawlStatus(StrEnum):
     """Status of a crawl job."""
 
     QUEUED = "queued"

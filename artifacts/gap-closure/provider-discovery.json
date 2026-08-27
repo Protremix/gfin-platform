@@ -1,0 +1,153 @@
+{
+  "providers_discovered": [
+    {
+      "provider_id": "bailii-uk",
+      "provider": "BAILII",
+      "source_class": "COURTS_LEGAL",
+      "auth": "NONE",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "official_url": "bailii.org"
+    },
+    {
+      "provider_id": "uk-tribunals",
+      "provider": "UK Judiciary Tribunal Decisions",
+      "source_class": "COURTS_LEGAL",
+      "auth": "NONE",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "official_url": "judiciary.uk"
+    },
+    {
+      "provider_id": "github",
+      "provider": "GitHub",
+      "source_class": "SOCIAL_MESSAGING",
+      "auth": "NONE (optional token)",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "official_url": "api.github.com"
+    },
+    {
+      "provider_id": "google-safebrowsing",
+      "provider": "Google Safe Browsing",
+      "source_class": "THREAT_INTELLIGENCE",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "safebrowsing.googleapis.com"
+    },
+    {
+      "provider_id": "virustotal",
+      "provider": "VirusTotal",
+      "source_class": "THREAT_INTELLIGENCE",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "virustotal.com"
+    },
+    {
+      "provider_id": "abuseipdb",
+      "provider": "AbuseIPDB",
+      "source_class": "THREAT_INTELLIGENCE",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "abuseipdb.com"
+    },
+    {
+      "provider_id": "osm-nominatim",
+      "provider": "OpenStreetMap Nominatim",
+      "source_class": "GEOINT",
+      "auth": "NONE",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "official_url": "nominatim.openstreetmap.org"
+    },
+    {
+      "provider_id": "numverify",
+      "provider": "Numverify",
+      "source_class": "PHONE_TELECOM",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "apilayer.com"
+    },
+    {
+      "provider_id": "companies-house-uk",
+      "provider": "Companies House UK",
+      "source_class": "CORPORATE",
+      "auth": "BASIC_AUTH",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "api.company-information.service.gov.uk"
+    },
+    {
+      "provider_id": "etherscan",
+      "provider": "Etherscan",
+      "source_class": "CRYPTO_EXCHANGE",
+      "auth": "OPTIONAL_API_KEY",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "official_url": "api.etherscan.io"
+    },
+    {
+      "provider_id": "blockchain-info",
+      "provider": "Blockchain.com",
+      "source_class": "CRYPTO_EXCHANGE",
+      "auth": "NONE",
+      "connector_status": "IMPLEMENTED_LIVE_TESTED",
+      "official_url": "blockchain.info"
+    },
+    {
+      "provider_id": "google-ct",
+      "provider": "Google CT Logs",
+      "source_class": "HISTORICAL",
+      "auth": "NONE",
+      "connector_status": "IMPLEMENTED_UNAVAILABLE",
+      "official_url": "ct.googleapis.com"
+    },
+    {
+      "provider_id": "dns-history",
+      "provider": "DNS History",
+      "source_class": "HISTORICAL",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "securitytrails.com"
+    },
+    {
+      "provider_id": "opensanctions",
+      "provider": "OpenSanctions",
+      "source_class": "LICENSED_INTELLIGENCE",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "opensanctions.org"
+    },
+    {
+      "provider_id": "opencorporates",
+      "provider": "OpenCorporates",
+      "source_class": "CORPORATE",
+      "auth": "API_TOKEN",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "opencorporates.com"
+    },
+    {
+      "provider_id": "entity-resolver",
+      "provider": "GFIN Entity Resolution",
+      "source_class": "IDENTITY",
+      "auth": "NONE",
+      "connector_status": "IMPLEMENTED_TESTED",
+      "official_url": "internal"
+    },
+    {
+      "provider_id": "facebook-ad-library",
+      "provider": "Facebook Ad Library",
+      "source_class": "ADVERTISING",
+      "auth": "OAUTH",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "graph.facebook.com"
+    },
+    {
+      "provider_id": "payment-intel",
+      "provider": "Payment Intelligence Layer",
+      "source_class": "FINANCIAL_PAYMENT",
+      "auth": "API_KEY",
+      "connector_status": "IMPLEMENTED_AUTH_REQUIRED",
+      "official_url": "varies"
+    }
+  ],
+  "total_providers": 18,
+  "implemented_live_tested": 5,
+  "implemented_auth_required": 10,
+  "implemented_unavailable": 1,
+  "implemented_tested": 2
+}
