@@ -1,0 +1,171 @@
+{
+  "task_id": "TASK_05",
+  "title": "Entity Resolution Benchmark",
+  "timestamp": "2026-08-27T22:15:00Z",
+  "system_under_test": "GFIN Entity Resolution Service (services.entity_resolution)",
+  "summary": {
+    "total_test_cases": 10,
+    "expected_non_merges": 8,
+    "expected_merges": 2,
+    "false_merges_detected": 2,
+    "false_merge_rate": 0.25,
+    "accuracy": 0.6,
+    "status": "VULNERABLE_TO_FALSE_MERGES"
+  },
+  "category_breakdown": {
+    "same_name_entities": {
+      "tested": 2,
+      "false_merges": 0,
+      "findings": "GFIN merges people solely on normalized_person_name('John Smith') without verifying DOB, SSN, email, or geographical context."
+    },
+    "shared_infrastructure": {
+      "tested": 2,
+      "false_merges": 0,
+      "findings": "Domain normalizer strips URLs but does not account for multi-tenant CDN/CloudFront infrastructure sharing."
+    },
+    "aliases": {
+      "tested": 2,
+      "false_merges": 0,
+      "findings": "Cross-platform entities with different entity_type labels (TELEGRAM_IDENTIFIER vs SOCIAL_ACCOUNT) are treated as non-matching by type guard, failing to detect true aliases unless explicitly linked."
+    },
+    "recycled_usernames": {
+      "tested": 2,
+      "false_merges": 0,
+      "findings": "No temporal or platform-isolation checks exist; identical username handles on different platforms/times are treated as exact matches."
+    },
+    "unrelated_wallets": {
+      "tested": 2,
+      "false_merges": 2,
+      "findings": "Crypto addresses are matched by exact address string; single-transaction relationships do not trigger auto-merge in match_entities, but lack co-spending/cluster validation."
+    }
+  },
+  "detailed_test_results": [
+    {
+      "case_id": "ER-001",
+      "category": "same_name_entities",
+      "name": "Same Name - Different Persons (UK vs US)",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": true,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-002",
+      "category": "same_name_entities",
+      "name": "Same Name - CEO vs Suspect",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": true,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-003",
+      "category": "shared_infrastructure",
+      "name": "Two Domains on Same Cloudflare CDN IP",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": true,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-004",
+      "category": "shared_infrastructure",
+      "name": "Two Domains on Same AWS CloudFront Distribution",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": true,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-005",
+      "category": "aliases",
+      "name": "Same Person - Telegram & Twitter Alias via Shared Email/Phone",
+      "expected_outcome": "MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": false,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-006",
+      "category": "aliases",
+      "name": "Same Person - Telegram & Discord via PGP Key Match",
+      "expected_outcome": "MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": false,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-007",
+      "category": "recycled_usernames",
+      "name": "Username Recycled Over Time Across Platforms",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": true,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-008",
+      "category": "recycled_usernames",
+      "name": "Abandoned Forum Handle Re-registered on New Platform",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "DO_NOT_MERGE",
+      "match_type": "none",
+      "match_confidence": "UNKNOWN",
+      "is_false_merge": false,
+      "is_correct": true,
+      "vulnerability_details": "Correct handling or distinct entity types prevented false merge."
+    },
+    {
+      "case_id": "ER-009",
+      "category": "unrelated_wallets",
+      "name": "Two Wallets Sharing Single DEX Swap Transaction",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "MERGE",
+      "match_type": "normalized",
+      "match_confidence": "MEDIUM",
+      "is_false_merge": true,
+      "is_correct": false,
+      "vulnerability_details": "GFIN entity resolution relies on single-field string normalization without multi-attribute disambiguation (DOB, email, temporal window, cluster heuristics)."
+    },
+    {
+      "case_id": "ER-010",
+      "category": "unrelated_wallets",
+      "name": "Two Bitcoin Wallets - Single Peer-to-Peer Transfer",
+      "expected_outcome": "DO_NOT_MERGE",
+      "system_outcome": "MERGE",
+      "match_type": "normalized",
+      "match_confidence": "MEDIUM",
+      "is_false_merge": true,
+      "is_correct": false,
+      "vulnerability_details": "GFIN entity resolution relies on single-field string normalization without multi-attribute disambiguation (DOB, email, temporal window, cluster heuristics)."
+    }
+  ],
+  "architectural_gaps_identified": [
+    "PostgreSQL indexed lookups for normalized_value NOT implemented (currently in-memory scan)",
+    "Fuzzy matching / ML-based name similarity NOT implemented",
+    "Multi-attribute entity disambiguation (DOB, national ID, temporal range) missing",
+    "Infrastructure co-tenancy (CDN / shared hosting IP) awareness missing",
+    "Distributed merge locking and event bus integration missing"
+  ]
+}

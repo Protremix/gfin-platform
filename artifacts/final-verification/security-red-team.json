@@ -1,0 +1,105 @@
+{
+  "artifact": "security-red-team.json",
+  "task": "TASK_21_SECURITY_RED_TEAM",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "tests": [
+    {
+      "attack": "SQL Injection",
+      "vector": "/api/cases?search='; DROP TABLE cases;--",
+      "result": "403 BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "attack": "XSS",
+      "vector": "/api/cases?search=<script>alert(1)</script>",
+      "result": "403 BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "attack": "Path Traversal",
+      "vector": "/api/cases/../../../etc/passwd",
+      "result": "403 BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "attack": "SSRF",
+      "vector": "/api/dark-web/scan?url=http://169.254.169.254/",
+      "result": "403 BLOCKED",
+      "status": "PASS"
+    },
+    {
+      "attack": "Rate Limit Abuse",
+      "vector": "15 rapid login attempts",
+      "result": "429 after 3 attempts",
+      "status": "PASS"
+    },
+    {
+      "attack": "Unauth Access",
+      "vector": "/api/officers/directory without token",
+      "result": "429 (rate limited before test)",
+      "status": "INCONCLUSIVE"
+    },
+    {
+      "attack": "Oversized Payload",
+      "vector": "100KB JSON body",
+      "result": "429 (rate limited before test)",
+      "status": "INCONCLUSIVE"
+    },
+    {
+      "attack": "Prompt Injection",
+      "vector": "AI summary endpoint",
+      "result": "NOT_TESTED — could not reach endpoint due to rate limiting",
+      "status": "NOT_TESTED"
+    },
+    {
+      "attack": "Command Injection",
+      "vector": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "attack": "Malicious API Response",
+      "vector": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "attack": "Redirect Abuse",
+      "vector": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "attack": "Malformed Data",
+      "vector": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "attack": "Credential Leakage",
+      "vector": "DB password in code",
+      "result": "FOUND — GfinSecure2026! hardcoded as fallback",
+      "status": "FAIL"
+    },
+    {
+      "attack": "Authorization Bypass",
+      "vector": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "attack": "Cross-Case Access",
+      "vector": "RLS not enabled",
+      "result": "Any auth user sees all cases",
+      "status": "FAIL"
+    }
+  ],
+  "summary": {
+    "pass": 5,
+    "fail": 2,
+    "inconclusive": 2,
+    "not_tested": 6
+  },
+  "finding": "Security middleware blocks SQL injection, XSS, path traversal, and SSRF. Rate limiting works. However: credential leakage (hardcoded DB password), no RLS (cross-case access), and 6 attack vectors not tested. Rate limiting prevented full testing.",
+  "status": "PARTIAL — input validation strong, data isolation weak"
+}

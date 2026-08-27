@@ -1,0 +1,45 @@
+{
+  "artifact": "adversarial-data-test.json",
+  "task": "TASK_10_ADVERSARIAL_DATA",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "tests": [
+    {
+      "test": "false_relationship",
+      "input": "Two domains sharing same IP",
+      "expected": "REJECT or UNRESOLVED",
+      "actual": "UNTESTED — entity_links auto-generates links from shared infrastructure without formal validation"
+    },
+    {
+      "test": "false_wallet_attribution",
+      "input": "Wallet address in scam message but owned by exchange",
+      "expected": "COUNTERPARTY not IDENTITY",
+      "actual": "UNTESTED — no wallet-to-exchange classification"
+    },
+    {
+      "test": "false_identity",
+      "input": "Username 'admin' in multiple groups",
+      "expected": "REJECT (generic username)",
+      "actual": "UNTESTED — username extraction treats all usernames as entities"
+    },
+    {
+      "test": "stale_records",
+      "input": "Domain registered 5 years ago, now legitimate",
+      "expected": "LOW-CONFIDENCE LEAD",
+      "actual": "UNTESTED — domain age check flags <=7d but doesn't de-prioritize old domains that may have changed ownership"
+    },
+    {
+      "test": "conflicting_records",
+      "input": "Same domain reported as scam and legitimate",
+      "expected": "CONFLICT",
+      "actual": "UNTESTED — no contradiction detection"
+    },
+    {
+      "test": "incorrect_provider_labels",
+      "input": "Blockchain API returns exchange label for personal wallet",
+      "expected": "PROVIDER_LABEL not IDENTITY",
+      "actual": "UNTESTED — no separation of provider labels from identity claims"
+    }
+  ],
+  "finding": "No adversarial data tests have been run. The system currently has no mechanism to reject false correlations, classify wallet ownership correctly, handle generic usernames, detect stale records, resolve conflicts, or separate provider labels from identity. This is a CRITICAL GAP for evidence reliability.",
+  "status": "NOT_TESTED — CRITICAL GAP"
+}

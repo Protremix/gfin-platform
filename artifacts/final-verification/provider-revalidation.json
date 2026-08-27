@@ -1,0 +1,131 @@
+{
+  "artifact": "provider-revalidation.json",
+  "task": "TASK_22_PROVIDER_REVALIDATION",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "providers": [
+    {
+      "name": "GitHub",
+      "type": "code_repository",
+      "http_status": 200,
+      "status": "LIVE_TESTED"
+    },
+    {
+      "name": "blockchain.info",
+      "type": "blockchain_btc",
+      "http_status": 200,
+      "status": "LIVE_TESTED"
+    },
+    {
+      "name": "Blockscout",
+      "type": "blockchain_eth",
+      "http_status": 200,
+      "status": "LIVE_TESTED"
+    },
+    {
+      "name": "BAILII",
+      "type": "legal_database",
+      "http_status": 200,
+      "status": "LIVE_TESTED"
+    },
+    {
+      "name": "Blockchair",
+      "type": "blockchain_ltc",
+      "http_status": 200,
+      "status": "LIVE_TESTED"
+    },
+    {
+      "name": "OpenAI",
+      "type": "ai_model",
+      "http_status": 401,
+      "status": "AUTH_READY (key configured in .env.openai)"
+    },
+    {
+      "name": "URLHaus",
+      "type": "threat_feed",
+      "http_status": 401,
+      "status": "BLOCKED — may need different endpoint or auth"
+    },
+    {
+      "name": "ThreatFox",
+      "type": "threat_feed",
+      "http_status": 401,
+      "status": "BLOCKED — may need auth"
+    },
+    {
+      "name": "SEC_EDGAR",
+      "type": "financial_database",
+      "http_status": 404,
+      "status": "UNAVAILABLE — endpoint changed or needs different path"
+    },
+    {
+      "name": "Tronscan",
+      "type": "blockchain_tron",
+      "http_status": 404,
+      "status": "UNAVAILABLE — endpoint changed"
+    },
+    {
+      "name": "GDELT",
+      "type": "news_database",
+      "http_status": 0,
+      "status": "UNAVAILABLE — connection timeout"
+    },
+    {
+      "name": "ICIJ",
+      "type": "investigative_database",
+      "http_status": 404,
+      "status": "UNAVAILABLE — endpoint changed or needs different path"
+    },
+    {
+      "name": "Solscan",
+      "type": "blockchain_solana",
+      "http_status": 404,
+      "status": "UNAVAILABLE — endpoint changed"
+    },
+    {
+      "name": "XRPL",
+      "type": "blockchain_xrp",
+      "http_status": 404,
+      "status": "UNAVAILABLE — endpoint changed"
+    },
+    {
+      "name": "Telegram",
+      "type": "messaging_intelligence",
+      "http_status": "N/A",
+      "status": "LIVE (Telethon user session active, 260K messages collected)"
+    },
+    {
+      "name": "Tor",
+      "type": "anonymity_network",
+      "http_status": "N/A",
+      "status": "LIVE (SOCKS proxy 9050 active)"
+    },
+    {
+      "name": "UK_Tribunals",
+      "type": "legal_database",
+      "http_status": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "name": "AlgoExplorer",
+      "type": "blockchain_algorand",
+      "http_status": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    },
+    {
+      "name": "TONScan",
+      "type": "blockchain_ton",
+      "http_status": "NOT_TESTED",
+      "status": "NOT_TESTED"
+    }
+  ],
+  "summary": {
+    "live_tested": 5,
+    "auth_ready": 1,
+    "live": 2,
+    "blocked": 2,
+    "unavailable": 6,
+    "not_tested": 3
+  },
+  "finding": "5 providers LIVE_TESTED (GitHub, blockchain.info, Blockscout, BAILII, Blockchair). 6 providers UNAVAILABLE (SEC EDGAR, Tronscan, GDELT, ICIJ, Solscan, XRPL) — endpoints need updating. 2 providers BLOCKED (URLHaus, ThreatFox) — may need auth changes. This means 6 of 19 providers have broken API endpoints.",
+  "status": "PARTIAL — 5 live, 6 broken endpoints, 2 auth issues, 3 not tested"
+}

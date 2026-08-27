@@ -1,0 +1,1742 @@
+{
+  "task_id": "TASK_07",
+  "title": "Crypto Attribution Audit & Validation",
+  "timestamp": "2026-08-27T22:15:00Z",
+  "system_under_test": "GFIN PostgreSQL Database (gfin db, tables: telegram_wallets, telegram_intelligence, evidence, entity_links)",
+  "attribution_taxonomy": {
+    "ON_CHAIN_FACT": "Immutable blockchain transaction record (txid, block height, raw UTXO/state transition)",
+    "TRANSACTION": "Transfer event with value, asset, fee, timestamp, and gas/fee metrics",
+    "COUNTERPARTY": "Direct address sending to or receiving from the target address in a verified tx",
+    "SERVICE": "Identified institutional wallet, exchange deposit/withdrawal address, bridge, or mixer",
+    "PROVIDER_LABEL": "External attribution tag provided by Chainalysis, Elliptic, TRM Labs, or MISP",
+    "CLUSTER": "Group of addresses aggregated via multi-input co-spending or deposit-reuse heuristics",
+    "INFERENCE": "Probabilistic association derived from text mentions, chat logs, or unverified claims",
+    "IDENTITY": "Verified real-world individual or corporate entity (KYC, subpoena, court order, signed PGP)"
+  },
+  "audit_summary": {
+    "telegram_wallets_records_audited": 1,
+    "telegram_intelligence_messages_with_wallets": 174,
+    "crypto_evidence_records_audited": 139,
+    "entity_links_wallet_records": 0,
+    "valid_onchain_wallets_in_db": 0,
+    "invalid_parser_extractions": 1,
+    "status": "AUDIT_COMPLETE_HIGH_PARSER_ERROR_RATE"
+  },
+  "telegram_wallets_table_audit": [
+    {
+      "id": 1,
+      "wallet_address": "DIDnumbersiptrunkcallcenter",
+      "wallet_type": "DOGE",
+      "first_seen_group": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "first_seen_sender": "\ud835\udc00\ud835\udc25\ud835\udc1f\ud835\udc2b\ud835\udc1e\ud835\udc1d",
+      "mention_count": 559,
+      "last_seen": "2026-08-27T18:53:40.149608",
+      "investigated": false,
+      "created_at": "2026-08-27T10:04:03.741337",
+      "audit_classification": "INVALID_EXTRACTION",
+      "classification_reason": "String 'DIDnumbersiptrunkcallcenter' is a Telegram channel handle, incorrectly extracted as a DOGE wallet by regex rule.",
+      "evidence_tier": "INFERENCE",
+      "has_independent_evidence": false,
+      "wallet_to_person_link_valid": false
+    }
+  ],
+  "telegram_intelligence_sample_audit": [
+    {
+      "message_id": 188171,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 188975,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 201811,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 188573,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 204178,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 189377,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 189779,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 190110,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 202609,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    },
+    {
+      "message_id": 191717,
+      "sender_username": "alfred_3cx",
+      "group_name": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "extracted_wallets": [
+        {
+          "type": "DOGE",
+          "address": "DIDnumbersiptrunkcallcenter"
+        }
+      ],
+      "classification": "PARSER_FALSE_POSITIVE",
+      "evidence_tier": "INFERENCE",
+      "text_snippet": "\ud83c\uddfa\ud83c\uddf8 \ud835\udc14\ud835\udc12\ud835\udc00 (+\ud835\udfcf) \u2014 \ud835\udc0b\ud835\udc28\ud835\udc1c\ud835\udc1a\ud835\udc25 & \ud835\udc13\ud835\udc28\ud835\udc25\ud835\udc25-\ud835\udc05\ud835\udc2b\ud835\udc1e\ud835\udc1e (+\ud835\udfcf \ud835\udfd6\ud835\udfce\ud835\udfce / +\ud835\udfcf \ud835\udfd6\ud835\udfd6\ud835\udfd6 )\n\ud83c\uddec\ud83c\udde7 \ud835\udc14\ud835\udc27\ud835\udc22\ud835\udc2d\ud835\udc1e\ud835\udc1d \ud835\udc0a\ud835\udc22\ud835\udc27\ud835\udc20\ud835\udc1d\ud835\udc28\ud835\udc26 (+\ud835\udfd2\ud835\udfd2)\n\ud83c\udde6\ud83c\uddfa \ud835\udc00\ud835\udc2e\ud835\udc2c\ud835\udc2d\ud835\udc2b\ud835\udc1a\ud835\udc25\ud835\udc22\ud835\udc1a (+\ud835\udfd4\ud835\udfcf)\n\ud83c\udde8\ud83c\udde6 \ud835\udc02\ud835\udc1a\ud835\udc27\ud835\udc1a\ud835\udc1d\ud835\udc1a (+\ud835\udfcf)\n\n\u2705 \ud835\udfcf\ud835\udfce\u2013\ud835\udfcf\ud835\udfd3 \ud835\udc02\ud835\udc28"
+    }
+  ],
+  "evidence_table_crypto_audit": [
+    {
+      "evidence_id": 2010,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9'. Scam type: RECOVERY_SCAM. Message",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2011,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2012,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2013,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2014,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2015,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2016,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2017,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2018,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2019,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1951,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1952,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1953,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1954,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1955,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1956,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1957,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1958,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1959,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1960,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1961,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: INVESTMENT_FRAUD. Message: \ud83e\udd29**THE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1962,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1963,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1964,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1965,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1966,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1967,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1968,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1950,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "Kyiv-based scam call center operating via t.me/work_crypto_fx. Operator: @Kira13MK, Phone: +380966344929. Running crypto investment fraud from Ukraine",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1969,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1970,
+      "case_id": "GFIN-CASE-002",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Vlad' matches case term 'vlad'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD.",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1971,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1972,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1973,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1974,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1975,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1976,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1977,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1978,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1979,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1980,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1981,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1982,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1983,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1984,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1985,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1986,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1987,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1988,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1989,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1990,
+      "case_id": "GFIN-CASE-003",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'teamforcetechnologies' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1991,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9'. Scam type: RECOVERY_SCAM. Message",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1992,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9'. Scam type: RECOVERY_SCAM. Message",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1993,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: RECOVERY_SCAM. Mes",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1994,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Work'. Scam type: RECOVERY_SCAM. Mes",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1995,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Crypto Forex Jobs'. Scam type: RECOVERY_SCAM. Message: Extra",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1996,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Crypto Forex Jobs'. Scam type: RECOVERY_SCAM. Message: Extra",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1997,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Crypto Forex Jobs'. Scam type: RECOVERY_SCAM. Message: Extra",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1998,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Crypto Forex Jobs'. Scam type: RECOVERY_SCAM. Message: Extra",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 1999,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2000,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2001,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2002,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2003,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2004,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2005,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: RE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2006,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: RE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2007,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: RE",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2008,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2009,
+      "case_id": "GFIN-CASE-004",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'REVERSE ENGINEER' matches case term 'reverse'. Telegram message in 'Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9'. Scam type: RECOVERY_SCAM. Message",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2020,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2021,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2022,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2023,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2024,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2025,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2026,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2027,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2028,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2029,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2030,
+      "case_id": "GFIN-CASE-005",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Messa",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2041,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2042,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2043,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2044,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2045,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2046,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2047,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2048,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2049,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2050,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2051,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2052,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2065,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Karen PowerR \ud83d\udd25 in 'Crypto Forex Jobs'. Scam type: unknown. Message: \ud83d\ude80 **Turn your happy",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2053,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2054,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2055,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2056,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2057,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2058,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2059,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2060,
+      "case_id": "GFIN-CASE-006",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: un",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2061,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Phantombit in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: RECOVERY_SCAM.",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2062,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Karen PowerR \ud83d\udd25 in 'Crypto Forex Jobs'. Scam type: unknown. Message: \ud83d\ude80 **Turn your happy",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2063,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Sabbir Ahammed in 'Forex | Crypto | Jobs | Work'. Scam type: unknown. Message: \ud83d\udcb0Persona",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2064,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Sabbir Ahammed in 'Crypto Forex Jobs'. Scam type: unknown. Message: \ud83d\udcb0Personal Paypal \ud83d\udcb3\n",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2066,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Sabbir Ahammed in 'Forex | Crypto | Jobs | Work'. Scam type: unknown. Message: \ud83d\udcb0Persona",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2067,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Phantombit in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: RECOVERY_SCAM.",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2068,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Sabbir Ahammed in 'Crypto Forex Jobs'. Scam type: unknown. Message: \ud83d\udcb0Personal Paypal \ud83d\udcb3\n",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2069,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Sabbir Ahammed in 'Forex | Crypto | Jobs | Work'. Scam type: unknown. Message: \ud83d\udcb0Persona",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2070,
+      "case_id": "GFIN-CASE-007",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 'tati' found in Telegram message text. From Phantombit in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: RECOVERY_SCAM.",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2072,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSALE MANA",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2073,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2074,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSMM MANAG",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2075,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2077,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSALE MANA",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2078,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2079,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSMM MANAG",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2080,
+      "case_id": "GFIN-CASE-008",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION",
+      "confidence": "MEDIUM",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2081,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FR",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2082,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Sc",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2083,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Messag",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2084,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2085,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Jobs | Work'. Scam type: unknown",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2086,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Crypto Forex Jobs'. Scam type: unknown. Message: ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2087,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FR",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2088,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Messag",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2089,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Sc",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2090,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2091,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Crypto Forex Jobs'. Scam type: unknown. Message: ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2092,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Jobs | Work'. Scam type: unknown",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2093,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FR",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2094,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTM",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2095,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Messag",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2096,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Crypto Forex Jobs'. Scam type: unknown. Message: ",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2097,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Messag",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2098,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Jobs | Work'. Scam type: unknown",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2099,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Sc",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    },
+    {
+      "evidence_id": 2100,
+      "case_id": "GFIN-CASE-001",
+      "source_provider": "GFIN Telegram Spy",
+      "source_type": "AUTOMATED_OSINT",
+      "finding_snippet": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FR",
+      "confidence": "HIGH",
+      "classification": "PROVIDER_LABEL",
+      "has_onchain_verification": false,
+      "has_independent_evidence": false
+    }
+  ],
+  "independent_evidence_policy_evaluation": {
+    "policy_rule": "WALLETS MUST NOT BE ATTRIBUTED TO A PERSON OR COMPANY WITHOUT AT LEAST ONE INDEPENDENT NON-CHAT/NON-PARSER EVIDENCE TIER (e.g. KYC, COURT ORDER, SIGNED MESSAGE, OR EXPLICIT ON-CHAIN CLUSTER VERIFICATION)",
+    "database_status": {
+      "total_telegram_wallets_records": 1,
+      "total_messages_with_wallets": 174,
+      "total_crypto_evidence_records": 139,
+      "total_wallet_entity_links_in_db": 0,
+      "attributed_wallet_to_person_links": 0,
+      "policy_violations_found": 1
+    },
+    "violation_details": [
+      {
+        "record_id": 1,
+        "table": "telegram_wallets",
+        "wallet_address": "DIDnumbersiptrunkcallcenter",
+        "attributed_person": "\ud835\udc00\ud835\udc25\ud835\udc1f\ud835\udc2b\ud835\udc1e\ud835\udc1d",
+        "finding": "FALSE_ATTRIBUTION_AND_INVALID_WALLET. The record attributes a Telegram channel name to persona 'Alfred' as a DOGE wallet based on regex extraction from chat messages, violating independent evidence requirements."
+      }
+    ]
+  },
+  "recommendations": [
+    "Implement strict crypto address format validation (EIP-55 for ETH, Base58Check for BTC/TRON) prior to DB insertion",
+    "Require dual-source corroboration before inserting wallet records into telegram_wallets table",
+    "Enforce strict constraint: WALLET -> PERSON/COMPANY links require proof tier ON_CHAIN_FACT + IDENTITY (KYC/Subpoena)",
+    "Purge invalid non-wallet strings (e.g. Telegram handles) from telegram_wallets and telegram_intelligence.wallets"
+  ]
+}

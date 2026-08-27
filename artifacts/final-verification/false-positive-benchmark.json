@@ -1,0 +1,51 @@
+{
+  "artifact": "false-positive-benchmark.json",
+  "task": "TASK_09_FALSE_POSITIVE_LAB",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "ground_truth_tests": {
+    "legitimate_businesses": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test with legitimate business domains to verify they are NOT flagged as scam"
+    },
+    "same_name_people_companies": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test with different entities sharing the same name"
+    },
+    "shared_cdn_hosting": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test verifying shared CDN/hosting does NOT trigger ownership attribution"
+    },
+    "generic_scam_templates": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test with scam-like but legitimate content (educational, reporting)"
+    },
+    "legitimate_crypto_services": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test verifying legitimate crypto exchanges are NOT flagged"
+    },
+    "unrelated_social_content": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test verifying unrelated Telegram messages are NOT promoted to evidence"
+    },
+    "common_payment_providers": {
+      "tested": false,
+      "status": "NOT_TESTED",
+      "description": "No test verifying Stripe/PayPal/etc are NOT flagged as fraudulent"
+    }
+  },
+  "metrics": {
+    "precision": "NOT_MEASURED",
+    "recall": "NOT_MEASURED",
+    "fpr": "NOT_MEASURED",
+    "fnr": "NOT_MEASURED",
+    "f1": "NOT_MEASURED"
+  },
+  "finding": "No false positive benchmark has been run. The scam detection engine v3.0 was tested with 3 samples (recovery scam CRITICAL 1.0, romance scam CRITICAL 0.79, clean text MINIMAL 0.0) during development, but no systematic ground-truth benchmark exists. This is a CRITICAL GAP — without measuring false positives, we cannot claim the system is reliable.",
+  "status": "NOT_TESTED — CRITICAL GAP"
+}

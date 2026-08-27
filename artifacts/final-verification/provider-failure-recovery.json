@@ -1,0 +1,15 @@
+{
+  "artifact": "provider-failure-recovery.json",
+  "task": "TASK_17_PROVIDER_FAILURE_RECOVERY",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "recovery_chain": {
+    "primary": "YES (initial call)",
+    "retry": "NO (no retry logic)",
+    "alternative": "NO (no alternative source selection)",
+    "fallback": "PARTIAL (scam detection has deterministic fallback)",
+    "source_unavailable_status": "NO (failures silently skipped)"
+  },
+  "fabrication_check": "PASS — system does NOT fabricate data after provider failure. The scam detection engine uses deterministic fallback (pattern matching) when AI is unavailable, but this is clearly labeled as 'fallback' not 'evidence'.",
+  "finding": "No retry/alternative/fallback chain for provider failures. If a connector fails (API down, timeout), the investigation step continues without that source's data. No SOURCE_UNAVAILABLE status is recorded. The system does NOT fabricate data, which is good, but it also doesn't retry or find alternatives.",
+  "status": "PARTIAL — no fabrication (good), but no recovery chain (bad)"
+}

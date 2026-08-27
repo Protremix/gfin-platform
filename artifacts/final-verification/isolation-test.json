@@ -1,0 +1,57 @@
+{
+  "artifact": "isolation-test.json",
+  "task": "TASK_19_CASE_TENANT_ISOLATION",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "tests": [
+    {
+      "layer": "API",
+      "test": "Access officer endpoint without auth",
+      "result": "BLOCKED by rate limiter (429 before 401 test could complete)",
+      "status": "INCONCLUSIVE"
+    },
+    {
+      "layer": "API",
+      "test": "Access case data from wrong case",
+      "result": "NOT_TESTED — rate limiting prevented testing",
+      "status": "NOT_TESTED"
+    },
+    {
+      "layer": "Database",
+      "test": "Row Level Security",
+      "result": "RLS NOT ENABLED on any table (cases, evidence, victims, victim_complaints)",
+      "status": "FAIL"
+    },
+    {
+      "layer": "Graph",
+      "test": "Cross-case entity access",
+      "result": "NOT_TESTED — entity_links has no case_id scoping",
+      "status": "FAIL (by design — entity_links are global)"
+    },
+    {
+      "layer": "Evidence Vault",
+      "test": "Cross-case evidence access",
+      "result": "NOT_TESTED — evidence has case_id but no RLS",
+      "status": "PARTIAL"
+    },
+    {
+      "layer": "Cache",
+      "test": "Redis isolation",
+      "result": "NOT_TESTED — single Redis instance, no namespace isolation",
+      "status": "NOT_TESTED"
+    },
+    {
+      "layer": "Queues",
+      "test": "Kafka topic isolation",
+      "result": "NOT_TESTED — 14 topics but no tenant scoping",
+      "status": "NOT_TESTED"
+    },
+    {
+      "layer": "Object Storage",
+      "test": "MinIO bucket isolation",
+      "result": "NOT_TESTED — single bucket, no per-tenant buckets",
+      "status": "NOT_TESTED"
+    }
+  ],
+  "finding": "RLS is NOT enabled on any table. This is a CRITICAL security gap — any authenticated user can access all cases, evidence, and victims regardless of their assignment. Entity links are global (not case-scoped). Rate limiting prevented API-level isolation testing.",
+  "status": "FAIL — RLS not enabled, data not isolated between users/cases"
+}

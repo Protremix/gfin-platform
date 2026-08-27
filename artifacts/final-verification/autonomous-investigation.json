@@ -1,0 +1,27 @@
+{
+  "artifact": "autonomous-investigation.json",
+  "task": "TASK_13_AUTONOMOUS_INVESTIGATION",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "current_capability": {
+    "identify_gaps": "PARTIAL — investigation pipeline has fixed steps but doesn't dynamically identify gaps",
+    "select_sources": "NO — sources are fixed pipeline order, not dynamically selected",
+    "check_authorization": "NO — no authorization check before source access",
+    "select_connectors": "NO — connectors are hardcoded, not selected based on gap",
+    "collect": "YES — pipeline collects from 6 connectors + scam detection engine",
+    "validate": "PARTIAL — scam detection validates content but no formal evidence validation",
+    "create_evidence": "YES — evidence items created during investigation",
+    "discover_entities": "YES — entity extraction (wallets, domains, phones, usernames)",
+    "expand_graph": "PARTIAL — entity_links created but graph expansion not autonomous",
+    "choose_next_action": "NO — pipeline is sequential, not decision-based",
+    "stop_documented_reason": "NO — pipeline runs to completion, no stop conditions",
+    "generate_case_package": "PARTIAL — case created with summary but no formal case package"
+  },
+  "smartstar_investigation": {
+    "status": "COMPLETED_AUTONOMOUSLY",
+    "passes": 4,
+    "artifacts": 117,
+    "finding": "SmartStar investigation was run autonomously as a scripted test. It demonstrates the CONCEPT of autonomous investigation but is not wired as a repeatable on-demand service."
+  },
+  "finding": "GFIN investigations are PIPELINE-TRIGGERED (auto on complaint), not BRAIN-DIRECTED. The investigation runs fixed steps (Scam Engine Analysis, Entity Extraction, Connector Search, Police Routing) regardless of gaps or context. SmartStar proves the concept works but the production system doesn't use it.",
+  "status": "PARTIAL — pipeline autonomous, not Brain-directed autonomous"
+}

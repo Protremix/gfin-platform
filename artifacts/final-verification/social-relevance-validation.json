@@ -1,0 +1,19 @@
+{
+  "artifact": "social-relevance-validation.json",
+  "task": "TASK_08_SOCIAL_MESSAGING_RELEVANCE",
+  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "platform": "Telegram",
+  "messages_evaluated": 260809,
+  "groups_monitored": 32,
+  "evaluation_dimensions": {
+    "target_match": "NOT_FORMALLY_IMPLEMENTED — messages are keyword-matched, not target-matched",
+    "identifier_match": "PARTIAL — wallet/domain/phone extraction exists but no formal target matching",
+    "domain_relevance": "PARTIAL — domains extracted and checked against known scam patterns",
+    "phone_email_relevance": "PARTIAL — phone numbers extracted but no formal relevance scoring",
+    "content_relevance": "PARTIAL — scam detection engine v3.0 classifies content but doesn't score relevance to specific cases",
+    "time_relevance": "NOT_IMPLEMENTED — no temporal correlation between messages and case timelines",
+    "corroboration": "NOT_IMPLEMENTED — no cross-source corroboration for Telegram intelligence"
+  },
+  "finding": "260K Telegram messages are collected as RAW INTELLIGENCE. They are NOT evidence. The extraction pipeline pulls wallets, domains, phones, and usernames but does not formally evaluate relevance to specific cases. Generic scam-related content is correctly NOT promoted to cases (hunter disabled), but there's no formal 7-dimension relevance scoring. Messages are intelligence input, not evidence output.",
+  "status": "PARTIAL — extraction works, formal relevance scoring NOT implemented"
+}
