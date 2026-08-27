@@ -171,7 +171,7 @@ def get_db():
         host="127.0.0.1",
         database="gfin",
         user="gfin",
-        password="GfinSecure2026!",
+        password="",
         port=5432,
     )
 

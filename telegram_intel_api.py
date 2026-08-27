@@ -8,7 +8,7 @@ router = APIRouter(prefix="/api/telegram-intel", tags=["telegram-intelligence"])
 
 def get_db():
     return psycopg2.connect(
-        host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!", port=5432
+        host="127.0.0.1", database="gfin", user="gfin", password="", port=5432
     )
 
 @router.get("/overview")

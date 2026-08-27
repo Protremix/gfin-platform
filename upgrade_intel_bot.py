@@ -56,7 +56,7 @@ DB_POOL = None
 async def get_db():
     global DB_POOL
     if DB_POOL is None:
-        DB_POOL = await asyncpg.create_pool(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin", min_size=2, max_size=5)
+        DB_POOL = await asyncpg.create_pool(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin", min_size=2, max_size=5)
     return DB_POOL
 
 async def db_store_intel(intel, chat_id, chat_title, chat_type, username, message_id):

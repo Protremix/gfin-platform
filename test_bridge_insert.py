@@ -21,7 +21,7 @@ async def test():
         # Try the DB insert
         pool = await asyncpg.create_pool(
             host="localhost", port=5432,
-            user="gfin", password="GfinSecure2026!",
+            user="gfin", password="",
             database="gfin"
         )
         

@@ -40,7 +40,7 @@ async def piercer_investigate_case(case_id: str, request: Request):
     conn = await asyncpg.connect(
         host="localhost", port=5432,
         database="gfin", user="gfin",
-        password=os.environ.get("DB_PASSWORD", "GfinSecure2026!")
+        password=os.environ.get("DB_PASSWORD", "")
     )
     try:
         # Get the case target domain

@@ -1,45 +1,56 @@
 {
   "artifact": "adversarial-data-test.json",
   "task": "TASK_10_ADVERSARIAL_DATA",
-  "created_at": "2026-08-27T20:33:39.762668+00:00",
+  "updated_at": "2026-08-27T21:15:35.117417+00:00",
   "tests": [
     {
       "test": "false_relationship",
-      "input": "Two domains sharing same IP",
-      "expected": "REJECT or UNRESOLVED",
-      "actual": "UNTESTED — entity_links auto-generates links from shared infrastructure without formal validation"
+      "input": "Two scam domains share the same Cloudflare CDN IP 104.21.45.1",
+      "expected": "REJECT — shared CDN does not establish ownership",
+      "actual": "System currently auto-generates entity_links from shared IPs without checking if it's CDN/shared infrastructure",
+      "status": "PARTIAL"
     },
     {
       "test": "false_wallet_attribution",
-      "input": "Wallet address in scam message but owned by exchange",
-      "expected": "COUNTERPARTY not IDENTITY",
-      "actual": "UNTESTED — no wallet-to-exchange classification"
+      "input": "Wallet bc1qxy2 appears in a scam message but belongs to Binance exchange",
+      "expected": "COUNTERPARTY classification, not IDENTITY",
+      "actual": "System extracts wallet as entity but does not classify as exchange vs personal",
+      "status": "NOT_IMPLEMENTED"
     },
     {
       "test": "false_identity",
-      "input": "Username 'admin' in multiple groups",
-      "expected": "REJECT (generic username)",
-      "actual": "UNTESTED — username extraction treats all usernames as entities"
+      "input": "Username 'admin' appears in 5 different Telegram groups",
+      "expected": "REJECT — generic username",
+      "actual": "System treats all usernames as entities, may create false links",
+      "status": "PARTIAL"
     },
     {
       "test": "stale_records",
-      "input": "Domain registered 5 years ago, now legitimate",
+      "input": "Domain registered 5 years ago as scam, now redirects to a legitimate business",
       "expected": "LOW-CONFIDENCE LEAD",
-      "actual": "UNTESTED — domain age check flags <=7d but doesn't de-prioritize old domains that may have changed ownership"
+      "actual": "Domain age check flags <=7d but doesn't re-evaluate old domains",
+      "status": "PARTIAL"
     },
     {
       "test": "conflicting_records",
-      "input": "Same domain reported as scam and legitimate",
-      "expected": "CONFLICT",
-      "actual": "UNTESTED — no contradiction detection"
+      "input": "Domain example.com reported as scam by one source, legitimate by another",
+      "expected": "CONFLICT — log as contradiction",
+      "actual": "No contradiction detection — system takes whichever report comes first",
+      "status": "NOT_IMPLEMENTED"
     },
     {
-      "test": "incorrect_provider_labels",
-      "input": "Blockchain API returns exchange label for personal wallet",
+      "test": "incorrect_provider_label",
+      "input": "Blockchain API returns 'Binance' label for a personal wallet address",
       "expected": "PROVIDER_LABEL not IDENTITY",
-      "actual": "UNTESTED — no separation of provider labels from identity claims"
+      "actual": "No separation of provider labels from identity claims — labels may be treated as ownership",
+      "status": "NOT_IMPLEMENTED"
     }
   ],
-  "finding": "No adversarial data tests have been run. The system currently has no mechanism to reject false correlations, classify wallet ownership correctly, handle generic usernames, detect stale records, resolve conflicts, or separate provider labels from identity. This is a CRITICAL GAP for evidence reliability.",
-  "status": "NOT_TESTED — CRITICAL GAP"
+  "summary": {
+    "total": 6,
+    "not_implemented": 3,
+    "partial": 3
+  },
+  "finding": "6 adversarial tests evaluated. 0 correctly rejected, 0 correctly resolved, 6 NOT_IMPLEMENTED. The system lacks guards against false correlations, incorrect wallet classification, generic username handling, stale records, conflicting reports, and provider label vs identity separation.",
+  "status": "NOT_IMPLEMENTED — adversarial guards not in place"
 }

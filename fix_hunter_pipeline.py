@@ -94,7 +94,7 @@ new_create = '''async def add_to_tracked_domains(domain: str, investigation: dic
 
     DB_CONFIG = {
         "host": "127.0.0.1", "port": 5432,
-        "user": "gfin", "password": "GfinSecure2026!",
+        "user": "gfin", "password": "",
         "database": "gfin",
     }
 

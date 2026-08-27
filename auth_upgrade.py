@@ -10,7 +10,7 @@ import psycopg2
 from datetime import datetime, timedelta
 from typing import Optional
 
-DB_CONFIG = {"host": "127.0.0.1", "port": 6432, "dbname": "gfin", "user": "gfin", "password": "GfinSecure2026!"}
+DB_CONFIG = {"host": "127.0.0.1", "port": 6432, "dbname": "gfin", "user": "gfin", "password": ""}
 JWT_SECRET = os.getenv("JWT_SECRET", "gfin_secure_jwt_secret_2026_change_in_production")
 JWT_ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRY = 3600  # 1 hour (down from 7 days)

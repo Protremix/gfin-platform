@@ -1,5 +1,5 @@
 import psycopg2
-conn = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!", port=5432)
+conn = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="", port=5432)
 cur = conn.cursor()
 for t in ["telegram_intelligence", "telegram_groups", "telegram_wallets", "telegram_domains"]:
     cur.execute(f"DROP TABLE IF EXISTS {t} CASCADE")

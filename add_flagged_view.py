@@ -14,7 +14,7 @@ flagged_api = '''
 @app.get("/api/flagged-domains")
 async def get_flagged_domains(limit: int = 50):
     """Get all flagged domains from scam_websites database."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         rows = await conn.fetch(
             "SELECT domain, scam_type, risk_level, report_count, sources, first_reported, last_reported, countries_affected, wallet_addresses, phone_numbers, status, is_verified, description FROM scam_websites ORDER BY last_reported DESC LIMIT $1",

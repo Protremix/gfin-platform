@@ -7,7 +7,7 @@ def register_telegram_intel_routes(app, auth_police, auth_police_admin, rate_lim
 
     def get_db():
         return psycopg2.connect(
-            host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!", port=5432
+            host="127.0.0.1", database="gfin", user="gfin", password="", port=5432
         )
 
     def safe_json(val):

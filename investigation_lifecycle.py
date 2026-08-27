@@ -116,7 +116,7 @@ async def get_db():
     return await asyncpg.connect(
         host="localhost", port=5432,
         database="gfin", user="gfin",
-        password=os.environ.get("DB_PASSWORD", "GfinSecure2026!")
+        password=os.environ.get("DB_PASSWORD", "")
     )
 
 async def add_timeline_event(conn, case_id, event_type, title, description, metadata=None, officer="SYSTEM"):

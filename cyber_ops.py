@@ -9,7 +9,7 @@ Run on all Telegram intelligence data to:
 """
 import json, urllib.request, urllib.parse, ssl, time, psycopg2, sys
 
-DB_CONN = "host=127.0.0.1 database=gfin user=gfin password=GfinSecure2026! port=5432"
+DB_CONN = "host=127.0.0.1 database=gfin user=gfin password= port=5432"
 API_BASE = "https://gfin-system.com"
 CTX = ssl.create_default_context()
 CTX.check_hostname = False

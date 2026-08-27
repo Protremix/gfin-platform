@@ -309,7 +309,7 @@ if (!token) {
 import psycopg2 as _psycopg2
 import hashlib as _hashlib
 
-_AUTH_DB = {"host": "127.0.0.1", "port": 6432, "dbname": "gfin", "user": "gfin", "password": "GfinSecure2026!"}
+_AUTH_DB = {"host": "127.0.0.1", "port": 6432, "dbname": "gfin", "user": "gfin", "password": ""}
 
 def _auth_conn():
     return _psycopg2.connect(**_AUTH_DB)

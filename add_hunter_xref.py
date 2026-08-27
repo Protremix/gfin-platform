@@ -19,7 +19,7 @@ if "/api/cases/{case_id}/cross-reference" not in server:
 @app.get("/api/cases/{case_id}/cross-reference")
 async def cross_reference_case(case_id: str):
     """Find other cases sharing IPs, hosting providers, or infrastructure with this case."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         # Get this case's identifiers
         case = await conn.fetchrow("SELECT * FROM cases WHERE case_id=$1", case_id)
@@ -97,7 +97,7 @@ async def cross_reference_case(case_id: str):
 @app.get("/api/hunter/activity")
 async def hunter_activity():
     """Get recent hunter activity — domains discovered, investigations run, intelligence collected."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         # Get recent cases created by hunter
         recent = await conn.fetch(

@@ -15,7 +15,7 @@ DB_CONFIG = {
     "host": "localhost",
     "port": 5432,
     "user": "gfin",
-    "password": "GfinSecure2026!",
+    "password": "",
     "dbname": "gfin",
 }
 

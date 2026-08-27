@@ -21,7 +21,7 @@ flag_funcs = '''
 async def flag_domain_in_db(domain, inv):
     """Flag a domain in scam_websites without opening a full case."""
     import asyncpg
-    DB = {"host": "127.0.0.1", "port": 5432, "user": "gfin", "password": "GfinSecure2026!", "database": "gfin"}
+    DB = {"host": "127.0.0.1", "port": 5432, "user": "gfin", "password": "", "database": "gfin"}
     conn = await asyncpg.connect(**DB)
     try:
         existing = await conn.fetchrow("SELECT id, report_count, sources FROM scam_websites WHERE domain = $1", domain)

@@ -5,7 +5,7 @@
 """
 import psycopg2, json
 
-conn = psycopg2.connect("dbname=gfin user=gfin password=GfinSecure2026! host=localhost")
+conn = psycopg2.connect("dbname=gfin user=gfin password= host=localhost")
 cur = conn.cursor()
 
 # Delete the 4 test cases (keep only GFIN-CASE-001)

@@ -8,7 +8,7 @@ import psycopg2
 from datetime import datetime, timezone
 from collections import defaultdict
 
-DB_CONFIG = {"host": "localhost", "dbname": "gfin", "user": "gfin", "password": "GfinSecure2026!"}
+DB_CONFIG = {"host": "localhost", "dbname": "gfin", "user": "gfin", "password": ""}
 
 def get_conn():
     return psycopg2.connect(**DB_CONFIG)

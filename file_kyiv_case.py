@@ -2,7 +2,7 @@
 """File GFIN case for the Kyiv scam call center recruitment operation."""
 import psycopg2, secrets, hashlib
 
-conn = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!", port=5432)
+conn = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="", port=5432)
 cur = conn.cursor()
 
 # Register intelligence reporter

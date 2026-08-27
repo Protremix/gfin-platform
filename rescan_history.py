@@ -135,7 +135,7 @@ def calculate_risk(wallets, domains, is_victim, scam_indicators, scam_type):
     return "LOW"
 
 def get_db():
-    return psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!", port=5432)
+    return psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="", port=5432)
 
 async def scan_and_store():
     await client.connect()

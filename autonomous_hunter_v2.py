@@ -778,7 +778,7 @@ def _cross_reference(domain: str, ips: list, sans: list) -> list:
         import asyncpg
         loop = asyncio.new_event_loop()
         async def check():
-            conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+            conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
             try:
                 # Check by IP match
                 for ip in ips[:2]:
@@ -816,7 +816,7 @@ def _cross_reference(domain: str, ips: list, sans: list) -> list:
 async def flag_domain_in_db(domain, inv):
     """Flag a domain in scam_websites without opening a full case."""
     import asyncpg
-    DB = {"host": "127.0.0.1", "port": 5432, "user": "gfin", "password": "GfinSecure2026!", "database": "gfin"}
+    DB = {"host": "127.0.0.1", "port": 5432, "user": "gfin", "password": "", "database": "gfin"}
     conn = await asyncpg.connect(**DB)
     try:
         existing = await conn.fetchrow("SELECT id, report_count, sources FROM scam_websites WHERE domain = $1", domain)
@@ -905,7 +905,7 @@ def has_strong_evidence(inv):
 async def create_case(inv: dict) -> str:
     import asyncpg
     case_id = f"GFIN-AUTO-{int(time.time() * 1000) % 10000000000}"
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         await conn.execute(
             """INSERT INTO cases (case_id, target, target_type, trigger, summary, status, confidence,

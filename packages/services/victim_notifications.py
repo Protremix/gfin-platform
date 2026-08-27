@@ -26,7 +26,7 @@ Requirements & Specifications:
 5. Email Templates: Professional HTML design with responsive layout & GFIN branding.
 6. Database Logging: Stores logs in PostgreSQL table `victim_notifications`
    (columns: id, complaint_ref, notification_type, recipient, channel, status, sent_at).
-7. Database Connection: host=localhost, port=5432, user=gfin, password=GfinSecure2026!, dbname=gfin.
+7. Database Connection: host=localhost, port=5432, user=gfin, password=REDACTED, dbname=gfin.
 8. Email Config from Environment:
    - SMTP_HOST (default: 'localhost')
    - SMTP_PORT (default: 587)
@@ -69,7 +69,7 @@ if not logger.handlers:
 DB_HOST = os.getenv("DB_HOST", "localhost")
 DB_PORT = int(os.getenv("DB_PORT", "5432"))
 DB_USER = os.getenv("DB_USER", "gfin")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "GfinSecure2026!")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_NAME = os.getenv("DB_NAME", "gfin")
 
 # SMTP Credentials & Configuration

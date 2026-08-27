@@ -5,7 +5,7 @@ import psycopg2
 import json
 
 # 1. Create the favorite_cases table
-conn = psycopg2.connect(host="localhost", dbname="gfin", user="gfin", password="GfinSecure2026!")
+conn = psycopg2.connect(host="localhost", dbname="gfin", user="gfin", password="")
 cur = conn.cursor()
 
 cur.execute("""

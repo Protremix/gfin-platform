@@ -1,5 +1,5 @@
 import psycopg2, json
-conn = psycopg2.connect("dbname=gfin user=gfin password=GfinSecure2026! host=localhost")
+conn = psycopg2.connect("dbname=gfin user=gfin password= host=localhost")
 cur = conn.cursor()
 
 # Check the 4 test cases

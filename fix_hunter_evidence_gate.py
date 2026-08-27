@@ -18,7 +18,7 @@ async def flag_domain_in_db(domain: str, investigation: dict) -> bool:
 
     DB_CONFIG = {
         "host": "127.0.0.1", "port": 5432,
-        "user": "gfin", "password": "GfinSecure2026!",
+        "user": "gfin", "password": "",
         "database": "gfin",
     }
 

@@ -1053,7 +1053,7 @@ async def flag_domain_in_db(domain: str, investigation: dict) -> bool:
 
     DB_CONFIG = {
         "host": "127.0.0.1", "port": 5432,
-        "user": "gfin", "password": "GfinSecure2026!",
+        "user": "gfin", "password": "",
         "database": "gfin",
     }
 
@@ -1197,7 +1197,7 @@ async def add_to_tracked_domains(domain: str, investigation: dict) -> str:
 
     DB_CONFIG = {
         "host": "127.0.0.1", "port": 5432,
-        "user": "gfin", "password": "GfinSecure2026!",
+        "user": "gfin", "password": "",
         "database": "gfin",
     }
 
@@ -1241,7 +1241,7 @@ async def create_case_from_investigation(investigation: dict) -> str:
 
     DB_CONFIG = {
         "host": "127.0.0.1", "port": 5432,
-        "user": "gfin", "password": "GfinSecure2026!",
+        "user": "gfin", "password": "",
         "database": "gfin",
     }
 

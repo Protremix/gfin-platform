@@ -4,7 +4,7 @@ import psycopg2, json, secrets, hashlib, time
 from datetime import datetime, timezone
 
 def get_db():
-    return psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!", port=5432)
+    return psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="", port=5432)
 
 cases = [
     {

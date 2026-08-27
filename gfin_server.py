@@ -99,7 +99,7 @@ DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
 DB_PORT = int(os.getenv("DB_PORT", "5432"))
 DB_USER = os.getenv("DB_USER", "gfin")
 DB_NAME = os.getenv("DB_NAME", "gfin")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "GfinSecure2026!")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
 DB_CONFIG = {"host": DB_HOST, "port": DB_PORT, "user": DB_USER, "password": DB_PASSWORD, "database": DB_NAME}
 EVIDENCE_UPLOAD_DIR = Path("/gfin/evidence_uploads")
 EVIDENCE_UPLOAD_DIR.mkdir(exist_ok=True)
@@ -1363,7 +1363,7 @@ async def start_investigation(target: str = Body(...), target_type: str = Body("
 @app.get("/api/cases/{case_id}/cross-reference")
 async def cross_reference_case(case_id: str):
     """Find other cases sharing IPs, hosting providers, or infrastructure with this case."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         # Get this case's identifiers
         case = await conn.fetchrow("SELECT * FROM cases WHERE case_id=$1", case_id)
@@ -1454,7 +1454,7 @@ async def cross_reference_case(case_id: str):
 @app.get("/api/hunter/activity")
 async def hunter_activity():
     """Get recent hunter activity — domains discovered, investigations run, intelligence collected."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         # Get recent cases created by hunter
         recent = await conn.fetch(
@@ -1525,7 +1525,7 @@ async def hunter_activity():
 @app.get("/api/flagged-domains")
 async def get_flagged_domains(limit: int = 50):
     """Get all flagged domains from scam_websites database."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         rows = await conn.fetch(
             "SELECT domain, scam_type, risk_level, report_count, sources, first_reported, last_reported, countries_affected, wallet_addresses, phone_numbers, status, is_verified, description FROM scam_websites ORDER BY last_reported DESC LIMIT $1",
@@ -1566,7 +1566,7 @@ async def get_flagged_domains(limit: int = 50):
 @app.get("/api/telegram/intelligence")
 async def get_telegram_intelligence(limit: int = 50, type: str = None):
     """Get intelligence collected from Telegram groups."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         where = ""
         params = []
@@ -1630,7 +1630,7 @@ async def get_telegram_intelligence(limit: int = 50, type: str = None):
 @app.get("/api/telegram/groups")
 async def get_telegram_groups():
     """Get all Telegram groups the intelligence bot is monitoring."""
-    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="GfinSecure2026!", database="gfin")
+    conn = await asyncpg.connect(host="127.0.0.1", port=5432, user="gfin", password="", database="gfin")
     try:
         rows = await conn.fetch("SELECT chat_id, chat_title, chat_type, chat_username, member_count, joined_at, last_activity, messages_scanned, intel_items_found, victims_helped, scams_detected, is_active FROM telegram_groups ORDER BY last_activity DESC")
         total = await conn.fetchval("SELECT COUNT(*) FROM telegram_groups")
@@ -2611,7 +2611,7 @@ async def piercer_investigate_case(case_id: str, request: Request):
     conn = await asyncpg.connect(
         host="localhost", port=5432,
         database="gfin", user="gfin",
-        password=os.environ.get("DB_PASSWORD", "GfinSecure2026!")
+        password=os.environ.get("DB_PASSWORD", "")
     )
     try:
         # Get the case target domain

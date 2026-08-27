@@ -7,7 +7,7 @@ Clean up the cases table:
 import psycopg2, json
 from datetime import datetime, timezone
 
-conn = psycopg2.connect("dbname=gfin user=gfin password=GfinSecure2026! host=localhost")
+conn = psycopg2.connect("dbname=gfin user=gfin password= host=localhost")
 cur = conn.cursor()
 
 # Create tracked_domains table if it doesn't exist
