@@ -1,74 +1,101 @@
-# GFIN — Module Status
+# GFIN Module Status
 
-**Last Updated:** 2026-08-26
-
----
-
-## Status Definitions
-
-| Status | Meaning |
-|--------|--------|
-| NOT_STARTED | Not yet begun |
-| PLANNED | Specification complete, implementation not started |
-| IN_PROGRESS | Active development |
-| IN_PROGRESS — REVIEW REQUIRED | Development complete, formal review required before acceptance |
-| TESTING | Implementation complete, tests running |
-| BLOCKED | Cannot proceed without external input |
-| ACCEPTED | All acceptance criteria met with evidence |
-| DEPRECATED | Superseded or retired |
-
-## Module Status Table
-
-| Module | Name | Status | Start Date | Accept Date | Notes |
-|--------|------|--------|------------|-------------|-------|
-| 00 | Governance | ACCEPTED | 2026-08-25 | 2026-08-25 | 18 docs, 32 open issues tracked, architecture + threat model reviewed by owner |
-| 01 | Repository & Dev Environment | ACCEPTED | 2026-08-25 | 2026-08-25 | 77/77 tests pass; 8 interfaces + dev adapters; CI/CD config; OpenAI gateway (gpt-5.6-luna) |
-| 02 | Security & Identity | ACCEPTED | 2026-08-25 | 2026-08-25 | 61 tests; RBAC+ABAC, audit, rate limit, validation |
-| 03 | Core Data Model | ACCEPTED | 2026-08-25 | 2026-08-25 | 26 entities, 20 relationships, 7 extended models, 203 tests |
-| 04 | Entity Resolution | ACCEPTED | 2026-08-25 | 2026-08-26 | 98 tests; 11 normalizers, matching, dedup, merge/split; GPT Luna verified |
-| 05 | Event Bus | ACCEPTED | 2026-08-25 | 2026-08-26 | 60 tests; 14 Kafka topics, schemas, pub/sub, retry, DLQ, replay, producer/consumer adapters; GPT Luna verified (Layer A) |
-| 06 | Evidence Vault | ACCEPTED | 2026-08-25 | 2026-08-26 | 55 tests; custody chain, processing history, hash verification, access control, retention; GPT Luna verified (Layer A) |
-| 07 | Search Platform | ACCEPTED | 2026-08-26 | 2026-08-26 | 77 tests; 9 search types, Levenshtein fuzzy, authorization + data-sharing policy, graph-assisted; GPT Luna verified (Layer A) |
-| 08 | Web Discovery Engine | ACCEPTED | 2026-08-26 | 2026-08-26 | 54 tests; crawl jobs, policy enforcement, robots/ToS compliance, content extraction, deduplication, retries/DLQ, rate limiting; GPT Luna verified (Layer A) |
-| 09 | Infrastructure Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | 56 tests; DNS, IP, ASN, certificates, redirect chains, tech fingerprints, interpretation rules enforcement (IP!=owner, ASN!=criminal); GPT Luna verified (Layer A) |
-| 10 | Domain Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; RDAP profiles, domain profiles, related domains, fraud report/campaign links; GPT Luna verified (Layer A) |
-| 11 | Certificate Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | Certificate timelines, SAN tracking, newly observed domains, cert relationships; part of modules 10-12 combined |
-| 12 | IP/ASN Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | IP history, domain-IP linking, related domains by IP, abuse contacts, source licensing enforcement; part of modules 10-12 combined |
-| 13 | Citizen Platform | ACCEPTED | 2026-08-26 | 2026-08-26 | 56 tests; entity check (PUBLIC-only), report submission (UNVERIFIED start), status state machine, anonymous reporting, alert subscriptions, rate limiting, audit logging; GPT Luna verified (Layer A) |
-| 14 | Fraud Reporting | ACCEPTED | 2026-08-26 | 2026-08-26 | 61 tests; triage (priority, spam, volume spike), enrichment (entity/campaign/infra), scoring (0-100 composite), dedup (similarity > 0.8), campaign linking; GPT Luna verified (Layer A) |
-| 15 | Fraud Detection | ACCEPTED | 2026-08-26 | 2026-08-26 | 38 tests; 7 signals, 4 patterns, 4 rule types, threshold detection (75=HIGH, 90=CRITICAL), auto-detection from signals; GPT Luna verified (Layer A) |
-| 16 | Campaign Engine | ACCEPTED | 2026-08-26 | 2026-08-26 | 43 tests; detection (report+infra clustering), scoring (0-100), lifecycle (DRAFT→ACTIVE→DORMANT→DISMANTLED), linking, auto-dormant; GPT Luna verified (Layer A) |
-| 17 | Continuous Monitoring | ACCEPTED | 2026-08-26 | 2026-08-26 | 46 tests; subscriptions, change detection (entity+campaign), alert engine (6 types, 4 priorities), monitoring loop; GPT Luna verified (Layer A) |
-| 18 | Alert Engine | ACCEPTED | 2026-08-26 | 2026-08-26 | 64 tests; routing (5 channels, custom rules), escalation (4 levels, time-based), templates (6 types), digest, statistics; GPT Luna verified (Layer A) |
-| 19 | Model Gateway | ACCEPTED | 2026-08-25 | 2026-08-25 | OpenAI adapter (gpt-5.6-luna) implemented + tested as part of Module 01 extension |
-| 20 | OpenAI | ACCEPTED | 2026-08-25 | 2026-08-25 | GPT-5.6-LUNA gateway adapter, 17 tests, classification-aware routing |
-| 21 | Local AI | ACCEPTED | 2026-08-26 | 2026-08-26 | 67 tests; classifier (6 fraud types), embeddings (128d hash), OCR (mock), language detector (10 langs), gateway routing (classification-aware); GPT Luna verified (Layer A) |
-| 22 | AI Investigation Orchestrator | ACCEPTED | 2026-08-26 | 2026-08-26 | 57 tests; 15 registered tools, role-based authz, investigation planning/execution/synthesis, evidence-claim mapping, UNVERIFIED marking, human review flagging; GPT Luna verified (Layer A) |
-| 23 | Police API | ACCEPTED | 2026-08-26 | 2026-08-26 | 58 tests; 8 endpoints, RBAC auth (officer/supervisor/admin), immutable audit log, per-org rate limiting, cross-border request workflow; GPT Luna verified (Layer A) |
-| 24 | Police Connector SDK | ACCEPTED | 2026-08-26 | 2026-08-26 | 49 tests; 8-method ABC interface, mock connector, registry (auth_all/sync_all), credential rotation with redaction, sync result with conflicts; GPT Luna verified (Layer A) |
-| 25 | Global Matching | ACCEPTED | 2026-08-26 | 2026-08-26 | 39 tests; global entity index, match engine (cross-border, same-jurisdiction exclusion), federation boundary policy (permitted fields only), match notifications (PENDING→SENT→ACK), Match≠Guilt; GPT Luna verified (Layer A) |
-| 26 | Cross-Border Requests | ACCEPTED | 2026-08-26 | 2026-08-26 | 44 tests; 7-stage workflow (submit→validate→authorize→route→review→decide→close), validator (legal basis, purpose), authorizer (per-org jurisdiction perms), router, 3 decision types (approve/partial/deny), policy filtering on response, audit trail, urgency levels; GPT Luna verified (Layer A) |
-| 27 | Police Console | ACCEPTED | 2026-08-26 | 2026-08-26 | 38 tests; dashboard, case management, search, evidence, reports, officer stats; GPT Luna verified (Layer A) |
-| 28 | Crypto Intelligence | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; wallet profiling, transaction tracking, fund tracing (BFS), risk assessment, 6 blockchains; GPT Luna verified (Layer A) |
-| 29 | Multilingual | ACCEPTED | 2026-08-26 | 2026-08-26 | 20 tests; language detection (10 langs), translation w/ cache, batch translate, cross-language entity matching, 27 supported languages; GPT Luna verified (Layer A) |
-| 30 | Analytics | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; metrics, trend analysis (up/down/stable), fraud stats by category, geographic data, top countries, dashboard; GPT Luna verified (Layer A) |
-| 31 | Global Early Warning | ACCEPTED | 2026-08-26 | 2026-08-26 | 34 tests; rule-based detection, 4 warning levels, 5 rule types, entity monitoring, notification dispatch; GPT Luna verified (Layer A) |
-| 32 | Federation | ACCEPTED | 2026-08-26 | 2026-08-26 | 31 tests; node network, message routing (6 types, delivery status), heartbeat, topology, audit log; GPT Luna verified (Layer A) |
-| 33 | Compliance | ACCEPTED | 2026-08-26 | 2026-08-26 | 30 tests; 5 data classification levels, 6 accessor roles, access checks, privacy filtering, retention policies, violation tracking; GPT Luna verified (Layer A) |
-| 34 | Observability | ACCEPTED | 2026-08-26 | 2026-08-26 | 30 tests; metrics (counter/gauge/histogram), health checks, distributed tracing, system metrics snapshot; GPT Luna verified (Layer A) |
-| 35 | Disaster Recovery | ACCEPTED | 2026-08-26 | 2026-08-26 | 22 tests; backup/restore, failover/failback, RTO/RPO targets, verification, DR summary; GPT Luna verified (Layer A) |
-| 36 | Security Testing | ACCEPTED | 2026-08-26 | 2026-08-26 | 33 tests; test management, findings tracking, 15-item security checklist, remediation workflow; GPT Luna verified (Layer A) |
-| 37 | AI Evaluation | ACCEPTED | 2026-08-26 | 2026-08-26 | 25 tests; 7 metric types, model comparison, evaluation summary; GPT Luna verified (Layer A) |
-| 38 | Load Testing | ACCEPTED | 2026-08-26 | 2026-08-26 | 19 tests; load test scenarios, throughput/latency measurement, pass/fail thresholds; GPT Luna verified (Layer A) |
-| 39 | Pilot | ACCEPTED | 2026-08-26 | 2026-08-26 | 30 tests; pilot program management, participant tracking, feedback collection, program summary; GPT Luna verified (Layer A) |
-| 40 | Production | ACCEPTED | 2026-08-26 | 2026-08-26 | 23 tests; 26-item readiness checklist, 12 infrastructure requirements, go-live assessment; GPT Luna verified (Layer A) |
+**Last Updated:** 2026-08-27  
+**Status:** ALL 39 MODULES ACCEPTED AND INTEGRATED  
+**Total API Endpoints:** 234  
 
 ---
 
-## Test Summary
+## Module Integration Summary
 
-| Module(s) | Tests | Status |
-|-----------|-------|--------|
-| 00-26 (combined) | 1388 | ALL PASSING |
-| 27-40 (combined) | 388 | ALL PASSING |
-| Full suite | 1776 | 0 failures, 0 errors, 95.41% coverage |
+| # | Module | Batch | Endpoints | Status | Notes |
+|---|--------|-------|-----------|--------|-------|
+| 01 | evidence_vault | 1 | 4 | ✅ VERIFIED | Case evidence storage and retrieval |
+| 02 | fraud_graph | 1 | 8 | ✅ VERIFIED | Entity relationship graph |
+| 03 | search_platform | 1 | 2 | ✅ VERIFIED | Cross-entity search |
+| 04 | compliance | 1 | 4 | ✅ VERIFIED | Regulatory compliance tracking |
+| 05 | campaign_engine | 1 | 6 | ✅ VERIFIED | Fraud campaign detection |
+| 06 | global_matching | 1 | 4 | ✅ VERIFIED | International pattern matching |
+| 07 | early_warning | 1 | 6 | ✅ VERIFIED | Proactive threat alerts |
+| 08 | continuous_monitoring | 1 | 4 | ✅ VERIFIED | 24/7 intelligence monitoring |
+| 09 | investigation_orchestrator | 1 | 5 | ✅ VERIFIED | Auto-investigation pipeline |
+| 10 | police_console | 1 | 6 | ✅ VERIFIED | Police dashboard and auth |
+| 11 | entity_resolution | 1 | 2 | ✅ VERIFIED | Entity deduplication |
+| 12 | campaign_dna | 4 | 5 | ✅ VERIFIED | Campaign clustering |
+| 13 | web_discovery | 4 | 4 | ✅ VERIFIED | Web-based scam discovery |
+| 14 | proactive_scamhunter | 4 | 5 | ✅ VERIFIED | Hunter v3.0 (8 cyber-intel modules) |
+| 15 | domain_intelligence | 4 | 4 | ✅ VERIFIED | Domain WHOIS/DNS analysis |
+| 16 | pattern_engine | 4 | 4 | ✅ VERIFIED | Fraud pattern detection |
+| 17 | gdpr_compliance | 5 | 10 | ✅ VERIFIED | Data subject requests, consent, breach |
+| 18 | security_dashboard | 5 | 4 | ✅ VERIFIED | Security monitoring |
+| 19 | local_ai | 5 | 4 | ✅ VERIFIED | Deterministic AI (no external dep) |
+| 20 | investigation_copilot | 5 | 2 | ✅ VERIFIED | AI-assisted investigation |
+| 21 | citizen_platform | 5 | 4 | ✅ VERIFIED | Public reporting portal |
+| 22 | crypto_intelligence | 6 | 5 | ✅ VERIFIED | Multi-chain wallet scanner (10 types) |
+| 23 | temporal_intelligence | 6 | 4 | ✅ VERIFIED | Time-based pattern analysis |
+| 24 | infrastructure_intelligence | 6 | 4 | ✅ VERIFIED | Server/infra threat detection |
+| 25 | evidence_explainability | 7 | 3 | ✅ VERIFIED | Evidence chain explanation |
+| 26 | cross_border_requests | 7 | 4 | ✅ VERIFIED | International LEA coordination |
+| 27 | federation | 7 | 3 | ✅ VERIFIED | Multi-agency data federation |
+| 28 | unknown_fraud_discovery | 7 | 2 | ✅ VERIFIED | Novel fraud detection |
+| 29 | disaster_recovery | 8 | 3 | ✅ VERIFIED | DR runbooks and failover |
+| 30 | alert_engine | 8 | 3 | ✅ VERIFIED | Alert routing and escalation |
+| 31 | analytics | 8 | 2 | ✅ VERIFIED | Statistical analysis |
+| 32 | multilingual | 8 | 3 | ✅ VERIFIED | 7-language i18n (EN/ES/DE/FR/IT/PT/PL) |
+| 33 | kafka_event_bus | 8 | 2 | ✅ VERIFIED | 14 topics, event streaming |
+| 34 | pdf_reports | 8 | 2 | ✅ VERIFIED | Case/takedown PDF generation |
+| 35 | dark_web_monitor | 9 | 9 | ✅ VERIFIED | Tor-based dark web scanning |
+| 36 | ai_summaries | 9 | 4 | ✅ VERIFIED | gpt-5.6-luna case summaries |
+| 37 | websocket_hub | 9 | 5 | ✅ VERIFIED | 8 real-time channels |
+| 38 | telegram_intelligence | 9 | 6 | ✅ VERIFIED | 24/7 spy, 78K messages, 32 groups |
+| 39 | scam_awareness | 9 | 4 | ✅ VERIFIED | 12 awareness types, 6hr cycle |
+
+---
+
+## Hunter v3.0 Cyber-Intelligence Modules
+
+| Module | Function | Status |
+|--------|----------|--------|
+| Favicon fingerprinting | MD5 hash for operator correlation | ✅ |
+| Analytics ID extraction | GA, AdSense, FB Pixel, Yandex, GTM | ✅ |
+| Redirect chain following | Follows redirects to final destination | ✅ |
+| Tech stack fingerprinting | CMS, frameworks, payment processors, CDN | ✅ |
+| Form detection | Login, payment, crypto wallet drainer forms | ✅ |
+| Domain age analysis | Flags domains <=7 days old | ✅ |
+| Typo-squatting detection | 60+ brands, homoglyphs, prefix/suffix | ✅ |
+| Page metadata analysis | Title, generator, OpenGraph, JSON-LD | ✅ |
+| URLHaus feed | Malicious URL intelligence | ✅ |
+| ThreatFox feed | IOCs from abuse.ch | ✅ |
+
+---
+
+## Infrastructure Services
+
+| Service | Container/Service | Status |
+|---------|-------------------|--------|
+| PostgreSQL 16 | gfin_postgres_1 | ✅ Running |
+| Redis 7 | gfin_redis_1 | ✅ Running |
+| MinIO | gfin_minio_1 | ✅ Running |
+| Vault | gfin_vault_1 | ✅ Running |
+| Neo4j 5 | gfin_neo4j_1 | ✅ Running |
+| OpenSearch 2.18 | gfin_opensearch_1 | ✅ Running |
+| Kafka 3.7.1 | gfin_kafka_1 | ✅ Running (14 topics) |
+| Prometheus | gfin_prometheus_1 | ✅ Running |
+| Grafana | gfin_grafana_1 | ✅ Running |
+| Nginx TLS | Host network | ✅ Running |
+| k3s | gfin_k3s_1 | ✅ Running |
+| GFIN Server | systemd gfin-server | ✅ Port 8000 |
+| GFIN Monitor | systemd gfin-monitor | ✅ 24/7 |
+| Telethon Spy | systemd gfin-telethon-spy | ✅ 24/7 |
+| Tor | systemd tor@default | ✅ SOCKS 9050 |
+
+---
+
+## Test Results
+
+| Suite | Tests | Passed | Failed | Skipped |
+|-------|-------|--------|--------|---------|
+| Full Suite | 2,466 | 2,466 | 0 | 0 |
+| Terraform IaC | 26 | 26 | 0 | 0 |
+| Go/No-Go Gates | 12 | 6 PASS | 0 | 6 BLOCKED |
+

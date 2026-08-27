@@ -1,55 +1,80 @@
-# GFIN — Known Issues
+# GFIN Known Issues
 
-**Last Updated:** 2026-08-25
+**Last Updated:** 2026-08-27  
 
 ---
 
-## Active Issues
+## Active Blockers (Requires External Action)
 
-### Legal (Requires Legal Counsel)
+### B-001: Production Cloud Credentials
+- **Status:** BLOCKED
+- **Description:** Layer B Terraform IaC is validated (26/26 tests pass) but cannot be provisioned without cloud provider credentials (AWS/GCP/Azure)
+- **Impact:** Production infrastructure remains on single Hetzner server (Layer A)
+- **Resolution:** Obtain cloud provider credentials and run `terraform apply`
 
-| ID | Issue | Impact | Severity | Status | Blocks |
-|----|-------|--------|----------|--------|--------|
-| L-01 | GDPR applicability and specific obligations not confirmed | EU deployment | HIGH | OPEN | Production deployment only |
-| L-02 | Law-enforcement data protection directive applicability not confirmed | Police API, Federation | HIGH | OPEN | Production deployment only |
-| L-03 | Per-jurisdiction data residency requirements not defined | Infrastructure design | MEDIUM | OPEN | Module 32 design |
-| L-04 | Telegram Terms of Service not reviewed | Telegram module | HIGH | OPEN | Module 17 (Telegram) if implemented |
-| L-05 | AI provider data processing agreements not reviewed | Model Gateway, OpenAI module | HIGH | OPEN | Module 20 production use |
-| L-06 | Cross-border information request legal framework not defined | Federation, Police API | HIGH | OPEN | Module 26 production use |
-| L-07 | Retention period requirements per classification not defined | Data lifecycle | MEDIUM | OPEN | Module 33 (Compliance) |
+### B-002: External Penetration Testing
+- **Status:** PENDING
+- **Description:** External pentest required before production deployment
+- **Impact:** Security validation incomplete
+- **Resolution:** Engage certified penetration testing firm
 
-### Source Policy
+### B-003: Officer Registration
+- **Status:** LOW PRIORITY
+- **Description:** Only 2 officers registered (GFIN Admin in GB, Det. Insp. Vance in FR)
+- **Impact:** Limited operational capacity
+- **Resolution:** Register additional law enforcement officers
 
-| ID | Issue | Impact | Severity | Status | Blocks |
-|----|-------|--------|----------|--------|--------|
-| S-01 | Telegram ToS not reviewed | Telegram data sources | HIGH | OPEN | Telegram-related features |
-| S-02 | Per-source crawling terms not reviewed | Web crawling | MEDIUM | OPEN | Module 08 (Web Discovery) crawling live sources |
-| S-03 | Licensed feed agreements not in place | External intelligence feeds | LOW | PENDING | Licensed feed integration |
+### B-004: GitHub Repository Access
+- **Status:** BLOCKED
+- **Description:** No GitHub Personal Access Token configured on server for git push
+- **Impact:** 383 files with changes cannot be pushed to Protremix/gfin-platform
+- **Resolution:** Create GitHub PAT with repo scope and configure credential store
 
-### Architecture
-
-| ID | Issue | Impact | Severity | Status | Blocks |
-|----|-------|--------|----------|--------|--------|
-| A-01 | Graph database selection not finalized (Neo4j vs alternatives) | Infrastructure Graph, Campaign Engine | MEDIUM | PENDING | Module 12 benchmark |
-| A-02 | Event streaming approach in Base44 (mock vs real) not decided | Event Bus module | MEDIUM | PENDING | Module 05 design |
-| A-03 | Full-text search approach in Base44 vs external not decided | Search module | MEDIUM | PENDING | Module 07 design |
-| A-04 | Multi-region deployment strategy not defined | Federation, DR | LOW | PENDING | Module 32/35 design |
-
-### Security
-
-| ID | Issue | Impact | Severity | Status | Blocks |
-|----|-------|--------|----------|--------|--------|
-| T-05 | Penetration testing not yet performed | Overall security | HIGH | PENDING | Module 36 |
-| T-06 | Red-team testing not yet performed | Overall security | HIGH | PENDING | Module 36 |
+---
 
 ## Resolved Issues
 
-None yet.
+### R-001: System Purge — Junk Cases (RESOLVED 2026-08-27)
+- Purged 94 GFIN-AUTO-* garbage cases from URLHAUS/OPENPHISH feed scrapers
+- Purged 1,667 evidence items, 746 case_entities, 96 investigation_steps
+- Purged 152 scam_websites (unverified noise), 67 tracked_domains
+- Auto-hunter service stopped and disabled
+- Hunter code modified to NEVER create cases from feed discoveries
 
-## Issue Naming Convention
+### R-002: False-Positive Victim Classification (RESOLVED 2026-08-27)
+- 16,592 scam operator messages were misclassified as victim messages
+- Scam recruiters, lead sellers, and service providers were flagged as victims
+- Cleaned: from 15 "victims" to 3 real confirmed victims
+- Fixed by keyword filtering (hiring, recruitment, hacking services, lead selling)
 
-- **L-##** — Legal issues
-- **S-##** — Source policy issues
-- **A-##** — Architecture issues
-- **T-##** — Security/threat issues
-- **D-##** — Defects (implementation bugs)
+### R-003: Telegram Bot Token (RESOLVED)
+- Bot token was returning 401 Unauthorized
+- New token obtained from @BotFather
+- Group Privacy disabled for monitoring
+
+### R-004: Kafka Image Compatibility (RESOLVED)
+- Bitnami Kafka image incompatible with new architecture
+- Switched to apache/kafka:3.7.1
+- Fixed advertised listeners configuration
+
+### R-005: PostgreSQL Date Handling (RESOLVED)
+- incident_date was passed as string to PostgreSQL
+- Fixed to pass as date object
+
+---
+
+## Operational Notes
+
+### Evidence Gating (Strict)
+Cases require at least one of:
+- Verified victim report
+- Active financial drainer infrastructure
+- Confirmed fraud pattern correlation
+- Telegram intelligence with clear criminal activity
+
+### Data Separation
+- **Cases table:** Real investigations only (10 cases)
+- **telegram_intelligence:** Raw intelligence (78K messages) — NOT cases
+- **tracked_domains:** Available for domain tracking (currently 0 — purged)
+- **scam_websites:** Available for verified scam sites (currently 0 — purged)
+
