@@ -10,6 +10,7 @@ Runs as a background process, scanning for:
 Triggers the Intelligence Playbook automatically when scam patterns are detected.
 """
 import json, time, ssl, urllib.request, sys, logging
+from datetime import datetime, timezone
 
 sys.path.insert(0, '/gfin/packages/services')
 

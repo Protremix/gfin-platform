@@ -55,8 +55,8 @@ WALLET_PATTERNS = {
     "SOLANA": r'\b[1-9A-HJ-NP-Za-km-z]{43,44}\b',
     "XRP": r'\br[A-Za-z0-9]{24,34}\b',
     "TON": r'\b(EQA|EQB|EQC|EQD|EQE|EQF|EQG|EQH|EQI|EQJ|EQK|EQL|EQM|EQN|EQO|EQP|EQQ|EQR|EQS|EQT|EQU|EQV|EQW|EQX|EQY|EQZ)[A-Za-z0-9_-]{46}\b',
-    "LTC": r'\b[LM3][a-km-zA-HJ-NP-Z1-9]{25,34}\b',
-    "DOGE": r'\bD[A-Za-z0-9]{25,34}\b',
+    "LTC": r'\b[LM][ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz1-9]{25,33}\b',
+    "DOGE": r'\bD[ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz1-9]{33}\b',
 }
 
 DOMAIN_PATTERN = re.compile(
@@ -263,6 +263,14 @@ def extract_wallets(text):
             if wtype == "TRON" and not addr.startswith("T"):
                 continue
             if wtype == "XRP" and not addr.startswith("r"):
+                continue
+            # Base58 validation (no 0, O, I, l in non-hex addresses)
+            _BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+            if wtype not in ("ETH", "BTC_BECH32"):
+                if not all(c in _BASE58 for c in addr):
+                    continue
+            # Reject if contains common words (false positive guard)
+            if wtype in ("DOGE", "LTC") and any(w in addr.lower() for w in ["number", "trunk", "call", "center", "phone", "support"]):
                 continue
             wallets.append({"type": wtype, "address": addr})
     # Deduplicate

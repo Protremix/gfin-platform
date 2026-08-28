@@ -3564,6 +3564,92 @@ async def get_intelligence_digest(request: Request):
         "new_investigation_targets": new_targets
     }
 
+
+# ============================================================
+# INTELLIGENCE INTEGRATION LAYER API
+# ============================================================
+
+@app.get("/api/intel/enriched-investigations")
+async def api_enriched_investigations():
+    """Run enriched investigations (Hunter v4 + Telegram context) for all telegram_intelligence cases."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from intel_integration_layer import run_enriched_investigations
+        result = run_enriched_investigations()
+        return {"status": "ok", "evidence_created": result}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/intel/correlations")
+async def api_correlations():
+    """Run cross-case correlation engine and return found correlations."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from cross_case_correlation import run_correlation_engine
+        count = run_correlation_engine()
+        return {"status": "ok", "correlations_found": count}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/intel/case/{case_id}/context")
+async def api_case_context(case_id: str):
+    """Get Telegram intelligence context for a specific case."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from intel_integration_layer import IntelContextBuilder
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT target FROM cases WHERE case_id = %s", (case_id,))
+        row = cur.fetchone()
+        cur.close()
+        if not row:
+            return {"status": "error", "message": "Case not found"}
+        domain = row[0].strip()
+        builder = IntelContextBuilder(db)
+        ctx = builder.build_context(domain)
+        db.close()
+        return {"status": "ok", "case_id": case_id, "domain": domain, "context": ctx}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/intel/system-health")
+async def api_intel_health():
+    """Check intelligence pipeline health."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    health = {
+        "intel_layer": "available",
+        "correlation_engine": "available",
+        "hunter_v4": "available",
+        "telegram_spy": "unknown",
+        "monitor": "fixed",
+        "timestamp": datetime.now(timezone.utc).isoformat()
+    }
+    try:
+        from intel_integration_layer import IntelContextBuilder, EnrichedScorer
+        health["intel_layer"] = "operational"
+    except:
+        health["intel_layer"] = "error"
+    try:
+        from cross_case_correlation import CrossCaseCorrelator
+        health["correlation_engine"] = "operational"
+    except:
+        health["correlation_engine"] = "error"
+    try:
+        from scam_hunter_v4 import ProactiveScamHunterV4
+        health["hunter_v4"] = "operational"
+    except:
+        health["hunter_v4"] = "error"
+    return health
+
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
