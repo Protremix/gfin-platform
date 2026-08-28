@@ -3734,6 +3734,61 @@ async def api_police_legal_pathway(case_id: str):
         return {"status": "error", "message": str(e)}
 
 
+
+# ============================================================
+# VICTIM DISCOVERY ENGINE API
+# ============================================================
+
+@app.get("/api/victim-discovery/run")
+async def api_run_victim_discovery():
+    """Run victim discovery and investigation engine."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from victim_discovery import run_victim_discovery
+        run_victim_discovery()
+        return {"status": "ok", "message": "Victim discovery engine complete"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/victim-discovery/classification-stats")
+async def api_classification_stats():
+    """Get message classification statistics."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT risk_level, COUNT(*) FROM telegram_intelligence GROUP BY risk_level ORDER BY count DESC")
+        classifications = [{"type": r[0], "count": r[1]} for r in cur.fetchall()]
+        cur.execute("SELECT COUNT(*) FROM victims")
+        victims = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM victim_complaints")
+        complaints = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM tracked_domains")
+        tracked = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM cases")
+        cases = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM people")
+        people = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM scam_websites")
+        websites = cur.fetchone()[0]
+        cur.close()
+        db.close()
+        return {
+            "status": "ok",
+            "message_classifications": classifications,
+            "victims": victims,
+            "complaints": complaints,
+            "tracked_domains": tracked,
+            "cases": cases,
+            "people": people,
+            "scam_websites": websites
+        }
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
