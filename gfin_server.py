@@ -3789,6 +3789,117 @@ async def api_classification_stats():
         return {"status": "error", "message": str(e)}
 
 
+
+# ============================================================
+# CORRELATION ENGINE API
+# ============================================================
+
+@app.get("/api/correlation/run")
+async def api_run_correlation():
+    """Run cross-case correlation engine."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from correlation_engine import run_correlation_engine
+        total = run_correlation_engine()
+        return {"status": "ok", "total_correlations": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/correlation/stats")
+async def api_correlation_stats():
+    """Get correlation statistics."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT correlation_type, COUNT(*) FROM correlation_graph GROUP BY correlation_type ORDER BY count DESC")
+        by_type = [{"type": r[0], "count": r[1]} for r in cur.fetchall()]
+        cur.execute("SELECT COUNT(*) FROM correlation_graph")
+        total = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM correlation_graph WHERE confidence >= 0.8")
+        high = cur.fetchone()[0]
+        
+        # Most connected cases
+        cur.execute("""SELECT case_id, COUNT(*) as links FROM (
+            SELECT source_case as case_id FROM correlation_graph
+            UNION ALL SELECT target_case as case_id FROM correlation_graph
+        ) t GROUP BY case_id ORDER BY links DESC LIMIT 10""")
+        top = [{"case_id": r[0], "links": r[1]} for r in cur.fetchall()]
+        
+        # High confidence links
+        cur.execute("""SELECT source_case, target_case, correlation_type, entity_value, confidence
+            FROM correlation_graph WHERE confidence >= 0.8 ORDER BY confidence DESC LIMIT 10""")
+        high_links = [{"source": r[0], "target": r[1], "type": r[2], "entity": r[3], "confidence": r[4]} for r in cur.fetchall()]
+        
+        cur.close()
+        db.close()
+        return {"status": "ok", "total": total, "high_confidence": high, "by_type": by_type, "top_cases": top, "high_confidence_links": high_links}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/correlation/case/{case_id}")
+async def api_case_correlations(case_id: str):
+    """Get all correlations for a specific case."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("""SELECT target_case, correlation_type, entity_value, confidence, description
+            FROM correlation_graph WHERE source_case = %s
+            UNION ALL
+            SELECT source_case, correlation_type, entity_value, confidence, description
+            FROM correlation_graph WHERE target_case = %s
+            ORDER BY confidence DESC""", (case_id, case_id))
+        correlations = []
+        for r in cur.fetchall():
+            correlations.append({"linked_case": r[0], "type": r[1], "entity": r[2], "confidence": r[3], "description": r[4]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "case_id": case_id, "correlations": correlations, "count": len(correlations)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================
+# VICTIM MONITOR API
+# ============================================================
+
+@app.get("/api/victim-monitor/run")
+async def api_run_victim_monitor():
+    """Run victim-focused monitor to search for real victims."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from victim_monitor import run_victim_monitor
+        total = run_victim_monitor()
+        return {"status": "ok", "found": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/scam-websites/external-scores")
+async def api_external_scores():
+    """Get external trust scores for scam websites."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("""SELECT domain, scam_type, risk_level, external_trust_score, external_trust_source
+            FROM scam_websites ORDER BY external_trust_score ASC NULLS LAST""")
+        sites = []
+        for r in cur.fetchall():
+            sites.append({"domain": r[0], "scam_type": r[1], "risk_level": r[2],
+                         "trust_score": r[3], "trust_source": r[4]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "websites": sites}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
