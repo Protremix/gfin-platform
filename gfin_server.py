@@ -4145,6 +4145,164 @@ async def api_victim_timeline(reference: str):
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+
+
+# ============================================================
+# INVESTIGATION ENHANCEMENT APIs
+# ============================================================
+
+@app.get("/api/inv-enhance/timeline/{case_id}")
+async def api_case_timeline(case_id: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT event_date, event_type, source, description FROM case_timelines WHERE case_id = %s ORDER BY event_date", (case_id,))
+        events = [{"date": r[0].isoformat() if r[0] else None, "type": r[1], "source": r[2], "description": r[3]} for r in cur.fetchall()]
+        cur.close()
+        db.close()
+        return {"status": "ok", "case_id": case_id, "events": events, "count": len(events)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/cross-case")
+async def api_cross_case():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT identifier_type, identifier, cases::text, evidence_items::text, correlation_strength FROM evidence_cross_case")
+        corrs = [{"type": r[0], "identifier": r[1], "cases": r[2], "evidence_items": r[3], "strength": r[4]} for r in cur.fetchall()]
+        cur.close()
+        db.close()
+        return {"status": "ok", "correlations": corrs, "count": len(corrs)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/gaps")
+async def api_gaps():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, checklist::text, met_count, partial_count, missing_count, readiness_score, prosecution_ready FROM prosecution_gaps ORDER BY readiness_score DESC")
+        gaps = [{"case_id": r[0], "checklist": r[1], "met": r[2], "partial": r[3], "missing": r[4], "readiness": r[5], "ready": r[6]} for r in cur.fetchall()]
+        cur.close()
+        db.close()
+        return {"status": "ok", "gaps": gaps, "count": len(gaps)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/gaps/{case_id}")
+async def api_gaps_case(case_id: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT checklist::text, met_count, partial_count, missing_count, readiness_score, prosecution_ready FROM prosecution_gaps WHERE case_id = %s", (case_id,))
+        r = cur.fetchone()
+        cur.close()
+        db.close()
+        if not r:
+            return {"status": "ok", "case_id": case_id, "checklist": [], "readiness": 0}
+        return {"status": "ok", "case_id": case_id, "checklist": r[0], "met": r[1], "partial": r[2], "missing": r[3], "readiness": r[4], "ready": r[5]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/quality")
+async def api_quality():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, evidence_score, provenance_score, entity_score, victim_score, correlation_score, step_score, total_score, grade FROM investigation_quality ORDER BY total_score DESC")
+        scores = [{"case_id": r[0], "evidence": r[1], "provenance": r[2], "entity": r[3], "victim": r[4], "correlation": r[5], "steps": r[6], "total": r[7], "grade": r[8]} for r in cur.fetchall()]
+        cur.close()
+        db.close()
+        return {"status": "ok", "scores": scores, "count": len(scores)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/quality/{case_id}")
+async def api_quality_case(case_id: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT evidence_score, provenance_score, entity_score, victim_score, correlation_score, step_score, total_score, grade FROM investigation_quality WHERE case_id = %s", (case_id,))
+        r = cur.fetchone()
+        cur.close()
+        db.close()
+        if not r:
+            return {"status": "ok", "case_id": case_id, "total": 0, "grade": "F"}
+        return {"status": "ok", "case_id": case_id, "evidence": r[0], "provenance": r[1], "entity": r[2], "victim": r[3], "correlation": r[4], "steps": r[5], "total": r[6], "grade": r[7]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/questions/{reference}")
+async def api_questions(reference: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT scam_type, questions::text FROM victim_questions WHERE reference_number = %s", (reference,))
+        r = cur.fetchone()
+        cur.close()
+        db.close()
+        if not r:
+            return {"status": "ok", "reference": reference, "questions": []}
+        return {"status": "ok", "reference": reference, "scam_type": r[0], "questions": r[1]}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/custody/{case_id}")
+async def api_custody(case_id: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT evidence_id, custodian, custody_purpose, received_date, custody_hash, notes FROM chain_of_custody WHERE case_id = %s ORDER BY received_date", (case_id,))
+        records = [{"evidence_id": r[0], "custodian": r[1], "purpose": r[2], "date": r[3].isoformat() if r[3] else None, "hash": r[4], "notes": r[5]} for r in cur.fetchall()]
+        cur.close()
+        db.close()
+        return {"status": "ok", "case_id": case_id, "custody_records": records, "count": len(records)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/jurisdictions")
+async def api_jurisdictions():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, country_code, country_name, agency_name, agency_email, notification_status, notification_date, response_date FROM jurisdiction_notifications ORDER BY notification_status, case_id")
+        records = [{"case_id": r[0], "country_code": r[1], "country_name": r[2], "agency": r[3], "email": r[4], "status": r[5], "notified": r[6].isoformat() if r[6] else None, "response": r[7].isoformat() if r[7] else None} for r in cur.fetchall()]
+        cur.close()
+        db.close()
+        return {"status": "ok", "notifications": records, "count": len(records)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/inv-enhance/run")
+async def api_run_enhance():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from investigation_enhancement import run_all
+        run_all()
+        return {"status": "ok", "message": "Investigation enhancement complete"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
