@@ -3455,6 +3455,175 @@ async def logout_all_endpoint(request: Request):
     return {"status": "all_tokens_revoked"}
 
 
+
+
+
+
+@app.get("/api/intelligence/digest")
+async def get_intelligence_digest(request: Request):
+    """Get processed intelligence digest"""
+    async with db_pool.acquire() as conn:
+        # Stats
+        total, actionable, noise = await conn.fetchrow("""
+            SELECT COUNT(*),
+                   COUNT(*) FILTER (WHERE processed = false),
+                   COUNT(*) FILTER (WHERE processed = true)
+            FROM telegram_intelligence
+        """)
+        
+        # Unique messages
+        unique_msgs = await conn.fetchval("""
+            SELECT COUNT(DISTINCT message_text || '|' || group_name)
+            FROM telegram_intelligence WHERE message_text IS NOT NULL AND message_text != ''
+        """)
+        
+        # Scam types
+        scam_rows = await conn.fetch("""
+            SELECT COALESCE(scam_type, 'UNCLASSIFIED') as scam_type, COUNT(*) as cnt
+            FROM telegram_intelligence WHERE processed = false
+            GROUP BY scam_type ORDER BY cnt DESC
+        """)
+        scam_types = [{"type": r["scam_type"], "count": r["cnt"]} for r in scam_rows]
+        
+        # Top domains
+        domain_rows = await conn.fetch("""
+            SELECT domains::text as d, COUNT(*) as mentions,
+                   array_agg(DISTINCT group_name) as groups,
+                   array_agg(DISTINCT scam_type) as scam_types,
+                   bool_or(is_victim) as has_victim
+            FROM telegram_intelligence 
+            WHERE domains::text != '[]' AND processed = false
+            GROUP BY domains::text ORDER BY mentions DESC LIMIT 20
+        """)
+        top_domains = []
+        for r in domain_rows:
+            try:
+                domains = json.loads(r["d"]) if isinstance(r["d"], str) else (r["d"] or [])
+            except:
+                domains = []
+            top_domains.append({
+                "domains": domains, "mentions": r["mentions"],
+                "groups": list(set(r["groups"])) if r["groups"] else [],
+                "scam_types": [x for x in r["scam_types"] if x],
+                "has_victim": r["has_victim"]
+            })
+        
+        # Priority items
+        priority_rows = await conn.fetch("""
+            SELECT id, group_name, COALESCE(scam_type, 'UNCLASSIFIED') as scam_type,
+                   risk_level, LEFT(message_text, 200) as preview,
+                   domains::text, phones::text, is_victim, created_at
+            FROM telegram_intelligence
+            WHERE processed = false AND (is_victim = true OR risk_level = 'HIGH')
+            ORDER BY is_victim DESC, created_at DESC LIMIT 30
+        """)
+        priority = []
+        for r in priority_rows:
+            try:
+                domains = json.loads(r["domains"]) if isinstance(r["domains"], str) else (r["domains"] or [])
+                phones = json.loads(r["phones"]) if isinstance(r["phones"], str) else (r["phones"] or [])
+            except:
+                domains, phones = [], []
+            priority.append({
+                "id": r["id"], "group": r["group_name"], "scam_type": r["scam_type"],
+                "risk": r["risk_level"], "preview": r["preview"],
+                "domains": domains, "phones": phones, "is_victim": r["is_victim"],
+                "timestamp": r["created_at"].isoformat() if r["created_at"] else None
+            })
+        
+        # Case cross-references
+        case_rows = await conn.fetch("SELECT case_id, target FROM cases")
+        existing_targets = {r["target"].lower() for r in case_rows if r["target"]}
+        case_refs = []
+        for cr in case_rows:
+            target_lower = (cr["target"] or "").lower()
+            for word in [w for w in target_lower.split() if len(w) > 4][:3]:
+                cnt = await conn.fetchval(
+                    "SELECT COUNT(*) FROM telegram_intelligence WHERE processed = false AND message_text ILIKE $1",
+                    f"%{word}%"
+                )
+                if cnt > 0:
+                    case_refs.append({"case_id": cr["case_id"], "target": cr["target"], "match": word, "msg_count": cnt})
+        
+        # New investigation targets
+        new_targets = []
+        for d in top_domains:
+            for domain in d["domains"]:
+                if domain not in existing_targets and domain not in ["wa.me"] and d["mentions"] >= 3:
+                    new_targets.append({
+                        "domain": domain, "mentions": d["mentions"],
+                        "groups": d["groups"], "has_victim": d["has_victim"],
+                        "priority": "HIGH" if d["mentions"] >= 5 or d["has_victim"] else "MEDIUM"
+                    })
+    
+    return {
+        "total_raw": total, "unique_messages": unique_msgs,
+        "actionable": actionable, "noise_filtered": noise,
+        "scam_types": scam_types, "top_domains": top_domains,
+        "priority_items": priority, "case_cross_references": case_refs[:20],
+        "new_investigation_targets": new_targets
+    }
+
+@app.post("/api/intelligence/auto-investigate")
+async def auto_investigate_targets(request: Request):
+    """Auto-create cases for new high-priority targets from Telegram intel"""
+    async with db_pool.acquire() as conn:
+        case_rows = await conn.fetch("SELECT case_id, target FROM cases")
+        existing = {r["target"].lower() for r in case_rows if r["target"]}
+        case_count = len(case_rows)
+        
+        domain_rows = await conn.fetch("""
+            SELECT domains::text, COUNT(*) as mentions,
+                   array_agg(DISTINCT group_name) as groups,
+                   bool_or(is_victim) as has_victim
+            FROM telegram_intelligence 
+            WHERE domains::text != '[]' AND processed = false
+            GROUP BY domains::text HAVING COUNT(*) >= 3
+        """)
+        
+        created = []
+        for r in domain_rows:
+            try:
+                domains = json.loads(r["domains"]) if isinstance(r["domains"], str) else (r["domains"] or [])
+            except:
+                continue
+            for domain in domains:
+                if domain not in existing and domain not in ["wa.me"]:
+                    case_id = f"GFIN-CASE-{case_count + len(created) + 1:03d}"
+                    priority = "CRITICAL" if r["has_victim"] else ("HIGH" if r["mentions"] >= 5 else "MEDIUM")
+                    
+                    await conn.execute("""
+                        INSERT INTO cases (case_id, status, target, target_type, trigger, summary,
+                                          classification, confidence, victim_count, priority, created_date)
+                        VALUES ($1, 'INVESTIGATING', $2, 'domain', 'telegram_intelligence',
+                                $3, 'LAW ENFORCEMENT SENSITIVE', 0.6, 0, $4, NOW())
+                        ON CONFLICT (case_id) DO NOTHING
+                    """, case_id, domain,
+                        f"Auto-detected from Telegram: {domain} mentioned {r['mentions']} times across {len(set(r['groups']))} groups",
+                        priority)
+                    
+                    await conn.execute("""
+                        INSERT INTO investigation_steps (case_id, phase, step_type, step_name, status, result, created_date)
+                        VALUES ($1, 'INTEL', 'auto_investigation', 'Telegram Intel Analysis', 'COMPLETED', $2, NOW())
+                    """, case_id, json.dumps({
+                        "source": "telegram_intelligence",
+                        "mentions": r["mentions"],
+                        "groups": list(set(r["groups"])),
+                        "has_victim": r["has_victim"],
+                        "domain": domain
+                    }))
+                    
+                    await conn.execute("""
+                        UPDATE telegram_intelligence SET investigated = true
+                        WHERE domains::text ILIKE $1 AND processed = false
+                    """, f"%{domain}%")
+                    
+                    created.append({"case_id": case_id, "domain": domain, "mentions": r["mentions"], "priority": priority})
+                    existing.add(domain)
+    
+    return {"created_cases": created, "total": len(created)}
+
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")

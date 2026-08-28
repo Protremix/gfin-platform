@@ -1,0 +1,878 @@
+{
+  "generated_at": "2026-08-28T06:07:42.725369+00:00",
+  "pipeline_version": "1.0",
+  "summary": {
+    "total_raw_collected": 326,
+    "duplicates_removed": 0,
+    "actionable_intelligence": 302,
+    "noise_filtered": 24,
+    "unique_domains": 27,
+    "unique_wallets": 0,
+    "cross_group_wallets": 0,
+    "confirmed_victims": 30,
+    "case_matches": 16
+  },
+  "scam_type_breakdown": [
+    {
+      "type": "UNCLASSIFIED",
+      "count": 137
+    },
+    {
+      "type": "INVESTMENT_FRAUD",
+      "count": 79
+    },
+    {
+      "type": "RECOVERY_SCAM",
+      "count": 54
+    },
+    {
+      "type": "IMPERSONATION",
+      "count": 21
+    },
+    {
+      "type": "PHISHING",
+      "count": 9
+    },
+    {
+      "type": "ADVANCE_FEE",
+      "count": 2
+    }
+  ],
+  "top_domains": [
+    {
+      "domains": [
+        "shark-trades.com"
+      ],
+      "mentions": 11,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "vellius.com"
+      ],
+      "mentions": 6,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD",
+        "PHISHING"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "onetrade.ltd"
+      ],
+      "mentions": 5,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "wa.me"
+      ],
+      "mentions": 4,
+      "groups": [
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9"
+      ],
+      "scam_types": [
+        "IMPERSONATION",
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "marsses.com"
+      ],
+      "mentions": 4,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "zohar-hr.co"
+      ],
+      "mentions": 4,
+      "groups": [
+        "Forex | Crypto | Jobs | Work",
+        "\u0420\u0430\u0431\u043e\u0442\u0430 FOREX RETENTION CONVERSION",
+        "Crypto Forex Jobs",
+        "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9"
+      ],
+      "scam_types": [
+        "RECOVERY_SCAM"
+      ],
+      "has_victim": true
+    },
+    {
+      "domains": [
+        "teamforcetechnologies.com"
+      ],
+      "mentions": 3,
+      "groups": [
+        "Forex | Crypto | Jobs | Work",
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "profitchips.com"
+      ],
+      "mentions": 3,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "careers-page.com"
+      ],
+      "mentions": 3,
+      "groups": [
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex | Crypto | Jobs | Work",
+        "Crypto Forex Jobs"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "ge-as.com"
+      ],
+      "mentions": 3,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "2fbitcoinmagazine.com"
+      ],
+      "mentions": 2,
+      "groups": [
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex | Crypto | Jobs | Solutions"
+      ],
+      "scam_types": [],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "aevos.org"
+      ],
+      "mentions": 2,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "boom-assets.com"
+      ],
+      "mentions": 2,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "forexchanger.com",
+        "forex-investor.net"
+      ],
+      "mentions": 2,
+      "groups": [
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex | Crypto | Jobs | Solutions"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "link10.store"
+      ],
+      "mentions": 2,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "marsses.com",
+        "beta-arena.io",
+        "profitchips.com",
+        "shark-trades.com"
+      ],
+      "mentions": 1,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "marsses.com",
+        "beta-arena.io",
+        "profitchips.com",
+        "shark-trades.com",
+        "vellius.com",
+        "onetrade.ltd"
+      ],
+      "mentions": 1,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "polygate.tech"
+      ],
+      "mentions": 1,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "linktr.ee"
+      ],
+      "mentions": 1,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "IMPERSONATION"
+      ],
+      "has_victim": false
+    },
+    {
+      "domains": [
+        "reviews.io"
+      ],
+      "mentions": 1,
+      "groups": [
+        "Crypto Forex Jobs"
+      ],
+      "scam_types": [
+        "ADVANCE_FEE"
+      ],
+      "has_victim": false
+    }
+  ],
+  "priority_items": [
+    {
+      "id": 306728,
+      "group": "Forex Scammers Exposed",
+      "scam_type": "INVESTMENT_FRAUD",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udee1\ufe0f **GFIN \u2014 Global Fraud Intelligence Network**\n\nIf you've been scammed, defrauded, or lost money to fraud \u2014 you're not alone, and there IS something you can do about it.\n\n**GFIN is a global fraud int",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:14:10.698589"
+    },
+    {
+      "id": 306433,
+      "group": "Gothix AI Scammed Users",
+      "scam_type": "UNCLASSIFIED",
+      "risk": "VICTIM",
+      "text_preview": "almost got scammed.\"",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:56.387432"
+    },
+    {
+      "id": 306423,
+      "group": "Gothix AI Scammed Users",
+      "scam_type": "UNCLASSIFIED",
+      "risk": "VICTIM",
+      "text_preview": "We got scammed",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:56.182884"
+    },
+    {
+      "id": 306410,
+      "group": "Gothix AI Scammed Users",
+      "scam_type": "INVESTMENT_FRAUD",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udee1\ufe0f **GFIN \u2014 Global Fraud Intelligence Network**\n\nIf you've been scammed, defrauded, or lost money to fraud \u2014 you're not alone, and there IS something you can do about it.\n\n**GFIN is a global fraud int",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:55.942272"
+    },
+    {
+      "id": 306409,
+      "group": "Gothix AI Scammed Users",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "There's been an uptick in recovery scams I can tell. Recently. So e YouTube channels are also there masquerading as recovery experts and they report real true news about scammers, but of course they j",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:55.931098"
+    },
+    {
+      "id": 306408,
+      "group": "\u0420\u0430\u0431\u043e\u0442\u0430 FOREX RETENTION CONVERSION",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83c\udf0d \ud835\udc16\ud835\udc1e\u2019\ud835\udc2b\ud835\udc1e \ud835\udc07\ud835\udc22\ud835\udc2b\ud835\udc22\ud835\udc27\ud835\udc20 \ud835\udc16\ud835\udc28\ud835\udc2b\ud835\udc25\ud835\udc1d\ud835\udc30\ud835\udc22\ud835\udc1d\ud835\udc1e!\n\nOpen positions for experienced FX agents with relocation support \ud83e\uddf3\n\n\ud83d\udccd \ud835\udc02\ud835\udc28\ud835\udc2e\ud835\udc27\ud835\udc2d\ud835\udc2b\ud835\udc22\ud835\udc1e\ud835\udc2c:\nCyprus \ud83c\udde8\ud83c\uddfe| North Cyprus \ud83c\uddf9\ud83c\uddf7| Bulgaria \ud83c\udde7\ud83c\uddec| Turkey \ud83c\uddf9\ud83c\uddf7| Montenegro \ud83c\uddf2\ud83c\uddea| Romania \ud83c\uddf7\ud83c\uddf4| Moldova \ud83c\uddf2\ud83c\udde9| G",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:54.172366"
+    },
+    {
+      "id": 306399,
+      "group": "\u0420\u0430\u0431\u043e\u0442\u0430 FOREX RETENTION CONVERSION",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\u2708\ufe0f*HIRING EVERYDAY!* \nLooking for new opportunities? \ud83d\udcb8\n\nLooking for Employees for your business? \ud83e\ude99\n\n*Contact for info* \ud83d\ude18\n\nISRAEL \ud83c\uddee\ud83c\uddf1:\n*Retention/ conversion/ Recovery agents:*\nEnglish \nFrench \nDutch \nG",
+      "domains": [
+        "zohar-hr.co"
+      ],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:53.417157"
+    },
+    {
+      "id": 306397,
+      "group": "Crypto Forex Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "Extraction service:\n*Leads/traffic extraction from any website/GEO.\n*Crypto site\n*Investment site\n*Casino/gambling site \n*Real estate site.\n*Crms hack.\n*Removal of negative Google reviews.\n*Developers",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:53.259339"
+    },
+    {
+      "id": 306396,
+      "group": "Crypto Forex Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "**FOREX LEADS / CRYPTO INVESTORS\n      WHO LOST THEIR DEPOSIT\n\n           ****\ud83d\udc8e****\ud83d\udc8e****\ud83d\udc8e****\ud83d\udc8e****\ud83d\udc8e****\n\n**\u2757\ufe0f** Warm / Cold Traffic \u2014 CPL\n\n**\ud83d\udcb8** CHARGEBACK DATABASES\n**\u2705** Lost clients\n**\u2705** High resp",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:53.243266"
+    },
+    {
+      "id": 306395,
+      "group": "Crypto Forex Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udea8\ud83d\udea8\ud83d\udea8**FOREX CAREER OPPORTUNITIES**\ud83d\udea8\ud83d\udea8\ud83d\udea8\n\ud83d\udd25 **LIMITED OPENINGS \u2013 RELOCATION AVAILABLE****\ud83d\udd25**\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83c\udff3\ufe0f **KYRENIA \u2013 NOW HIRING**\n**We're looking for:**\n\ud83c\uddf8\ud83c\uddea Swedish\n\ud83c\uddf3\ud83c\uddf4 Norwegian\n\ud83c\udde9\ud83c\uddf0 Danish\n\ud83c\uddeb\ud83c\uddee Fin",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:53.231142"
+    },
+    {
+      "id": 306383,
+      "group": "Crypto Forex Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\u2708\ufe0f*HIRING EVERYDAY!* \nLooking for new opportunities? \ud83d\udcb8\n\nLooking for Employees for your business? \ud83e\ude99\n\n*Contact for info* \ud83d\ude18\n\nISRAEL \ud83c\uddee\ud83c\uddf1:\n*Retention/ conversion/ Recovery agents:*\nEnglish \nFrench \nDutch \nG",
+      "domains": [
+        "zohar-hr.co"
+      ],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:52.178421"
+    },
+    {
+      "id": 306382,
+      "group": "Forex | Crypto | Jobs | Solutions",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "Extraction service:\n*Leads/traffic extraction from any website/GEO.\n*Crypto site\n*Investment site\n*Casino/gambling site \n*Real estate site.\n*Crms hack.\n*Removal of negative Google reviews.\n*Developers",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:51.987504"
+    },
+    {
+      "id": 306381,
+      "group": "Forex | Crypto | Jobs | Solutions",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83c\udf0d \ud835\udc16\ud835\udc1e\u2019\ud835\udc2b\ud835\udc1e \ud835\udc07\ud835\udc22\ud835\udc2b\ud835\udc22\ud835\udc27\ud835\udc20 \ud835\udc16\ud835\udc28\ud835\udc2b\ud835\udc25\ud835\udc1d\ud835\udc30\ud835\udc22\ud835\udc1d\ud835\udc1e!\n\nOpen positions for experienced FX agents with relocation support \ud83e\uddf3\n\n\ud83d\udccd \ud835\udc02\ud835\udc28\ud835\udc2e\ud835\udc27\ud835\udc2d\ud835\udc2b\ud835\udc22\ud835\udc1e\ud835\udc2c:\nCyprus \ud83c\udde8\ud83c\uddfe| North Cyprus \ud83c\uddf9\ud83c\uddf7| Bulgaria \ud83c\udde7\ud83c\uddec| Turkey \ud83c\uddf9\ud83c\uddf7| Montenegro \ud83c\uddf2\ud83c\uddea| Romania \ud83c\uddf7\ud83c\uddf4| Moldova \ud83c\uddf2\ud83c\udde9| G",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:51.976652"
+    },
+    {
+      "id": 306377,
+      "group": "Forex | Crypto | Jobs | Solutions",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:51.440875"
+    },
+    {
+      "id": 306366,
+      "group": "Forex | Crypto | Jobs | Work",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "Extraction service:\n*Leads/traffic extraction from any website/GEO.\n*Crypto site\n*Investment site\n*Casino/gambling site \n*Real estate site.\n*Crms hack.\n*Removal of negative Google reviews.\n*Developers",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:50.495601"
+    },
+    {
+      "id": 306361,
+      "group": "Forex | Crypto | Jobs | Work",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:50.006147"
+    },
+    {
+      "id": 306360,
+      "group": "Forex | Crypto | Jobs | Work",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udc8e **YOUR NEXT BIG CAREER MOVE STARTS HERE!** \ud83d\udc8e\n\n\ud83d\ude80 **We\u2019re looking for experienced Conversation, Retention & Recovery Agents** to join our established international offices!\n\n\ud83c\udf0d **Open Positions for Spe",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:49.990861"
+    },
+    {
+      "id": 306359,
+      "group": "Forex | Crypto | Jobs | Work",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\u2708\ufe0f*HIRING EVERYDAY!* \nLooking for new opportunities? \ud83d\udcb8\n\nLooking for Employees for your business? \ud83e\ude99\n\n*Contact for info* \ud83d\ude18\n\nISRAEL \ud83c\uddee\ud83c\uddf1:\n*Retention/ conversion/ Recovery agents:*\nEnglish \nFrench \nDutch \nG",
+      "domains": [
+        "zohar-hr.co"
+      ],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:49.726346"
+    },
+    {
+      "id": 306357,
+      "group": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "Extraction service:\n*Leads/traffic extraction from any website/GEO.\n*Crypto site\n*Investment site\n*Casino/gambling site \n*Real estate site.\n*Crms hack.\n*Removal of negative Google reviews.\n*Developers",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:49.529218"
+    },
+    {
+      "id": 306356,
+      "group": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udea8\ud83d\udea8\ud83d\udea8**FOREX CAREER OPPORTUNITIES**\ud83d\udea8\ud83d\udea8\ud83d\udea8\n\ud83d\udd25 **LIMITED OPENINGS \u2013 RELOCATION AVAILABLE****\ud83d\udd25**\n\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\n\ud83c\udff3\ufe0f **KYRENIA \u2013 NOW HIRING**\n**We're looking for:**\n\ud83c\uddf8\ud83c\uddea Swedish\n\ud83c\uddf3\ud83c\uddf4 Norwegian\n\ud83c\udde9\ud83c\uddf0 Danish\n\ud83c\uddeb\ud83c\uddee Fin",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:49.509818"
+    },
+    {
+      "id": 306350,
+      "group": "Forex | Crypto | Solutions | Affiliate| Jobs",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\u2733\ufe0f\ud83d\udcbb HACKING AND RECOVERY OF ANY ACCOUNT, SPYING*\n\n\ud83d\udd37Recovery of lost funds*\n\ud83d\udd37Facebook hacking*\n\ud83d\udd37WhatsApp hacking*\n\ud83d\udd37Instagram hacking*\n\ud83d\udd37WhatsApp spying*\n\ud83d\udd37Free Fire hacking*\n\ud83d\udd37Recover lost wallet*\n\ud83d\udd37Recove",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:48.958703"
+    },
+    {
+      "id": 306346,
+      "group": "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "Extraction service:\n*Leads/traffic extraction from any website/GEO.\n*Crypto site\n*Investment site\n*Casino/gambling site \n*Real estate site.\n*Crms hack.\n*Removal of negative Google reviews.\n*Developers",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:48.224596"
+    },
+    {
+      "id": 306343,
+      "group": "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:47.972531"
+    },
+    {
+      "id": 306340,
+      "group": "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\u2708\ufe0f*HIRING EVERYDAY!* \nLooking for new opportunities? \ud83d\udcb8\n\nLooking for Employees for your business? \ud83e\ude99\n\n*Contact for info* \ud83d\ude18\n\nISRAEL \ud83c\uddee\ud83c\uddf1:\n*Retention/ conversion/ Recovery agents:*\nEnglish \nFrench \nDutch \nG",
+      "domains": [
+        "zohar-hr.co"
+      ],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T21:13:47.515469"
+    },
+    {
+      "id": 281567,
+      "group": "Forex | Crypto | Jobs | Work",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udea8 **WE\u2019RE EXPANDING \u2014 NEW OFFICE OPENED!** \ud83d\udea8\n\n\ud83d\udd25 **Multiple positions available \u2013 Join our growing international team!**\n\nA brand-new office has just opened, and we\u2019re looking for **experienced Convers",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T20:38:23.656913"
+    },
+    {
+      "id": 267860,
+      "group": "Forex | Crypto | Jobs | Solutions",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T20:18:54.820612"
+    },
+    {
+      "id": 256809,
+      "group": "\u0420\u0430\u0431\u043e\u0442\u0430 FOREX RETENTION CONVERSION",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\ude80 **WE ARE HIRING \u2013 FOREX INDUSTRY**\n\ud83d\udccd **Limassol**\n\u2022 Recovery Agents (Serbian, French, Spanish, Portuguese)\n\u2022 Retention Agents (French, Spanish, Serbian, Portuguese, German)\n\u2022 Floor Manager\n\ud83d\udccd **Kyren",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T20:03:00.148549"
+    },
+    {
+      "id": 254473,
+      "group": "Forex | Crypto | Jobs | Solutions",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\ude80 **HIRERS AT H-STARS ARE EXPANDING!** \ud83d\ude80\n\nWe are looking for elite **Remote Recovery Agents** fluent in **English**, **French**, or **Portuguese** to join our team.\n\nIf you are a driven closer who kno",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T19:59:49.752731"
+    },
+    {
+      "id": 251284,
+      "group": "Forex | Crypto | Jobs | Work",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "\ud83d\udea8WE\u2019RE EXPANDING \u2014 NEW OFFICE OPENED! \ud83d\udea8\n\n\ud83d\udd25Multiple positions available \u2013 Join our growing international team!\n\nA brand-new office has just opened, and we\u2019re looking for experienced Conversation, Reten",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T19:55:15.575044"
+    },
+    {
+      "id": 250846,
+      "group": "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9",
+      "scam_type": "RECOVERY_SCAM",
+      "risk": "VICTIM",
+      "text_preview": "ForexLeadslive \u2014 Premium FTD & RecoveryLeads\n\nWhy Choose Us?\u2705 Verified Leads: 100% real-time,\nhigh-intent leads from Tier 1 & GCC regions.\n\u2705 Full Funnel Control: We run ads, build funnels, verify lead",
+      "domains": [],
+      "phones": [],
+      "is_victim": true,
+      "timestamp": "2026-08-27T19:54:40.308364"
+    }
+  ],
+  "case_cross_references": [
+    {
+      "case_id": "GFIN-CASE-002",
+      "target": "neex.com / Vlad",
+      "match": "neex.com",
+      "msg_count": 4
+    },
+    {
+      "case_id": "GFIN-CASE-002",
+      "target": "neex.com / Vlad",
+      "match": "vlad",
+      "msg_count": 6
+    },
+    {
+      "case_id": "GFIN-CASE-003",
+      "target": "teamforcetechnologies.com",
+      "match": "teamforcetechnologies.com",
+      "msg_count": 3
+    },
+    {
+      "case_id": "GFIN-CASE-004",
+      "target": "Telegram user 'REVERSE ENGINEER'",
+      "match": "telegram",
+      "msg_count": 147
+    },
+    {
+      "case_id": "GFIN-CASE-004",
+      "target": "Telegram user 'REVERSE ENGINEER'",
+      "match": "user",
+      "msg_count": 6
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "target": "Telegram user 'Monde HR'",
+      "match": "telegram",
+      "msg_count": 147
+    },
+    {
+      "case_id": "GFIN-CASE-005",
+      "target": "Telegram user 'Monde HR'",
+      "match": "user",
+      "msg_count": 6
+    },
+    {
+      "case_id": "GFIN-LAUDR-001",
+      "target": "@btcv123",
+      "match": "@btcv123",
+      "msg_count": 6
+    },
+    {
+      "case_id": "GFIN-CASE-006",
+      "target": "Telegram user 'RS Database House'",
+      "match": "telegram",
+      "msg_count": 147
+    },
+    {
+      "case_id": "GFIN-CASE-006",
+      "target": "Telegram user 'RS Database House'",
+      "match": "user",
+      "msg_count": 6
+    },
+    {
+      "case_id": "GFIN-CASE-006",
+      "target": "Telegram user 'RS Database House'",
+      "match": "database",
+      "msg_count": 15
+    },
+    {
+      "case_id": "GFIN-CASE-007",
+      "target": "Telegram user 'Tati'",
+      "match": "telegram",
+      "msg_count": 147
+    },
+    {
+      "case_id": "GFIN-CASE-007",
+      "target": "Telegram user 'Tati'",
+      "match": "user",
+      "msg_count": 6
+    },
+    {
+      "case_id": "GFIN-CASE-008",
+      "target": "Kyiv call center (t.me/work_crypto_fx)",
+      "match": "kyiv",
+      "msg_count": 114
+    },
+    {
+      "case_id": "GFIN-CASE-008",
+      "target": "Kyiv call center (t.me/work_crypto_fx)",
+      "match": "call",
+      "msg_count": 14
+    },
+    {
+      "case_id": "GFIN-CASE-008",
+      "target": "Kyiv call center (t.me/work_crypto_fx)",
+      "match": "center",
+      "msg_count": 7
+    }
+  ],
+  "new_investigation_targets": [
+    {
+      "domain": "shark-trades.com",
+      "mentions": 11,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "HIGH"
+    },
+    {
+      "domain": "vellius.com",
+      "mentions": 6,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD",
+        "PHISHING"
+      ],
+      "has_victim": false,
+      "priority": "HIGH"
+    },
+    {
+      "domain": "onetrade.ltd",
+      "mentions": 5,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "HIGH"
+    },
+    {
+      "domain": "wa.me",
+      "mentions": 4,
+      "groups": [
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9"
+      ],
+      "scam_types": [
+        "IMPERSONATION",
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "domain": "marsses.com",
+      "mentions": 4,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "domain": "zohar-hr.co",
+      "mentions": 4,
+      "groups": [
+        "Forex | Crypto | Jobs | Work",
+        "\u0420\u0430\u0431\u043e\u0442\u0430 FOREX RETENTION CONVERSION",
+        "Crypto Forex Jobs",
+        "Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9"
+      ],
+      "scam_types": [
+        "RECOVERY_SCAM"
+      ],
+      "has_victim": true,
+      "priority": "HIGH"
+    },
+    {
+      "domain": "profitchips.com",
+      "mentions": 3,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "domain": "careers-page.com",
+      "mentions": 3,
+      "groups": [
+        "Forex | Crypto | Solutions | Affiliate| Jobs",
+        "Forex | Crypto | Jobs | Work",
+        "Crypto Forex Jobs"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "MEDIUM"
+    },
+    {
+      "domain": "ge-as.com",
+      "mentions": 3,
+      "groups": [
+        "Gothix AI Scammed Users"
+      ],
+      "scam_types": [
+        "INVESTMENT_FRAUD"
+      ],
+      "has_victim": false,
+      "priority": "MEDIUM"
+    }
+  ]
+}
