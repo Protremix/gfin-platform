@@ -4025,6 +4025,126 @@ async def api_run_osint():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+
+# ============================================================
+# PROVENANCE API
+# ============================================================
+
+@app.get("/api/provenance/run")
+async def api_run_provenance():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from provenance_validator import run_provenance_validator
+        total = run_provenance_validator()
+        return {"status": "ok", "total_complete": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/provenance/stats")
+async def api_provenance_stats():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT COUNT(*) FROM evidence WHERE provenance_complete = true")
+        complete = cur.fetchone()[0]
+        cur.execute("SELECT COUNT(*) FROM evidence")
+        total = cur.fetchone()[0]
+        cur.execute("SELECT AVG(legal_admissibility_score) FROM evidence")
+        avg = cur.fetchone()[0]
+        cur.execute("SELECT provenance_chain_strength, COUNT(*) FROM evidence GROUP BY provenance_chain_strength")
+        strength = {r[0]: r[1] for r in cur.fetchall()}
+        cur.close()
+        db.close()
+        return {"status": "ok", "total": total, "complete": complete, "avg_score": round(avg or 0, 3), "strength": strength}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================
+# DECISION SUPPORT API
+# ============================================================
+
+@app.get("/api/decision-support/run")
+async def api_run_decision_support():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from decision_support import run_decision_support
+        total = run_decision_support()
+        return {"status": "ok", "total_recommendations": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/decision-support/recommendations")
+async def api_recommendations():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, recommendation_type, priority, title, description, action_items::text, risk_score, confidence FROM analyst_recommendations ORDER BY CASE priority WHEN 'CRITICAL' THEN 0 WHEN 'HIGH' THEN 1 WHEN 'MEDIUM' THEN 2 ELSE 3 END, risk_score DESC")
+        recs = []
+        for r in cur.fetchall():
+            recs.append({"case_id": r[0], "type": r[1], "priority": r[2], "title": r[3], "description": r[4], "action_items": r[5], "risk_score": r[6], "confidence": r[7]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "recommendations": recs, "count": len(recs)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================
+# VICTIM SUPPORT API
+# ============================================================
+
+@app.get("/api/victim-support/run")
+async def api_run_victim_support():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from victim_support import run_victim_support
+        total = run_victim_support()
+        return {"status": "ok", "total_actions": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/victim-support/updates/{reference}")
+async def api_victim_updates(reference: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT stage, title, message, eta, created_date FROM victim_updates WHERE reference_number = %s ORDER BY created_date DESC", (reference,))
+        updates = []
+        for r in cur.fetchall():
+            updates.append({"stage": r[0], "title": r[1], "message": r[2], "eta": r[3], "date": r[4].isoformat() if r[4] else None})
+        cur.close()
+        db.close()
+        return {"status": "ok", "reference": reference, "updates": updates}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/victim-support/timeline/{reference}")
+async def api_victim_timeline(reference: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT event_date, event_type, title, description FROM victim_timeline WHERE reference_number = %s ORDER BY event_date DESC", (reference,))
+        timeline = []
+        for r in cur.fetchall():
+            timeline.append({"date": r[0].isoformat() if r[0] else None, "type": r[1], "title": r[2], "description": r[3]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "reference": reference, "timeline": timeline}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
