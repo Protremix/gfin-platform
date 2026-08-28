@@ -3650,6 +3650,90 @@ async def api_intel_health():
     return health
 
 
+
+# ============================================================
+# POLICE INVESTIGATION PIPELINE API
+# ============================================================
+
+@app.get("/api/police/run-investigations")
+async def api_run_police_investigations():
+    """Run full police investigation pipeline for all cases."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from police_pipeline import run_police_pipeline
+        run_police_pipeline()
+        return {"status": "ok", "message": "Police investigation pipeline complete"}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/police/case/{case_id}/investigation")
+async def api_police_case_investigation(case_id: str):
+    """Run police investigation for a single case and return full results."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from police_pipeline import PoliceInvestigationPipeline, DB_CONFIG
+        import psycopg2
+        db = psycopg2.connect(**DB_CONFIG)
+        pipeline = PoliceInvestigationPipeline(db)
+        result = pipeline.investigate_case(case_id)
+        db.close()
+        return {"status": "ok", "result": result}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/police/case/{case_id}/people")
+async def api_police_case_people(case_id: str):
+    """Get all people identified in a case investigation."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("""SELECT role, name, entity_type, details, is_verified, source, confidence
+            FROM people WHERE case_id = %s ORDER BY role, name""", (case_id,))
+        people = []
+        for row in cur.fetchall():
+            people.append({"role": row[0], "name": row[1], "entity_type": row[2],
+                          "details": row[3], "is_verified": row[4], "source": row[5], "confidence": row[6]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "case_id": case_id, "people": people}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/police/case/{case_id}/legal-pathway")
+async def api_police_legal_pathway(case_id: str):
+    """Get legal pathway assessment for a case."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from police_pipeline import PoliceInvestigationPipeline, DB_CONFIG
+        import psycopg2
+        db = psycopg2.connect(**DB_CONFIG)
+        pipeline = PoliceInvestigationPipeline(db)
+        
+        cur = db.cursor()
+        cur.execute("SELECT target FROM cases WHERE case_id = %s", (case_id,))
+        row = cur.fetchone()
+        cur.close()
+        if not row:
+            return {"status": "error", "message": "Case not found"}
+        
+        domain = row[0].strip()
+        osint = pipeline._collect_osint(domain)
+        telegram_intel = pipeline._analyze_telegram_intelligence(case_id, domain)
+        legal = pipeline._determine_legal_pathway(domain, osint, telegram_intel, "telegram_intelligence")
+        db.close()
+        
+        return {"status": "ok", "case_id": case_id, "domain": domain, "legal_pathway": legal}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
