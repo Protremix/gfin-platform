@@ -1,0 +1,111 @@
+{
+  "case_id": "GFIN-CASE-763EA3",
+  "target": "https://gothix.online/app",
+  "priority": "LOW",
+  "current_readiness": 43,
+  "current_grade": "D",
+  "generated_at": "2026-08-28T12:27:31.479417Z",
+  "missing_items": [
+    "Minimum 5 evidence items",
+    "Evidence provenance quality",
+    "Crypto wallet identified",
+    "Country routing completed"
+  ],
+  "existing_evidence_count": 3,
+  "existing_entity_count": 0,
+  "osint_tasks": [
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-01",
+      "title": "Deep domain investigation on gothix.online",
+      "priority": "HIGH",
+      "source": "RDAP + DNS + URLScan + Wayback Machine",
+      "action": "Run full Hunter v4 investigation on gothix.online. Check RDAP, DNS records, URLScan.io, Wayback Machine.",
+      "expected_evidence": [
+        "Registrant info",
+        "DNS records",
+        "Historical captures",
+        "IP history"
+      ],
+      "target_gap": "Physical hosting location"
+    },
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-02",
+      "title": "Telegram intelligence cross-reference",
+      "priority": "HIGH",
+      "source": "Telegram intelligence database (80K+ items)",
+      "action": "Search all Telegram items for mentions of gothix.online or related entities. Check 32 monitored groups.",
+      "expected_evidence": [
+        "Telegram mentions",
+        "Victim reports",
+        "Scam type classification"
+      ],
+      "target_gap": "Victim complaint"
+    },
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-03",
+      "title": "Crypto wallet identification",
+      "priority": "HIGH",
+      "source": "Multi-chain scanner (10 chains)",
+      "action": "Extract wallet addresses from evidence and Telegram intel. Run multi-chain scanner.",
+      "expected_evidence": [
+        "Wallet addresses",
+        "Transaction history",
+        "Exchange deposits"
+      ],
+      "target_gap": "Crypto wallet identified"
+    },
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-04",
+      "title": "Infrastructure correlation",
+      "priority": "MEDIUM",
+      "source": "Cross-case correlation engine",
+      "action": "Run correlation against all 20 cases for shared infrastructure.",
+      "expected_evidence": [
+        "Shared IPs",
+        "Shared registrars",
+        "Connected campaigns"
+      ],
+      "target_gap": "Entity coverage"
+    },
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-05",
+      "title": "Victim identification via OSINT",
+      "priority": "HIGH",
+      "source": "Reddit + consumer forums + scam directories",
+      "action": "Search Reddit, Trustpilot, ScamAdviser for gothix.online victim reports.",
+      "expected_evidence": [
+        "Victim testimonials",
+        "Loss amounts",
+        "Contact methods"
+      ],
+      "target_gap": "Victim complaint"
+    },
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-06",
+      "title": "Dark web exposure check",
+      "priority": "MEDIUM",
+      "source": "Tor + Ahmia + paste sites",
+      "action": "Search dark web for gothix.online and related indicators via Tor proxy.",
+      "expected_evidence": [
+        "Dark web mentions",
+        "Leaked data",
+        "Marketplace listings"
+      ],
+      "target_gap": "Additional corroboration"
+    },
+    {
+      "task_id": "GFIN-CASE-763EA3-OSINT-07",
+      "title": "Social media footprint",
+      "priority": "MEDIUM",
+      "source": "Public social media + search engines",
+      "action": "Search for gothix.online across social platforms for promotional posts or warnings.",
+      "expected_evidence": [
+        "Social profiles",
+        "Promotional content",
+        "User warnings"
+      ],
+      "target_gap": "Additional corroboration"
+    }
+  ],
+  "summary": "Case GFIN-CASE-763EA3 at 43% readiness (Grade D). 4 gaps: Minimum 5 evidence items, Evidence provenance quality, Crypto wallet identified. Execute 7 OSINT tasks to reach 60%+."
+}

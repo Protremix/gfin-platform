@@ -1,0 +1,806 @@
+{
+  "metadata": {
+    "case_id": "GFIN-CASE-005",
+    "generated_at": "2026-08-28T12:27:31.474245Z",
+    "packet_version": "1.0"
+  },
+  "prosecution_readiness": {
+    "score": 68,
+    "grade": "A",
+    "prosecution_ready": false,
+    "quality_scores": {
+      "evidence": 25.0,
+      "provenance": 19.0,
+      "entity": 7.5,
+      "victim": 7.5,
+      "correlation": 15.0,
+      "steps": 10.0,
+      "total": 84.0,
+      "grade": "A"
+    },
+    "gaps": {
+      "met": 5,
+      "partial": 1,
+      "missing": 2,
+      "checklist": [
+        {
+          "item": "Evidence count (10+)",
+          "status": "MET",
+          "target": 10,
+          "current": 22
+        },
+        {
+          "item": "Evidence provenance quality (avg admissibility)",
+          "status": "MET",
+          "target": 0.9,
+          "current": 0.952
+        },
+        {
+          "item": "Entity coverage (4+ types)",
+          "status": "PARTIAL",
+          "target": 4,
+          "current": 2
+        },
+        {
+          "item": "At least 1 victim complaint",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Crypto wallet identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Physical hosting location identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Country routing completed",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Investigation steps completed (4+)",
+          "status": "MET",
+          "target": 4,
+          "current": 5
+        }
+      ]
+    }
+  },
+  "case_overview": {
+    "target": "Telegram user 'Monde HR'",
+    "priority": "GFIN_SPY",
+    "status": "INVESTIGATING",
+    "summary": "Monde HR recruits 'Retention Agents' for relocation to Armenia. This is a human trafficking recruitment channel for scam compound operations.",
+    "victim_count": 1,
+    "victim_loss": null,
+    "affected_countries": "2026-08-27 15:49:01.856878+00:00",
+    "routed_countries": "2026-08-27 15:49:01.856878+00:00",
+    "physical_locations": "GFIN_SPY",
+    "assigned_officer": "Unassigned"
+  },
+  "suspects": [
+    {
+      "name": "Unknown operator of Telegram user 'Monde HR'",
+      "type": "PERSON",
+      "confidence": 0.44,
+      "evidence_count": 1,
+      "factors": {
+        "phases": [
+          "CORRELATION"
+        ],
+        "target_domain": "Telegram user 'Monde HR'",
+        "evidence_count": 1,
+        "phase_diversity": 1,
+        "avg_admissibility": 1.0
+      }
+    }
+  ],
+  "legal_frameworks": [
+    {
+      "framework": "FRAUD",
+      "statutes": [
+        {
+          "code": "EU Directive 2013/40/EU",
+          "title": "Attacks against information systems",
+          "required_elements": [
+            "false representation",
+            "intent to defraud",
+            "financial loss"
+          ]
+        },
+        {
+          "code": "UK Fraud Act 2006 s.2",
+          "title": "Fraud by false representation",
+          "required_elements": [
+            "false representation",
+            "dishonesty",
+            "intent to gain/cause loss"
+          ]
+        },
+        {
+          "code": "US Wire Fraud 18 U.S.C. 1343",
+          "title": "Wire fraud",
+          "required_elements": [
+            "scheme to defraud",
+            "interstate wire communication",
+            "intent to defraud"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 22,
+      "evidence_required": 5,
+      "missing_elements": [
+        {
+          "element": "false representation",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "financial loss",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "false representation",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "dishonesty",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "intent to gain/cause loss",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "scheme to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "interstate wire communication",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        }
+      ]
+    },
+    {
+      "framework": "CYBERCRIME",
+      "statutes": [
+        {
+          "code": "Budapest Convention on Cybercrime",
+          "title": "Computer-related forgery and fraud",
+          "required_elements": [
+            "computer system use",
+            "false data input",
+            "causing loss"
+          ]
+        },
+        {
+          "code": "EU Directive 2013/40/EU Art. 4-5",
+          "title": "Computer-related fraud and forgery",
+          "required_elements": [
+            "computer system",
+            "interference with data",
+            "financial benefit"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 22,
+      "evidence_required": 4,
+      "missing_elements": [
+        {
+          "element": "computer system use",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "false data input",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "causing loss",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "computer system",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "interference with data",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "financial benefit",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        }
+      ]
+    },
+    {
+      "framework": "HUMAN_TRAFFICKING",
+      "statutes": [
+        {
+          "code": "EU Directive 2011/36/EU",
+          "title": "Preventing and combating trafficking in human beings",
+          "required_elements": [
+            "recruitment",
+            "force/fraud/coercion",
+            "exploitation purpose"
+          ]
+        },
+        {
+          "code": "Palermo Protocol",
+          "title": "Protocol to Prevent, Suppress and Punish Trafficking in Persons",
+          "required_elements": [
+            "action (recruitment/transport)",
+            "means (threat/coercion/fraud)",
+            "purpose (exploitation)"
+          ]
+        },
+        {
+          "code": "UK Modern Slavery Act 2015 s.2",
+          "title": "Human trafficking",
+          "required_elements": [
+            "arranges travel",
+            "intention to exploit",
+            "force/fraud/coercion"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 22,
+      "evidence_required": 3,
+      "missing_elements": [
+        {
+          "element": "force/fraud/coercion",
+          "statute": "EU Directive 2011/36/EU"
+        },
+        {
+          "element": "exploitation purpose",
+          "statute": "EU Directive 2011/36/EU"
+        },
+        {
+          "element": "action (recruitment/transport)",
+          "statute": "Palermo Protocol"
+        },
+        {
+          "element": "means (threat/coercion/fraud)",
+          "statute": "Palermo Protocol"
+        },
+        {
+          "element": "purpose (exploitation)",
+          "statute": "Palermo Protocol"
+        },
+        {
+          "element": "arranges travel",
+          "statute": "UK Modern Slavery Act 2015 s.2"
+        },
+        {
+          "element": "intention to exploit",
+          "statute": "UK Modern Slavery Act 2015 s.2"
+        },
+        {
+          "element": "force/fraud/coercion",
+          "statute": "UK Modern Slavery Act 2015 s.2"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-SPY-005-001",
+      "phase": "TELEGRAM_INTEL",
+      "finding": "Monde HR recruits 'Retention Agents' for relocation to Armenia. This is a human trafficking recruitment channel for scam compound operations.",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "5409b497f5862fb8",
+      "timestamp": "2026-08-27 15:49:01.856878+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-10284-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-10611-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-10938-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-11265-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-11558-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-11923-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-12264-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-12593-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-12922-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-13187-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-13568-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-13870-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-14187-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-14541-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-14868-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-15195-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-15497-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-9320-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-9584-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-9908-GFIN-CASE-005",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'Monde HR' matches case term 'monde hr'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: RECOVERY_SCAM. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\n\n**Portuguese Retention Agents** And Spanish retention \n\u2013 \ud83c\udde6\ud83c\uddf2Armenia, full relocation package\n\n**Portuguese Retention Agents** \u2013 Relocation to the Dominican Republic. Full relocation pac",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "36a61c0138a7e6d9",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "EVD-CORR-GFIN-CASE-005-17",
+      "phase": "CORRELATION",
+      "finding": "Cross-Case Correlation [RECRUITMENT_PATTERN]: Multiple cases show human trafficking recruitment patterns (cases: GFIN-CASE-005, GFIN-CASE-018, GFIN-CASE-011, confidence: 0.75)",
+      "source_provider": "GFIN_CORRELATION_ENGINE",
+      "source_url": null,
+      "source_type": "analysis",
+      "confidence": "0.75",
+      "content_hash": "1047326e3a3dbfbb",
+      "timestamp": "2026-08-28 07:10:39.427330+00:00",
+      "provenance": {
+        "source": "cross_case",
+        "provider": "GFIN_CORRELATION_ENGINE",
+        "endpoint": "correlation:RECRUITMENT_PATTERN"
+      },
+      "legal_admissibility": 1.0,
+      "status": "FOUND"
+    }
+  ],
+  "entities": [],
+  "investigation_steps": [
+    {
+      "phase": "INTAKE",
+      "name": "1. Complaint Intake & Victim Identification",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "target": "Telegram user 'Monde HR'",
+        "scam_types": "Unknown"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "OSINT",
+      "name": "2. OSINT Collection (Public Data)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "rdap": {
+          "error": "URL can't contain control characters. \"/domain/Telegram user 'Monde HR'\" (found at least ' ')"
+        },
+        "urlscan": {
+          "error": "URL can't contain control characters. \"/api/v1/search/?q=domain:Telegram user 'Monde HR'\" (found at least ' ')"
+        },
+        "page_analysis": {
+          "emails": [],
+          "phones": [],
+          "status": 0,
+          "social_links": []
+        }
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "ENTITY",
+      "name": "3. Entity Identification (People, Organizations, Infrastructure)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "hosting": "Unknown",
+        "registrar": "Unknown",
+        "contacts_found": false
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "EVIDENCE",
+      "name": "4. Evidence Chain Construction",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "chain_built": true,
+        "public_evidence": 2
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL",
+      "name": "5. Legal Pathway Assessment",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "statute": "Unknown",
+        "primary_crime": "Unknown",
+        "is_recruitment": false,
+        "public_evidence": 2,
+        "recommended_actions": [
+          "Preserve evidence: screenshot website, save page content, record Telegram messages",
+          "Document victim reports and attempt to contact victims for formal statements",
+          "Check if domain has been reported to other law enforcement or consumer protection agencies"
+        ],
+        "requires_legal_process": 1
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "FINANCIAL",
+      "name": "6. Financial Tracing (Pending - requires wallet/transaction data)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "No wallets identified yet. Requires victim to provide transaction details."
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL_PROCESS",
+      "name": "7. Legal Process Preparation (Pending - requires officer review)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "Prepare preservation requests and subpoenas based on identified infrastructure providers."
+      },
+      "officer": "SYSTEM"
+    }
+  ],
+  "timeline": [],
+  "statistics": {
+    "evidence_count": 22,
+    "entity_count": 0,
+    "step_count": 7,
+    "timeline_count": 0,
+    "suspect_count": 1,
+    "legal_framework_count": 3
+  }
+}

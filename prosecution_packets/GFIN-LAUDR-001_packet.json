@@ -1,0 +1,702 @@
+{
+  "metadata": {
+    "case_id": "GFIN-LAUDR-001",
+    "generated_at": "2026-08-28T12:27:31.475745Z",
+    "packet_version": "1.0"
+  },
+  "prosecution_readiness": {
+    "score": 62,
+    "grade": "A",
+    "prosecution_ready": false,
+    "quality_scores": {
+      "evidence": 25.0,
+      "provenance": 19.0,
+      "entity": 15.0,
+      "victim": 0.0,
+      "correlation": 15.0,
+      "steps": 10.0,
+      "total": 84.0,
+      "grade": "A"
+    },
+    "gaps": {
+      "met": 5,
+      "partial": 0,
+      "missing": 3,
+      "checklist": [
+        {
+          "item": "Evidence count (10+)",
+          "status": "MET",
+          "target": 10,
+          "current": 16
+        },
+        {
+          "item": "Evidence provenance quality (avg admissibility)",
+          "status": "MET",
+          "target": 0.9,
+          "current": 0.95
+        },
+        {
+          "item": "Entity coverage (4+ types: domain, person, wallet, infra)",
+          "status": "MET",
+          "target": 4,
+          "current": 4
+        },
+        {
+          "item": "At least 1 victim complaint",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Crypto wallet identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Physical hosting location identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Country routing completed",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Investigation steps completed (4+)",
+          "status": "MET",
+          "target": 4,
+          "current": 5
+        }
+      ]
+    }
+  },
+  "case_overview": {
+    "target": "@btcv123",
+    "priority": "GFIN_SPY",
+    "status": "INVESTIGATING",
+    "summary": "Money laundering network operated by @btcv123. Active in 6 countries (Brazil, Romania, Malta, Ghana, Luxembourg, Colombia). Operating across 6 Telegram groups. Patterns: defrauded funds exchange, bulk USDT laundering, multi-country infrastructure.",
+    "victim_count": 0,
+    "victim_loss": null,
+    "affected_countries": "2026-08-27 15:48:44.944088+00:00",
+    "routed_countries": "2026-08-27 15:48:44.944088+00:00",
+    "physical_locations": "GFIN_SPY",
+    "assigned_officer": "Unassigned"
+  },
+  "suspects": [
+    {
+      "name": "@btcv123",
+      "type": "PERSON",
+      "confidence": 0.56,
+      "evidence_count": 8,
+      "factors": {
+        "phases": [
+          "TELEGRAM_AUTO_LINK"
+        ],
+        "target_domain": "@btcv123",
+        "evidence_count": 8,
+        "phase_diversity": 1,
+        "avg_admissibility": 0.95
+      }
+    }
+  ],
+  "legal_frameworks": [
+    {
+      "framework": "FRAUD",
+      "statutes": [
+        {
+          "code": "EU Directive 2013/40/EU",
+          "title": "Attacks against information systems",
+          "required_elements": [
+            "false representation",
+            "intent to defraud",
+            "financial loss"
+          ]
+        },
+        {
+          "code": "UK Fraud Act 2006 s.2",
+          "title": "Fraud by false representation",
+          "required_elements": [
+            "false representation",
+            "dishonesty",
+            "intent to gain/cause loss"
+          ]
+        },
+        {
+          "code": "US Wire Fraud 18 U.S.C. 1343",
+          "title": "Wire fraud",
+          "required_elements": [
+            "scheme to defraud",
+            "interstate wire communication",
+            "intent to defraud"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 16,
+      "evidence_required": 5,
+      "missing_elements": [
+        {
+          "element": "false representation",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "financial loss",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "false representation",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "dishonesty",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "intent to gain/cause loss",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "scheme to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "interstate wire communication",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        }
+      ]
+    },
+    {
+      "framework": "CYBERCRIME",
+      "statutes": [
+        {
+          "code": "Budapest Convention on Cybercrime",
+          "title": "Computer-related forgery and fraud",
+          "required_elements": [
+            "computer system use",
+            "false data input",
+            "causing loss"
+          ]
+        },
+        {
+          "code": "EU Directive 2013/40/EU Art. 4-5",
+          "title": "Computer-related fraud and forgery",
+          "required_elements": [
+            "computer system",
+            "interference with data",
+            "financial benefit"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 16,
+      "evidence_required": 4,
+      "missing_elements": [
+        {
+          "element": "computer system use",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "false data input",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "causing loss",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "computer system",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "interference with data",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "financial benefit",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        }
+      ]
+    },
+    {
+      "framework": "HUMAN_TRAFFICKING",
+      "statutes": [
+        {
+          "code": "EU Directive 2011/36/EU",
+          "title": "Preventing and combating trafficking in human beings",
+          "required_elements": [
+            "recruitment",
+            "force/fraud/coercion",
+            "exploitation purpose"
+          ]
+        },
+        {
+          "code": "Palermo Protocol",
+          "title": "Protocol to Prevent, Suppress and Punish Trafficking in Persons",
+          "required_elements": [
+            "action (recruitment/transport)",
+            "means (threat/coercion/fraud)",
+            "purpose (exploitation)"
+          ]
+        },
+        {
+          "code": "UK Modern Slavery Act 2015 s.2",
+          "title": "Human trafficking",
+          "required_elements": [
+            "arranges travel",
+            "intention to exploit",
+            "force/fraud/coercion"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 16,
+      "evidence_required": 3,
+      "missing_elements": [
+        {
+          "element": "recruitment",
+          "statute": "EU Directive 2011/36/EU"
+        },
+        {
+          "element": "force/fraud/coercion",
+          "statute": "EU Directive 2011/36/EU"
+        },
+        {
+          "element": "exploitation purpose",
+          "statute": "EU Directive 2011/36/EU"
+        },
+        {
+          "element": "action (recruitment/transport)",
+          "statute": "Palermo Protocol"
+        },
+        {
+          "element": "means (threat/coercion/fraud)",
+          "statute": "Palermo Protocol"
+        },
+        {
+          "element": "purpose (exploitation)",
+          "statute": "Palermo Protocol"
+        },
+        {
+          "element": "arranges travel",
+          "statute": "UK Modern Slavery Act 2015 s.2"
+        },
+        {
+          "element": "intention to exploit",
+          "statute": "UK Modern Slavery Act 2015 s.2"
+        },
+        {
+          "element": "force/fraud/coercion",
+          "statute": "UK Modern Slavery Act 2015 s.2"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-LAUDR-001-01",
+      "phase": "LAUNDERING_DETECTION",
+      "finding": "Channel: @Ghanausdt_exchange | Country: Ghana | Group: Ghana buy usdt/Ghana defrauded Money/Ghana Defrauding funds/ | Risk: CRITICAL",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "@Ghanausdt_exchange",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "CRITICAL",
+      "content_hash": "d2cc58cec61b218c",
+      "timestamp": "2026-08-27 15:48:44.944088+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "@Ghanausdt_exchange"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-LAUDR-001-02",
+      "phase": "LAUNDERING_DETECTION",
+      "finding": "Channel: @Malta_buy_usdt | Country: Malta | Group: Malta buy usdt/Malta defrauded Money/Malta Defrauding funds/ | Risk: CRITICAL",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "@Malta_buy_usdt",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "CRITICAL",
+      "content_hash": "f70416acca8c50e3",
+      "timestamp": "2026-08-27 15:48:44.944088+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "@Malta_buy_usdt"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-LAUDR-001-03",
+      "phase": "LAUNDERING_DETECTION",
+      "finding": "Channel: @Colombia_buy_usdt | Country: Colombia | Group: Colombia buy usdt/Colombia defrauded Money/Colombia Defraudi | Risk: CRITICAL",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "@Colombia_buy_usdt",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "CRITICAL",
+      "content_hash": "ae95858c54c26a4d",
+      "timestamp": "2026-08-27 15:48:44.944088+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "@Colombia_buy_usdt"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-LAUDR-001-04",
+      "phase": "LAUNDERING_DETECTION",
+      "finding": "Channel: @Brazil_exchange_usdt0 | Country: Brazil | Group: Brazil buy usdt/Brazil defrauded Money/Brazil Defrauding fun | Risk: CRITICAL",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "@Brazil_exchange_usdt0",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "CRITICAL",
+      "content_hash": "8543a212578b7127",
+      "timestamp": "2026-08-27 15:48:44.944088+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "@Brazil_exchange_usdt0"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-LAUDR-001-05",
+      "phase": "LAUNDERING_DETECTION",
+      "finding": "Channel: @Romania_buy_usdt | Country: Romania | Group: Romania buy usdt/Romania defrauded Money/Romania Defrauding  | Risk: CRITICAL",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "@Romania_buy_usdt",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "CRITICAL",
+      "content_hash": "8e89f494d3626cee",
+      "timestamp": "2026-08-27 15:48:44.944088+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "@Romania_buy_usdt"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-LAUDR-001-06",
+      "phase": "LAUNDERING_DETECTION",
+      "finding": "Channel: @Luxembourgexchangeusdt | Country: Luxembourg | Group: Luxembourg buy usdt/Luxembourg defrauded Money/Luxembourg De | Risk: CRITICAL",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "@Luxembourgexchangeusdt",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "CRITICAL",
+      "content_hash": "f1f16b97a4289b50",
+      "timestamp": "2026-08-27 15:48:44.944088+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "@Luxembourgexchangeusdt"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16221-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16222-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16223-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16224-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16225-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16226-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16227-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16228-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Romania buy usdt/Romania defrauded Money/Romania Defrauding funds/Romania usdt exchange'. Scam type: unknown. Message: \ud83c\udf0fintegrity is the salt of life\n\ud83c\udf0fWe have global\u00a0 accounts\n\ud83c\udf0fAccept third-party payment\n\ud83c\udf0fFast Usdt\u00a0 Btc exchange\n\n\u260e\ufe0f telagram\u00a0 \uff1a\u00a0\u00a0 @btcv123\n\ud83d\udcf1WhatsAPP\uff1a\u00a0\u00a0 +852 65836981\n\n\ud83c\uddef\ud83c\uddf5Japan\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0rate\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d98fe1fda7abf312",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16439-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Ghana buy usdt/Ghana defrauded Money/Ghana Defrauding funds/Ghana usdt exchange'. Scam type: unknown. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\u2757\ufe0f\u2757\ufe0f\u2757\ufe0f\n\n\ud83c\udf0fUSDT\u00a0\u00a0 supplier,Accept various funds and Money\u2705\n\ud83c\udf0fWe have global\u00a0 accounts,Support 70 Country accounts \u2705\n\ud83c\udf0fAccept third-party payment,bank transfer and Cash deposit\u2705\n\ud83c\udf0fSend the bank account ",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "821ab9d48a5a2c2b",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-16440-GFIN-LAUDR-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 'btcv123' found in Telegram message text. From Unknown in 'Ghana buy usdt/Ghana defrauded Money/Ghana Defrauding funds/Ghana usdt exchange'. Scam type: unknown. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\u2757\ufe0f\u2757\ufe0f\u2757\ufe0f\n\n\ud83c\udf0fUSDT\u00a0\u00a0 supplier,Accept various funds and Money\u2705\n\ud83c\udf0fWe have global\u00a0 accounts,Support 70 Country accounts \u2705\n\ud83c\udf0fAccept third-party payment,bank transfer and Cash deposit\u2705\n\ud83c\udf0fSend the bank account ",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "821ab9d48a5a2c2b",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    }
+  ],
+  "entities": [],
+  "investigation_steps": [
+    {
+      "phase": "INTAKE",
+      "name": "1. Complaint Intake & Victim Identification",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "target": "@btcv123",
+        "scam_types": "Criminal Impersonation / Identity Fraud"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "OSINT",
+      "name": "2. OSINT Collection (Public Data)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "rdap": {
+          "error": "HTTP Error 404: Not Found"
+        },
+        "urlscan": {},
+        "page_analysis": {
+          "emails": [],
+          "phones": [],
+          "status": 0,
+          "social_links": []
+        }
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "ENTITY",
+      "name": "3. Entity Identification (People, Organizations, Infrastructure)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "hosting": "Unknown",
+        "registrar": "Unknown",
+        "contacts_found": false
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "EVIDENCE",
+      "name": "4. Evidence Chain Construction",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "chain_built": true,
+        "public_evidence": 4
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL",
+      "name": "5. Legal Pathway Assessment",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "statute": "18 USC 913 (Impersonator)",
+        "primary_crime": "IMPERSONATION",
+        "is_recruitment": false,
+        "original_crime": "Criminal Impersonation / Identity Fraud",
+        "public_evidence": 4,
+        "recommended_actions": [
+          "Preserve evidence: screenshot website, save page content, record Telegram messages",
+          "Document victim reports and attempt to contact victims for formal statements",
+          "Submit legal request to Telegram for account data on: btcv123",
+          "Check if domain has been reported to other law enforcement or consumer protection agencies"
+        ],
+        "requires_legal_process": 2
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "FINANCIAL",
+      "name": "6. Financial Tracing (Pending - requires wallet/transaction data)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "No wallets identified yet. Requires victim to provide transaction details."
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL_PROCESS",
+      "name": "7. Legal Process Preparation (Pending - requires officer review)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "Prepare preservation requests and subpoenas based on identified infrastructure providers."
+      },
+      "officer": "SYSTEM"
+    }
+  ],
+  "timeline": [],
+  "statistics": {
+    "evidence_count": 16,
+    "entity_count": 0,
+    "step_count": 7,
+    "timeline_count": 0,
+    "suspect_count": 1,
+    "legal_framework_count": 3
+  }
+}

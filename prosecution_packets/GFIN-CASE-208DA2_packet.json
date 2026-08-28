@@ -1,0 +1,422 @@
+{
+  "metadata": {
+    "case_id": "GFIN-CASE-208DA2",
+    "generated_at": "2026-08-28T12:27:31.455894Z",
+    "packet_version": "1.0"
+  },
+  "prosecution_readiness": {
+    "score": 61,
+    "grade": "C",
+    "prosecution_ready": false,
+    "quality_scores": {
+      "evidence": 12.5,
+      "provenance": 0.0,
+      "entity": 15.0,
+      "victim": 7.5,
+      "correlation": 0.0,
+      "steps": 10.0,
+      "total": 45.0,
+      "grade": "C"
+    },
+    "gaps": {
+      "met": 5,
+      "partial": 1,
+      "missing": 3,
+      "checklist": [
+        {
+          "item": "Minimum 5 evidence items",
+          "status": "MET",
+          "target": 5,
+          "current": 5
+        },
+        {
+          "item": "Recommended 10+ evidence items",
+          "status": "PARTIAL",
+          "target": 10,
+          "current": 5
+        },
+        {
+          "item": "Evidence provenance quality",
+          "status": "MISSING",
+          "target": 0.9,
+          "current": 0
+        },
+        {
+          "item": "Entity coverage (4+ types: domain, person, wallet, infra)",
+          "status": "MET",
+          "target": 4,
+          "current": 4
+        },
+        {
+          "item": "At least 1 victim complaint",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Crypto wallet identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Physical hosting location identified",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Country routing completed",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Investigation steps completed (4+)",
+          "status": "MET",
+          "target": 4,
+          "current": 8
+        }
+      ]
+    }
+  },
+  "case_overview": {
+    "target": "https://backoffice.aurum.foundation/",
+    "priority": "SYSTEM",
+    "status": "OPEN",
+    "summary": null,
+    "victim_count": 0,
+    "victim_loss": null,
+    "affected_countries": "2026-08-28 07:43:20.876845+00:00",
+    "routed_countries": "2026-08-28 07:43:20.876845+00:00",
+    "physical_locations": "SYSTEM",
+    "assigned_officer": "Unassigned"
+  },
+  "suspects": [],
+  "legal_frameworks": [
+    {
+      "framework": "FRAUD",
+      "statutes": [
+        {
+          "code": "EU Directive 2013/40/EU",
+          "title": "Attacks against information systems",
+          "required_elements": [
+            "false representation",
+            "intent to defraud",
+            "financial loss"
+          ]
+        },
+        {
+          "code": "UK Fraud Act 2006 s.2",
+          "title": "Fraud by false representation",
+          "required_elements": [
+            "false representation",
+            "dishonesty",
+            "intent to gain/cause loss"
+          ]
+        },
+        {
+          "code": "US Wire Fraud 18 U.S.C. 1343",
+          "title": "Wire fraud",
+          "required_elements": [
+            "scheme to defraud",
+            "interstate wire communication",
+            "intent to defraud"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 5,
+      "evidence_required": 5,
+      "missing_elements": [
+        {
+          "element": "false representation",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "financial loss",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "false representation",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "dishonesty",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "intent to gain/cause loss",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "scheme to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "interstate wire communication",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        }
+      ]
+    },
+    {
+      "framework": "CYBERCRIME",
+      "statutes": [
+        {
+          "code": "Budapest Convention on Cybercrime",
+          "title": "Computer-related forgery and fraud",
+          "required_elements": [
+            "computer system use",
+            "false data input",
+            "causing loss"
+          ]
+        },
+        {
+          "code": "EU Directive 2013/40/EU Art. 4-5",
+          "title": "Computer-related fraud and forgery",
+          "required_elements": [
+            "computer system",
+            "interference with data",
+            "financial benefit"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 5,
+      "evidence_required": 4,
+      "missing_elements": [
+        {
+          "element": "computer system use",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "false data input",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "causing loss",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "computer system",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "interference with data",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "financial benefit",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-RDAP-208DA2-14803",
+      "phase": "DOMAIN_REGISTRATION",
+      "finding": "RDAP Lookup for aurum.foundation:\nRegistrar: NameCheap, Inc.\nRegistered: 2024-08-01\nExpires: 2027-08-01\nNameservers: anton.ns.cloudflare.com, wren.ns.cloudflare.com\nStatus: client transfer prohibited",
+      "source_provider": "RDAP Registry",
+      "source_url": null,
+      "source_type": null,
+      "confidence": "MEDIUM",
+      "content_hash": "648349c15c089707",
+      "timestamp": "2026-08-28 11:00:03.455374+00:00",
+      "provenance": {
+        "source": "RDAP verified",
+        "provider": null,
+        "endpoint": null
+      },
+      "legal_admissibility": null,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-GEO-208DA2-14803",
+      "phase": "INFRASTRUCTURE",
+      "finding": "DNS Resolution: aurum.foundation -> 172.66.175.19\nGeolocation: Toronto, Canada (CA)\nISP: Cloudflare, Inc.\nOrganization: Cloudflare, Inc.\nASN: AS13335 Cloudflare, Inc.",
+      "source_provider": "DNS + IP Geolocation",
+      "source_url": null,
+      "source_type": null,
+      "confidence": "MEDIUM",
+      "content_hash": "911e56e3b7905d98",
+      "timestamp": "2026-08-28 11:00:03.455374+00:00",
+      "provenance": {
+        "source": "DNS+GEO verified",
+        "provider": null,
+        "endpoint": null
+      },
+      "legal_admissibility": null,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-USCAN-208DA2-14803-.040Z",
+      "phase": "WEB_SCAN",
+      "finding": "URLScan.io Result:\nURL: https://backoffice.aurum.foundation/u/W0H208\nIP: 172.66.175.19\nServer: cloudflare\nPage Title: Create an account | Aurum\nHTTP Status: 200\nScan Date: 2026-08-25T10:20:44.040Z",
+      "source_provider": "URLScan.io",
+      "source_url": null,
+      "source_type": null,
+      "confidence": "MEDIUM",
+      "content_hash": "244823f1e17ae76b",
+      "timestamp": "2026-08-28 11:00:03.455374+00:00",
+      "provenance": {
+        "source": "URLScan public API",
+        "provider": null,
+        "endpoint": null
+      },
+      "legal_admissibility": null,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-USCAN-208DA2-14803-.135Z",
+      "phase": "WEB_SCAN",
+      "finding": "URLScan.io Result:\nURL: https://aurum.foundation/de\nIP: 172.66.175.19\nServer: cloudflare\nPage Title: Aurum Foundation \u2014 DeFi & Crypto Trading Platform | Aurum\nHTTP Status: 200\nScan Date: 2026-08-25T10:16:02.135Z",
+      "source_provider": "URLScan.io",
+      "source_url": null,
+      "source_type": null,
+      "confidence": "MEDIUM",
+      "content_hash": "0fdd6f26a885cfa5",
+      "timestamp": "2026-08-28 11:00:03.455374+00:00",
+      "provenance": {
+        "source": "URLScan public API",
+        "provider": null,
+        "endpoint": null
+      },
+      "legal_admissibility": null,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-USCAN-208DA2-14803-.306Z",
+      "phase": "WEB_SCAN",
+      "finding": "URLScan.io Result:\nURL: https://app.neyrolabs.com/\nIP: 172.67.220.36\nServer: cloudflare\nPage Title: Aurum Neyro\nHTTP Status: 200\nScan Date: 2026-08-23T15:25:54.306Z",
+      "source_provider": "URLScan.io",
+      "source_url": null,
+      "source_type": null,
+      "confidence": "MEDIUM",
+      "content_hash": "a141c8b89479d298",
+      "timestamp": "2026-08-28 11:00:03.455374+00:00",
+      "provenance": {
+        "source": "URLScan public API",
+        "provider": null,
+        "endpoint": null
+      },
+      "legal_admissibility": null,
+      "status": "FOUND"
+    }
+  ],
+  "entities": [],
+  "investigation_steps": [
+    {
+      "phase": "INTAKE",
+      "name": "1. Complaint Received",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "description": "Victim complaint logged"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "INTAKE",
+      "name": "2. Scam Analysis",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "description": "Scam type: INVESTMENT_FRAUD"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "INTAKE",
+      "name": "3. Entity Extraction",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "description": "Target: https://backoffice.aurum.foundation/"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "INTAKE",
+      "name": "4. Country Routing",
+      "type": "AUTO",
+      "status": "IN_PROGRESS",
+      "result": {
+        "description": "Determining jurisdiction"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "DOMAIN_REGISTRATION",
+      "name": "DOMAIN_REGISTRATION OSINT",
+      "type": "OSINT",
+      "status": "COMPLETED",
+      "result": {
+        "source": "GFIN-OSINT-AUTO",
+        "finding": "URLScan.io Result:\nURL: https://app.neyrolabs.com/\nIP: 172.67.220.36\nServer: cloudflare\nPage Title: Aurum Neyro\nHTTP Status: 200\nScan Date: 2026-08-23T15:25:54.306Z"
+      },
+      "officer": "GFIN-OSINT-AUTO"
+    },
+    {
+      "phase": "INFRASTRUCTURE",
+      "name": "INFRASTRUCTURE OSINT",
+      "type": "OSINT",
+      "status": "COMPLETED",
+      "result": {
+        "source": "GFIN-OSINT-AUTO",
+        "finding": "URLScan.io Result:\nURL: https://app.neyrolabs.com/\nIP: 172.67.220.36\nServer: cloudflare\nPage Title: Aurum Neyro\nHTTP Status: 200\nScan Date: 2026-08-23T15:25:54.306Z"
+      },
+      "officer": "GFIN-OSINT-AUTO"
+    },
+    {
+      "phase": "WEB_SCAN",
+      "name": "WEB_SCAN OSINT",
+      "type": "OSINT",
+      "status": "COMPLETED",
+      "result": {
+        "source": "GFIN-OSINT-AUTO",
+        "finding": "URLScan.io Result:\nURL: https://app.neyrolabs.com/\nIP: 172.67.220.36\nServer: cloudflare\nPage Title: Aurum Neyro\nHTTP Status: 200\nScan Date: 2026-08-23T15:25:54.306Z"
+      },
+      "officer": "GFIN-OSINT-AUTO"
+    },
+    {
+      "phase": "WEB_SCAN",
+      "name": "WEB_SCAN OSINT",
+      "type": "OSINT",
+      "status": "COMPLETED",
+      "result": {
+        "source": "GFIN-OSINT-AUTO",
+        "finding": "URLScan.io Result:\nURL: https://app.neyrolabs.com/\nIP: 172.67.220.36\nServer: cloudflare\nPage Title: Aurum Neyro\nHTTP Status: 200\nScan Date: 2026-08-23T15:25:54.306Z"
+      },
+      "officer": "GFIN-OSINT-AUTO"
+    },
+    {
+      "phase": "WEB_SCAN",
+      "name": "WEB_SCAN OSINT",
+      "type": "OSINT",
+      "status": "COMPLETED",
+      "result": {
+        "source": "GFIN-OSINT-AUTO",
+        "finding": "URLScan.io Result:\nURL: https://app.neyrolabs.com/\nIP: 172.67.220.36\nServer: cloudflare\nPage Title: Aurum Neyro\nHTTP Status: 200\nScan Date: 2026-08-23T15:25:54.306Z"
+      },
+      "officer": "GFIN-OSINT-AUTO"
+    }
+  ],
+  "timeline": [],
+  "statistics": {
+    "evidence_count": 5,
+    "entity_count": 0,
+    "step_count": 9,
+    "timeline_count": 0,
+    "suspect_count": 0,
+    "legal_framework_count": 2
+  }
+}

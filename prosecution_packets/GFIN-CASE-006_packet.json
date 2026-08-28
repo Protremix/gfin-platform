@@ -1,0 +1,703 @@
+{
+  "metadata": {
+    "case_id": "GFIN-CASE-006",
+    "generated_at": "2026-08-28T12:27:31.457163Z",
+    "packet_version": "1.0"
+  },
+  "prosecution_readiness": {
+    "score": 81,
+    "grade": "A",
+    "prosecution_ready": false,
+    "quality_scores": {
+      "evidence": 25.0,
+      "provenance": 19.0,
+      "entity": 7.5,
+      "victim": 7.5,
+      "correlation": 15.0,
+      "steps": 10.0,
+      "total": 84.0,
+      "grade": "A"
+    },
+    "gaps": {
+      "met": 6,
+      "partial": 1,
+      "missing": 1,
+      "checklist": [
+        {
+          "item": "Evidence count (10+)",
+          "status": "MET",
+          "target": 10,
+          "current": 21
+        },
+        {
+          "item": "Evidence provenance quality (avg admissibility)",
+          "status": "MET",
+          "target": 0.9,
+          "current": 0.95
+        },
+        {
+          "item": "Entity coverage (4+ types)",
+          "status": "PARTIAL",
+          "target": 4,
+          "current": 2
+        },
+        {
+          "item": "At least 1 victim complaint",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Crypto wallet identified",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Physical hosting location identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Country routing completed",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Investigation steps completed (4+)",
+          "status": "MET",
+          "target": 4,
+          "current": 5
+        }
+      ]
+    }
+  },
+  "case_overview": {
+    "target": "Telegram user 'RS Database House'",
+    "priority": "GFIN_SPY",
+    "status": "INVESTIGATING",
+    "summary": "RS Database House sells victim databases to other scam operators. Contact: +1 440 589 8670. Data broker enabling fraud by providing victim contact information.",
+    "victim_count": 1,
+    "victim_loss": null,
+    "affected_countries": "2026-08-27 15:49:01.856878+00:00",
+    "routed_countries": "2026-08-27 15:49:01.856878+00:00",
+    "physical_locations": "GFIN_SPY",
+    "assigned_officer": "Unassigned"
+  },
+  "suspects": [],
+  "legal_frameworks": [
+    {
+      "framework": "FRAUD",
+      "statutes": [
+        {
+          "code": "EU Directive 2013/40/EU",
+          "title": "Attacks against information systems",
+          "required_elements": [
+            "false representation",
+            "intent to defraud",
+            "financial loss"
+          ]
+        },
+        {
+          "code": "UK Fraud Act 2006 s.2",
+          "title": "Fraud by false representation",
+          "required_elements": [
+            "false representation",
+            "dishonesty",
+            "intent to gain/cause loss"
+          ]
+        },
+        {
+          "code": "US Wire Fraud 18 U.S.C. 1343",
+          "title": "Wire fraud",
+          "required_elements": [
+            "scheme to defraud",
+            "interstate wire communication",
+            "intent to defraud"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 21,
+      "evidence_required": 5,
+      "missing_elements": [
+        {
+          "element": "false representation",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "financial loss",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "false representation",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "dishonesty",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "intent to gain/cause loss",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "scheme to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "interstate wire communication",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        }
+      ]
+    },
+    {
+      "framework": "CYBERCRIME",
+      "statutes": [
+        {
+          "code": "Budapest Convention on Cybercrime",
+          "title": "Computer-related forgery and fraud",
+          "required_elements": [
+            "computer system use",
+            "false data input",
+            "causing loss"
+          ]
+        },
+        {
+          "code": "EU Directive 2013/40/EU Art. 4-5",
+          "title": "Computer-related fraud and forgery",
+          "required_elements": [
+            "computer system",
+            "interference with data",
+            "financial benefit"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 21,
+      "evidence_required": 4,
+      "missing_elements": [
+        {
+          "element": "computer system use",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "false data input",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "causing loss",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "computer system",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "interference with data",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "financial benefit",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-SPY-006-001",
+      "phase": "TELEGRAM_INTEL",
+      "finding": "RS Database House sells victim databases to other scam operators. Contact: +1 440 589 8670. Data broker enabling fraud by providing victim contact information.",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "56d976aab6d972d4",
+      "timestamp": "2026-08-27 15:49:01.856878+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-16191-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-16518-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-16860-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-17189-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-17518-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-17847-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-18176-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-18505-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-18821-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-19127-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-19456-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-19810-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-20139-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-20415-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-20767-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-21073-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-21426-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-21778-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-22434-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-22776-GFIN-CASE-006",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Sender 'RS Database House' matches case term 'rs database house'. Telegram message in 'Forex | Crypto | Jobs | Solutions'. Scam type: unknown. Message: Hardware wallets (Trezors, Ledgers, Tangem) orders data available for sale, 2025-2026 orders only. UK, US, Australia, Canada mostly available. Serious buyers contact me.\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0\u00a0",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "3c2974ef6fe5b0db",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    }
+  ],
+  "entities": [],
+  "investigation_steps": [
+    {
+      "phase": "INTAKE",
+      "name": "1. Complaint Intake & Victim Identification",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "target": "Telegram user 'RS Database House'",
+        "scam_types": "Unknown"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "OSINT",
+      "name": "2. OSINT Collection (Public Data)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "rdap": {
+          "error": "URL can't contain control characters. \"/domain/Telegram user 'RS Database House'\" (found at least ' ')"
+        },
+        "urlscan": {
+          "error": "URL can't contain control characters. \"/api/v1/search/?q=domain:Telegram user 'RS Database House'\" (found at least ' ')"
+        },
+        "page_analysis": {
+          "emails": [],
+          "phones": [],
+          "status": 0,
+          "social_links": []
+        }
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "ENTITY",
+      "name": "3. Entity Identification (People, Organizations, Infrastructure)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "hosting": "Unknown",
+        "registrar": "Unknown",
+        "contacts_found": false
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "EVIDENCE",
+      "name": "4. Evidence Chain Construction",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "chain_built": true,
+        "public_evidence": 2
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL",
+      "name": "5. Legal Pathway Assessment",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "statute": "Unknown",
+        "primary_crime": "Unknown",
+        "is_recruitment": false,
+        "public_evidence": 2,
+        "recommended_actions": [
+          "Preserve evidence: screenshot website, save page content, record Telegram messages",
+          "Document victim reports and attempt to contact victims for formal statements",
+          "Check if domain has been reported to other law enforcement or consumer protection agencies"
+        ],
+        "requires_legal_process": 1
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "FINANCIAL",
+      "name": "6. Financial Tracing (Pending - requires wallet/transaction data)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "No wallets identified yet. Requires victim to provide transaction details."
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL_PROCESS",
+      "name": "7. Legal Process Preparation (Pending - requires officer review)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "Prepare preservation requests and subpoenas based on identified infrastructure providers."
+      },
+      "officer": "SYSTEM"
+    }
+  ],
+  "timeline": [],
+  "statistics": {
+    "evidence_count": 21,
+    "entity_count": 0,
+    "step_count": 7,
+    "timeline_count": 0,
+    "suspect_count": 0,
+    "legal_framework_count": 2
+  }
+}

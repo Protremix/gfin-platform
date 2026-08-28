@@ -1,0 +1,898 @@
+{
+  "metadata": {
+    "case_id": "GFIN-CASE-001",
+    "generated_at": "2026-08-28T12:27:31.453056Z",
+    "packet_version": "1.0"
+  },
+  "prosecution_readiness": {
+    "score": 62,
+    "grade": "A",
+    "prosecution_ready": false,
+    "quality_scores": {
+      "evidence": 25.0,
+      "provenance": 19.0,
+      "entity": 15.0,
+      "victim": 0.0,
+      "correlation": 15.0,
+      "steps": 10.0,
+      "total": 84.0,
+      "grade": "A"
+    },
+    "gaps": {
+      "met": 5,
+      "partial": 0,
+      "missing": 3,
+      "checklist": [
+        {
+          "item": "Evidence count (10+)",
+          "status": "MET",
+          "target": 10,
+          "current": 28
+        },
+        {
+          "item": "Evidence provenance quality (avg admissibility)",
+          "status": "MET",
+          "target": 0.9,
+          "current": 0.948
+        },
+        {
+          "item": "Entity coverage (4+ types: domain, person, wallet, infra)",
+          "status": "MET",
+          "target": 4,
+          "current": 4
+        },
+        {
+          "item": "At least 1 victim complaint",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Crypto wallet identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Physical hosting location identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Country routing completed",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Investigation steps completed (4+)",
+          "status": "MET",
+          "target": 4,
+          "current": 5
+        }
+      ]
+    }
+  },
+  "case_overview": {
+    "target": "cncintelinfo.com",
+    "priority": "SYSTEM",
+    "status": "INVESTIGATING",
+    "summary": "Large-scale brand impersonation campaign targeting CNC Intelligence Inc. 50+ fraudulent domains since June 2024.",
+    "victim_count": 3,
+    "victim_loss": "$35,000+",
+    "affected_countries": "2026-08-26 19:31:43.991977+00:00",
+    "routed_countries": "2026-08-27 12:39:16.298496+00:00",
+    "physical_locations": "SYSTEM",
+    "assigned_officer": "Unassigned"
+  },
+  "suspects": [],
+  "legal_frameworks": [
+    {
+      "framework": "FRAUD",
+      "statutes": [
+        {
+          "code": "EU Directive 2013/40/EU",
+          "title": "Attacks against information systems",
+          "required_elements": [
+            "false representation",
+            "intent to defraud",
+            "financial loss"
+          ]
+        },
+        {
+          "code": "UK Fraud Act 2006 s.2",
+          "title": "Fraud by false representation",
+          "required_elements": [
+            "false representation",
+            "dishonesty",
+            "intent to gain/cause loss"
+          ]
+        },
+        {
+          "code": "US Wire Fraud 18 U.S.C. 1343",
+          "title": "Wire fraud",
+          "required_elements": [
+            "scheme to defraud",
+            "interstate wire communication",
+            "intent to defraud"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 28,
+      "evidence_required": 5,
+      "missing_elements": [
+        {
+          "element": "false representation",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "financial loss",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "false representation",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "dishonesty",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "intent to gain/cause loss",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "scheme to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "interstate wire communication",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        }
+      ]
+    },
+    {
+      "framework": "CYBERCRIME",
+      "statutes": [
+        {
+          "code": "Budapest Convention on Cybercrime",
+          "title": "Computer-related forgery and fraud",
+          "required_elements": [
+            "computer system use",
+            "false data input",
+            "causing loss"
+          ]
+        },
+        {
+          "code": "EU Directive 2013/40/EU Art. 4-5",
+          "title": "Computer-related fraud and forgery",
+          "required_elements": [
+            "computer system",
+            "interference with data",
+            "financial benefit"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 28,
+      "evidence_required": 4,
+      "missing_elements": [
+        {
+          "element": "computer system use",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "false data input",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "causing loss",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "computer system",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "interference with data",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "financial benefit",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-001",
+      "phase": "CAMPAIGN_DISCOVERY",
+      "finding": "50+ domains impersonating CNC Intelligence",
+      "source_provider": "CNC Intelligence Inc.",
+      "source_url": "https://cncintel.com/report",
+      "source_type": "Public corporate report",
+      "confidence": "HIGH",
+      "content_hash": "4f4b21b21676b673",
+      "timestamp": "2026-08-26 19:31:43.997238+00:00",
+      "provenance": {
+        "source": "Public corporate report",
+        "provider": "CNC Intelligence Inc.",
+        "endpoint": "https://cncintel.com/report"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-004",
+      "phase": "DOMAIN_REGISTRATION",
+      "finding": "cncintelinfo.com registered 2026-02-26 via NameCheap, ProtonMail MX only",
+      "source_provider": "Google DoH",
+      "source_url": "dns.google",
+      "source_type": "DNS protocol query",
+      "confidence": "HIGH",
+      "content_hash": "376302c0aa82a952",
+      "timestamp": "2026-08-26 19:31:43.998197+00:00",
+      "provenance": {
+        "source": "DNS protocol query",
+        "provider": "Google DoH",
+        "endpoint": "dns.google"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-007",
+      "phase": "IP_INTELLIGENCE",
+      "finding": "IP 91.195.240.123 = AS47846 SEDO GmbH, Munich",
+      "source_provider": "ipinfo.io",
+      "source_url": "ipinfo.io",
+      "source_type": "IP geolocation",
+      "confidence": "HIGH",
+      "content_hash": "88adae1471e5544a",
+      "timestamp": "2026-08-26 19:31:43.998583+00:00",
+      "provenance": {
+        "source": "IP geolocation",
+        "provider": "ipinfo.io",
+        "endpoint": "ipinfo.io"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-011",
+      "phase": "VICTIM_CORRELATION",
+      "finding": "Reddit victims report losing $35,000 to fake CNC Intelligence representatives",
+      "source_provider": "Reddit",
+      "source_url": "reddit.com/r/Scams",
+      "source_type": "Public forum posts",
+      "confidence": "MEDIUM",
+      "content_hash": "62fc83a8b23f82fa",
+      "timestamp": "2026-08-26 19:31:43.998940+00:00",
+      "provenance": {
+        "source": "Public forum posts",
+        "provider": "Reddit",
+        "endpoint": "reddit.com/r/Scams"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-016",
+      "phase": "LAW_ENFORCEMENT",
+      "finding": "FBI San Diego seized MyChargeBack, Payback LTD, Claim Justice as connected recovery scam network",
+      "source_provider": "FBI",
+      "source_url": "fbi.gov",
+      "source_type": "Law enforcement press release",
+      "confidence": "HIGH",
+      "content_hash": "adc841958a95a190",
+      "timestamp": "2026-08-26 19:31:43.999359+00:00",
+      "provenance": {
+        "source": "Law enforcement press release",
+        "provider": "FBI",
+        "endpoint": "fbi.gov"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-006",
+      "phase": "ACTIVE_INVESTIGATION",
+      "finding": "WHOIS shows domain registered 2024-06-15 via NameCheap, privacy proxy enabled",
+      "source_provider": "WHOIS Lookup",
+      "source_url": "",
+      "source_type": "INVESTIGATOR",
+      "confidence": "HIGH",
+      "content_hash": "ad65b629b88f6ba0",
+      "timestamp": "2026-08-27 11:54:55.655136+00:00",
+      "provenance": {
+        "source": "INVESTIGATOR",
+        "provider": "WHOIS Lookup",
+        "endpoint": ""
+      },
+      "legal_admissibility": 0.925,
+      "status": "FOUND"
+    },
+    {
+      "id": "EVID-1787834356-GFIN-CASE-001",
+      "phase": "WHOIS_ANALYSIS",
+      "finding": "Manual test evidence: WHOIS shows domain registered with privacy protection, registered 2024-06-15",
+      "source_provider": "OFFICER",
+      "source_url": "",
+      "source_type": "MANUAL",
+      "confidence": "HIGH",
+      "content_hash": "ff2451c99b9fc895",
+      "timestamp": "2026-08-27 12:39:16.296418+00:00",
+      "provenance": {
+        "source": "MANUAL",
+        "provider": "OFFICER",
+        "endpoint": ""
+      },
+      "legal_admissibility": 0.925,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24999-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "779e0b5797f40d0d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25001-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "9917ee5adeb5b8e5",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25004-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: Meet TeamForce CRM \u2013 The Ultimate Solution for Modern Brokerages\n\n\ud83d\ude80 Why TeamForce?\n\n\u2705 CRM with automated flows and Reports\n\u2705 WhatsApp FX Platform & AI Chatbot\n\u2705 Direct App Calls\n\u2705 24/7 Dedicated Suppo",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "6c358fd38e3bc507",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25025-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Crypto Forex Jobs'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "d5432cabb88fef9d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25035-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4652eeed941e0ec0",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25052-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Jobs | Work'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4748c0b0a7f1d6f3",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25327-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Crypto Forex Jobs'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "d5432cabb88fef9d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25357-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Jobs | Work'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4748c0b0a7f1d6f3",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25366-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "9917ee5adeb5b8e5",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25369-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: Meet TeamForce CRM \u2013 The Ultimate Solution for Modern Brokerages\n\n\ud83d\ude80 Why TeamForce?\n\n\u2705 CRM with automated flows and Reports\n\u2705 WhatsApp FX Platform & AI Chatbot\n\u2705 Direct App Calls\n\u2705 24/7 Dedicated Suppo",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "6c358fd38e3bc507",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25372-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4652eeed941e0ec0",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25699-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4652eeed941e0ec0",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-26031-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "779e0b5797f40d0d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-25364-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "779e0b5797f40d0d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24686-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "779e0b5797f40d0d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24688-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "9917ee5adeb5b8e5",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24691-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TFT - Evelyn in 'Forex | Crypto | Solutions | Affiliate| Jobs'. Scam type: INVESTMENT_FRAUD. Message: Meet TeamForce CRM \u2013 The Ultimate Solution for Modern Brokerages\n\n\ud83d\ude80 Why TeamForce?\n\n\u2705 CRM with automated flows and Reports\n\u2705 WhatsApp FX Platform & AI Chatbot\n\u2705 Direct App Calls\n\u2705 24/7 Dedicated Suppo",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "6c358fd38e3bc507",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24694-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From Shakil in 'Forex | Crypto | Jobs | Solutions'. Scam type: INVESTMENT_FRAUD. Message: forexchanger.com\nForex investor net\nFor my subscribers full dump forex-investor.net \u2705\nSQL File",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4652eeed941e0ec0",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24711-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Forex | Crypto | Jobs | Work'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "4748c0b0a7f1d6f3",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-DOM-24732-GFIN-CASE-001",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Domain matching 'com' found in Telegram message. From TOPTALENT Recruitment Agency in 'Crypto Forex Jobs'. Scam type: unknown. Message: **FX Industry Roles \u2013 Mexico, Dubai & Cyprus**\n\n===> Multiple departments hiring: Finance, HR, Compliance, Affiliate & Sales\n\n--> Apply directly via job links <--\n\n**MEXICO**\n\n-> [Processing Manager (",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "d5432cabb88fef9d",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-RDAP-SE-001-14403",
+      "phase": "DOMAIN_REGISTRATION",
+      "finding": "RDAP Lookup for cncintelinfo.com:\nRegistrar: NameCheap, Inc.\nRegistered: 2026-02-26\nExpires: 2027-02-26\nNameservers: DNS1.REGISTRAR-SERVERS.COM, DNS2.REGISTRAR-SERVERS.COM\nStatus: client transfer prohibited",
+      "source_provider": "RDAP Registry Lookup",
+      "source_url": null,
+      "source_type": null,
+      "confidence": "MEDIUM",
+      "content_hash": "97dd1d957c81aa87",
+      "timestamp": "2026-08-28 10:53:23.395625+00:00",
+      "provenance": {
+        "source": "RDAP verified",
+        "provider": null,
+        "endpoint": null
+      },
+      "legal_admissibility": null,
+      "status": "FOUND"
+    }
+  ],
+  "entities": [
+    {
+      "type": "EVIDENCE",
+      "value": "E-001",
+      "confidence": "HIGH",
+      "source": "AUTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "type": "EVIDENCE",
+      "value": "E-004",
+      "confidence": "HIGH",
+      "source": "AUTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "type": "EVIDENCE",
+      "value": "E-007",
+      "confidence": "HIGH",
+      "source": "AUTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "type": "EVIDENCE",
+      "value": "E-011",
+      "confidence": "MEDIUM",
+      "source": "AUTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "type": "EVIDENCE",
+      "value": "E-016",
+      "confidence": "HIGH",
+      "source": "AUTO",
+      "status": "CONFIRMED"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "cncintelinfo.com",
+      "confidence": "HIGH",
+      "source": "COMPLAINT",
+      "status": "IDENTIFIED"
+    }
+  ],
+  "investigation_steps": [
+    {
+      "phase": "INTAKE",
+      "name": "1. Complaint Intake & Victim Identification",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "target": "cncintelinfo.com",
+        "scam_types": "Unknown"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "OSINT",
+      "name": "2. OSINT Collection (Public Data)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "rdap": {
+          "status": [
+            "client transfer prohibited"
+          ],
+          "registrar": "NameCheap, Inc.",
+          "expiration_date": "2027-02-26T17:02:30Z",
+          "registration_date": "2026-02-26T17:02:30Z"
+        },
+        "urlscan": {},
+        "page_analysis": {
+          "emails": [],
+          "phones": [],
+          "status": 0,
+          "social_links": []
+        }
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "ENTITY",
+      "name": "3. Entity Identification (People, Organizations, Infrastructure)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "hosting": "Unknown",
+        "registrar": "NameCheap, Inc.",
+        "contacts_found": false
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "EVIDENCE",
+      "name": "4. Evidence Chain Construction",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "chain_built": true,
+        "public_evidence": 4
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL",
+      "name": "5. Legal Pathway Assessment",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "statute": "Unknown",
+        "primary_crime": "Unknown",
+        "is_recruitment": false,
+        "public_evidence": 4,
+        "recommended_actions": [
+          "Preserve evidence: screenshot website, save page content, record Telegram messages",
+          "Document victim reports and attempt to contact victims for formal statements",
+          "Send preservation request to NameCheap, Inc. (registrar) for registrant data",
+          "Check if domain has been reported to other law enforcement or consumer protection agencies"
+        ],
+        "requires_legal_process": 2
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "FINANCIAL",
+      "name": "6. Financial Tracing (Pending - requires wallet/transaction data)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "No wallets identified yet. Requires victim to provide transaction details."
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL_PROCESS",
+      "name": "7. Legal Process Preparation (Pending - requires officer review)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "Prepare preservation requests and subpoenas based on identified infrastructure providers."
+      },
+      "officer": "SYSTEM"
+    }
+  ],
+  "timeline": [
+    {
+      "type": "CASE_OPENED",
+      "title": "Case opened",
+      "description": "Case created with status: INVESTIGATING",
+      "officer": "SYSTEM",
+      "date": "2026-08-27 11:48:04.320239+00:00"
+    },
+    {
+      "type": "EVIDENCE_ADDED",
+      "title": "Evidence added: E-006",
+      "description": "WHOIS shows domain registered 2024-06-15 via NameCheap, privacy proxy enabled",
+      "officer": "GFIN Admin",
+      "date": "2026-08-27 11:54:55.656887+00:00"
+    },
+    {
+      "type": "PROXY_PIERCING",
+      "title": "Proxy piercing completed for cncintelinfo.com",
+      "description": "No proxy/privacy protection detected. Domain appears to use direct hosting.",
+      "officer": "GFIN Admin",
+      "date": "2026-08-27 12:02:34.564844+00:00"
+    }
+  ],
+  "statistics": {
+    "evidence_count": 28,
+    "entity_count": 6,
+    "step_count": 7,
+    "timeline_count": 3,
+    "suspect_count": 0,
+    "legal_framework_count": 2
+  }
+}

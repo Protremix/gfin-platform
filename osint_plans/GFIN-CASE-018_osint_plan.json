@@ -1,0 +1,111 @@
+{
+  "case_id": "GFIN-CASE-018",
+  "target": "zohar-hr.co",
+  "priority": "CRITICAL",
+  "current_readiness": 50,
+  "current_grade": "A",
+  "generated_at": "2026-08-28T12:27:31.479836Z",
+  "missing_items": [
+    "At least 1 victim complaint",
+    "Crypto wallet identified",
+    "Physical hosting location identified",
+    "Country routing completed"
+  ],
+  "existing_evidence_count": 8,
+  "existing_entity_count": 0,
+  "osint_tasks": [
+    {
+      "task_id": "GFIN-CASE-018-OSINT-01",
+      "title": "Deep domain investigation on zohar-hr.co",
+      "priority": "HIGH",
+      "source": "RDAP + DNS + URLScan + Wayback Machine",
+      "action": "Run full Hunter v4 investigation on zohar-hr.co. Check RDAP, DNS records, URLScan.io, Wayback Machine.",
+      "expected_evidence": [
+        "Registrant info",
+        "DNS records",
+        "Historical captures",
+        "IP history"
+      ],
+      "target_gap": "Physical hosting location"
+    },
+    {
+      "task_id": "GFIN-CASE-018-OSINT-02",
+      "title": "Telegram intelligence cross-reference",
+      "priority": "HIGH",
+      "source": "Telegram intelligence database (80K+ items)",
+      "action": "Search all Telegram items for mentions of zohar-hr.co or related entities. Check 32 monitored groups.",
+      "expected_evidence": [
+        "Telegram mentions",
+        "Victim reports",
+        "Scam type classification"
+      ],
+      "target_gap": "Victim complaint"
+    },
+    {
+      "task_id": "GFIN-CASE-018-OSINT-03",
+      "title": "Crypto wallet identification",
+      "priority": "HIGH",
+      "source": "Multi-chain scanner (10 chains)",
+      "action": "Extract wallet addresses from evidence and Telegram intel. Run multi-chain scanner.",
+      "expected_evidence": [
+        "Wallet addresses",
+        "Transaction history",
+        "Exchange deposits"
+      ],
+      "target_gap": "Crypto wallet identified"
+    },
+    {
+      "task_id": "GFIN-CASE-018-OSINT-04",
+      "title": "Infrastructure correlation",
+      "priority": "MEDIUM",
+      "source": "Cross-case correlation engine",
+      "action": "Run correlation against all 20 cases for shared infrastructure.",
+      "expected_evidence": [
+        "Shared IPs",
+        "Shared registrars",
+        "Connected campaigns"
+      ],
+      "target_gap": "Entity coverage"
+    },
+    {
+      "task_id": "GFIN-CASE-018-OSINT-05",
+      "title": "Victim identification via OSINT",
+      "priority": "HIGH",
+      "source": "Reddit + consumer forums + scam directories",
+      "action": "Search Reddit, Trustpilot, ScamAdviser for zohar-hr.co victim reports.",
+      "expected_evidence": [
+        "Victim testimonials",
+        "Loss amounts",
+        "Contact methods"
+      ],
+      "target_gap": "Victim complaint"
+    },
+    {
+      "task_id": "GFIN-CASE-018-OSINT-06",
+      "title": "Dark web exposure check",
+      "priority": "MEDIUM",
+      "source": "Tor + Ahmia + paste sites",
+      "action": "Search dark web for zohar-hr.co and related indicators via Tor proxy.",
+      "expected_evidence": [
+        "Dark web mentions",
+        "Leaked data",
+        "Marketplace listings"
+      ],
+      "target_gap": "Additional corroboration"
+    },
+    {
+      "task_id": "GFIN-CASE-018-OSINT-07",
+      "title": "Social media footprint",
+      "priority": "MEDIUM",
+      "source": "Public social media + search engines",
+      "action": "Search for zohar-hr.co across social platforms for promotional posts or warnings.",
+      "expected_evidence": [
+        "Social profiles",
+        "Promotional content",
+        "User warnings"
+      ],
+      "target_gap": "Additional corroboration"
+    }
+  ],
+  "summary": "Case GFIN-CASE-018 at 50% readiness (Grade A). 4 gaps: At least 1 victim complaint, Crypto wallet identified, Physical hosting location identified. Execute 7 OSINT tasks to reach 60%+."
+}

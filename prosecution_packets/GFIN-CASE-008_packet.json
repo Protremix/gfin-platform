@@ -1,0 +1,523 @@
+{
+  "metadata": {
+    "case_id": "GFIN-CASE-008",
+    "generated_at": "2026-08-28T12:27:31.458544Z",
+    "packet_version": "1.0"
+  },
+  "prosecution_readiness": {
+    "score": 75,
+    "grade": "A",
+    "prosecution_ready": false,
+    "quality_scores": {
+      "evidence": 25.0,
+      "provenance": 19.0,
+      "entity": 15.0,
+      "victim": 7.5,
+      "correlation": 15.0,
+      "steps": 10.0,
+      "total": 91.5,
+      "grade": "A"
+    },
+    "gaps": {
+      "met": 6,
+      "partial": 0,
+      "missing": 2,
+      "checklist": [
+        {
+          "item": "Evidence count (10+)",
+          "status": "MET",
+          "target": 10,
+          "current": 11
+        },
+        {
+          "item": "Evidence provenance quality (avg admissibility)",
+          "status": "MET",
+          "target": 0.9,
+          "current": 0.95
+        },
+        {
+          "item": "Entity coverage (4+ types: domain, person, wallet, infra)",
+          "status": "MET",
+          "target": 4,
+          "current": 4
+        },
+        {
+          "item": "At least 1 victim complaint",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Crypto wallet identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Physical hosting location identified",
+          "status": "MISSING",
+          "target": 1,
+          "current": 0
+        },
+        {
+          "item": "Country routing completed",
+          "status": "MET",
+          "target": 1,
+          "current": 1
+        },
+        {
+          "item": "Investigation steps completed (4+)",
+          "status": "MET",
+          "target": 4,
+          "current": 5
+        }
+      ]
+    }
+  },
+  "case_overview": {
+    "target": "Kyiv call center (t.me/work_crypto_fx)",
+    "priority": "GFIN_SPY",
+    "status": "INVESTIGATING",
+    "summary": "Kyiv-based scam call center operating via t.me/work_crypto_fx. Operator: @Kira13MK, Phone: +380966344929. Running crypto investment fraud from Ukraine.",
+    "victim_count": 1,
+    "victim_loss": null,
+    "affected_countries": "2026-08-27 15:49:01.856878+00:00",
+    "routed_countries": "2026-08-27 15:49:01.856878+00:00",
+    "physical_locations": "GFIN_SPY",
+    "assigned_officer": "Unassigned"
+  },
+  "suspects": [],
+  "legal_frameworks": [
+    {
+      "framework": "FRAUD",
+      "statutes": [
+        {
+          "code": "EU Directive 2013/40/EU",
+          "title": "Attacks against information systems",
+          "required_elements": [
+            "false representation",
+            "intent to defraud",
+            "financial loss"
+          ]
+        },
+        {
+          "code": "UK Fraud Act 2006 s.2",
+          "title": "Fraud by false representation",
+          "required_elements": [
+            "false representation",
+            "dishonesty",
+            "intent to gain/cause loss"
+          ]
+        },
+        {
+          "code": "US Wire Fraud 18 U.S.C. 1343",
+          "title": "Wire fraud",
+          "required_elements": [
+            "scheme to defraud",
+            "interstate wire communication",
+            "intent to defraud"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 11,
+      "evidence_required": 5,
+      "missing_elements": [
+        {
+          "element": "false representation",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "financial loss",
+          "statute": "EU Directive 2013/40/EU"
+        },
+        {
+          "element": "false representation",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "dishonesty",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "intent to gain/cause loss",
+          "statute": "UK Fraud Act 2006 s.2"
+        },
+        {
+          "element": "scheme to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "interstate wire communication",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        },
+        {
+          "element": "intent to defraud",
+          "statute": "US Wire Fraud 18 U.S.C. 1343"
+        }
+      ]
+    },
+    {
+      "framework": "CYBERCRIME",
+      "statutes": [
+        {
+          "code": "Budapest Convention on Cybercrime",
+          "title": "Computer-related forgery and fraud",
+          "required_elements": [
+            "computer system use",
+            "false data input",
+            "causing loss"
+          ]
+        },
+        {
+          "code": "EU Directive 2013/40/EU Art. 4-5",
+          "title": "Computer-related fraud and forgery",
+          "required_elements": [
+            "computer system",
+            "interference with data",
+            "financial benefit"
+          ]
+        }
+      ],
+      "applicable": true,
+      "evidence_met": 11,
+      "evidence_required": 4,
+      "missing_elements": [
+        {
+          "element": "computer system use",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "false data input",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "causing loss",
+          "statute": "Budapest Convention on Cybercrime"
+        },
+        {
+          "element": "computer system",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "interference with data",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        },
+        {
+          "element": "financial benefit",
+          "statute": "EU Directive 2013/40/EU Art. 4-5"
+        }
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-SPY-008-001",
+      "phase": "TELEGRAM_INTEL",
+      "finding": "Kyiv-based scam call center operating via t.me/work_crypto_fx. Operator: @Kira13MK, Phone: +380966344929. Running crypto investment fraud from Ukraine.",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "HIGH",
+      "content_hash": "45f005f32e604c94",
+      "timestamp": "2026-08-27 15:49:01.856878+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24040-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From \u51c6 in 'Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9'. Scam type: unknown. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \u2753\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\n\nLOOKING FOR A #SECURE SOURCE FOR BUSINESS #BANK ACCOUNTS, #PAYMENT #GATEWAYS, DOCUMENTS, AND ACCOUNT SETUPS?\n\nWE PROVIDE MULTIPLE #ACCOUNTS AND VERIFIED #DOCUMENTS\n\n\nTelegram: @Elite_pa",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "069f84e97e456996",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24204-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSALE MANAGER (ENG DESK)**\n\n \ud83d\udccd**KYIV**  \n\n\u2b50\ufe0f**\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:**\n**__\ud83d\udd18__** \u0421\u0442\u0430\u0432\u043a\u0430 1500$ \u0431\u0435\u0437 \u0442\u0430\u0440\u0433\u0435\u0442\u0430, 2000$ \u0441 \u0442\u0430\u0440\u0433\u0435\u0442\u043e\u043c\n**__\ud83d\udd18__** \u0412\u044b\u043f\u043b\u0430\u0442\u044b \u0431\u0435\u0437 \u0437\u0430\u0434\u0435\u0440\u0436\u0435\u043a\n**__\ud83d\udd18__**\u041e\u0444\u0438\u0441 \u0441 \u0443\u043a\u0440\u044b\u0442\u0438\u0435\u043c\n**__\ud83d\udd18__**\u041e\u0447\u0435\u043d\u044c \u0434\u0440\u0443\u0436\u043d",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d28b8c643ae4474a",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24205-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION MANAGER CHARGE (ENG DESK)**\n\n \ud83d\udccd **KYIV** \n\n\u2b50\ufe0f\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:\n\u25aa\ufe0f\u0421\u0442\u0430\u0432\u043a\u0430 \u043e\u0442 1000$,\u043f\u043b\u044e\u0441 \u0431\u043e\u043d\u0443\u0441 \u0432 \u043f\u0440\u043e\u0446\u0435\u043d\u0442\u043d\u043e\u043c \u0441\u043e\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0438 \u043e\u0442 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430 \u0438 \u043f\u043e\u0432\u044b\u0448\u0435\u043d\u0438\u0435 \u0441\u0442\u0430\u0432\u043a\u0438\n\u25aa\ufe0f1 \u0447\u0430\u0441 \u043e\u0431\u0435\u0434\u0430 + 3 \u0431\u0440\u0435\u0439\u043a\u0430 \u043f\u043e 10 \u043c\u0438\u043d",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "aa98f7d426448705",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24206-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSMM MANAGER (RU DESK)**\n\n \ud83d\udccd **KYIV** \n\n\ud83d\udcce**\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:**\n\u25aa\ufe0f\u0421\u0442\u0430\u0432\u043a\u0430 \u043e\u0442 600$ \u043f\u043b\u044e\u0441 \u0431\u043e\u043d\u0443\u0441\u044b\n\u25aa\ufe0f\u0412\u044b\u043f\u043b\u0430\u0442\u044b \u0431\u0435\u0437 \u0437\u0430\u0434\u0435\u0440\u0436\u0435\u043a\n\u25aa\ufe0f\u0411\u0435\u0437 \u0440\u0430\u0431\u043e\u0447\u0438\u0445 \u0432\u044b\u0445\u043e\u0434\u043d\u044b\u0445\n\u25aa\ufe0fIQOS FRIENDLY\n\n\ud83d\udd52 **\u0413\u0440\u0430\u0444\u0438\u043a**:** 10:00 \u2013 20:00 5/2**\n\n\ud83c\udf0d *",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "311d4db22c6f7502",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24207-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION MANAGER  (ENG DESK)**\n\n \ud83d\udccd**KYIV**\n\n\u2b50\ufe0f **\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:**\n\u25aa\ufe0f\u0421\u0442\u0430\u0432\u043a\u0430 1500$ + 8-20%\n\u25aa\ufe0f \u041e\u0431\u0435\u0434 \u0438 \u043f\u0435\u0440\u0435\u0440\u044b\u0432\u044b\n\u25aa\ufe0f \u0422\u043e\u043b\u044c\u043a\u043e \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0435 new (\u0415\u0432\u0440\u043e\u043f\u0430, \u041a\u0430\u043d\u0430\u0434\u0430)\n\u25aa\ufe0f\u0421\u0440\u0435\u0434\u043d\u0438\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 \u043d\u0430 \u0430\u0433\u0435\u043d\u0442\u0430 100\u043a\n\u25aa\ufe0f ",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "7297c247ee168821",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24366-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From \u51c6 in 'Forex Jobs in Moldova \ud83c\uddf2\ud83c\udde9'. Scam type: unknown. Message: \ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24\ud83d\udd24 \u2753\ud83d\udd24\ud83d\udd24 \ud83d\udd24\ud83d\udd24\ud83d\udd24\n\nLOOKING FOR A #SECURE SOURCE FOR BUSINESS #BANK ACCOUNTS, #PAYMENT #GATEWAYS, DOCUMENTS, AND ACCOUNT SETUPS?\n\nWE PROVIDE MULTIPLE #ACCOUNTS AND VERIFIED #DOCUMENTS\n\n\nTelegram: @Elite_pa",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "069f84e97e456996",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24531-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSALE MANAGER (ENG DESK)**\n\n \ud83d\udccd**KYIV**  \n\n\u2b50\ufe0f**\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:**\n**__\ud83d\udd18__** \u0421\u0442\u0430\u0432\u043a\u0430 1500$ \u0431\u0435\u0437 \u0442\u0430\u0440\u0433\u0435\u0442\u0430, 2000$ \u0441 \u0442\u0430\u0440\u0433\u0435\u0442\u043e\u043c\n**__\ud83d\udd18__** \u0412\u044b\u043f\u043b\u0430\u0442\u044b \u0431\u0435\u0437 \u0437\u0430\u0434\u0435\u0440\u0436\u0435\u043a\n**__\ud83d\udd18__**\u041e\u0444\u0438\u0441 \u0441 \u0443\u043a\u0440\u044b\u0442\u0438\u0435\u043c\n**__\ud83d\udd18__**\u041e\u0447\u0435\u043d\u044c \u0434\u0440\u0443\u0436\u043d",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "d28b8c643ae4474a",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24532-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION MANAGER CHARGE (ENG DESK)**\n\n \ud83d\udccd **KYIV** \n\n\u2b50\ufe0f\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:\n\u25aa\ufe0f\u0421\u0442\u0430\u0432\u043a\u0430 \u043e\u0442 1000$,\u043f\u043b\u044e\u0441 \u0431\u043e\u043d\u0443\u0441 \u0432 \u043f\u0440\u043e\u0446\u0435\u043d\u0442\u043d\u043e\u043c \u0441\u043e\u043e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u0438 \u043e\u0442 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442\u0430 \u0438 \u043f\u043e\u0432\u044b\u0448\u0435\u043d\u0438\u0435 \u0441\u0442\u0430\u0432\u043a\u0438\n\u25aa\ufe0f1 \u0447\u0430\u0441 \u043e\u0431\u0435\u0434\u0430 + 3 \u0431\u0440\u0435\u0439\u043a\u0430 \u043f\u043e 10 \u043c\u0438\u043d",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "aa98f7d426448705",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24533-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nSMM MANAGER (RU DESK)**\n\n \ud83d\udccd **KYIV** \n\n\ud83d\udcce**\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:**\n\u25aa\ufe0f\u0421\u0442\u0430\u0432\u043a\u0430 \u043e\u0442 600$ \u043f\u043b\u044e\u0441 \u0431\u043e\u043d\u0443\u0441\u044b\n\u25aa\ufe0f\u0412\u044b\u043f\u043b\u0430\u0442\u044b \u0431\u0435\u0437 \u0437\u0430\u0434\u0435\u0440\u0436\u0435\u043a\n\u25aa\ufe0f\u0411\u0435\u0437 \u0440\u0430\u0431\u043e\u0447\u0438\u0445 \u0432\u044b\u0445\u043e\u0434\u043d\u044b\u0445\n\u25aa\ufe0fIQOS FRIENDLY\n\n\ud83d\udd52 **\u0413\u0440\u0430\u0444\u0438\u043a**:** 10:00 \u2013 20:00 5/2**\n\n\ud83c\udf0d *",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "311d4db22c6f7502",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    },
+    {
+      "id": "E-TG-TXT-24534-GFIN-CASE-008",
+      "phase": "TELEGRAM_AUTO_LINK",
+      "finding": "[AUTO-LINKED] Term 't.me' found in Telegram message text. From Unknown in '\u0412\u0410\u041a\u0410\u041d\u0421\u0418\u0418 \u2022 CRYPTO - FOREX'. Scam type: unknown. Message: \ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\ud83c\udf1f\n**\nRETENTION MANAGER  (ENG DESK)**\n\n \ud83d\udccd**KYIV**\n\n\u2b50\ufe0f **\u041c\u044b \u043f\u0440\u0435\u0434\u043b\u0430\u0433\u0430\u0435\u043c:**\n\u25aa\ufe0f\u0421\u0442\u0430\u0432\u043a\u0430 1500$ + 8-20%\n\u25aa\ufe0f \u041e\u0431\u0435\u0434 \u0438 \u043f\u0435\u0440\u0435\u0440\u044b\u0432\u044b\n\u25aa\ufe0f \u0422\u043e\u043b\u044c\u043a\u043e \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0435 new (\u0415\u0432\u0440\u043e\u043f\u0430, \u041a\u0430\u043d\u0430\u0434\u0430)\n\u25aa\ufe0f\u0421\u0440\u0435\u0434\u043d\u0438\u0439 \u0440\u0435\u0437\u0443\u043b\u044c\u0442\u0430\u0442 \u043d\u0430 \u0430\u0433\u0435\u043d\u0442\u0430 100\u043a\n\u25aa\ufe0f ",
+      "source_provider": "GFIN Telegram Spy",
+      "source_url": "telegram_intelligence",
+      "source_type": "AUTOMATED_OSINT",
+      "confidence": "MEDIUM",
+      "content_hash": "7297c247ee168821",
+      "timestamp": "2026-08-27 17:12:52.237326+00:00",
+      "provenance": {
+        "source": "AUTOMATED_OSINT",
+        "provider": "GFIN Telegram Spy",
+        "endpoint": "telegram_intelligence"
+      },
+      "legal_admissibility": 0.95,
+      "status": "FOUND"
+    }
+  ],
+  "entities": [],
+  "investigation_steps": [
+    {
+      "phase": "INTAKE",
+      "name": "1. Complaint Intake & Victim Identification",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "target": "Kyiv call center (t.me/work_crypto_fx)",
+        "scam_types": "Unknown"
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "OSINT",
+      "name": "2. OSINT Collection (Public Data)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "rdap": {
+          "error": "URL can't contain control characters. '/domain/Kyiv call center (t.me/work_crypto_fx)' (found at least ' ')"
+        },
+        "urlscan": {
+          "error": "URL can't contain control characters. '/api/v1/search/?q=domain:Kyiv call center (t.me/work_crypto_fx)' (found at least ' ')"
+        },
+        "page_analysis": {
+          "emails": [],
+          "phones": [],
+          "status": 0,
+          "social_links": []
+        }
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "ENTITY",
+      "name": "3. Entity Identification (People, Organizations, Infrastructure)",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "hosting": "Unknown",
+        "registrar": "Unknown",
+        "contacts_found": false
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "EVIDENCE",
+      "name": "4. Evidence Chain Construction",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "chain_built": true,
+        "public_evidence": 2
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL",
+      "name": "5. Legal Pathway Assessment",
+      "type": "AUTO",
+      "status": "COMPLETED",
+      "result": {
+        "statute": "Unknown",
+        "primary_crime": "Unknown",
+        "is_recruitment": false,
+        "public_evidence": 2,
+        "recommended_actions": [
+          "Preserve evidence: screenshot website, save page content, record Telegram messages",
+          "Document victim reports and attempt to contact victims for formal statements",
+          "Check if domain has been reported to other law enforcement or consumer protection agencies"
+        ],
+        "requires_legal_process": 1
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "FINANCIAL",
+      "name": "6. Financial Tracing (Pending - requires wallet/transaction data)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "No wallets identified yet. Requires victim to provide transaction details."
+      },
+      "officer": "SYSTEM"
+    },
+    {
+      "phase": "LEGAL_PROCESS",
+      "name": "7. Legal Process Preparation (Pending - requires officer review)",
+      "type": "AUTO",
+      "status": "PENDING",
+      "result": {
+        "status": "Prepare preservation requests and subpoenas based on identified infrastructure providers."
+      },
+      "officer": "SYSTEM"
+    }
+  ],
+  "timeline": [],
+  "statistics": {
+    "evidence_count": 11,
+    "entity_count": 0,
+    "step_count": 7,
+    "timeline_count": 0,
+    "suspect_count": 0,
+    "legal_framework_count": 2
+  }
+}
