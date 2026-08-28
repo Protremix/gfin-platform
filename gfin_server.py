@@ -4148,6 +4148,153 @@ async def api_victim_timeline(reference: str):
 
 
 # ============================================================
+# INVESTIGATION ADVANCEMENT APIs (v2.0)
+# ============================================================
+
+@app.get("/api/inv-advance/attribution")
+async def api_attribution():
+    try:
+        import psycopg2, json
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, suspect_name, entity_type, confidence_score, evidence_count, attribution_factors::text FROM suspect_attribution ORDER BY confidence_score DESC")
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok", "count":len(rows), "attributions":[{"case_id":r[0],"suspect":r[1],"type":r[2],"confidence":r[3],"evidence_count":r[4],"factors":r[5]} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/attribution/{case_id}")
+async def api_attribution_case(case_id: str):
+    try:
+        import psycopg2, json
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT suspect_name, entity_type, confidence_score, evidence_count, evidence_links::text, attribution_factors::text FROM suspect_attribution WHERE case_id = %s ORDER BY confidence_score DESC", (case_id,))
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","case_id":case_id,"count":len(rows),"attributions":[{"suspect":r[0],"type":r[1],"confidence":r[2],"evidence_count":r[3],"evidence_links":r[4],"factors":r[5]} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/integrity")
+async def api_integrity():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT COUNT(*) as total, COUNT(*) FILTER (WHERE verified=true) as verified, COUNT(*) FILTER (WHERE verified=false) as mismatched FROM evidence_integrity")
+        r = cur.fetchone()
+        cur.close(); db.close()
+        return {"status":"ok","total":r[0],"verified":r[1],"mismatched":r[2]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/integrity/{case_id}")
+async def api_integrity_case(case_id: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT evidence_id, stored_hash, computed_hash, verified, verified_at FROM evidence_integrity WHERE case_id = %s", (case_id,))
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","case_id":case_id,"records":[{"evidence_id":r[0],"stored_hash":r[1][:24],"computed_hash":r[2][:24],"verified":r[3],"verified_at":r[4].isoformat() if r[4] else None} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/priority-history")
+async def api_priority_history():
+    try:
+        import psycopg2, json
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, old_priority, new_priority, calculated_score, factors::text, changed_at FROM case_priority_history WHERE old_priority != new_priority ORDER BY changed_at DESC LIMIT 20")
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","count":len(rows),"changes":[{"case_id":r[0],"old":r[1],"new":r[2],"score":r[3],"factors":r[4],"changed_at":r[5].isoformat() if r[5] else None} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/legal/{case_id}")
+async def api_legal_case(case_id: str):
+    try:
+        import psycopg2, json
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT framework, statutes::text, applicable, evidence_met, evidence_required, missing_elements::text FROM case_legal_mapping WHERE case_id = %s", (case_id,))
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","case_id":case_id,"count":len(rows),"frameworks":[{"framework":r[0],"statutes":r[1],"applicable":r[2],"evidence_met":r[3],"evidence_required":r[4],"missing":r[5]} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/legal")
+async def api_legal_all():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT framework, COUNT(*) as cases, COUNT(*) FILTER (WHERE applicable=true) as applicable FROM case_legal_mapping GROUP BY framework ORDER BY cases DESC")
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","frameworks":[{"framework":r[0],"total_cases":r[1],"applicable":r[2]} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/impact")
+async def api_impact():
+    try:
+        import psycopg2, json
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT case_id, victim_count, total_loss_usd, avg_loss_usd, max_loss_usd, countries_affected::text, scam_types::text FROM case_victim_impact ORDER BY total_loss_usd DESC")
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","count":len(rows),"impacts":[{"case_id":r[0],"victim_count":r[1],"total_loss":r[2],"avg_loss":r[3],"max_loss":r[4],"countries":r[5],"scam_types":r[6]} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/impact/{case_id}")
+async def api_impact_case(case_id: str):
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT victim_count, total_loss_usd, avg_loss_usd, max_loss_usd, countries_affected::text, scam_types::text FROM case_victim_impact WHERE case_id = %s", (case_id,))
+        r = cur.fetchone()
+        cur.close(); db.close()
+        if not r:
+            return {"status":"ok","case_id":case_id,"victim_count":0,"total_loss":0}
+        return {"status":"ok","case_id":case_id,"victim_count":r[0],"total_loss":r[1],"avg_loss":r[2],"max_loss":r[3],"countries":r[4],"scam_types":r[5]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.get("/api/inv-advance/wallets")
+async def api_wallets():
+    try:
+        import psycopg2, json
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT wallet_address, wallet_type, balance, total_received, total_sent, tx_count, case_ids FROM wallet_traces ORDER BY tx_count DESC")
+        rows = cur.fetchall()
+        cur.close(); db.close()
+        return {"status":"ok","count":len(rows),"wallets":[{"address":r[0],"type":r[1],"balance":r[2],"total_received":r[3],"total_sent":r[4],"tx_count":r[5],"case_ids":r[6]} for r in rows]}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+@app.post("/api/inv-advance/run")
+async def api_run_advancement():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from investigation_advancement import run_all
+        run_all()
+        return {"status":"ok","message":"Advancement suite v2.0 complete"}
+    except Exception as e:
+        return {"status":"error","message":str(e)}
+
+# ============================================================
 # INVESTIGATION ENHANCEMENT APIs
 # ============================================================
 
