@@ -3618,7 +3618,28 @@ async def auto_investigate_targets(request: Request):
                         WHERE domains::text ILIKE $1 AND processed = false
                     """, f"%{domain}%")
                     
-                    created.append({"case_id": case_id, "domain": domain, "mentions": r["mentions"], "priority": priority})
+                    # Create evidence items from Telegram messages
+                    import hashlib as _hl
+                    _msgs = await conn.fetch(
+                        "SELECT id, group_name, message_text, is_victim, risk_level, created_at FROM telegram_intelligence WHERE domains::text ILIKE $1 AND processed = false ORDER BY is_victim DESC, created_at DESC LIMIT 20",
+                        f"%{domain}%"
+                    )
+                    _evc = 0
+                    for _m in _msgs:
+                        _txt = (_m["message_text"] or "")[:2000]
+                        _ch = _hl.sha256(_txt.encode()).hexdigest()
+                        _conf = 0.85 if _m["is_victim"] else (0.75 if _m["risk_level"] == "HIGH" else 0.6)
+                        _grp = _m["group_name"] or "unknown"
+                        _find = f"[VICTIM REPORT] {domain} in {_grp}" if _m["is_victim"] else f"[Telegram Intel] {domain} in {_grp}"
+                        _eid = f"EVD-{case_id}-{_evc+1:04d}"
+                        await conn.execute(
+                            "INSERT INTO evidence (evidence_id, case_id, phase, finding, source_provider, source_type, confidence, content_hash, timestamp, created_date, added_date, lifecycle_status, found_at, provenance_source, provenance_provider, provenance_endpoint, provenance_query, provenance_original_ref, provenance_content_hash, provenance_processing_history, provenance_collector, provenance_complete) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$9,$9,$10,$9,$11,$12,$13,$14,$15,$8,$16,$17,true) ON CONFLICT DO NOTHING",
+                            _eid, case_id, _find, "telegram_intelligence", "telegram", _conf, _ch, _m["created_at"], "FOUND",
+                            "telegram", "telegram_intelligence", f"telegram_group:{_grp}", f"domain:{domain}", f"msg_id:{_m['id']}",
+                            json.dumps(["collected","deduplicated","filtered","cross_referenced","evidence_created"]), "GFIN-AUTO-PIPELINE"
+                        )
+                        _evc += 1
+                    created.append({"case_id": case_id, "domain": domain, "mentions": r["mentions"], "priority": priority, "evidence_created": _evc})
                     existing.add(domain)
     
     return {"created_cases": created, "total": len(created)}
