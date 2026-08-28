@@ -461,7 +461,7 @@ body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); c
 <body>
 
 <!-- LOGIN -->
-<div id="debugInfo" style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;font-family:monospace;font-size:12px;display:none"></div>
+<!-- DEBUG BANNER REMOVED - was leaking JWT token -->
 <div id="loginOverlay" class="login-overlay">
   <div class="login-card">
     <div class="seal"><i class="fa-solid fa-shield-halved"></i></div>
@@ -1867,10 +1867,7 @@ async function doSearch(q) {
 
 // === INIT ===
 try {
-  const dbg = document.getElementById('debugInfo');
-  if (dbg) {
-    dbg.textContent = 'authToken=' + (authToken ? authToken.substring(0,30)+'...' : 'EMPTY') + ' len=' + (authToken?authToken.length:0);
-    dbg.style.display = 'block';
+  // Debug banner removed - was leaking JWT token
   }
 } catch(e) {}
 checkAuth();
