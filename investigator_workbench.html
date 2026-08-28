@@ -510,7 +510,7 @@ body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); c
       
       <div class="nav-section-label">RAW INTELLIGENCE</div>
       <div class="nav-item" onclick="switchView('telegram')"><i class="fa-brands fa-telegram"></i> Telegram <span class="badge" id="tgBadge">0</span></div>
-      <div class="nav-item" onclick="switchView('intel')"><i class="fa-solid fa-radar"></i> Intel Feed <span class="badge" id="intelBadge">0</span></div>
+      <div class="nav-item" onclick="switchView('telegram')"><i class="fa-solid fa-magnifying-glass-chart"></i> Intel Digest <span class="badge" id="intelBadge">0</span></div>
       <div class="nav-item" onclick="switchView('wallets')"><i class="fa-solid fa-wallet"></i> Wallet Flow</div>
       <div class="nav-item" onclick="switchView('osint')"><i class="fa-solid fa-satellite-dish"></i> OSINT Engines</div>
       <div class="nav-item" onclick="switchView('aiEngines')"><i class="fa-solid fa-brain"></i> AI Engines</div>
@@ -625,24 +625,62 @@ body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); c
         </table>
       </div>
 
-      <!-- TELEGRAM VIEW -->
+      <!-- INTELLIGENCE DIGEST VIEW -->
       <div id="view-telegram" class="view">
-        <h2 class="page-title">Telegram Intelligence</h2>
-        <p class="page-subtitle">Monitoring scam groups with automated entity extraction</p>
+        <h2 class="page-title">Intelligence Digest</h2>
+        <p class="page-subtitle">Processed, deduplicated, and cross-referenced intelligence from Telegram monitoring</p>
+        
+        <!-- Processing Summary -->
+        <div class="chart-container" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <h3 style="font-size:16px;font-weight:600"><i class="fa-solid fa-filter" style="color:var(--navy)"></i> Processing Summary</h3>
+            <button class="btn btn-gold" onclick="autoInvestigate()" style="font-size:13px;padding:8px 16px">
+              <i class="fa-solid fa-robot"></i> Auto-Investigate New Targets
+            </button>
+          </div>
+          <div id="intelSummary" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+            <div style="text-align:center;padding:12px;background:var(--bg-accent);border-radius:var(--radius)">
+              <div style="font-size:24px;font-weight:700;color:var(--navy)" id="digestRaw">-</div>
+              <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Total Raw</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:var(--bg-accent);border-radius:var(--radius)">
+              <div style="font-size:24px;font-weight:700;color:var(--gold)" id="digestActionable">-</div>
+              <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Actionable</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:var(--bg-accent);border-radius:var(--radius)">
+              <div style="font-size:24px;font-weight:700;color:var(--text-muted)" id="digestNoise">-</div>
+              <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Noise Filtered</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:var(--bg-accent);border-radius:var(--radius)">
+              <div style="font-size:24px;font-weight:700;color:var(--green)" id="digestVictims">-</div>
+              <div style="font-size:11px;color:var(--text-muted);text-transform:uppercase">Victims</div>
+            </div>
+          </div>
+          <div id="digestScamTypes" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"></div>
+        </div>
+
+        <!-- Two column: New Targets + Priority Items -->
         <div class="two-col">
           <div>
-            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Monitored Groups</h3>
-            <div id="telegramGroups"></div>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px"><i class="fa-solid fa-crosshairs" style="color:var(--navy)"></i> New Investigation Targets</h3>
+            <div id="newTargets"></div>
           </div>
           <div>
-            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px">Recent Intelligence</h3>
-            <div class="filters">
-              <div class="filter-btn active" onclick="filterTgRisk('all', this)">All Risk</div>
-              <div class="filter-btn" onclick="filterTgRisk('critical', this)">Critical</div>
-              <div class="filter-btn" onclick="filterTgRisk('high', this)">High</div>
-            </div>
-            <div id="telegramIntel"></div>
+            <h3 style="font-size:16px;font-weight:600;margin-bottom:12px"><i class="fa-solid fa-triangle-exclamation" style="color:var(--red)"></i> Priority Intelligence</h3>
+            <div id="priorityIntel"></div>
           </div>
+        </div>
+
+        <!-- Case Cross-References -->
+        <div style="margin-top:16px">
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:12px"><i class="fa-solid fa-link" style="color:var(--navy)"></i> Case Cross-References</h3>
+          <div id="caseXrefs"></div>
+        </div>
+
+        <!-- Monitored Groups (kept at bottom) -->
+        <div style="margin-top:16px">
+          <h3 style="font-size:16px;font-weight:600;margin-bottom:12px"><i class="fa-solid fa-tower-broadcast" style="color:var(--navy)"></i> Monitored Groups</h3>
+          <div id="telegramGroups"></div>
         </div>
       </div>
 
@@ -1105,13 +1143,23 @@ async function loadDashboard() {
       { label: 'Officers', value: data.officers, sub: 'Active investigators', icon: 'shield-halved', color: 'navy' }
     ];
     
-    // RAW INTELLIGENCE stats (bottom row — not cases, just data)
-    const intelStats = [
-      { label: 'Telegram Intel', value: data.telegram.intel_items.toLocaleString(), sub: data.telegram.groups_monitored + ' groups monitored', icon: 'telegram', color: 'amber' },
-      { label: 'Victims', value: data.victims.total, sub: data.victims.complaints + ' complaints filed', icon: 'user', color: 'green' },
-      { label: 'TG Domains', value: data.telegram.domains_tracked, sub: 'Raw intelligence', icon: 'globe', color: 'gold' },
-      { label: 'TG Wallets', value: data.telegram.wallets_tracked, sub: 'Tracked addresses', icon: 'wallet', color: 'amber' }
+    // RAW INTELLIGENCE stats (bottom row — processed, not raw counts)
+    let intelStats = [
+      { label: 'Actionable Intel', value: '...', sub: 'Loading...', icon: 'filter', color: 'amber' },
+      { label: 'Unique Domains', value: '...', sub: 'From Telegram', icon: 'globe', color: 'gold' },
+      { label: 'Victims Flagged', value: '...', sub: 'In messages', icon: 'user', color: 'green' },
+      { label: 'New Targets', value: '...', sub: 'Auto-detected', icon: 'crosshairs', color: 'amber' }
     ];
+    // Fetch intelligence digest
+    try {
+      const digest = await apiGet('/api/intelligence/digest');
+      intelStats = [
+        { label: 'Actionable Intel', value: digest.actionable, sub: digest.noise_filtered + ' noise filtered | ' + digest.total_raw + ' total', icon: 'filter', color: 'amber' },
+        { label: 'Unique Domains', value: digest.top_domains.length, sub: 'Across ' + digest.new_investigation_targets.length + ' new targets', icon: 'globe', color: 'gold' },
+        { label: 'Victims Flagged', value: digest.priority_items.filter(p => p.is_victim).length, sub: 'In intelligence data', icon: 'user', color: 'green' },
+        { label: 'New Targets', value: digest.new_investigation_targets.length, sub: 'Auto-detected for investigation', icon: 'crosshairs', color: 'amber' }
+      ];
+    } catch(e) { console.error('Intel digest failed:', e); }
     
     document.getElementById('statGrid').innerHTML = 
       '<div style="grid-column:1/-1;font-size:11px;font-weight:800;color:var(--navy);letter-spacing:1px;text-transform:uppercase;margin-bottom:-8px;padding-left:4px;">INVESTIGATIONS</div>' +
@@ -1136,7 +1184,7 @@ async function loadDashboard() {
     // Update badges
     document.getElementById('casesBadge').textContent = data.cases.active;
     document.getElementById('evidenceBadge').textContent = data.evidence.total;
-    document.getElementById('intelBadge').textContent = data.telegram.intel_items.toLocaleString();
+    // intelBadge updated by intelligence digest fetch
     document.getElementById('tgBadge').textContent = data.telegram.intel_items.toLocaleString();
     if (document.getElementById('launderingBadge')) {
       document.getElementById('launderingBadge').textContent = '7';
@@ -1676,65 +1724,104 @@ function filterEvidence(phase, btn) {
 // === TELEGRAM ===
 async function loadTelegram() {
   try {
-    const [groups, intel] = await Promise.all([
-      apiGet('/api/inv/telegram/groups'),
-      apiGet(`/api/inv/telegram/intel?limit=50&risk=${tgRiskFilter}`)
-    ]);
+    // Load intelligence digest
+    const d = await apiGet('/api/intelligence/digest');
     
-    // Groups
-    const groupsEl = document.getElementById('telegramGroups');
-    if (groups.groups && groups.groups.length > 0) {
-      groupsEl.innerHTML = groups.groups.map(g => `
-        <div class="group-card">
-          <div class="group-header">
-            <span class="group-name">${g.group_name || 'Unknown'}</span>
-            <span class="risk-badge ${g.critical_count > 0 ? 'critical' : g.high_count > 0 ? 'high' : 'low'}">${g.critical_count + g.high_count} alerts</span>
-          </div>
-          <div class="group-stats">
-            <span><i class="fa-solid fa-users"></i> ${(g.member_count || 0).toLocaleString()}</span>
-            <span><i class="fa-solid fa-database"></i> ${g.intel_count || 0} intel</span>
-            <span><i class="fa-solid fa-clock"></i> ${g.last_intel ? new Date(g.last_intel).toLocaleDateString() : '—'}</span>
-          </div>
-        </div>
-      `).join('');
+    // Summary
+    document.getElementById('digestRaw').textContent = d.total_raw.toLocaleString();
+    document.getElementById('digestActionable').textContent = d.actionable;
+    document.getElementById('digestNoise').textContent = d.noise_filtered.toLocaleString();
+    document.getElementById('digestVictims').textContent = d.priority_items.filter(p => p.is_victim).length;
+    
+    // Scam types
+    document.getElementById('digestScamTypes').innerHTML = d.scam_types.map(s => 
+      `<span style="font-size:11px;padding:4px 10px;border-radius:12px;background:var(--bg-accent);color:var(--text-muted)">${s.type.replace(/_/g, ' ')}: ${s.count}</span>`
+    ).join('');
+    
+    // New targets
+    const targetEl = document.getElementById('newTargets');
+    if (d.new_investigation_targets.length === 0) {
+      targetEl.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check"></i><h3>No new targets</h3><p>All detected domains already have cases</p></div>';
     } else {
-      groupsEl.innerHTML = '<div class="empty-state"><i class="fa-brands fa-telegram"></i><h3>No groups monitored</h3></div>';
-    }
-    
-    // Intel
-    const intelEl = document.getElementById('telegramIntel');
-    if (intel.items && intel.items.length > 0) {
-      intelEl.innerHTML = intel.items.map(t => {
-        const wallets = Array.isArray(t.wallets) ? t.wallets : [];
-        const domains = Array.isArray(t.domains) ? t.domains : [];
-        const phones = Array.isArray(t.phones) ? t.phones : [];
-        let entities = '';
-        entities += wallets.map(w => `<span class="entity-tag wallet">${w.substring(0,20)}...</span>`).join('');
-        entities += domains.map(d => `<span class="entity-tag domain">${d}</span>`).join('');
-        entities += phones.map(p => `<span class="entity-tag phone">${p}</span>`).join('');
-        return `<div class="intel-item">
-          <div class="source-icon telegram"><i class="fa-brands fa-telegram"></i></div>
-          <div class="content">
-            <div class="header"><span class="source-name">${t.group_name || 'Telegram'} — ${t.sender_name || t.sender_username || 'Unknown'}</span><span class="timestamp">${t.created_at ? new Date(t.created_at).toLocaleString() : ''} <span class="risk-badge ${(t.risk_level||'low').toLowerCase()}">${t.risk_level || 'LOW'}</span></span></div>
-            <div class="body">${(t.message_text || '').substring(0, 250)}</div>
-            <div class="entities">${entities}</div>
-          </div>
-        </div>`;
+      targetEl.innerHTML = d.new_investigation_targets.map(t => {
+        const prioColor = t.priority === 'CRITICAL' ? 'red' : t.priority === 'HIGH' ? 'navy' : 'gold';
+        return `
+          <div class="chart-container" style="margin-bottom:8px;padding:12px">
+            <div style="display:flex;justify-content:space-between;align-items:start">
+              <div>
+                <div style="font-weight:600;font-size:14px">${t.domain}</div>
+                <div style="font-size:12px;color:var(--text-muted)">${t.mentions} mentions · ${t.groups.length} groups${t.has_victim ? ' · 🚨 VICTIM' : ''}</div>
+              </div>
+              <span class="risk-badge ${prioColor}">${t.priority}</span>
+            </div>
+          </div>`;
       }).join('');
-    } else {
-      intelEl.innerHTML = '<div class="empty-state"><i class="fa-brands fa-telegram"></i><h3>No intel items</h3></div>';
     }
-  } catch(e) { console.error(e); }
+    
+    // Priority items
+    const prioEl = document.getElementById('priorityIntel');
+    const prioItems = d.priority_items.slice(0, 15);
+    if (prioItems.length === 0) {
+      prioEl.innerHTML = '<div class="empty-state"><i class="fa-solid fa-check"></i><h3>No priority items</h3></div>';
+    } else {
+      prioEl.innerHTML = prioItems.map(p => {
+        const icon = p.is_victim ? '🚨' : '⚠️';
+        const domains = p.domains.length > 0 ? p.domains.join(', ') : 'N/A';
+        return `
+          <div class="chart-container" style="margin-bottom:8px;padding:12px">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:4px">
+              <span style="font-size:12px;font-weight:600">${icon} ${p.scam_type.replace(/_/g, ' ')}</span>
+              <span class="risk-badge ${(p.risk||'low').toLowerCase()}">${p.risk || 'LOW'}</span>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted)">${p.group}</div>
+            <div style="font-size:11px;margin-top:4px;color:var(--text-muted)">Domains: ${domains}</div>
+            <div style="font-size:11px;margin-top:2px;color:var(--text-muted)">${p.preview ? p.preview.substring(0,100) : ''}...</div>
+          </div>`;
+      }).join('');
+    }
+    
+    // Case cross-references
+    const xrefEl = document.getElementById('caseXrefs');
+    if (d.case_cross_references.length === 0) {
+      xrefEl.innerHTML = '<div class="empty-state"><i class="fa-solid fa-unlink"></i><h3>No cross-references</h3></div>';
+    } else {
+      xrefEl.innerHTML = `<table class="data-table"><thead><tr><th>Case</th><th>Match Type</th><th>Messages</th></tr></thead><tbody>` +
+        d.case_cross_references.map(m => `
+          <tr>
+            <td style="font-weight:600">${m.case_id}</td>
+            <td>'${m.match}' → ${m.target}</td>
+            <td>${m.msg_count}</td>
+          </tr>
+        `).join('') + `</tbody></table>`;
+    }
+  } catch(e) { console.error('Intel digest load failed:', e); }
+  
+  // Also load monitored groups
+  try {
+    const groups = await apiGet('/api/telegram/groups');
+    document.getElementById('telegramGroups').innerHTML = (groups.groups || []).map(g => `
+      <div class="chart-container" style="margin-bottom:8px;padding:12px">
+        <div style="font-weight:600;font-size:14px">${g.name}</div>
+        <div style="font-size:12px;color:var(--text-muted)">${g.members} members · ${g.messages} messages</div>
+      </div>
+    `).join('');
+  } catch(e) { console.error('Groups load failed:', e); }
 }
 
-function filterTgRisk(risk, btn) {
-  tgRiskFilter = risk;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  loadTelegram();
+async function autoInvestigate() {
+  if (!confirm('Auto-create cases for new high-priority intelligence targets?')) return;
+  try {
+    const result = await apiPost('/api/intelligence/auto-investigate', {});
+    if (result.total > 0) {
+      alert(result.total + ' new cases created!\n\n' + result.created_cases.map(c => c.case_id + ': ' + c.domain + ' (' + c.priority + ')').join('\n'));
+      loadDashboard();
+        } else {
+      alert('No new targets to investigate. All detected domains already have cases.');
+    }
+  } catch(e) { alert('Failed: ' + e.message); }
 }
 
-// === HUNTER ===
+
 async function loadHunter() {
   try {
     const data = await apiGet('/api/inv/hunter/activity?limit=30');
