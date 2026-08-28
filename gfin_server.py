@@ -3900,6 +3900,82 @@ async def api_external_scores():
         return {"status": "error", "message": str(e)}
 
 
+
+# ============================================================
+# ENTITY RESOLUTION API
+# ============================================================
+
+@app.get("/api/entity-resolution/run")
+async def api_run_entity_resolution():
+    """Run entity resolution engine."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from entity_resolution import run_entity_resolution
+        total = run_entity_resolution()
+        return {"status": "ok", "total_entities": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/entity-resolution/entities")
+async def api_resolved_entities():
+    """Get all resolved entities."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("""SELECT canonical_id, entity_type, primary_name, confidence,
+            telegram_usernames::text, social_media::text, linked_cases::text, description
+            FROM resolved_entities ORDER BY confidence DESC""")
+        entities = []
+        for r in cur.fetchall():
+            entities.append({"canonical_id": r[0], "entity_type": r[1], "primary_name": r[2],
+                           "confidence": r[3], "telegram": r[4], "social_media": r[5],
+                           "linked_cases": r[6], "description": r[7]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "entities": entities, "count": len(entities)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================
+# WALLET INTELLIGENCE API
+# ============================================================
+
+@app.get("/api/wallet-intelligence/run")
+async def api_run_wallet_intelligence():
+    """Run wallet intelligence engine."""
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from wallet_intelligence import run_wallet_intelligence
+        total = run_wallet_intelligence()
+        return {"status": "ok", "total_wallets": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/wallet-intelligence/wallets")
+async def api_wallets():
+    """Get all tracked wallets."""
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("""SELECT wallet_type, address, source, source_case, blockchain_active,
+            linked_cases::text, context FROM wallet_intelligence""")
+        wallets = []
+        for r in cur.fetchall():
+            wallets.append({"type": r[0], "address": r[1], "source": r[2], "case": r[3],
+                           "active": r[4], "linked_cases": r[5], "context": r[6]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "wallets": wallets, "count": len(wallets)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
