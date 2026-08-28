@@ -446,6 +446,7 @@ function renderCase() {
       <div class="tab ${activeTab === 'actions' ? 'active' : ''}" onclick="switchTab('actions')">Actions (${caseData.actions.length})</div>
       <div class="tab ${activeTab === 'risk' ? 'active' : ''}" onclick="switchTab('risk')">Risk Assessment</div>
       <div class="tab ${activeTab === 'attribution' ? 'active' : ''}" onclick="switchTab('attribution')">Attribution</div>
+      <div class="tab ${activeTab === 'legal' ? 'active' : ''}" onclick="switchTab('legal')">Legal</div>
       <div class="tab ${activeTab === 'notes' ? 'active' : ''}" onclick="switchTab('notes')">Notes (${caseData.notes.length})</div>
     </div>`;
 
@@ -726,12 +727,74 @@ function renderTabContent() {
   }
   
   else if (activeTab === 'attribution') {
-    const attr = caseData.attribution || {};
-    if (Object.keys(attr).length === 0) {
-      html += '<div class="empty-state"><div class="icon">🎯</div>No attribution data yet.<br>Attribution identifies who is behind the scam, their location, and methods.</div>';
-    } else {
-      html += `<div class="phase-detail"><h2>Attribution Data</h2><pre style="font-size:13px;white-space:pre-wrap;">${JSON.stringify(attr, null, 2)}</pre></div>`;
-    }
+    // Fetch attribution from API
+    html += '<div class="phase-detail"><h2>Suspect Attribution</h2><div id="attr-content">Loading...</div></div>';
+    fetch('/api/inv-advance/attribution/' + caseData.case_id, { headers: token ? { Authorization: 'Bearer ' + token } : {} })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        const el = document.getElementById('attr-content');
+        if (!data) { el.innerHTML = '<div class="empty-state"><div class="icon">🎯</div>No attribution data yet.</div>'; return; }
+        const a = data.attribution || data;
+        if (Array.isArray(a)) {
+          el.innerHTML = a.map(at => {
+            const conf = (at.confidence * 100).toFixed(0);
+            const confColor = conf >= 70 ? '#4caf50' : conf >= 50 ? '#ffc107' : '#f44336';
+            return '<div style="background:#162236;border:1px solid #1e2d3d;border-radius:8px;padding:16px;margin-bottom:12px;">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+              '<span style="font-size:16px;font-weight:600;color:#e0e6ed;">' + (at.suspect || 'Unknown') + '</span>' +
+              '<span style="background:' + confColor + '22;color:' + confColor + ';padding:4px 12px;border-radius:4px;font-weight:700;">' + conf + '% confidence</span>' +
+              '</div>' +
+              '<div style="font-size:12px;color:#8892a6;margin-bottom:8px;">Type: ' + (at.type || '—') + ' | Evidence: ' + (at.evidence_count || 0) + ' items</div>' +
+              '<div style="font-size:11px;color:#5a6a7e;">' + (at.factors || '') + '</div>' +
+              '</div>';
+          }).join('');
+        } else if (a && a.suspect) {
+          const conf = (a.confidence * 100).toFixed(0);
+          el.innerHTML = '<div style="background:#162236;border:1px solid #1e2d3d;border-radius:8px;padding:16px;">' +
+            '<div style="font-size:16px;font-weight:600;color:#e0e6ed;">' + a.suspect + '</div>' +
+            '<div style="font-size:12px;color:#8892a6;">Type: ' + (a.type || '—') + ' | Confidence: ' + conf + '%</div>' +
+            '</div>';
+        } else {
+          el.innerHTML = '<div class="empty-state"><div class="icon">🎯</div>No attribution data yet.</div>';
+        }
+      })
+      .catch(() => { document.getElementById('attr-content').innerHTML = '<div class="empty-state">Error loading attribution.</div>'; });
+  }
+
+  else if (activeTab === 'legal') {
+    // Fetch legal framework data from API
+    html += '<div class="phase-detail"><h2>Legal Framework Analysis</h2><div id="legal-content">Loading...</div></div>';
+    fetch('/api/inv-advance/legal/' + caseData.case_id, { headers: token ? { Authorization: 'Bearer ' + token } : {} })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        const el = document.getElementById('legal-content');
+        if (!data) { el.innerHTML = '<div class="empty-state"><div class="icon">⚖️</div>No legal framework data yet.</div>'; return; }
+        const mappings = data.mappings || data.items || (Array.isArray(data) ? data : []);
+        if (!Array.isArray(mappings) || mappings.length === 0) {
+          el.innerHTML = '<div class="empty-state"><div class="icon">⚖️</div>No legal framework mappings found.</div>';
+          return;
+        }
+        el.innerHTML = mappings.map(m => {
+          const fw = m.framework || m.legal_framework || 'UNKNOWN';
+          const applicable = m.applicable !== false;
+          const statutes = m.statutes || m.statute || [];
+          const elements = m.required_elements || [];
+          const missing = m.missing_elements || [];
+          return '<div style="background:#162236;border:1px solid #1e2d3d;border-radius:8px;padding:16px;margin-bottom:12px;">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">' +
+            '<span style="font-size:15px;font-weight:600;color:#c5a55a;text-transform:uppercase;">' + fw.replace(/_/g, ' ') + '</span>' +
+            (applicable ? '<span style="background:#1b5e20;color:#4caf50;padding:2px 8px;border-radius:4px;font-size:10px;font-weight:700;">APPLICABLE</span>' : '<span style="background:#1e2d3d;color:#8892a6;padding:2px 8px;border-radius:4px;font-size:10px;">NOT APPLICABLE</span>') +
+            '</div>' +
+            (Array.isArray(statutes) && statutes.length > 0 ? '<div style="font-size:12px;color:#4fc3f7;margin-bottom:8px;"><b>Statutes:</b> ' + statutes.join(', ') + '</div>' : (typeof statutes === 'string' ? '<div style="font-size:12px;color:#4fc3f7;margin-bottom:8px;"><b>Statute:</b> ' + statutes + '</div>' : '')) +
+            (elements.length > 0 ? '<div style="font-size:11px;color:#8892a6;margin-bottom:4px;"><b>Required elements:</b></div>' : '') +
+            (elements.length > 0 ? '<div style="margin-bottom:8px;">' + elements.map(e => {
+              const isMissing = missing.includes(e);
+              return '<span style="font-size:11px;padding:2px 8px;margin:2px;border-radius:3px;display:inline-block;background:' + (isMissing ? '#3a0a0a' : '#1b3a1b') + ';color:' + (isMissing ? '#f44336' : '#4caf50') + ';">' + (isMissing ? '✗ ' : '✓ ') + e + '</span>';
+            }).join('') + '</div>' : '') +
+            '</div>';
+        }).join('');
+      })
+      .catch(() => { document.getElementById('legal-content').innerHTML = '<div class="empty-state">Error loading legal data.</div>'; });
   }
   
   else if (activeTab === 'notes') {

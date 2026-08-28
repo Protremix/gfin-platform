@@ -2454,6 +2454,11 @@ async def police_mobile_dashboard():
     """Mobile-responsive police dashboard."""
     return HTMLResponse(open("/gfin/investigator_workbench.html").read())
 
+
+@app.get("/case/{case_id}", response_class=HTMLResponse)
+async def case_detail_redirect(case_id: str):
+    return HTMLResponse(f'<script>window.location.href="/case?case_id={case_id}";</script>')
+
 @app.get("/case", response_class=HTMLResponse)
 async def case_detail_page(request: Request):
     if _police_auth:
