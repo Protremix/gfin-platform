@@ -3976,6 +3976,55 @@ async def api_wallets():
     except Exception as e:
         return {"status": "error", "message": str(e)}
 
+
+# ============================================================
+# TAXONOMY API
+# ============================================================
+
+@app.get("/api/taxonomy/run")
+async def api_run_taxonomy():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from taxonomy_alignment import run_taxonomy_alignment
+        total = run_taxonomy_alignment()
+        return {"status": "ok", "total_updates": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+@app.get("/api/taxonomy/types")
+async def api_taxonomy_types():
+    try:
+        import psycopg2
+        db = psycopg2.connect(host="127.0.0.1", database="gfin", user="gfin", password="GfinSecure2026!")
+        cur = db.cursor()
+        cur.execute("SELECT canonical_type, description, severity, aliases::text, common_indicators::text FROM taxonomy_mapping ORDER BY severity DESC, canonical_type")
+        types = []
+        for r in cur.fetchall():
+            types.append({"canonical_type": r[0], "description": r[1], "severity": r[2], "aliases": r[3], "indicators": r[4]})
+        cur.close()
+        db.close()
+        return {"status": "ok", "types": types, "count": len(types)}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
+
+# ============================================================
+# OSINT COLLECTOR API
+# ============================================================
+
+@app.get("/api/osint/run")
+async def api_run_osint():
+    import sys
+    sys.path.insert(0, "/gfin/packages/services")
+    try:
+        from osint_collector import run_osint_collector
+        total = run_osint_collector()
+        return {"status": "ok", "total_signals": total}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
+
 @app.post("/api/intelligence/auto-investigate")
 async def auto_investigate_targets(request: Request):
     """Auto-create cases for new high-priority targets from Telegram intel"""
