@@ -314,7 +314,34 @@ class MultiChainCryptoScanner:
         # Tronscan API (free, no auth)
         tronscan_key = os.getenv("TRONSCAN_API_KEY", "")
         tronscan_headers = {"TRON-PRO-API-KEY": tronscan_key} if tronscan_key else {}
-        data = self._http_get_json(f"https://apilist.tronscanapi.com/api/account/tokens?address={address}&show=15,10,100", timeout=12, headers=tronscan_headers)
+        # Use tronpy library (free, no API key needed - connects to public TronGrid node)
+        try:
+            from tronpy import Tron
+            client = Tron(network="mainnet")
+            # Get TRX balance
+            account = client.get_account_balance(address)
+            # Get token balances
+            trc20_tokens = []
+            trc10_tokens = []
+            try:
+                trc20 = client.get_trc20_balances(address)
+                trc20_tokens = [{"symbol": t, "balance": str(b)} for t, b in trc20.items()]
+            except:
+                pass
+            return {
+                "address": address,
+                "balance": str(account) if account else "0",
+                "balance_usd": 0,
+                "tokens": trc20_tokens,
+                "transactions": 0,
+                "source": "tronpy (TronGrid public node)",
+                "status": "ok"
+            }
+        except Exception as e:
+            # Fallback to Tronscan API with key if available
+            tronscan_key = os.getenv("TRONSCAN_API_KEY", "")
+            tronscan_headers = {"TRON-PRO-API-KEY": tronscan_key} if tronscan_key else {}
+            data = self._http_get_json(f"https://apilist.tronscanapi.com/api/account/tokens?address={address}&show=15,10,100", timeout=12, headers=tronscan_headers)
         if data:
             # TRX balance
             tron_data = data.get("trc20token_balances", [])
@@ -392,9 +419,22 @@ class MultiChainCryptoScanner:
         }
 
         # Solscan API (free)
-        solscan_key = os.getenv("SOLSCAN_API_KEY", "")
-        solscan_headers = {"token": solscan_key} if solscan_key else {}
-        data = self._http_get_json(f"https://pro-api.solscan.io/v2/account/metadata?address={address}", timeout=12, headers=solscan_headers)
+        # Use free Solana public RPC (no API key needed)
+        try:
+            import urllib.request
+            rpc_url = "https://api.mainnet-beta.solana.com"
+            payload = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "getAccountInfo", "params": [address, {"encoding": "jsonParsed"}]}).encode()
+            req = urllib.request.Request(rpc_url, data=payload, headers={"Content-Type": "application/json"})
+            resp = urllib.request.urlopen(req, timeout=15)
+            rpc_data = json.loads(resp.read())
+            return {
+                "address": address,
+                "balance": str(rpc_data.get("result", {}).get("value", {}).get("lamports", 0)),
+                "source": "Solana public RPC (free)",
+                "status": "ok"
+            }
+        except Exception as e:
+            data = self._http_get_json(f"https://pro-api.solscan.io/v2/account/metadata?address={address}", timeout=12, headers=solscan_headers)
         if data:
             try:
                 lamports = data.get("lamports", 0)

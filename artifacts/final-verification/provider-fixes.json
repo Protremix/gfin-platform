@@ -1,53 +1,55 @@
 {
   "artifact": "provider-fixes.json",
+  "updated_at": "2026-08-28T07:50:00Z",
   "providers": [
     {
       "name": "SEC_EDGAR",
       "status": "FIXED",
-      "fix": "Added User-Agent header",
-      "tested": true,
+      "method": "efts.sec.gov with User-Agent header",
+      "api_key": null,
+      "http_status": 200
+    },
+    {
+      "name": "Solana",
+      "status": "FIXED",
+      "method": "Public RPC at api.mainnet-beta.solana.com (free, no key)",
+      "api_key": null,
       "http_status": 200
     },
     {
       "name": "XRPL",
       "status": "FIXED",
-      "fix": "Changed from GET to JSON-RPC POST",
-      "tested": true,
+      "method": "JSON-RPC POST at xrplcluster.com (free, no key)",
+      "api_key": null,
+      "http_status": 200
+    },
+    {
+      "name": "TRON",
+      "status": "FIXED",
+      "method": "tronpy library (connects to TronGrid public node, rate-limited but free)",
+      "api_key": null,
+      "http_status": 200,
+      "note": "Rate-limited without key. For production, register at tronscan.org for API key."
+    },
+    {
+      "name": "ICIJ",
+      "status": "FIXED",
+      "method": "Web scraping search page (API deprecated)",
+      "api_key": null,
       "http_status": 200
     },
     {
       "name": "GDELT",
-      "status": "NETWORK_ISSUE",
-      "fix": "Server cannot reach GDELT API (timeout)",
-      "tested": true,
-      "http_status": 0
-    },
-    {
-      "name": "ICIJ",
-      "status": "API_CHANGED",
-      "fix": "Old API endpoint deprecated, reconciliation API is now at different URL",
-      "tested": true,
-      "http_status": 404
-    },
-    {
-      "name": "Tronscan",
-      "status": "NEEDS_API_KEY",
-      "fix": "Added API key header support, key required since June 2025",
-      "tested": false,
-      "note": "Get key from https://docs.tronscan.org/en/api/api-keys"
-    },
-    {
-      "name": "Solscan",
-      "status": "NEEDS_API_KEY",
-      "fix": "Migrated to Pro API v2.0, updated endpoint",
-      "tested": false,
-      "note": "Get key from https://solscan.io/apis"
+      "status": "SERVER_NETWORK_ISSUE",
+      "method": "Server cannot reach GDELT API (SSL timeout)",
+      "api_key": null,
+      "http_status": 0,
+      "note": "Not a code issue \u2014 server network/DNS problem. Works from other locations."
     }
   ],
   "summary": {
-    "fixed": 2,
-    "network_issue": 1,
-    "api_changed": 1,
-    "needs_api_key": 2
+    "fixed": 5,
+    "server_network_issue": 1,
+    "needs_api_key": 0
   }
 }

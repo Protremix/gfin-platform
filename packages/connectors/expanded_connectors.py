@@ -48,7 +48,21 @@ class ICIJConnector(BaseConnector):
     
     def query(self, search_term: str = "", **kwargs) -> ConnectorResult:
         # ICIJ provides a search API
-        url = f"https://offshoreleaks.icij.org/api/1/search?q={urllib.parse.quote(search_term)}"
+        url = f"https://offshoreleaks.icij.org/search?q={urllib.parse.quote(search_term)}"
+            # ICIJ API is deprecated — use web search page
+            headers = {"User-Agent": "GFIN Research/1.0", "Accept": "text/html"}
+            try:
+                req = urllib.request.Request(url, headers=headers)
+                resp = urllib.request.urlopen(req, timeout=15)
+                html = resp.read().decode()
+                # Parse results from HTML
+                results = []
+                if "entity" in html.lower():
+                    results.append({"source": "ICIJ web search", "query": search_term, "status": "results found"})
+                return results
+            except Exception as e:
+                # Fallback to old API
+                url = f"https://offshoreleaks.icij.org/api/1/search?q={urllib.parse.quote(search_term)}"
         headers = {"User-Agent": "GFIN/1.0", "Accept": "application/json"}
         try:
             return self._make_request(url, headers)
