@@ -42,4 +42,4 @@ outputs:
     description: 'Path to the generated report file'
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'Dockerfile.action'
