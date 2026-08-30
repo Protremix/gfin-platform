@@ -1,0 +1,45 @@
+name: 'GFIN Security Scanner'
+description: 'AI-powered fraud detection and security scanning for your codebase. Detects fraud patterns, security vulnerabilities, and suspicious transactions using the Global Fraud Intelligence Network.'
+author: 'Protremix Technology'
+branding:
+  icon: 'shield'
+  color: 'blue'
+inputs:
+  scan-type:
+    description: 'Type of scan to run (full, code, dependencies, fraud-patterns)'
+    required: false
+    default: 'full'
+  severity-threshold:
+    description: 'Minimum severity to report (low, medium, high, critical)'
+    required: false
+    default: 'medium'
+  path:
+    description: 'Path to scan (defaults to entire repository)'
+    required: false
+    default: '.'
+  fail-on-findings:
+    description: 'Fail the workflow if findings exceed the severity threshold'
+    required: false
+    default: 'true'
+  output-format:
+    description: 'Output format (json, sarif, html, markdown)'
+    required: false
+    default: 'sarif'
+  ai-analysis:
+    description: 'Enable AI-powered analysis of findings (uses EvolvixOS engine)'
+    required: false
+    default: 'false'
+  exclude-patterns:
+    description: 'Comma-separated list of paths to exclude from scanning'
+    required: false
+    default: 'node_modules,venv,.git,dist,build'
+outputs:
+  findings-count:
+    description: 'Total number of findings'
+  critical-count:
+    description: 'Number of critical findings'
+  report-path:
+    description: 'Path to the generated report file'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
