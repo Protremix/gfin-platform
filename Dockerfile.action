@@ -1,0 +1,18 @@
+FROM python:3.11-slim
+
+LABEL maintainer="Protremix Technology <info@protremix.com>"
+LABEL description="GFIN Security Scanner — AI-powered fraud detection and security scanning"
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    git \
+    curl \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /action
+
+COPY gfin_scan.py /action/gfin_scan.py
+COPY action_entrypoint.sh /action/entrypoint.sh
+RUN chmod +x /action/entrypoint.sh
+
+ENTRYPOINT ["/action/entrypoint.sh"]
